@@ -7,13 +7,16 @@ Testing module.
 # pylint: disable=C0301
 
 # Standard Library
+import json
 import os
 
 # My stuff
+from rcsbids import _load_query
 from rcsbids import _store_pdb_ids
 from rcsbids import retrieve_pdb_ids
 
-TEST_QUERY = """{"query":{"type":"group","logical_operator":"and","nodes":[{"type":"terminal","service":"text","parameters":{"attribute":"entity_poly.rcsb_entity_polymer_type","operator":"exact_match","negation":false,"value":"Protein"}},{"type":"terminal","service":"text","parameters":{"attribute":"exptl.method","operator":"exact_match","negation":false,"value":"THEORETICAL MODEL"}}],"label":"text"},"return_type":"entry","request_options":{"pager":{"start":0,"rows":25},"scoring_strategy":"combined","sort":[{"sort_by":"score","direction":"desc"}]}}"""
+TEST_QUERY = _load_query('queries/test_query.json')
+EXPECTED_QUERY = """{"query":{"type":"group","logical_operator":"and","nodes":[{"type":"terminal","service":"text","parameters":{"attribute":"entity_poly.rcsb_entity_polymer_type","operator":"exact_match","negation":false,"value":"Protein"}},{"type":"terminal","service":"text","parameters":{"attribute":"exptl.method","operator":"exact_match","negation":false,"value":"THEORETICAL MODEL"}}],"label":"text"},"return_type":"entry","request_options":{"pager":{"start":0,"rows":25},"scoring_strategy":"combined","sort":[{"sort_by":"score","direction":"desc"}]}}"""
 
 
 EXPECTED_JSON_RESPONSE = {
@@ -119,3 +122,15 @@ def test__store_pdb_ids():
     assert ids[-1] == ''
     assert ids[:-1] == EXPECTED_IDS
     os.remove('test_pdb_ids.txt')
+
+
+def test__load_query():
+    """
+    Test the _load_query function, which loads a query from a file.
+
+    :return: None
+    """
+    query = _load_query('queries/test_query.json')
+    # check that is one line and that matches the expected query
+    assert len(query.split('\n')) == 1
+    assert json.loads(query) == json.loads(EXPECTED_QUERY)
