@@ -60,7 +60,7 @@ def _store_pdb_ids(ids, dest):
             file_pointer.write(id_ + '\n')
 
 
-def main():
+def main():  # pragma: no cover
     """Parse arguments and run the script."""
     # Parse the command line arguments.
     parser = argparse.ArgumentParser(description='Script to download RCSB PDB IDs.')
