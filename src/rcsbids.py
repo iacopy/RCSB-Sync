@@ -52,6 +52,14 @@ def _load_query(query_file):
     return json.dumps(query)
 
 
+def _store_pdb_ids(ids, dest):
+    # Store PDB IDs in a file.
+    print('Storing PDB IDs into file:', dest)
+    with open(dest, 'w', encoding='ascii') as file_pointer:
+        for id_ in ids:
+            file_pointer.write(id_ + '\n')
+
+
 def main():
     """Parse arguments and run the script."""
     # Parse the command line arguments.
@@ -71,11 +79,8 @@ def main():
     ids = retrieve_pdb_ids(query)
     print(f'Found {len(ids)} PDB IDs.')
 
-    # Store PDB IDs in a file.
-    print('Storing PDB IDs into file:', args.output)
-    with open(args.output, 'w', encoding='ascii') as file_pointer:
-        for id_ in ids:
-            file_pointer.write(id_ + '\n')
+    # Store the list of PDB IDs in a file.
+    _store_pdb_ids(ids, args.output)
 
 
 if __name__ == '__main__':

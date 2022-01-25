@@ -6,7 +6,11 @@ Testing module.
 # skip pylint long line check for this file, since it's a test file.
 # pylint: disable=C0301
 
+# Standard Library
+import os
+
 # My stuff
+from rcsbids import _store_pdb_ids
 from rcsbids import retrieve_pdb_ids
 
 TEST_QUERY = """{"query":{"type":"group","logical_operator":"and","nodes":[{"type":"terminal","service":"text","parameters":{"attribute":"entity_poly.rcsb_entity_polymer_type","operator":"exact_match","negation":false,"value":"Protein"}},{"type":"terminal","service":"text","parameters":{"attribute":"exptl.method","operator":"exact_match","negation":false,"value":"THEORETICAL MODEL"}}],"label":"text"},"return_type":"entry","request_options":{"pager":{"start":0,"rows":25},"scoring_strategy":"combined","sort":[{"sort_by":"score","direction":"desc"}]}}"""
@@ -100,3 +104,18 @@ def test_retrieve_pdb_ids():
     """
     ids = retrieve_pdb_ids(TEST_QUERY)
     assert ids == EXPECTED_IDS
+
+
+def test__store_pdb_ids():
+    """
+    Test the _store_pdb_ids function, which stores the PDB IDs in a given file.
+
+    :return: None
+    """
+    _store_pdb_ids(EXPECTED_IDS, 'test_pdb_ids.txt')
+    with open('test_pdb_ids.txt', 'r', encoding='ascii') as file_pointer:
+        ids = file_pointer.read().split('\n')
+    # the last line should be empty (the file should end with a newline)
+    assert ids[-1] == ''
+    assert ids[:-1] == EXPECTED_IDS
+    os.remove('test_pdb_ids.txt')
