@@ -7,7 +7,7 @@ Testing module.
 # pylint: disable=C0301
 
 # My stuff
-from rcsbids import send_request
+from rcsbids import retrieve_pdb_ids
 
 TEST_QUERY = """{"query":{"type":"group","logical_operator":"and","nodes":[{"type":"terminal","service":"text","parameters":{"attribute":"entity_poly.rcsb_entity_polymer_type","operator":"exact_match","negation":false,"value":"Protein"}},{"type":"terminal","service":"text","parameters":{"attribute":"exptl.method","operator":"exact_match","negation":false,"value":"THEORETICAL MODEL"}}],"label":"text"},"return_type":"entry","request_options":{"pager":{"start":0,"rows":25},"scoring_strategy":"combined","sort":[{"sort_by":"score","direction":"desc"}]}}"""
 
@@ -98,6 +98,5 @@ def test_retrieve_pdb_ids():
 
     :return: None
     """
-    json_response = send_request(TEST_QUERY)
-    ids = [hit['identifier'] for hit in json_response['result_set']]
+    ids = retrieve_pdb_ids(TEST_QUERY)
     assert ids == EXPECTED_IDS
