@@ -64,9 +64,8 @@ def main():  # pragma: no cover
     """Parse arguments and run the script."""
     # Parse the command line arguments.
     parser = argparse.ArgumentParser(description='Script to download RCSB PDB IDs.')
-    parser.add_argument('--query', help='Advanced query in json format or pointing to a JSON file',
-                        required=True)
-    parser.add_argument('--output', help='Output directory', required=True)
+    parser.add_argument('-q', '--query', required=True, help='String or file path of json query')
+    parser.add_argument('-o', '--output', help='Output directory', required=True)
     args = parser.parse_args()
 
     # Check if the query is a file or a string.
