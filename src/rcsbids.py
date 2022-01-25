@@ -21,11 +21,11 @@ def retrieve_pdb_ids(query):
     :return: List of PDB IDs.
     """
     # Get the list of PDB IDs from the RCSB website, given an advanced query in json format.
-    json_response = send_request(query)
+    json_response = _send_request(query)
     return [hit['identifier'] for hit in json_response['result_set']]
 
 
-def send_request(query):
+def _send_request(query):
     """
     Send a request to the RCSB website and return the json response in a dictionary.
     """
@@ -39,7 +39,7 @@ def send_request(query):
     return response.json()
 
 
-def load_query(query_file):
+def _load_query(query_file):
     """
     Load the advanced query from a json file.
 
@@ -64,7 +64,7 @@ def main():
     # Check if the query is a file or a string.
     if args.query.endswith('.json'):
         print('Loading query from file:', args.query)
-        query = load_query(args.query)
+        query = _load_query(args.query)
 
     # Retrieve the list of PDB IDs from the RCSB website, given an advanced query in json format.
     print('Retrieving PDB IDs from RCSB website...')
