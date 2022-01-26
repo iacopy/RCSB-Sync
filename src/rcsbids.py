@@ -57,18 +57,16 @@ def _store_pdb_ids(ids, dest):
             file_pointer.write(id_ + '\n')
 
 
-def main():  # pragma: no cover
-    """Parse arguments and run the script."""
-    # Parse the command line arguments.
-    parser = argparse.ArgumentParser(description='Script to download RCSB PDB IDs.')
-    parser.add_argument('-q', '--query', required=True, help='String or file path of json query')
-    parser.add_argument('-o', '--output', help='Output directory', required=True)
-    args = parser.parse_args()
+def search_and_download_ids(query, output):  # pragma: no cover
+    """Search and download PDB IDs from the RCSB website, given an advanced query in json format.
 
+    :param query: Path to the json file containing the advanced query.
+    :param output: Path to the output file.
+    """
     # Check if the query is a file or a string.
-    if args.query.endswith('.json'):
-        print('Loading query from file:', args.query)
-        query = _load_query(args.query)
+    if query.endswith('.json'):
+        print('Loading query from file:', query)
+        query = _load_query(query)
 
     # Retrieve the list of PDB IDs from the RCSB website, given an advanced query in json format.
     print('Retrieving PDB IDs from RCSB website...')
@@ -76,8 +74,14 @@ def main():  # pragma: no cover
     print(f'Found {len(ids)} PDB IDs.')
 
     # Store the list of PDB IDs in a file.
-    _store_pdb_ids(ids, args.output)
+    _store_pdb_ids(ids, output)
 
 
 if __name__ == '__main__':
-    main()
+    # Parse the command line arguments.
+    parser = argparse.ArgumentParser(description='Script to download RCSB PDB IDs.')
+    parser.add_argument('-q', '--query', required=True, help='String or file path of json query')
+    parser.add_argument('-o', '--output', help='Output directory', required=True)
+    args = parser.parse_args()
+
+    search_and_download_ids(args.query, args.output)
