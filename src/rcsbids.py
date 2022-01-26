@@ -29,10 +29,7 @@ def _send_request(query):
     """
     Send a request to the RCSB website and return the json response in a dictionary.
     """
-
     # Documentation URL: https://search.rcsb.org/#search-api
-    print('Retrieving PDB IDs from RCSB website...')
-    print('Query:', query)
     url_get = 'https://search.rcsb.org/rcsbsearch/v1/query?json=' + query
     response = requests.get(url_get)
     response.raise_for_status()
