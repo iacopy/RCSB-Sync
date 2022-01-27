@@ -13,6 +13,9 @@ import json
 import requests
 
 
+IDS_SEPARATOR = '\n'
+
+
 def retrieve_pdb_ids(query):
     """
     Retrieve the list of PDB IDs from the RCSB website, given an advanced query in json format.
@@ -49,15 +52,15 @@ def _load_query(query_file):
     return json.dumps(query)
 
 
-def _store_pdb_ids(ids, dest):
+def _store_pdb_ids(ids, dest, separator=IDS_SEPARATOR):
     # Store PDB IDs in a file.
     print('Storing PDB IDs into file:', dest)
     with open(dest, 'w', encoding='ascii') as file_pointer:
         for id_ in ids:
-            file_pointer.write(id_ + '\n')
+            file_pointer.write(id_ + separator)
 
 
-def search_and_download_ids(query, output):  # pragma: no cover
+def search_and_download_ids(query, output, separator=IDS_SEPARATOR):  # pragma: no cover
     """Search and download PDB IDs from the RCSB website, given an advanced query in json format.
 
     :param query: Path to the json file containing the advanced query.
@@ -74,7 +77,8 @@ def search_and_download_ids(query, output):  # pragma: no cover
     print(f'Found {len(ids)} PDB IDs.')
 
     # Store the list of PDB IDs in a file.
-    _store_pdb_ids(ids, output)
+    _store_pdb_ids(ids, output, separator=separator)
+    return ids
 
 
 if __name__ == '__main__':
