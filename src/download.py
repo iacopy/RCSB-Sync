@@ -11,8 +11,13 @@ import requests
 import time
 
 DOWNLOAD_URL = 'https://files.rcsb.org/download/'
+
 MAX_PROCESSES = os.cpu_count()
 DEFAULT_PROCESSES = 2
+#: This number impact the frequency of progress updates.
+#: It is the number of PDB files to download before a progress update is printed if a single process is used.
+#: This is scaled automatically to the number of processes used to keep the progress updates constant.
+CHUNK_LEN_PER_PROCESS = 10
 
 
 def chunks(lst, n):
@@ -69,10 +74,16 @@ def parallel_download(pdb_ids, directory: str, compressed: bool=True, n_jobs=DEF
 def download(pdb_ids: list,
              directory: str,
              compressed: bool=True,
-             n_jobs=DEFAULT_PROCESSES,
-             chunk_len: int=50) -> None:
+             n_jobs=DEFAULT_PROCESSES) -> None:
     """
-    Download PDB files from the RCSB website.
+    Download PDB files from the RCSB website in parallel.
+
+    Since we want to periodically notify the user about the progress and the ETA,
+    this function just calls the parallel_download function several times with different chunks of PDB IDs,
+    and when each chunk is finished, it prints the progress and the ETA.
+    Since each chunk is downloaded in parallel, to have a constant rate of progress updates,
+    we need to make sure that the number of chunks is a multiple of the number of processes, so that
+    each process gets the same number of PDB IDs to download.
 
     :param pdb_ids: List of PDB IDs.
     :param directory: Directory to store the downloaded files.
@@ -83,6 +94,8 @@ def download(pdb_ids: list,
     downloaded_size = 0
     n_downloaded = 0
     start_time = time.time()
+
+    chunk_len = CHUNK_LEN_PER_PROCESS * n_jobs
     # Subdivide the list of PDB IDs into chunks and download each chunk in parallel.
     for i, chunk in enumerate(chunks(pdb_ids, chunk_len)):
         print(f'Downloading chunk {i + 1}/{n_ids // chunk_len}: {len(chunk)} PDBs each with {n_jobs} processes')

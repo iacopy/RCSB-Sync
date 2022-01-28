@@ -43,6 +43,10 @@ from download import download_pdb, download
 IDS_SEPARATOR = '\n'
 SUFFIX_REMOVED = '.obsolete'
 
+# Settings for the parallel download.
+DEFAULT_JOBS = 2
+MAX_JOBS = os.cpu_count()
+
 
 class Organism:
     def __init__(self, directory: str) -> None:
@@ -165,7 +169,7 @@ class Organism:
                 print('Marking obsolete:', pdb_file, '->', pdb_file + SUFFIX_REMOVED)
                 os.rename(pdb_file, pdb_file + SUFFIX_REMOVED)
 
-    def pull(self):
+    def pull(self, n_jobs: int) -> None:
         """
         Similar to `git pull` (synchronize the local and remote files):
             - download the PDB files corresponding to the RCSB PDB IDs which are not already in the organism directory.
@@ -182,7 +186,7 @@ class Organism:
         print('Downloading RCSB PDB files...')
         start_time = time.time()
         try:
-            download(tbd_ids, self.data_dir, compressed=True, n_jobs=2)
+            download(tbd_ids, self.data_dir, compressed=True, n_jobs=n_jobs)
         except KeyboardInterrupt:
             print('\nDownload interrupted by user.')
         else:
@@ -190,7 +194,7 @@ class Organism:
             print(f'\nDownloaded {total_tbd_ids} files in {elapsed_time:.2f} seconds ({elapsed_time / total_tbd_ids:.2f} seconds per file).')
 
 
-def main(organism_dir):
+def main(organism_dir: str, n_jobs: int = 1) -> None:
     """
     Main function.
     """
@@ -211,7 +215,7 @@ def main(organism_dir):
     if len(organism.tbd_pdb_ids) > 0:
         answer = input(f'\nDo you want to download {len(organism.tbd_pdb_ids)} PDB files? (y/n) ')
         if answer.lower() == 'y':
-            organism.pull()
+            organism.pull(n_jobs=n_jobs)
         else:
             print('Download cancelled.')
     else:
@@ -219,8 +223,12 @@ def main(organism_dir):
 
 
 if __name__ == '__main__':
-    # Get the path to the organism directory.
-    organism_dir = sys.argv[1]
+    # parse command line arguments
+    parser = argparse.ArgumentParser(description='Download PDB files from the RCSB website.')
+    parser.add_argument('organism_dir', help='the directory of the organism')
+    parser.add_argument('-j', '--n_jobs', type=int, default=DEFAULT_JOBS,
+                        help=f'the number of parallel jobs for downloading (default: {DEFAULT_JOBS}, max: {MAX_JOBS})')
+    args = parser.parse_args()
 
     # Run the main function.
-    main(organism_dir)
+    main(args.organism_dir, args.n_jobs)
