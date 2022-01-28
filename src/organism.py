@@ -1,7 +1,7 @@
 """
 Download protein structures for an organism from the RCSB PDB database.
 
-0. If the ids are already downloaded (a ids_<date>.txt file with current date exists), skip to the next step.
+0. If the ids are already downloaded (a _ids_<date>.txt file with current date exists), skip to the next step.
 1. Start by downloading the RCSB PDB IDs for the organism, using the queries in the 'queries' directory.
 2. Before downloading the PDB files, check which PDB files are already in the local organism directory, and skip those to save time.
 3. Some local PDB files are not in the RCSB database anymore, so we mark them with a suffix (for example '.removed').
@@ -15,8 +15,8 @@ Download protein structures for an organism from the RCSB PDB database.
 The directory structures of organisms are as follows:
 .
 ├── Organism
-│   ├── ids_2022-01-01.txt
-│   ├── ids_2022-03-01.txt
+│   ├── _ids_2022-01-01.txt
+│   ├── _ids_2022-03-01.txt
 │   ├── queries
 │   │   ├── query_0.json
 │   │   ├── query_1.json
@@ -92,14 +92,14 @@ class Organism:
         Fetch the RCSB IDs for the organism from the RCSB website, or use the cached IDs if they exist.
 
         Side effect:
-            - the remote RCSB IDs are saved in the organism directory, in a file named 'ids_<date>.txt' (where <date> is the current date).
+            - the remote RCSB IDs are saved in the organism directory, in a file named '_ids_<date>.txt' (where <date> is the current date).
         :return: List of RCSB IDs.
         """
-        # Check if the ids are already downloaded. If so, read them from the ids_<date>.txt file.
-        ids_cache_file = os.path.join(self.directory, 'ids_' + datetime.date.today().isoformat() + '.txt')
+        # Check if the ids are already downloaded. If so, read them from the _ids_<date>.txt file.
+        ids_cache_file = os.path.join(self.directory, '_ids_' + datetime.date.today().isoformat() + '.txt')
         if os.path.isfile(ids_cache_file):
             print('Reading cached IDs from:', ids_cache_file)
-            # Read the ids from the ids_<date>.txt file.
+            # Read the ids from the _ids_<date>.txt file.
             with open(ids_cache_file, 'r') as file_pointer:
                 remote_ids = file_pointer.read().split(IDS_SEPARATOR)
         else:
