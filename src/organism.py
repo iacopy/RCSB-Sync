@@ -59,13 +59,13 @@ class Organism:
             os.mkdir(self.data_dir)
 
         #: List of local RCSB IDs, which are already in the local directory (i.e. not to be downloaded).
-        self.local_pdb_ids = []
+        self.local_pdb_ids: List[str] = []
         #: List of all the remote RCSB IDs.
-        self.remote_pdb_ids = []
+        self.remote_pdb_ids: List[str] = []
         #: List of all the remote RCSB IDs that are not in the local directory.
-        self.tbd_pdb_ids = []
+        self.tbd_pdb_ids: List[str] = []
         #: List of all the remote RCSB IDs that are not in the local directory and are not in the remote database anymore.
-        self.obsolete_pdb_ids = []
+        self.obsolete_pdb_ids: List[str] = []
 
     def get_local_ids(self) -> List[str]:
         """

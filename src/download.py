@@ -42,7 +42,7 @@ def download_pdb(pdb_id, directory: str, compressed: bool=True) -> str:
     response = requests.get(pdb_url)
     if response.status_code == 404:
         print(f'PDB file not found: {pdb_id}')
-        return
+        return ''
     response.raise_for_status()
     # Save the PDB file.
     dest = os.path.join(directory, pdb_id + '.pdb' + gzip_ext)
@@ -52,7 +52,7 @@ def download_pdb(pdb_id, directory: str, compressed: bool=True) -> str:
 
 
 # Use multiprocessing to download (typically thousands of) PDB files in parallel.
-def parallel_download(pdb_ids, directory: str, compressed: bool=True, n_jobs=DEFAULT_PROCESSES) -> None:
+def parallel_download(pdb_ids, directory: str, compressed: bool=True, n_jobs=DEFAULT_PROCESSES) -> List[str]:
     """
     Download PDB files from the RCSB website in parallel.
 
@@ -67,11 +67,11 @@ def parallel_download(pdb_ids, directory: str, compressed: bool=True, n_jobs=DEF
     # Download the PDB files in parallel.
     with Pool(processes=n_jobs) as pool:
         ret = pool.map(partial(download_pdb, directory=directory, compressed=compressed), pdb_ids)
-        # remove None values
-        return [x for x in ret if x is not None]
+        # remove null values
+        return [x for x in ret if x is not '']
 
 
-def download(pdb_ids: list,
+def download(pdb_ids: List[str],
              directory: str,
              compressed: bool=True,
              n_jobs=DEFAULT_PROCESSES) -> None:
