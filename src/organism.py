@@ -38,8 +38,7 @@ import sys
 import time
 
 from rcsbids import search_and_download_ids
-from download import download_pdb
-
+from download import download_pdb, download
 
 IDS_SEPARATOR = '\n'
 SUFFIX_REMOVED = '.not_found'
@@ -182,26 +181,13 @@ class Organism:
 
         print('Downloading RCSB PDB files...')
         start_time = time.time()
-        tot_size = 0
         try:
-            for i, id_ in enumerate(tbd_ids):
-                # Download the PDB file.
-                try:
-                    dest = download_pdb(id_, self.data_dir, compressed=True)
-                except Exception as e:
-                    print('🤌  Error downloading PDB file:', id_, e)
-                    continue
-                # Report the global progress and the expected time to complete (based on the number of PDB files to be downloaded).
-                tot_size += os.path.getsize(dest)
-                if i and i % 10 == 0:
-                    eta_min = ((time.time() - start_time) / i) * (total_tbd_ids - i) / 60
-                    print(f'Downloaded {i}/{total_tbd_ids} files ({i/total_tbd_ids:.2%}) - ETA: {eta_min:.2f} min ⏳')
+            download(tbd_ids, self.data_dir, compressed=True, n_jobs=2)
         except KeyboardInterrupt:
             print('\nDownload interrupted by user.')
-
-        # Report the statistics of the download.
-        print(f'\n{i + 1}/{total_tbd_ids} files downloaded ({i/total_tbd_ids:.2%}) in {(time.time() - start_time)/60:.2f} min')
-        print(f'Size: {tot_size / 1024 / 1024:.2f} MB')
+        else:
+            elapsed_time = time.time() - start_time
+            print(f'\nDownloaded {total_tbd_ids} files in {elapsed_time:.2f} seconds ({elapsed_time / total_tbd_ids:.2f} seconds per file).')
 
 
 def main(organism_dir):
