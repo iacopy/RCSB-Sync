@@ -5,12 +5,12 @@ Automatizza il download di strutture proteiche dal server remoto RCSB.
 
 Supporta il resume, cioè si può interrompere il download, e al successivo lancio il download riprenderà dal punto a cui era arrivato.
 
-
 Esempio:
 
     python src/organism.py ~/your_project/Rattus_norvegicus/ -j 2
 
-## Funzionamento
+Funzionamento
+-------------
 
 Il programma è pensato per sincronizzare la directory di lavoro col database remoto.
 Se il programma viene lanciato in giorni diversi, la prima volta di ogni giorno effettuerà nuovamente la ricerca su www.rcsb.org
@@ -23,7 +23,8 @@ tramite l'aggiunta di un suffisso al nome del file.
 
 Vengono scaricati file .pdb in formato compresso (.gz).
 
-## Struttura directory
+Struttura directory
+-------------------
 
 Lo script è pensato per lavorare su directory organizzate in questo modo:
 
@@ -43,13 +44,13 @@ Lo script è pensato per lavorare su directory organizzate in questo modo:
     │       .
     │       └── 1q9s.pdb.gz  # come sopra
 
-
-## Preparazione query
+Preparazione query
+------------------
 
 La sottodirectory `queries` deve essere popolata manualmente, la prima volta.
 Serve almeno una query in formato JSON per ottenere automaticamente la lista dei PDB IDs che saranno utilizzati per scaricare i file .pdb delle strutture proteiche.
 
-Per generare la query JSON basta fare una volta la ricerca desiderata online su https://www.rcsb.org/search/advanced utilizzando il browser.
+Per generare la query JSON basta fare una volta la ricerca desiderata online su <https://www.rcsb.org/search/advanced> utilizzando il browser.
 Una volta definiti i campi di interesse, effettuare la ricerca premendo la lente. Apparirà in alto la stringa della query di ricerca con a destra il tasto JSON.
 Premere il tasto, si aprirà una nuova tab con la stringa JSON.
 Non eseguire la query, ma effettuare la copia della stringa JSON a sinistra (si può fare manualmente se si vuole mantenere la formattazione con l'indentazione,
