@@ -1,35 +1,36 @@
 """
 Download protein structures for an organism from the RCSB PDB database.
 
-0. If the ids are already downloaded (a _ids_<date>.txt file with current date exists), skip to the next step.
+0. If the ids are already downloaded (a `_ids_<date>.txt` file with current date exists), skip to the next step.
 1. Start by downloading the RCSB PDB IDs for the organism, using the queries in the 'queries' directory.
 2. Before downloading the PDB files, check which PDB files are already in the local organism directory,
-and skip those to save time.
+   and skip those to save time.
 3. Some local PDB files are not in the RCSB database anymore, so we mark them with a suffix (for example '.removed').
 4. Print a numeric report of:
-    - the number of PDB files already in the organism directory;
-    - the number of PDB files that will be downloaded;
-    - the number of removed/obsolete PDB files.
+   - the number of PDB files already in the organism directory;
+   - the number of PDB files that will be downloaded;
+   - the number of removed/obsolete PDB files.
 5. Download the PDB files corresponding to the RCSB PDB IDs which are not already in the organism directory.
 6. During the download, report the global progress and the expected time to completion.
 
-The directory structures of organisms are as follows:
-.
-├── Organism
-│   ├── _ids_2022-01-01.txt
-│   ├── _ids_2022-03-01.txt
-│   ├── queries
-│   │   ├── query_0.json
-│   │   ├── query_1.json
-│   │   └── query_2.json
-│   └── data
-│       ├── 1i5r.pdb.gz
-│       ├── 1k8o.pdb.gz
-│       .
-│       .
-│       .
-│       └── 1q9s.pdb.gz
-...
+The directory structures of organisms are as follows::
+
+    .
+    ├── Organism
+    │   ├── _ids_2022-01-01.txt
+    │   ├── _ids_2022-03-01.txt
+    │   ├── queries
+    │   │   ├── query_0.json
+    │   │   ├── query_1.json
+    │   │   └── query_2.json
+    │   └── data
+    │       ├── 1i5r.pdb.gz
+    │       ├── 1k8o.pdb.gz
+    │       .
+    │       .
+    │       .
+    │       └── 1q9s.pdb.gz
+    ...
 """
 # Standard Library
 import argparse
@@ -106,6 +107,7 @@ class Organism:
         Side effect:
             - the remote RCSB IDs are saved in the organism directory, in a file named '_ids_<date>.txt'
               (where <date> is the current date).
+
         :return: List of RCSB IDs.
         """
         # Check if the ids are already downloaded. If so, read them from the _ids_<date>.txt file.

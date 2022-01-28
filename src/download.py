@@ -78,8 +78,9 @@ def download(pdb_ids: List[str],
              compressed: bool = True,
              n_jobs=DEFAULT_PROCESSES) -> None:
     """
-    Download PDB files from the RCSB website in parallel.
+    Download PDB files from the RCSB website in parallel, reporting the progress.
 
+    (actually, this is a wrapper around parallel_download)
     Since we want to periodically notify the user about the progress and the ETA,
     this function just calls the parallel_download function several times with different chunks of PDB IDs,
     and when each chunk is finished, it prints the progress and the ETA.
