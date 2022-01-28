@@ -21,7 +21,7 @@ DEFAULT_PROCESSES = 2
 CHUNK_LEN_PER_PROCESS = 10
 
 
-def chunks(lst, num):
+def _chunks(lst, num):
     """
     Yield successive n-sized chunks from lst.
     """
@@ -100,7 +100,7 @@ def download(pdb_ids: List[str],
 
     chunk_len = CHUNK_LEN_PER_PROCESS * n_jobs
     # Subdivide the list of PDB IDs into chunks and download each chunk in parallel.
-    for i, chunk in enumerate(chunks(pdb_ids, chunk_len)):
+    for i, chunk in enumerate(_chunks(pdb_ids, chunk_len)):
         print(f'Downloading chunk {i + 1}/{n_ids // chunk_len}: {len(chunk)} PDBs each with {n_jobs} processes')
         # Download the chunk of PDB IDs.
         downloaded_chunk = parallel_download(chunk, directory, compressed, n_jobs)
