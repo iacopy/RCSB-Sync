@@ -22,12 +22,12 @@ The directory structures of organisms are as follows:
 │   │   ├── query_1.json
 │   │   └── query_2.json
 │   └── data
-│       ├── 1i5r.pdb
-│       ├── 1k8o.pdb
+│       ├── 1i5r.pdb.gz
+│       ├── 1k8o.pdb.gz
 │       .
 │       .
 │       .
-│       └── 1q9s.pdb
+│       └── 1q9s.pdb.gz
 ...
 """
 from typing import List, Optional
