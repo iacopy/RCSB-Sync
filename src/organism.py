@@ -41,7 +41,7 @@ from rcsbids import search_and_download_ids
 from download import download_pdb, download
 
 IDS_SEPARATOR = '\n'
-SUFFIX_REMOVED = '.not_found'
+SUFFIX_REMOVED = '.obsolete'
 
 
 class Organism:
