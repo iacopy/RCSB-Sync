@@ -40,15 +40,21 @@ def download_pdb(pdb_id, directory: str, compressed: bool = True) -> str:
     # Documentation URL: https://www.rcsb.org/pdb/files/
     pdb_url = DOWNLOAD_URL + pdb_id + '.pdb' + gzip_ext
     # print('Downloading PDB file from RCSB website:', pdb_url)
+    dest = os.path.join(directory, pdb_id + '.pdb' + gzip_ext)
     response = requests.get(pdb_url)
     if response.status_code == 404:
         print(f'PDB file not found: {pdb_id}')
-        return ''
-    response.raise_for_status()
+        # Write an empty file to indicate that the PDB file was not found.
+        content = b''
+        # And append the PDB ID to the list of 404 PDB files, inside the directory.
+        with open(os.path.join(directory, '404.txt'), 'a') as f:
+            f.write(f'{pdb_id}\n')
+    else:
+        response.raise_for_status()
+        content = response.content
     # Save the PDB file.
-    dest = os.path.join(directory, pdb_id + '.pdb' + gzip_ext)
     with open(dest, 'wb') as file_pointer:
-        file_pointer.write(response.content)
+        file_pointer.write(content)
     return dest
 
 
