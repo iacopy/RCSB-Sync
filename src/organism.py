@@ -93,6 +93,8 @@ class Organism:
         """
         remote_ids = []
         for query_file in os.listdir(self.queries_dir):
+            if not query_file.endswith('.json'):
+                continue
             query = os.path.join(self.queries_dir, query_file)
             remote_ids += search_and_download_ids(query, cache_file)
         return remote_ids
