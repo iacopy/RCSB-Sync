@@ -12,7 +12,6 @@ import json
 # 3rd party
 import requests
 
-
 IDS_SEPARATOR = '\n'
 
 

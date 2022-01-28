@@ -3,7 +3,8 @@ Download protein structures for an organism from the RCSB PDB database.
 
 0. If the ids are already downloaded (a _ids_<date>.txt file with current date exists), skip to the next step.
 1. Start by downloading the RCSB PDB IDs for the organism, using the queries in the 'queries' directory.
-2. Before downloading the PDB files, check which PDB files are already in the local organism directory, and skip those to save time.
+2. Before downloading the PDB files, check which PDB files are already in the local organism directory,
+and skip those to save time.
 3. Some local PDB files are not in the RCSB database anymore, so we mark them with a suffix (for example '.removed').
 4. Print a numeric report of:
     - the number of PDB files already in the organism directory;
@@ -30,15 +31,16 @@ The directory structures of organisms are as follows:
 │       └── 1q9s.pdb.gz
 ...
 """
-from typing import List, Optional
+# Standard Library
 import argparse
 import datetime
 import os
-import sys
 import time
+from typing import List
 
+# My stuff
+from download import download
 from rcsbids import search_and_download_ids
-from download import download_pdb, download
 
 IDS_SEPARATOR = '\n'
 SUFFIX_REMOVED = '.obsolete'
@@ -49,6 +51,10 @@ MAX_JOBS = os.cpu_count()
 
 
 class Organism:
+    """
+    Keep synced the data directory with the remote RCSB database.
+    """
+
     def __init__(self, directory: str) -> None:
         self.directory = directory
         self.queries_dir = os.path.join(self.directory, 'queries')
@@ -64,7 +70,7 @@ class Organism:
         self.remote_pdb_ids: List[str] = []
         #: List of all the remote RCSB IDs that are not in the local directory.
         self.tbd_pdb_ids: List[str] = []
-        #: List of all the remote RCSB IDs that are not in the local directory and are not in the remote database anymore.
+        #: List of all the IDs that are in the local directory but are not in the remote database anymore.
         self.obsolete_pdb_ids: List[str] = []
 
     def get_local_ids(self) -> List[str]:
@@ -96,7 +102,8 @@ class Organism:
         Fetch the RCSB IDs for the organism from the RCSB website, or use the cached IDs if they exist.
 
         Side effect:
-            - the remote RCSB IDs are saved in the organism directory, in a file named '_ids_<date>.txt' (where <date> is the current date).
+            - the remote RCSB IDs are saved in the organism directory, in a file named '_ids_<date>.txt'
+              (where <date> is the current date).
         :return: List of RCSB IDs.
         """
         # Check if the ids are already downloaded. If so, read them from the _ids_<date>.txt file.
@@ -104,14 +111,14 @@ class Organism:
         if os.path.isfile(ids_cache_file):
             print('Reading cached IDs from:', ids_cache_file)
             # Read the ids from the _ids_<date>.txt file.
-            with open(ids_cache_file, 'r') as file_pointer:
+            with open(ids_cache_file, 'r', encoding='ascii') as file_pointer:
                 remote_ids = file_pointer.read().split(IDS_SEPARATOR)
         else:
             # Get the list of PDB IDs from the RCSB website, given an advanced query in json format.
             print('Fetching remote IDs...')
             remote_ids = self.fetch_remote_ids(ids_cache_file)
             # Save the list of PDB IDs to a file.
-            with open(ids_cache_file, 'w') as file_pointer:
+            with open(ids_cache_file, 'w', encoding='ascii') as file_pointer:
                 file_pointer.write(IDS_SEPARATOR.join(remote_ids))
         return remote_ids
 
@@ -138,7 +145,7 @@ class Organism:
         # - the number of local PDB files of the organism;
         # - the number of all remote PDB files of the organism;
         # - the number of remote files already in the local organism directory;
-        # - the number of PDB files that are in the remote database and not in the local organism directory -> to be downloaded.
+        # - the number of PDB files that are in the remote database and not in the local organism directory;
         # - the number of removed/obsolete PDB files (i.e. those that are not in the remote database anymore).
         print('\n' + self.directory)
         if remote_ids:
@@ -173,7 +180,8 @@ class Organism:
         """
         Similar to `git pull` (synchronize the local and remote files):
             - download the PDB files corresponding to the RCSB PDB IDs which are not already in the organism directory.
-            - every 10 downloaded files, report the global progress and the expected time to complete (based on the number of PDB files to be downloaded).
+            - every 10 downloaded files, report the global progress and the expected time to complete
+              (based on the number of PDB files to be downloaded).
         """
         if not self.remote_pdb_ids:
             # If the remote RCSB IDs have not been fetched yet, fetch them.
@@ -191,7 +199,8 @@ class Organism:
             print('\nDownload interrupted by user.')
         else:
             elapsed_time = time.time() - start_time
-            print(f'\nDownloaded {total_tbd_ids} files in {elapsed_time:.2f} seconds ({elapsed_time / total_tbd_ids:.2f} seconds per file).')
+            print(f'\nDownloaded {total_tbd_ids} files in {elapsed_time:.2f} seconds', end=' ')
+            print(f'({elapsed_time / total_tbd_ids:.2f} seconds per file).')
 
 
 def main(organism_dir: str, n_jobs: int = 1) -> None:

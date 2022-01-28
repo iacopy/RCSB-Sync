@@ -1,14 +1,15 @@
 """
 Download PDB files from the RCSB website.
 """
+# Standard Library
+import os
+import time
 from functools import partial
 from multiprocessing import Pool
-
 from typing import List
 
-import os
+# 3rd party
 import requests
-import time
 
 DOWNLOAD_URL = 'https://files.rcsb.org/download/'
 
@@ -20,15 +21,15 @@ DEFAULT_PROCESSES = 2
 CHUNK_LEN_PER_PROCESS = 10
 
 
-def chunks(lst, n):
+def chunks(lst, num):
     """
     Yield successive n-sized chunks from lst.
     """
-    for i in range(0, len(lst), n):
-        yield lst[i:i + n]
+    for i in range(0, len(lst), num):
+        yield lst[i:i + num]
 
 
-def download_pdb(pdb_id, directory: str, compressed: bool=True) -> str:
+def download_pdb(pdb_id, directory: str, compressed: bool = True) -> str:
     """
     Download a PDB file from the RCSB website.
 
@@ -52,7 +53,8 @@ def download_pdb(pdb_id, directory: str, compressed: bool=True) -> str:
 
 
 # Use multiprocessing to download (typically thousands of) PDB files in parallel.
-def parallel_download(pdb_ids, directory: str, compressed: bool=True, n_jobs=DEFAULT_PROCESSES) -> List[str]:
+def parallel_download(pdb_ids, directory: str,
+                      compressed: bool = True, n_jobs: int = DEFAULT_PROCESSES) -> List[str]:
     """
     Download PDB files from the RCSB website in parallel.
 
@@ -68,12 +70,12 @@ def parallel_download(pdb_ids, directory: str, compressed: bool=True, n_jobs=DEF
     with Pool(processes=n_jobs) as pool:
         ret = pool.map(partial(download_pdb, directory=directory, compressed=compressed), pdb_ids)
         # remove null values
-        return [x for x in ret if x is not '']
+        return [x for x in ret if x != '']
 
 
 def download(pdb_ids: List[str],
              directory: str,
-             compressed: bool=True,
+             compressed: bool = True,
              n_jobs=DEFAULT_PROCESSES) -> None:
     """
     Download PDB files from the RCSB website in parallel.
@@ -106,6 +108,6 @@ def download(pdb_ids: List[str],
         n_downloaded += len(chunk)
         progress = n_downloaded / n_ids
 
-        # Report the global progress and the expected time to complete (based on the number of PDB files to be downloaded).
+        # Report the global progress and the expected time to complete.
         eta_min = ((time.time() - start_time) / n_downloaded) * (n_ids - n_downloaded) / 60
         print(f'Downloaded {n_downloaded}/{n_ids} files ({progress:.2%}) - ETA: {eta_min:.2f} min ⏳')
