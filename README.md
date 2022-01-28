@@ -1,4 +1,4 @@
-RCSB PyPDB
+RCSB-Sync
 =========
 
 Automatizza il download di strutture proteiche dal server remoto RCSB.
@@ -9,7 +9,6 @@ Supporta il resume, cioè si può interrompere il download, e al successivo lanc
 Esempio:
 
     python src/organism.py ~/your_project/Rattus_norvegicus/ -j 2
-
 
 ## Funzionamento
 
