@@ -72,7 +72,7 @@
   "request_options": {
     "pager": {
       "start": 0,
-      "rows": 25
+      "rows": 99999
     },
     "scoring_strategy": "combined",
     "sort": [
