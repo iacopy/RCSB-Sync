@@ -1,8 +1,16 @@
 """
 Download protein structures for an organism from the RCSB PDB database.
 
-0. If the ids are already downloaded (a `_ids_<date>.txt` file with current date exists), skip to the next step.
-1. Start by downloading the RCSB PDB IDs for the organism, using the queries in the 'queries' directory.
+Usage
+~~~~~
+
+    python organism.py --organism_dir organism_dir [--n_jobs n_jobs]
+
+Algorithm
+~~~~~~~~~
+
+0. If the ids are already downloaded (a ``_ids_<date>.txt`` file with current date exists), skip to the next step.
+1. Start by downloading the RCSB PDB IDs for the organism, using the queries in the ``queries`` directory.
 2. Before downloading the PDB files, check which PDB files are already in the local organism directory,
    and skip those to save time.
 3. Some local PDB files are not in the RCSB database anymore, so we mark them with a suffix (for example '.removed').
@@ -10,8 +18,12 @@ Download protein structures for an organism from the RCSB PDB database.
    - the number of PDB files already in the organism directory;
    - the number of PDB files that will be downloaded;
    - the number of removed/obsolete PDB files.
+
 5. Download the PDB files corresponding to the RCSB PDB IDs which are not already in the organism directory.
 6. During the download, report the global progress and the expected time to completion.
+
+Directory structure
+~~~~~~~~~~~~~~~~~~~
 
 The directory structures of organisms are as follows::
 
@@ -105,7 +117,7 @@ class Organism:
         Fetch the RCSB IDs for the organism from the RCSB website, or use the cached IDs if they exist.
 
         Side effect:
-            - the remote RCSB IDs are saved in the organism directory, in a file named '_ids_<date>.txt'
+            - the remote RCSB IDs are saved in the organism directory, in a file named ``_ids_<date>.txt``
               (where <date> is the current date).
 
         :return: List of RCSB IDs.
@@ -128,7 +140,7 @@ class Organism:
 
     def fetch(self):
         """
-        Similar to `git fetch`:
+        Similar to ``git fetch``:
             - fetch the RCSB IDs for the organism from the RCSB website;
             - check which PDB files are already in the local organism directory;
             - check which PDB files are obsolete and mark them with the suffix '.removed';
@@ -181,7 +193,7 @@ class Organism:
 
     def pull(self, n_jobs: int) -> None:
         """
-        Similar to `git pull` (synchronize the local and remote files):
+        Similar to ``git pull`` (synchronize the local and remote files):
             - download the PDB files corresponding to the RCSB PDB IDs which are not already in the organism directory.
             - every 10 downloaded files, report the global progress and the expected time to complete
               (based on the number of PDB files to be downloaded).
@@ -208,8 +220,13 @@ class Organism:
 
 def main(organism_dir: str, n_jobs: int = 1) -> None:
     """
-    Main function.
+    Fetch the RCSB IDs for the organism from the RCSB website, and download the corresponding PDB files.
+
+    :param organism_dir: path to the organism directory.
+    :param n_jobs: number of parallel jobs to use.
     """
+    # TODO: less verbose output.
+
     # Create the organism object.
     organism = Organism(organism_dir)
 

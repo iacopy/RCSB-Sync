@@ -89,10 +89,10 @@ def parallel_download(pdb_ids, directory: str,
     """
     Download PDB files from the RCSB website in parallel.
 
-    :param pdb_ids: List of PDB IDs.
-    :param directory: Directory to store the downloaded files.
-    :param compressed: Whether to download compressed files.
-    :param n_jobs: Number of processes to use (default: 2).
+    :param pdb_ids: list of PDB IDs.
+    :param directory: directory to store the downloaded files.
+    :param compressed: whether to download compressed files.
+    :param n_jobs: number of processes to use (default: 2).
     """
     # Create the directory if it does not exist.
     if not os.path.exists(directory):
@@ -111,7 +111,8 @@ def download(pdb_ids: List[str],
     """
     Download PDB files from the RCSB website in parallel, reporting the progress.
 
-    (actually, this is a wrapper around parallel_download)
+    (actually, this is a wrapper around ``parallel_download``)
+
     Since we want to periodically notify the user about the progress and the ETA,
     this function just calls the parallel_download function several times with different chunks of PDB IDs,
     and when each chunk is finished, it prints the progress and the ETA.
@@ -119,10 +120,10 @@ def download(pdb_ids: List[str],
     we need to make sure that the number of chunks is a multiple of the number of processes, so that
     each process gets the same number of PDB IDs to download.
 
-    :param pdb_ids: List of PDB IDs.
-    :param directory: Directory to store the downloaded files.
-    :param compressed: Whether to download compressed files.
-    :param n_jobs: Number of processes to use (default: 2).
+    :param pdb_ids: list of PDB IDs.
+    :param directory: directory to store the downloaded files.
+    :param compressed: whether to download compressed files.
+    :param n_jobs: number of processes to use (default: 2).
     """
     n_ids = len(pdb_ids)
     downloaded_size = 0

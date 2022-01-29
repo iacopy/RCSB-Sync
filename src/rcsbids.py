@@ -19,8 +19,8 @@ def retrieve_pdb_ids(query):
     """
     Retrieve the list of PDB IDs from the RCSB website, given an advanced query in json format.
 
-    :param query: Advanced query in json format.
-    :return: List of PDB IDs.
+    :param query: advanced query in json format.
+    :return: list of PDB IDs.
     """
     # Get the list of PDB IDs from the RCSB website, given an advanced query in json format.
     json_response = _send_request(query)
@@ -42,8 +42,8 @@ def _load_query(query_file):
     """
     Load the advanced query from a json file.
 
-    :param query_file: Path to the json file.
-    :return: Advanced query in json string format (single line).
+    :param query_file: path to the json file.
+    :return: advanced query in json string format (single line).
     """
     with open(query_file, 'r', encoding='utf-8') as file_pointer:
         query = json.load(file_pointer)
@@ -62,8 +62,8 @@ def _store_pdb_ids(ids, dest, separator=IDS_SEPARATOR):
 def search_and_download_ids(query, output, separator=IDS_SEPARATOR):  # pragma: no cover
     """Search and download PDB IDs from the RCSB website, given an advanced query in json format.
 
-    :param query: Path to the json file containing the advanced query.
-    :param output: Path to the output file.
+    :param query: path to the json file containing the advanced query.
+    :param output: path to the output file.
     """
     # Check if the query is a file or a string.
     if query.endswith('.json'):
