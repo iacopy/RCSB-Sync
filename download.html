@@ -1,168 +1,94 @@
 <!DOCTYPE html>
-<html  lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-      <title>download module</title>
-    
-          <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-          <link rel="stylesheet" href="_static/theme.css " type="text/css" />
-      
-      <!-- sphinx script_files -->
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>download module &mdash; RCSB Sync 0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="organism module" href="organism.html" />
+    <link rel="prev" title="src" href="modules.html" /> 
+</head>
 
-      
-      <!-- bundled in js (rollup iife) -->
-      <!-- <script src="_static/theme-vendors.js"></script> -->
-      <script src="_static/theme.js" defer></script>
-    
-  <link rel="index" title="Index" href="genindex.html" />
-  <link rel="search" title="Search" href="search.html" />
-  <link rel="next" title="organism module" href="organism.html" />
-  <link rel="prev" title="src" href="modules.html" /> 
-  </head>
-
-  <body>
-    <div id="app">
-    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
-  <router-link to="index.html" class="home-link">
-    
-      <span class="site-name">RCSB Sync</span>
-    
-  </router-link>
-
-  <div class="links">
-    <navlinks class="can-hide">
-
-
-
-    </navlinks>
-  </div>
-</navbar>
-
-      
-      <div class="sidebar-mask" @click="toggleSidebar(false)">
-      </div>
-        <sidebar @toggle-sidebar="toggleSidebar">
-          
-          <navlinks>
-            
-
-
-
-            
-          </navlinks><div id="searchbox" class="searchbox" role="search">
-  <div class="caption"><span class="caption-text">Quick search</span>
-    <div class="searchformwrapper">
-      <form class="search" action="search.html" method="get">
-        <input type="text" name="q" />
-        <input type="submit" value="Search" />
-        <input type="hidden" name="check_keywords" value="yes" />
-        <input type="hidden" name="area" value="default" />
-      </form>
-    </div>
-  </div>
-</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
-  
-    <div class="sidebar-group">
-      <p class="caption">
-        <span class="caption-text"><a href="modules.html#src">src</a></span>
-      </p>
-      <ul class="current">
-        
-          <li class="toctree-l1 current">
-            
-              <a href="#" class="reference internal current">download module</a>
-            
-
-            
-              <ul>
-                
-                  <li class="toctree-l2"><a href="#module-download" class="reference internal">download module</a></li>
-                
-              </ul>
-            
-          </li>
-
-        
-          <li class="toctree-l1 ">
-            
-              <a href="organism.html" class="reference internal ">organism module</a>
-            
-
-            
-          </li>
-
-        
-          <li class="toctree-l1 ">
-            
-              <a href="rcsbids.html" class="reference internal ">rcsbids module</a>
-            
-
-            
-          </li>
-
-        
-          <li class="toctree-l1 ">
-            
-              <a href="test_rcsbids.html" class="reference internal ">test_rcsbids module</a>
-            
-
-            
-          </li>
-
-        
-      </ul>
-    </div>
-  
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> RCSB Sync
+          </a>
+              <div class="version">
+                0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
 </div>
-        </sidebar>
-
-      <page>
-          <div class="body-header" role="navigation" aria-label="navigation">
-  
-  <ul class="breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-    
-      <li><a href="modules.html">src</a> &raquo;</li>
-    
-    <li>download module</li>
-  </ul>
-  
-
-  <ul class="page-nav">
-  <li class="prev">
-    <a href="modules.html"
-       title="previous chapter">← src</a>
-  </li>
-  <li class="next">
-    <a href="organism.html"
-       title="next chapter">organism module →</a>
-  </li>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">src</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">download module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="organism.html">organism module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rcsbids.html">rcsbids module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_rcsbids.html">test_rcsbids module</a></li>
 </ul>
-  
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RCSB Sync</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="modules.html">src</a> &raquo;</li>
+      <li>download module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/download.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
 </div>
-<hr>
-          <div class="content" role="main" v-pre>
-            
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
   <section id="module-download">
 <span id="download-module"></span><h1>download module<a class="headerlink" href="#module-download" title="Permalink to this headline">¶</a></h1>
 <p>Download PDB files from the RCSB website.</p>
-<dl class="py data">
-<dt class="sig sig-object py" id="download.CHUNK_LEN_PER_PROCESS">
-<span class="sig-prename descclassname"><span class="pre">download.</span></span><span class="sig-name descname"><span class="pre">CHUNK_LEN_PER_PROCESS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="headerlink" href="#download.CHUNK_LEN_PER_PROCESS" title="Permalink to this definition">¶</a></dt>
+<dl class="data">
+<dt id="download.CHUNK_LEN_PER_PROCESS">
+<code class="sig-prename descclassname">download.</code><code class="sig-name descname">CHUNK_LEN_PER_PROCESS</code><em class="property"> = 10</em><a class="headerlink" href="#download.CHUNK_LEN_PER_PROCESS" title="Permalink to this definition">¶</a></dt>
 <dd><p>This number impact the frequency of progress updates.
 It is the number of PDB files to download before a progress update is printed if a single process is used.
 This is scaled automatically to the number of processes used to keep the progress updates constant.</p>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="download.download">
-<span class="sig-prename descclassname"><span class="pre">download.</span></span><span class="sig-name descname"><span class="pre">download</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdb_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/download.html#download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#download.download" title="Permalink to this definition">¶</a></dt>
+<dl class="function">
+<dt id="download.download">
+<code class="sig-prename descclassname">download.</code><code class="sig-name descname">download</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/download.html#download"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#download.download" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download PDB files from the RCSB website in parallel, reporting the progress.</p>
 <p>(actually, this is a wrapper around <code class="docutils literal notranslate"><span class="pre">parallel_download</span></code>)</p>
 <p>Since we want to periodically notify the user about the progress and the ETA,
@@ -183,9 +109,9 @@ each process gets the same number of PDB IDs to download.</p>
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="download.download_pdb">
-<span class="sig-prename descclassname"><span class="pre">download.</span></span><span class="sig-name descname"><span class="pre">download_pdb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdb_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/download.html#download_pdb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#download.download_pdb" title="Permalink to this definition">¶</a></dt>
+<dl class="function">
+<dt id="download.download_pdb">
+<code class="sig-prename descclassname">download.</code><code class="sig-name descname">download_pdb</code><span class="sig-paren">(</span><em class="sig-param">pdb_id: str</em>, <em class="sig-param">directory: str</em>, <em class="sig-param">compressed: bool = True</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/download.html#download_pdb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#download.download_pdb" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download a PDB file from the RCSB website.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -197,9 +123,9 @@ each process gets the same number of PDB IDs to download.</p>
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="download.parallel_download">
-<span class="sig-prename descclassname"><span class="pre">download.</span></span><span class="sig-name descname"><span class="pre">parallel_download</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdb_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/download.html#parallel_download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#download.parallel_download" title="Permalink to this definition">¶</a></dt>
+<dl class="function">
+<dt id="download.parallel_download">
+<code class="sig-prename descclassname">download.</code><code class="sig-name descname">parallel_download</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/download.html#parallel_download"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#download.parallel_download" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download PDB files from the RCSB website in parallel.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -216,27 +142,34 @@ each process gets the same number of PDB IDs to download.</p>
 </section>
 
 
+           </div>
           </div>
-          <div class="page-nav">
-            <div class="inner"><ul class="page-nav">
-  <li class="prev">
-    <a href="modules.html"
-       title="previous chapter">← src</a>
-  </li>
-  <li class="next">
-    <a href="organism.html"
-       title="next chapter">organism module →</a>
-  </li>
-</ul><div class="footer" role="contentinfo">
-      &#169; Copyright 2022, Iacopo Marmorini.
-    <br>
-    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.4.0 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.8.0.
-</div>
-            </div>
-          </div>
-      </page>
-    </div></div>
-    
-    
-  </body>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="src" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="organism.html" class="btn btn-neutral float-right" title="organism module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Iacopo Marmorini.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>
