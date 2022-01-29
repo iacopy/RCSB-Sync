@@ -74,16 +74,16 @@ class Organism:
         # List of all the IDs that are in the local directory but are not in the remote database anymore.
         self.obsolete_pdb_ids: List[str] = []
 
-    def get_local_ids(self) -> List[str]:
+    def get_local_ids(self) -> set:
         """
         Get the PDB IDs that are already in the organism directory.
         """
-        local_ids = []
+        local_ids = set()
         for filename in os.listdir(self.data_dir):
             # if filename.endswith('.pdb'):
             #     local_ids.append(filename[:-4])
             if filename.endswith('pdb.gz'):
-                local_ids.append(filename[:-7])
+                local_ids.add(filename[:-7])
         return local_ids
 
     def fetch_remote_ids(self, cache_file: str) -> List[str]:
@@ -133,17 +133,16 @@ class Organism:
             - check which PDB files are already in the local organism directory;
             - check which PDB files are obsolete and mark them with the suffix '.removed';
         """
-        remote_ids = self.fetch_or_cache()
+        remote_ids = set(self.fetch_or_cache())
 
         # Check which PDB files are already in the local organism directory, and skip those to save time.
         local_ids = self.get_local_ids()
-        # Already downloaded files.
-        already_downloaded_ids = [id_ for id_ in local_ids if id_ in remote_ids]
         # Files to be downloaded.
         tbd_ids = [id_ for id_ in remote_ids if id_ not in local_ids]
-
         # Some local PDB files are not in the RCSB database anymore, so we mark them with the SUFFIX_REMOVED suffix.
         removed_ids = [id_ for id_ in local_ids if id_ not in remote_ids]
+        # Now we can calculate the number of files already downloaded.
+        n_downloaded_ok = len(local_ids) - len(removed_ids)
 
         # Print a numeric report of:
         # - the number of local PDB files of the organism;
@@ -156,8 +155,8 @@ class Organism:
             print('Total remote PDB files: ' + str(len(remote_ids)))
         if local_ids:
             print('Local PDB files: ' + str(len(local_ids)))
-        if already_downloaded_ids:
-            print('💾 Already downloaded PDB files: ' + str(len(already_downloaded_ids)))
+        if n_downloaded_ok:
+            print('💾 Already downloaded PDB files: ' + str(n_downloaded_ok))
         if removed_ids:
             print('🗑 Files removed/obsolete: ' + str(len(removed_ids)))
         if tbd_ids:
