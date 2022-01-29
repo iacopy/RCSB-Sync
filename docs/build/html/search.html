@@ -1,145 +1,128 @@
-<!DOCTYPE html>
-<html  lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-      <title>Search</title>
-    
-          <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-          <link rel="stylesheet" href="_static/theme.css " type="text/css" />
-  
-      
-      <!-- sphinx script_files -->
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
 
-      
-      <!-- bundled in js (rollup iife) -->
-      <!-- <script src="_static/theme-vendors.js"></script> -->
-      <script src="_static/theme.js" defer></script>
-  <script type="text/javascript" src="_static/searchtools.js"></script>
-  <script src="_static/language_data.js"></script>
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
     
-  <link rel="index" title="Index" href="genindex.html" />
-  <link rel="search" title="Search" href="#" />
-  <script type="text/javascript" src="searchindex.js" defer></script>
-  
-  <script type="text/javascript" id="searchindexloader"></script>
+    <title>Search &mdash; RCSB Sync 0.1 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+<link rel="stylesheet" href="_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
+<link rel="stylesheet" href="_static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="_static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="_static/css/basicstrap.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    './',
+            VERSION:     '0.1',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/searchtools.js"></script>
+    <script type="text/javascript" src="_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="_static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="#" />
+    <link rel="top" title="RCSB Sync 0.1 documentation" href="index.html" />
+  <script type="text/javascript">
+    jQuery(function() { Search.loadIndex("searchindex.js"); });
+  </script>
    
 
   </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">RCSB Sync 0.1 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
 
-  <body>
-    <div id="app">
-    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
-  <router-link to="index.html" class="home-link">
-    
-      <img class="logo" src="_static/logo.png" alt="logo"/>
-    
-  </router-link>
+            
+              <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
+            
 
-  <div class="links">
-    <navlinks class="can-hide">
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="#" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
 
+            
 
+          </ul>
 
-    </navlinks>
-  </div>
-</navbar>
-
-      
-      <div class="sidebar-mask" @click="toggleSidebar(false)">
+        </div>
       </div>
-        <sidebar @toggle-sidebar="toggleSidebar">
-          
-          <navlinks>
-            
-
-
-
-            
-          </navlinks><div id="searchbox" class="searchbox" role="search">
-  <div class="caption"><span class="caption-text">Quick search</span>
-    <div class="searchformwrapper">
-      <form class="search" action="#" method="get">
-        <input type="text" name="q" />
-        <input type="submit" value="Search" />
-        <input type="hidden" name="check_keywords" value="yes" />
-        <input type="hidden" name="area" value="default" />
-      </form>
     </div>
-  </div>
-</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
-  
-    <div class="sidebar-group">
-      <p class="caption">
-        <span class="caption-text"><a href="modules.html#src">src</a></span>
-      </p>
-      <ul class="">
-        
-          <li class="toctree-l1 ">
-            
-              <a href="download.html" class="reference internal ">download module</a>
-            
-
-            
-          </li>
-
-        
-          <li class="toctree-l1 ">
-            
-              <a href="organism.html" class="reference internal ">organism module</a>
-            
-
-            
-          </li>
-
-        
-          <li class="toctree-l1 ">
-            
-              <a href="rcsbids.html" class="reference internal ">rcsbids module</a>
-            
-
-            
-          </li>
-
-        
-          <li class="toctree-l1 ">
-            
-              <a href="test_rcsbids.html" class="reference internal ">test_rcsbids module</a>
-            
-
-            
-          </li>
-
-        
-      </ul>
-    </div>
-  
-</div>
-        </sidebar>
-
-      <page>
-          <div class="body-header" role="navigation" aria-label="navigation">
-  
-  <ul class="breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
     
-    <li>Search</li>
-  </ul>
-  
 
-  <ul class="page-nav">
-</ul>
-  
-</div>
-<hr>
-          <div class="content" role="main" v-pre>
-            
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+  </div>
+</div> 
+        
+
+        <div class="col-md-9" id="content-wrapper">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
   <h1 id="search-documentation">Search</h1>
   <div id="fallback" class="admonition warning">
+  <script type="text/javascript">$('#fallback').hide();</script>
   <p>
     Please activate JavaScript to enable the search
     functionality.
@@ -151,32 +134,59 @@
     function will automatically search for all of the words. Pages
     containing fewer words won't appear in the result list.
   </p>
-  <form action="" method="get">
-    <input type="text" name="q" value="" />
-    <input type="submit" value="search" />
+  <form class="form-search form-inline" action="" method="get">
+    <div class="input-append input-group">
+      <input type="text" class="search-query form-control" name="q" value="" placeholder="Search...">
+      <span class="input-group-btn">
+      <input type="submit" class="btn" value="search" />
+      </span>
+    </div>
     <span id="search-progress" style="padding-left: 10px"></span>
   </form>
+
+  <div role="main">
   
   <div id="search-results">
   
   </div>
+  </div>
 
-          </div>
-          <div class="page-nav">
-            <div class="inner"><ul class="page-nav">
-</ul><div class="footer" role="contentinfo">
-      &#169; Copyright 2022, Iacopo Marmorini.
-    <br>
-    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.4.0 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.8.0.
-</div>
+                </div>
+              </div>
             </div>
           </div>
-      </page>
-    </div></div>
-    
-  <script type="text/javascript">
-    $('#fallback').hide();
-  </script>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="index.html">RCSB Sync 0.1 documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="genindex.html" title="General Index" >index</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2022, Iacopo Marmorini.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.4.0.
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
 
   </body>
 </html>
