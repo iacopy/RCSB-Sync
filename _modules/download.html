@@ -1,0 +1,223 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>download &#8212; RCSB Sync 0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">RCSB Sync 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for download</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Download PDB files from the RCSB website.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># Standard Library</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Pool</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+<span class="c1"># 3rd party</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">DOWNLOAD_URL</span> <span class="o">=</span> <span class="s1">&#39;https://files.rcsb.org/download/&#39;</span>
+
+<span class="n">MAX_PROCESSES</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span>
+<span class="n">DEFAULT_PROCESSES</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="c1">#: This number impact the frequency of progress updates.</span>
+<span class="c1">#: It is the number of PDB files to download before a progress update is printed if a single process is used.</span>
+<span class="c1">#: This is scaled automatically to the number of processes used to keep the progress updates constant.</span>
+<span class="n">CHUNK_LEN_PER_PROCESS</span> <span class="o">=</span> <span class="mi">10</span>
+
+
+<span class="k">def</span> <span class="nf">_chunks</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">num</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Yield successive n-sized chunks from lst.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">),</span> <span class="n">num</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">lst</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">num</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_human_readable_time</span><span class="p">(</span><span class="n">seconds</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert seconds to a human-readable time.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">minutes</span><span class="p">,</span> <span class="n">seconds</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">seconds</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+    <span class="n">hours</span><span class="p">,</span> <span class="n">minutes</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">minutes</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+    <span class="n">days</span><span class="p">,</span> <span class="n">hours</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">hours</span><span class="p">,</span> <span class="mi">24</span><span class="p">)</span>
+    <span class="n">weeks</span><span class="p">,</span> <span class="n">days</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">days</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+    <span class="n">months</span><span class="p">,</span> <span class="n">weeks</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">weeks</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="n">years</span><span class="p">,</span> <span class="n">weeks</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">weeks</span><span class="p">,</span> <span class="mi">52</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">years</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">years</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">y </span><span class="si">{</span><span class="n">weeks</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">w </span><span class="si">{</span><span class="n">days</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">d </span><span class="si">{</span><span class="n">hours</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">h </span><span class="si">{</span><span class="n">minutes</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">m </span><span class="si">{</span><span class="n">seconds</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">s&#39;</span>
+    <span class="k">if</span> <span class="n">months</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">months</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">m </span><span class="si">{</span><span class="n">weeks</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">w </span><span class="si">{</span><span class="n">days</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">d </span><span class="si">{</span><span class="n">hours</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">h </span><span class="si">{</span><span class="n">minutes</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">m </span><span class="si">{</span><span class="n">seconds</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">s&#39;</span>
+    <span class="k">if</span> <span class="n">weeks</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">weeks</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">w </span><span class="si">{</span><span class="n">days</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">d </span><span class="si">{</span><span class="n">hours</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">h </span><span class="si">{</span><span class="n">minutes</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">m </span><span class="si">{</span><span class="n">seconds</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">s&#39;</span>
+    <span class="k">if</span> <span class="n">days</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">days</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">d </span><span class="si">{</span><span class="n">hours</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">h </span><span class="si">{</span><span class="n">minutes</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">m </span><span class="si">{</span><span class="n">seconds</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">s&#39;</span>
+    <span class="k">if</span> <span class="n">hours</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">hours</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">h </span><span class="si">{</span><span class="n">minutes</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">m </span><span class="si">{</span><span class="n">seconds</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">s&#39;</span>
+    <span class="k">if</span> <span class="n">minutes</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">minutes</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">m </span><span class="si">{</span><span class="n">seconds</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">s&#39;</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">seconds</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">s&#39;</span>
+
+
+<div class="viewcode-block" id="download_pdb"><a class="viewcode-back" href="../download.html#download.download_pdb">[docs]</a><span class="k">def</span> <span class="nf">download_pdb</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">compressed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Download a PDB file from the RCSB website.</span>
+
+<span class="sd">    :param pdb_id: PDB ID.</span>
+<span class="sd">    :return: Path to the downloaded file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">gzip_ext</span> <span class="o">=</span> <span class="s1">&#39;.gz&#39;</span> <span class="k">if</span> <span class="n">compressed</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+    <span class="c1"># Documentation URL: https://www.rcsb.org/pdb/files/</span>
+    <span class="n">pdb_url</span> <span class="o">=</span> <span class="n">DOWNLOAD_URL</span> <span class="o">+</span> <span class="n">pdb_id</span> <span class="o">+</span> <span class="s1">&#39;.pdb&#39;</span> <span class="o">+</span> <span class="n">gzip_ext</span>
+    <span class="c1"># print(&#39;Downloading PDB file from RCSB website:&#39;, pdb_url)</span>
+    <span class="n">dest</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">pdb_id</span> <span class="o">+</span> <span class="s1">&#39;.pdb&#39;</span> <span class="o">+</span> <span class="n">gzip_ext</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pdb_url</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;PDB file not found: </span><span class="si">{</span><span class="n">pdb_id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="c1"># Write an empty file to indicate that the PDB file was not found.</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span>
+        <span class="c1"># And append the PDB ID to the list of 404 PDB files, inside the directory.</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="s1">&#39;404.txt&#39;</span><span class="p">),</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">pdb_id</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
+    <span class="c1"># Save the PDB file.</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_pointer</span><span class="p">:</span>
+        <span class="n">file_pointer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dest</span></div>
+
+
+<span class="c1"># Use multiprocessing to download (typically thousands of) PDB files in parallel.</span>
+<div class="viewcode-block" id="parallel_download"><a class="viewcode-back" href="../download.html#download.parallel_download">[docs]</a><span class="k">def</span> <span class="nf">parallel_download</span><span class="p">(</span><span class="n">pdb_ids</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                      <span class="n">compressed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_PROCESSES</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Download PDB files from the RCSB website in parallel.</span>
+
+<span class="sd">    :param pdb_ids: List of PDB IDs.</span>
+<span class="sd">    :param directory: Directory to store the downloaded files.</span>
+<span class="sd">    :param compressed: Whether to download compressed files.</span>
+<span class="sd">    :param n_jobs: Number of processes to use (default: 2).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create the directory if it does not exist.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+    <span class="c1"># Download the PDB files in parallel.</span>
+    <span class="k">with</span> <span class="n">Pool</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">download_pdb</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="n">directory</span><span class="p">,</span> <span class="n">compressed</span><span class="o">=</span><span class="n">compressed</span><span class="p">),</span> <span class="n">pdb_ids</span><span class="p">)</span>
+        <span class="c1"># remove null values</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ret</span> <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="download"><a class="viewcode-back" href="../download.html#download.download">[docs]</a><span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="n">pdb_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+             <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+             <span class="n">compressed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+             <span class="n">n_jobs</span><span class="o">=</span><span class="n">DEFAULT_PROCESSES</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Download PDB files from the RCSB website in parallel, reporting the progress.</span>
+
+<span class="sd">    (actually, this is a wrapper around parallel_download)</span>
+<span class="sd">    Since we want to periodically notify the user about the progress and the ETA,</span>
+<span class="sd">    this function just calls the parallel_download function several times with different chunks of PDB IDs,</span>
+<span class="sd">    and when each chunk is finished, it prints the progress and the ETA.</span>
+<span class="sd">    Since each chunk is downloaded in parallel, to have a constant rate of progress updates,</span>
+<span class="sd">    we need to make sure that the number of chunks is a multiple of the number of processes, so that</span>
+<span class="sd">    each process gets the same number of PDB IDs to download.</span>
+
+<span class="sd">    :param pdb_ids: List of PDB IDs.</span>
+<span class="sd">    :param directory: Directory to store the downloaded files.</span>
+<span class="sd">    :param compressed: Whether to download compressed files.</span>
+<span class="sd">    :param n_jobs: Number of processes to use (default: 2).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n_ids</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pdb_ids</span><span class="p">)</span>
+    <span class="n">downloaded_size</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">n_downloaded</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="n">chunk_len</span> <span class="o">=</span> <span class="n">CHUNK_LEN_PER_PROCESS</span> <span class="o">*</span> <span class="n">n_jobs</span>
+    <span class="c1"># Subdivide the list of PDB IDs into chunks and download each chunk in parallel.</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">_chunks</span><span class="p">(</span><span class="n">pdb_ids</span><span class="p">,</span> <span class="n">chunk_len</span><span class="p">)):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Downloading chunk </span><span class="si">{</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">n_ids</span> <span class="o">//</span> <span class="n">chunk_len</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span><span class="si">}</span><span class="s1"> PDBs each with </span><span class="si">{</span><span class="n">n_jobs</span><span class="si">}</span><span class="s1"> processes&#39;</span><span class="p">)</span>
+        <span class="c1"># Download the chunk of PDB IDs.</span>
+        <span class="n">downloaded_chunk</span> <span class="o">=</span> <span class="n">parallel_download</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">compressed</span><span class="p">,</span> <span class="n">n_jobs</span><span class="p">)</span>
+
+        <span class="n">downloaded_size</span> <span class="o">+=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span> <span class="k">for</span> <span class="n">file_path</span> <span class="ow">in</span> <span class="n">downloaded_chunk</span><span class="p">)</span>
+        <span class="n">n_downloaded</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+        <span class="n">progress</span> <span class="o">=</span> <span class="n">n_downloaded</span> <span class="o">/</span> <span class="n">n_ids</span>
+
+        <span class="c1"># Report the global progress and the expected time to complete.</span>
+        <span class="n">eta_sec</span> <span class="o">=</span> <span class="p">((</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_downloaded</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">n_ids</span> <span class="o">-</span> <span class="n">n_downloaded</span><span class="p">)</span>
+        <span class="n">eta</span> <span class="o">=</span> <span class="n">_human_readable_time</span><span class="p">(</span><span class="n">eta_sec</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Downloaded </span><span class="si">{</span><span class="n">n_downloaded</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">n_ids</span><span class="si">}</span><span class="s1"> files (</span><span class="si">{</span><span class="n">progress</span><span class="si">:</span><span class="s1">.2%</span><span class="si">}</span><span class="s1">) - ETA: </span><span class="si">{</span><span class="n">eta</span><span class="si">}</span><span class="s1"> ⏳&#39;</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">RCSB Sync 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Iacopo Marmorini.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+    </div>
+  </body>
+</html>
