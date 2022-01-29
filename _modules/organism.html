@@ -111,16 +111,16 @@
         <span class="c1"># List of all the IDs that are in the local directory but are not in the remote database anymore.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">obsolete_pdb_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
-<div class="viewcode-block" id="Organism.get_local_ids"><a class="viewcode-back" href="../organism.html#organism.Organism.get_local_ids">[docs]</a>    <span class="k">def</span> <span class="nf">get_local_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<div class="viewcode-block" id="Organism.get_local_ids"><a class="viewcode-back" href="../organism.html#organism.Organism.get_local_ids">[docs]</a>    <span class="k">def</span> <span class="nf">get_local_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the PDB IDs that are already in the organism directory.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">local_ids</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">local_ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">):</span>
             <span class="c1"># if filename.endswith(&#39;.pdb&#39;):</span>
             <span class="c1">#     local_ids.append(filename[:-4])</span>
             <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;pdb.gz&#39;</span><span class="p">):</span>
-                <span class="n">local_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filename</span><span class="p">[:</span><span class="o">-</span><span class="mi">7</span><span class="p">])</span>
+                <span class="n">local_ids</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">filename</span><span class="p">[:</span><span class="o">-</span><span class="mi">7</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">local_ids</span></div>
 
 <div class="viewcode-block" id="Organism.fetch_remote_ids"><a class="viewcode-back" href="../organism.html#organism.Organism.fetch_remote_ids">[docs]</a>    <span class="k">def</span> <span class="nf">fetch_remote_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
@@ -170,17 +170,16 @@
 <span class="sd">            - check which PDB files are already in the local organism directory;</span>
 <span class="sd">            - check which PDB files are obsolete and mark them with the suffix &#39;.removed&#39;;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">remote_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_or_cache</span><span class="p">()</span>
+        <span class="n">remote_ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fetch_or_cache</span><span class="p">())</span>
 
         <span class="c1"># Check which PDB files are already in the local organism directory, and skip those to save time.</span>
         <span class="n">local_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_local_ids</span><span class="p">()</span>
-        <span class="c1"># Already downloaded files.</span>
-        <span class="n">already_downloaded_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">id_</span> <span class="k">for</span> <span class="n">id_</span> <span class="ow">in</span> <span class="n">local_ids</span> <span class="k">if</span> <span class="n">id_</span> <span class="ow">in</span> <span class="n">remote_ids</span><span class="p">]</span>
         <span class="c1"># Files to be downloaded.</span>
         <span class="n">tbd_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">id_</span> <span class="k">for</span> <span class="n">id_</span> <span class="ow">in</span> <span class="n">remote_ids</span> <span class="k">if</span> <span class="n">id_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">local_ids</span><span class="p">]</span>
-
         <span class="c1"># Some local PDB files are not in the RCSB database anymore, so we mark them with the SUFFIX_REMOVED suffix.</span>
         <span class="n">removed_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">id_</span> <span class="k">for</span> <span class="n">id_</span> <span class="ow">in</span> <span class="n">local_ids</span> <span class="k">if</span> <span class="n">id_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">remote_ids</span><span class="p">]</span>
+        <span class="c1"># Now we can calculate the number of files already downloaded.</span>
+        <span class="n">n_downloaded_ok</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">local_ids</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">removed_ids</span><span class="p">)</span>
 
         <span class="c1"># Print a numeric report of:</span>
         <span class="c1"># - the number of local PDB files of the organism;</span>
@@ -193,8 +192,8 @@
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Total remote PDB files: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">remote_ids</span><span class="p">)))</span>
         <span class="k">if</span> <span class="n">local_ids</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Local PDB files: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">local_ids</span><span class="p">)))</span>
-        <span class="k">if</span> <span class="n">already_downloaded_ids</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;💾 Already downloaded PDB files: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">already_downloaded_ids</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="n">n_downloaded_ok</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;💾 Already downloaded PDB files: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n_downloaded_ok</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">removed_ids</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;🗑 Files removed/obsolete: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">removed_ids</span><span class="p">)))</span>
         <span class="k">if</span> <span class="n">tbd_ids</span><span class="p">:</span>
