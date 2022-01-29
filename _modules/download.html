@@ -127,10 +127,10 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Download PDB files from the RCSB website in parallel.</span>
 
-<span class="sd">    :param pdb_ids: List of PDB IDs.</span>
-<span class="sd">    :param directory: Directory to store the downloaded files.</span>
-<span class="sd">    :param compressed: Whether to download compressed files.</span>
-<span class="sd">    :param n_jobs: Number of processes to use (default: 2).</span>
+<span class="sd">    :param pdb_ids: list of PDB IDs.</span>
+<span class="sd">    :param directory: directory to store the downloaded files.</span>
+<span class="sd">    :param compressed: whether to download compressed files.</span>
+<span class="sd">    :param n_jobs: number of processes to use (default: 2).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Create the directory if it does not exist.</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
@@ -149,7 +149,8 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Download PDB files from the RCSB website in parallel, reporting the progress.</span>
 
-<span class="sd">    (actually, this is a wrapper around parallel_download)</span>
+<span class="sd">    (actually, this is a wrapper around ``parallel_download``)</span>
+
 <span class="sd">    Since we want to periodically notify the user about the progress and the ETA,</span>
 <span class="sd">    this function just calls the parallel_download function several times with different chunks of PDB IDs,</span>
 <span class="sd">    and when each chunk is finished, it prints the progress and the ETA.</span>
@@ -157,10 +158,10 @@
 <span class="sd">    we need to make sure that the number of chunks is a multiple of the number of processes, so that</span>
 <span class="sd">    each process gets the same number of PDB IDs to download.</span>
 
-<span class="sd">    :param pdb_ids: List of PDB IDs.</span>
-<span class="sd">    :param directory: Directory to store the downloaded files.</span>
-<span class="sd">    :param compressed: Whether to download compressed files.</span>
-<span class="sd">    :param n_jobs: Number of processes to use (default: 2).</span>
+<span class="sd">    :param pdb_ids: list of PDB IDs.</span>
+<span class="sd">    :param directory: directory to store the downloaded files.</span>
+<span class="sd">    :param compressed: whether to download compressed files.</span>
+<span class="sd">    :param n_jobs: number of processes to use (default: 2).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">n_ids</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pdb_ids</span><span class="p">)</span>
     <span class="n">downloaded_size</span> <span class="o">=</span> <span class="mi">0</span>

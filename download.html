@@ -59,8 +59,8 @@ This is scaled automatically to the number of processes used to keep the progres
 <dt class="sig sig-object py" id="download.download">
 <span class="sig-prename descclassname"><span class="pre">download.</span></span><span class="sig-name descname"><span class="pre">download</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdb_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compressed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/download.html#download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#download.download" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download PDB files from the RCSB website in parallel, reporting the progress.</p>
-<p>(actually, this is a wrapper around parallel_download)
-Since we want to periodically notify the user about the progress and the ETA,
+<p>(actually, this is a wrapper around <code class="docutils literal notranslate"><span class="pre">parallel_download</span></code>)</p>
+<p>Since we want to periodically notify the user about the progress and the ETA,
 this function just calls the parallel_download function several times with different chunks of PDB IDs,
 and when each chunk is finished, it prints the progress and the ETA.
 Since each chunk is downloaded in parallel, to have a constant rate of progress updates,
@@ -69,10 +69,10 @@ each process gets the same number of PDB IDs to download.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pdb_ids</strong> – List of PDB IDs.</p></li>
-<li><p><strong>directory</strong> – Directory to store the downloaded files.</p></li>
-<li><p><strong>compressed</strong> – Whether to download compressed files.</p></li>
-<li><p><strong>n_jobs</strong> – Number of processes to use (default: 2).</p></li>
+<li><p><strong>pdb_ids</strong> – list of PDB IDs.</p></li>
+<li><p><strong>directory</strong> – directory to store the downloaded files.</p></li>
+<li><p><strong>compressed</strong> – whether to download compressed files.</p></li>
+<li><p><strong>n_jobs</strong> – number of processes to use (default: 2).</p></li>
 </ul>
 </dd>
 </dl>
@@ -99,10 +99,10 @@ each process gets the same number of PDB IDs to download.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pdb_ids</strong> – List of PDB IDs.</p></li>
-<li><p><strong>directory</strong> – Directory to store the downloaded files.</p></li>
-<li><p><strong>compressed</strong> – Whether to download compressed files.</p></li>
-<li><p><strong>n_jobs</strong> – Number of processes to use (default: 2).</p></li>
+<li><p><strong>pdb_ids</strong> – list of PDB IDs.</p></li>
+<li><p><strong>directory</strong> – directory to store the downloaded files.</p></li>
+<li><p><strong>compressed</strong> – whether to download compressed files.</p></li>
+<li><p><strong>n_jobs</strong> – number of processes to use (default: 2).</p></li>
 </ul>
 </dd>
 </dl>

@@ -48,8 +48,8 @@
 <span id="organism-module"></span><h1>organism module<a class="headerlink" href="#module-organism" title="Permalink to this headline">¶</a></h1>
 <p>Download protein structures for an organism from the RCSB PDB database.</p>
 <ol class="arabic simple" start="0">
-<li><p>If the ids are already downloaded (a <cite>_ids_&lt;date&gt;.txt</cite> file with current date exists), skip to the next step.</p></li>
-<li><p>Start by downloading the RCSB PDB IDs for the organism, using the queries in the ‘queries’ directory.</p></li>
+<li><p>If the ids are already downloaded (a <code class="docutils literal notranslate"><span class="pre">_ids_&lt;date&gt;.txt</span></code> file with current date exists), skip to the next step.</p></li>
+<li><p>Start by downloading the RCSB PDB IDs for the organism, using the queries in the <code class="docutils literal notranslate"><span class="pre">queries</span></code> directory.</p></li>
 <li><p>Before downloading the PDB files, check which PDB files are already in the local organism directory,
 and skip those to save time.</p></li>
 <li><p>Some local PDB files are not in the RCSB database anymore, so we mark them with a suffix (for example ‘.removed’).</p></li>
@@ -88,7 +88,7 @@ and skip those to save time.</p></li>
 <dt class="sig sig-object py" id="organism.Organism.fetch">
 <span class="sig-name descname"><span class="pre">fetch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/organism.html#Organism.fetch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.Organism.fetch" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
-<dt>Similar to <cite>git fetch</cite>:</dt><dd><ul class="simple">
+<dt>Similar to <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">fetch</span></code>:</dt><dd><ul class="simple">
 <li><p>fetch the RCSB IDs for the organism from the RCSB website;</p></li>
 <li><p>check which PDB files are already in the local organism directory;</p></li>
 <li><p>check which PDB files are obsolete and mark them with the suffix ‘.removed’;</p></li>
@@ -103,7 +103,7 @@ and skip those to save time.</p></li>
 <dd><p>Fetch the RCSB IDs for the organism from the RCSB website, or use the cached IDs if they exist.</p>
 <dl class="simple">
 <dt>Side effect:</dt><dd><ul class="simple">
-<li><p>the remote RCSB IDs are saved in the organism directory, in a file named ‘_ids_&lt;date&gt;.txt’
+<li><p>the remote RCSB IDs are saved in the organism directory, in a file named <code class="docutils literal notranslate"><span class="pre">_ids_&lt;date&gt;.txt</span></code>
 (where &lt;date&gt; is the current date).</p></li>
 </ul>
 </dd>
@@ -142,7 +142,7 @@ and skip those to save time.</p></li>
 <dt class="sig sig-object py" id="organism.Organism.pull">
 <span class="sig-name descname"><span class="pre">pull</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/organism.html#Organism.pull"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.Organism.pull" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
-<dt>Similar to <cite>git pull</cite> (synchronize the local and remote files):</dt><dd><ul class="simple">
+<dt>Similar to <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">pull</span></code> (synchronize the local and remote files):</dt><dd><ul class="simple">
 <li><p>download the PDB files corresponding to the RCSB PDB IDs which are not already in the organism directory.</p></li>
 <li><p>every 10 downloaded files, report the global progress and the expected time to complete
 (based on the number of PDB files to be downloaded).</p></li>
@@ -156,7 +156,15 @@ and skip those to save time.</p></li>
 <dl class="py function">
 <dt class="sig sig-object py" id="organism.main">
 <span class="sig-prename descclassname"><span class="pre">organism.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">organism_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/organism.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.main" title="Permalink to this definition">¶</a></dt>
-<dd><p>Main function.</p>
+<dd><p>Fetch the RCSB IDs for the organism from the RCSB website, and download the corresponding PDB files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>organism_dir</strong> – path to the organism directory.</p></li>
+<li><p><strong>n_jobs</strong> – number of parallel jobs to use.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

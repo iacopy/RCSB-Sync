@@ -57,8 +57,8 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Retrieve the list of PDB IDs from the RCSB website, given an advanced query in json format.</span>
 
-<span class="sd">    :param query: Advanced query in json format.</span>
-<span class="sd">    :return: List of PDB IDs.</span>
+<span class="sd">    :param query: advanced query in json format.</span>
+<span class="sd">    :return: list of PDB IDs.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Get the list of PDB IDs from the RCSB website, given an advanced query in json format.</span>
     <span class="n">json_response</span> <span class="o">=</span> <span class="n">_send_request</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
@@ -80,8 +80,8 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load the advanced query from a json file.</span>
 
-<span class="sd">    :param query_file: Path to the json file.</span>
-<span class="sd">    :return: Advanced query in json string format (single line).</span>
+<span class="sd">    :param query_file: path to the json file.</span>
+<span class="sd">    :return: advanced query in json string format (single line).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">query_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_pointer</span><span class="p">:</span>
         <span class="n">query</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file_pointer</span><span class="p">)</span>
@@ -100,8 +100,8 @@
 <div class="viewcode-block" id="search_and_download_ids"><a class="viewcode-back" href="../rcsbids.html#rcsbids.search_and_download_ids">[docs]</a><span class="k">def</span> <span class="nf">search_and_download_ids</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="n">IDS_SEPARATOR</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
     <span class="sd">&quot;&quot;&quot;Search and download PDB IDs from the RCSB website, given an advanced query in json format.</span>
 
-<span class="sd">    :param query: Path to the json file containing the advanced query.</span>
-<span class="sd">    :param output: Path to the output file.</span>
+<span class="sd">    :param query: path to the json file containing the advanced query.</span>
+<span class="sd">    :param output: path to the output file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Check if the query is a file or a string.</span>
     <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.json&#39;</span><span class="p">):</span>
