@@ -158,10 +158,10 @@ setup-virtualenv VIRTUALENV:
     echo Auto-generate modules documentation...
     # Positional args from seconds (if any) are paths you want to exclude from docs
     # -f overwrite existing .rst, --private include also "_"-starting attributes.
-    sphinx-apidoc -f -o ./{{DOC_DIRNAME}}/source ./src ./src/*git_status.py
+    sphinx-apidoc -f -o ./{{DOC_DIRNAME}}/ ./src ./src/*git_status.py
 
     echo Building documentation...
-    sphinx-build -b html -c ./{{DOC_DIRNAME}} ./{{DOC_DIRNAME}}/source ./{{DOC_DIRNAME}}/build/html -v
+    sphinx-build -b html -c ./{{DOC_DIRNAME}} ./{{DOC_DIRNAME}}/ ./{{DOC_DIRNAME}}/build/html -v
 
 # build and open HTML documentation
 @doc: _build-doc
