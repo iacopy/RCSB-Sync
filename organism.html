@@ -1,185 +1,158 @@
 <!DOCTYPE html>
-
-
-
-
-<html lang="en">
+<html  lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>organism module &mdash; RCSB Sync 0.1 documentation</title>
-    <meta name="description" content="">
-    <meta name="author" content="">
-
+      <title>organism module</title>
     
+          <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="_static/theme.css " type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
 
-<link rel="stylesheet" href="_static/css/basicstrap-base.css" type="text/css" />
-<link rel="stylesheet" id="current-theme" href="_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
-<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
-
-<link rel="stylesheet" href="_static/css/font-awesome.min.css">
-
-<style type="text/css">
-  body {
-    padding-top: 60px;
-    padding-bottom: 40px;
-  }
-</style>
-
-<link rel="stylesheet" href="_static/css/basicstrap.css" type="text/css" />
-<link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-<link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-<link rel="stylesheet" href="_static/css/basicstrap.css" type="text/css" />
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="_static/theme-vendors.js"></script> -->
+      <script src="_static/theme.js" defer></script>
     
-<script type="text/javascript">
-  var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:    './',
-            VERSION:     '0.1',
-            COLLAPSE_INDEX: false,
-            FILE_SUFFIX: '.html',
-            HAS_SOURCE:  true
-  };
-</script>
-    <script type="text/javascript" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/js/jquery.min.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/js/bootstrap3.min.js"></script>
-<script type="text/javascript" src="_static/js/jquery.cookie.min.js"></script>
-<script type="text/javascript" src="_static/js/basicstrap.js"></script>
-<script type="text/javascript">
-</script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="RCSB Sync 0.1 documentation" href="index.html" />
-    <link rel="up" title="src" href="modules.html" />
-    <link rel="next" title="rcsbids module" href="rcsbids.html" />
-    <link rel="prev" title="download module" href="download.html" /> 
+  <link rel="index" title="Index" href="genindex.html" />
+  <link rel="search" title="Search" href="search.html" />
+  <link rel="next" title="rcsbids module" href="rcsbids.html" />
+  <link rel="prev" title="download module" href="download.html" /> 
   </head>
-  <body role="document">
-    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="index.html">RCSB Sync 0.1 documentation</a>
-        </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-              <li class="dropdown visible-xs">
-                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
-                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
-                <ul>
-<li><a class="reference internal" href="#">organism module</a><ul>
-<li><a class="reference internal" href="#usage">Usage</a></li>
-<li><a class="reference internal" href="#algorithm">Algorithm</a></li>
-<li><a class="reference internal" href="#directory-structure">Directory structure</a></li>
-</ul>
-</li>
-</ul>
 
-                </ul>
-              </li>
-
-            
-              <li><a href="download.html" title="download module" accesskey="P">previous </a></li>
-              <li><a href="rcsbids.html" title="rcsbids module" accesskey="N">next </a></li>
-              <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
-              <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
-              <li><a href="modules.html" accesskey="U">src</a></li>
-            
-            <li class="visible-xs"><a href="_sources/organism.rst.txt" rel="nofollow">Show Source</a></li>
-
-            <li class="visible-xs">
-                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="search.html" method="get">
-                  <div class="input-append input-group">
-                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
-                    <span class="input-group-btn">
-                    <input type="submit" class="btn" value="Go" />
-                    </span>
-                  </div>
-                  <input type="hidden" name="check_keywords" value="yes" />
-                  <input type="hidden" name="area" value="default" />
-                </form>
-            </li>
-
-            
-
-          </ul>
-
-        </div>
-      </div>
-    </div>
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="index.html" class="home-link">
     
+      <span class="site-name">RCSB Sync</span>
+    
+  </router-link>
 
-    <!-- container -->
-    <div class="container-fluid">
+  <div class="links">
+    <navlinks class="can-hide">
 
-      <!-- row -->
-      <div class="row">
-         
-<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
-  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
-  <div>
-    <h3><a href="index.html">Table of Contents</a></h3>
-    <ul>
-<li><a class="reference internal" href="#">organism module</a><ul>
-<li><a class="reference internal" href="#usage">Usage</a></li>
-<li><a class="reference internal" href="#algorithm">Algorithm</a></li>
-<li><a class="reference internal" href="#directory-structure">Directory structure</a></li>
-</ul>
-</li>
-</ul>
 
+
+    </navlinks>
   </div>
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="download.html"
-                          title="previous chapter">download module</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="rcsbids.html"
-                          title="next chapter">rcsbids module</a></p>
-  </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/organism.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" role="search">
-  <h3>Quick search</h3>
-  <form class="search form-inline" action="search.html" method="get">
-      <div class="input-append input-group">
-        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
-        <span class="input-group-btn">
-        <input type="submit" class="btn" value="Go" />
-        </span>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
       </div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-  </div>
-</div> 
-        
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
 
-        <div class="col-md-9" id="content-wrapper">
-          <div class="document" role="main">
-            <div class="documentwrapper">
-              <div class="bodywrapper">
-                <div class="body">
-                  
+
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="modules.html#src">src</a></span>
+      </p>
+      <ul class="current">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="download.html" class="reference internal ">download module</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 current">
+            
+              <a href="#" class="reference internal current">organism module</a>
+            
+
+            
+              <ul>
+                
+                  <li class="toctree-l2"><a href="#usage" class="reference internal">Usage</a></li>
+                
+                  <li class="toctree-l2"><a href="#algorithm" class="reference internal">Algorithm</a></li>
+                
+                  <li class="toctree-l2"><a href="#directory-structure" class="reference internal">Directory structure</a></li>
+                
+              </ul>
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="rcsbids.html" class="reference internal ">rcsbids module</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="test_rcsbids.html" class="reference internal ">test_rcsbids module</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+    
+      <li><a href="modules.html">src</a> &raquo;</li>
+    
+    <li>organism module</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+  <li class="prev">
+    <a href="download.html"
+       title="previous chapter">← download module</a>
+  </li>
+  <li class="next">
+    <a href="rcsbids.html"
+       title="next chapter">rcsbids module →</a>
+  </li>
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
   <section id="module-organism">
 <span id="organism-module"></span><h1>organism module<a class="headerlink" href="#module-organism" title="Permalink to this headline">¶</a></h1>
 <p>Download protein structures for an organism from the RCSB PDB database.</p>
@@ -233,7 +206,7 @@ and skip those to save time.</p></li>
 <p>Keep synced the data directory with the remote RCSB database.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="organism.Organism.fetch">
-<span class="sig-name descname"><span class="pre">fetch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/organism.html#Organism.fetch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.Organism.fetch" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">fetch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/organism.html#Organism.fetch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.Organism.fetch" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Similar to <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">fetch</span></code>:</dt><dd><ul class="simple">
 <li><p>fetch the RCSB IDs for the organism from the RCSB website;</p></li>
@@ -246,7 +219,7 @@ and skip those to save time.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="organism.Organism.fetch_or_cache">
-<span class="sig-name descname"><span class="pre">fetch_or_cache</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/organism.html#Organism.fetch_or_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.Organism.fetch_or_cache" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">fetch_or_cache</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/organism.html#Organism.fetch_or_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.Organism.fetch_or_cache" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetch the RCSB IDs for the organism from the RCSB website, or use the cached IDs if they exist.</p>
 <dl class="simple">
 <dt>Side effect:</dt><dd><ul class="simple">
@@ -281,7 +254,7 @@ and skip those to save time.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="organism.Organism.mark_obsolete">
-<span class="sig-name descname"><span class="pre">mark_obsolete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/organism.html#Organism.mark_obsolete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.Organism.mark_obsolete" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">mark_obsolete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/organism.html#Organism.mark_obsolete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.Organism.mark_obsolete" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mark obsolete the local PDB files that are not in the remote database anymore.</p>
 </dd></dl>
 
@@ -318,45 +291,27 @@ and skip those to save time.</p></li>
 </section>
 
 
-                </div>
-              </div>
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+  <li class="prev">
+    <a href="download.html"
+       title="previous chapter">← download module</a>
+  </li>
+  <li class="next">
+    <a href="rcsbids.html"
+       title="next chapter">rcsbids module →</a>
+  </li>
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2022, Iacopo Marmorini.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.4.0 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.8.0.
+</div>
             </div>
           </div>
-        </div>
-        
-        
-      </div><!-- /row -->
-
-      <!-- row -->
-      <div class="row footer-relbar">
-<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
-  <div class="navbar-inner">
-    <ul class="nav navbar-nav ">
-        <li><a href="index.html">RCSB Sync 0.1 documentation</a></li>
-    </ul>
-<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
-      
-        <li><a href="download.html" title="download module" >previous</a></li>
-        <li><a href="rcsbids.html" title="rcsbids module" >next</a></li>
-        <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
-        <li><a href="genindex.html" title="General Index" >index</a></li>
-        <li><a href="modules.html" >src</a></li>
-        <li><a href="#">top</a></li> 
-      
-    </ul>
-  </div>
-</div>
-      </div><!-- /row -->
-
-      <!-- footer -->
-      <footer role="contentinfo">
-          &copy; Copyright 2022, Iacopo Marmorini.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.4.0.
-      </footer>
-      <!-- /footer -->
-
-    </div>
-    <!-- /container -->
-
+      </page>
+    </div></div>
+    
+    
   </body>
 </html>
