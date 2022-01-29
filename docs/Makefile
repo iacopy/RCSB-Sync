@@ -4,7 +4,7 @@
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
-SPHINXPROJ    = RCSB_PyPDB_Docs
+SPHINXPROJ    = RCSB_Sync_Docs
 SOURCEDIR     = source
 BUILDDIR      = build
 

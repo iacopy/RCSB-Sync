@@ -21,7 +21,7 @@ sys.path.insert(0, os.path.abspath('../src'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'RCSB PyPDB'
+project = 'RCSB Sync'
 copyright = '2022, Iacopo Marmorini'
 author = 'Iacopo Marmorini'
 
