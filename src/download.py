@@ -36,15 +36,12 @@ def _human_readable_time(seconds: float) -> str:
     minutes, seconds = divmod(seconds, 60)
     hours, minutes = divmod(minutes, 60)
     days, hours = divmod(hours, 24)
-    weeks, days = divmod(days, 7)
-    months, weeks = divmod(weeks, 4)
-    years, weeks = divmod(weeks, 52)
+    months, days = divmod(days, 30)
+    years, months = divmod(months, 12)
     if years > 0:
-        return f'{years:.0f}y {weeks:.0f}w {days:.0f}d {hours:.0f}h {minutes:.0f}m {seconds:.0f}s'
+        return f'{years:.0f}y {days:.0f}d {hours:.0f}h {minutes:.0f}m {seconds:.0f}s'
     if months > 0:
-        return f'{months:.0f}m {weeks:.0f}w {days:.0f}d {hours:.0f}h {minutes:.0f}m {seconds:.0f}s'
-    if weeks > 0:
-        return f'{weeks:.0f}w {days:.0f}d {hours:.0f}h {minutes:.0f}m {seconds:.0f}s'
+        return f'{months:.0f}m {days:.0f}d {hours:.0f}h {minutes:.0f}m {seconds:.0f}s'
     if days > 0:
         return f'{days:.0f}d {hours:.0f}h {minutes:.0f}m {seconds:.0f}s'
     if hours > 0:
@@ -54,7 +51,7 @@ def _human_readable_time(seconds: float) -> str:
     return f'{seconds:.0f}s'
 
 
-def download_pdb(pdb_id, directory: str, compressed: bool = True) -> str:
+def download_pdb(pdb_id: str, directory: str, compressed: bool = True) -> str:
     """
     Download a PDB file from the RCSB website.
 
@@ -72,8 +69,8 @@ def download_pdb(pdb_id, directory: str, compressed: bool = True) -> str:
         # Write an empty file to indicate that the PDB file was not found.
         content = b''
         # And append the PDB ID to the list of 404 PDB files, inside the directory.
-        with open(os.path.join(directory, '404.txt'), 'a') as f:
-            f.write(f'{pdb_id}\n')
+        with open(os.path.join(directory, '404.txt'), 'a', encoding='ascii') as file_404:
+            file_404.write(f'{pdb_id}\n')
     else:
         response.raise_for_status()
         content = response.content
@@ -84,7 +81,7 @@ def download_pdb(pdb_id, directory: str, compressed: bool = True) -> str:
 
 
 # Use multiprocessing to download (typically thousands of) PDB files in parallel.
-def parallel_download(pdb_ids, directory: str,
+def parallel_download(pdb_ids: List[str], directory: str,
                       compressed: bool = True, n_jobs: int = DEFAULT_PROCESSES) -> List[str]:
     """
     Download PDB files from the RCSB website in parallel.
