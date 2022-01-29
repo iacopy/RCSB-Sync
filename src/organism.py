@@ -49,7 +49,7 @@ import argparse
 import datetime
 import os
 import time
-from typing import List
+from typing import List, Set
 
 # My stuff
 from download import download
@@ -77,10 +77,10 @@ class Organism:
             print('Creating directory:', self.data_dir)
             os.mkdir(self.data_dir)
 
-        # List of local RCSB IDs, which are already in the local directory (i.e. not to be downloaded).
-        self.local_pdb_ids: List[str] = []
+        # Set of local RCSB IDs, which are already in the local directory (i.e. not to be downloaded).
+        self.local_pdb_ids: Set[str] = set()
         # List of all the remote RCSB IDs.
-        self.remote_pdb_ids: List[str] = []
+        self.remote_pdb_ids: Set[str] = set()
         # List of all the remote RCSB IDs that are not in the local directory.
         self.tbd_pdb_ids: List[str] = []
         # List of all the IDs that are in the local directory but are not in the remote database anymore.
@@ -112,7 +112,7 @@ class Organism:
             remote_ids += search_and_download_ids(query, cache_file)
         return remote_ids
 
-    def fetch_or_cache(self):
+    def fetch_or_cache(self) -> List[str]:
         """
         Fetch the RCSB IDs for the organism from the RCSB website, or use the cached IDs if they exist.
 
@@ -138,7 +138,7 @@ class Organism:
                 file_pointer.write(IDS_SEPARATOR.join(remote_ids))
         return remote_ids
 
-    def fetch(self):
+    def fetch(self) -> None:
         """
         Similar to ``git fetch``:
             - fetch the RCSB IDs for the organism from the RCSB website;
@@ -181,7 +181,7 @@ class Organism:
         self.tbd_pdb_ids = tbd_ids
         self.obsolete_pdb_ids = removed_ids
 
-    def mark_obsolete(self):
+    def mark_obsolete(self) -> None:
         """
         Mark obsolete the local PDB files that are not in the remote database anymore.
         """
