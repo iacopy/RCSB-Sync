@@ -1,1 +1,2 @@
 furo==2021.11.16
+sphinxjp.themes.basicstrap==0.5.0
