@@ -29,6 +29,31 @@ def _chunks(lst, num):
         yield lst[i:i + num]
 
 
+def _human_readable_time(seconds: float) -> str:
+    """
+    Convert seconds to a human-readable time.
+    """
+    minutes, seconds = divmod(seconds, 60)
+    hours, minutes = divmod(minutes, 60)
+    days, hours = divmod(hours, 24)
+    weeks, days = divmod(days, 7)
+    months, weeks = divmod(weeks, 4)
+    years, weeks = divmod(weeks, 52)
+    if years > 0:
+        return f'{years:.0f}y {weeks:.0f}w {days:.0f}d {hours:.0f}h {minutes:.0f}m {seconds:.0f}s'
+    if months > 0:
+        return f'{months:.0f}m {weeks:.0f}w {days:.0f}d {hours:.0f}h {minutes:.0f}m {seconds:.0f}s'
+    if weeks > 0:
+        return f'{weeks:.0f}w {days:.0f}d {hours:.0f}h {minutes:.0f}m {seconds:.0f}s'
+    if days > 0:
+        return f'{days:.0f}d {hours:.0f}h {minutes:.0f}m {seconds:.0f}s'
+    if hours > 0:
+        return f'{hours:.0f}h {minutes:.0f}m {seconds:.0f}s'
+    if minutes > 0:
+        return f'{minutes:.0f}m {seconds:.0f}s'
+    return f'{seconds:.0f}s'
+
+
 def download_pdb(pdb_id, directory: str, compressed: bool = True) -> str:
     """
     Download a PDB file from the RCSB website.
@@ -116,5 +141,6 @@ def download(pdb_ids: List[str],
         progress = n_downloaded / n_ids
 
         # Report the global progress and the expected time to complete.
-        eta_min = ((time.time() - start_time) / n_downloaded) * (n_ids - n_downloaded) / 60
-        print(f'Downloaded {n_downloaded}/{n_ids} files ({progress:.2%}) - ETA: {eta_min:.2f} min ⏳')
+        eta_sec = ((time.time() - start_time) / n_downloaded) * (n_ids - n_downloaded)
+        eta = _human_readable_time(eta_sec)
+        print(f'Downloaded {n_downloaded}/{n_ids} files ({progress:.2%}) - ETA: {eta} ⏳')
