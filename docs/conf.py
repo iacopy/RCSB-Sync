@@ -45,6 +45,7 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.todo',
     'sphinx.ext.viewcode',
+    'myst_parser',  # Markdown parser
 ]
 
 # Add any paths that contain templates here, relative to this directory.
