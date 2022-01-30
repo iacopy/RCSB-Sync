@@ -84,8 +84,6 @@ class Organism:
             print('Creating directory:', self.data_dir)
             os.mkdir(self.data_dir)
 
-        # Set of local RCSB IDs, which are already in the local directory (i.e. not to be downloaded).
-        self.local_pdb_ids: Set[str] = set()
         # List of all the remote RCSB IDs.
         self.remote_pdb_ids: Set[str] = set()
         # List of all the remote RCSB IDs that are not in the local directory.
@@ -182,7 +180,6 @@ class Organism:
             print(f'🗑 Obsolete files (local but not remote): {len(removed_ids):,}')
 
         self.remote_pdb_ids = remote_ids
-        self.local_pdb_ids = local_ids
         self.tbd_pdb_ids = tbd_ids
         self.obsolete_pdb_ids = removed_ids
 
