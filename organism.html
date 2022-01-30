@@ -288,7 +288,9 @@ and skip those to save time.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of RCSB IDs.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cache_file</strong> – path to the file where the list of RCSB IDs will be saved.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of RCSB IDs.</td>
 </tr>
 </tbody>
 </table>
@@ -317,6 +319,14 @@ and skip those to save time.</li>
 (based on the number of PDB files to be downloaded).</li>
 </ul>
 </div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n_jobs</strong> – number of parallel jobs to download the PDB files.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -332,6 +342,7 @@ and skip those to save time.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>organism_dir</strong> – path to the organism directory.</li>
 <li><strong>n_jobs</strong> – number of parallel jobs to use.</li>
+<li><strong>verbose</strong> – quite quiet if False.</li>
 </ul>
 </td>
 </tr>

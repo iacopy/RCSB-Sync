@@ -236,7 +236,9 @@
 <span class="sd">    Download a PDB file from the RCSB website.</span>
 
 <span class="sd">    :param pdb_id: PDB ID.</span>
-<span class="sd">    :return: Path to the downloaded file.</span>
+<span class="sd">    :param directory: directory to store the downloaded file.</span>
+<span class="sd">    :param compressed: whether to download compressed files.</span>
+<span class="sd">    :return: path to the downloaded file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">gzip_ext</span> <span class="o">=</span> <span class="s1">&#39;.gz&#39;</span> <span class="k">if</span> <span class="n">compressed</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
     <span class="c1"># Documentation URL: https://www.rcsb.org/pdb/files/</span>

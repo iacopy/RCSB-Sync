@@ -209,6 +209,8 @@
 <span class="k">def</span> <span class="nf">_send_request</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Send a request to the RCSB website and return the json response in a dictionary.</span>
+
+<span class="sd">    :param query: advanced query in json format.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Documentation URL: https://search.rcsb.org/#search-api</span>
     <span class="n">url_get</span> <span class="o">=</span> <span class="s1">&#39;https://search.rcsb.org/rcsbsearch/v1/query?json=&#39;</span> <span class="o">+</span> <span class="n">query</span>
@@ -231,7 +233,12 @@
 
 
 <div class="viewcode-block" id="store_pdb_ids"><a class="viewcode-back" href="../rcsbids.html#rcsbids.store_pdb_ids">[docs]</a><span class="k">def</span> <span class="nf">store_pdb_ids</span><span class="p">(</span><span class="n">ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">dest</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">separator</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">IDS_SEPARATOR</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Store the list of PDB IDs in a file.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Store the list of PDB IDs in a file.</span>
+
+<span class="sd">    :param ids: list of PDB IDs.</span>
+<span class="sd">    :param dest: path to the output file.</span>
+<span class="sd">    :param separator: separator used in the output file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_pointer</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">id_</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
             <span class="n">file_pointer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">id_</span> <span class="o">+</span> <span class="n">separator</span><span class="p">)</span></div>
@@ -245,6 +252,7 @@
 <span class="sd">    Then check that last character of the file is the same character.</span>
 
 <span class="sd">    :param pdb_ids_file: path to the file containing the list of PDB IDs.</span>
+<span class="sd">    :return: list of PDB IDs.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">pdb_ids_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_pointer</span><span class="p">:</span>
         <span class="n">ids</span> <span class="o">=</span> <span class="n">file_pointer</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
@@ -258,6 +266,8 @@
 
 <span class="sd">    :param query: path to the json file containing the advanced query.</span>
 <span class="sd">    :param output: path to the output file.</span>
+<span class="sd">    :param separator: separator used in the output file.</span>
+<span class="sd">    :return: list of PDB IDs.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Check if the query is a file or a string.</span>
     <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.json&#39;</span><span class="p">):</span>

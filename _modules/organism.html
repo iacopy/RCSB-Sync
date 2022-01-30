@@ -283,7 +283,8 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fetch the RCSB IDs for the organism from the RCSB website.</span>
 
-<span class="sd">        :return: List of RCSB IDs.</span>
+<span class="sd">        :param cache_file: path to the file where the list of RCSB IDs will be saved.</span>
+<span class="sd">        :return: list of RCSB IDs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">remote_ids</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">query_file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">queries_dir</span><span class="p">):</span>
@@ -376,6 +377,8 @@
 <span class="sd">            - download the PDB files corresponding to the RCSB PDB IDs which are not already in the organism directory.</span>
 <span class="sd">            - every 10 downloaded files, report the global progress and the expected time to complete</span>
 <span class="sd">              (based on the number of PDB files to be downloaded).</span>
+
+<span class="sd">        :param n_jobs: number of parallel jobs to download the PDB files.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">remote_pdb_ids</span><span class="p">:</span>
             <span class="c1"># If the remote RCSB IDs have not been fetched yet, fetch them.</span>
@@ -406,6 +409,7 @@
 
 <span class="sd">    :param organism_dir: path to the organism directory.</span>
 <span class="sd">    :param n_jobs: number of parallel jobs to use.</span>
+<span class="sd">    :param verbose: quite quiet if False.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Create the organism object.</span>
     <span class="n">organism</span> <span class="o">=</span> <span class="n">Organism</span><span class="p">(</span><span class="n">organism_dir</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
