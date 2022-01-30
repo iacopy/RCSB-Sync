@@ -1,5 +1,6 @@
 """
-Testing module.
+Testing the functions of the rcsbids module,
+which are used to retrieve the PDB IDs from the RCSB database.
 """
 # skip flake8 linting for this file, since it's a test file.
 # flake8: noqa
@@ -16,9 +17,10 @@ from rcsbids import _store_pdb_ids
 from rcsbids import retrieve_pdb_ids
 
 TEST_QUERY = _load_query('queries/test_query.json')
+# A real query, which returns 6 entries.
 EXPECTED_QUERY = """{"query":{"type":"group","logical_operator":"and","nodes":[{"type":"terminal","service":"text","parameters":{"attribute":"entity_poly.rcsb_entity_polymer_type","operator":"exact_match","negation":false,"value":"Protein"}},{"type":"terminal","service":"text","parameters":{"attribute":"exptl.method","operator":"exact_match","negation":false,"value":"THEORETICAL MODEL"}}],"label":"text"},"return_type":"entry","request_options":{"pager":{"start":0,"rows":25},"scoring_strategy":"combined","sort":[{"sort_by":"score","direction":"desc"}]}}"""
 
-
+# The server response to the query above.
 EXPECTED_JSON_RESPONSE = {
     "query_id": "ed8fc6b7-7a04-4733-ba33-88740de1f970",
     "result_type": "entry",

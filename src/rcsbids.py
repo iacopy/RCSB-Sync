@@ -1,7 +1,10 @@
 """
 Retrieve the list of PDB IDs from the RCSB website, given an advanced query in json format.
 
-Usage:
+Usage
+~~~~~
+
+::
 
     python rcsbids.py --query query.json --output output.txt
 """

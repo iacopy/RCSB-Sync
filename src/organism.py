@@ -4,6 +4,8 @@ Download protein structures for an organism from the RCSB PDB database.
 Usage
 ~~~~~
 
+::
+
     python organism.py --organism_dir organism_dir [--n_jobs n_jobs]
 
 Algorithm
@@ -140,10 +142,12 @@ class Organism:
 
     def fetch(self) -> None:
         """
-        Similar to ``git fetch``:
+        Similarly to git fetch, check for updates, update "indexes", but do not download the files.
+
             - fetch the RCSB IDs for the organism from the RCSB website;
             - check which PDB files are already in the local organism directory;
             - check which PDB files are obsolete and mark them with the suffix '.removed';
+            - print a sync report.
         """
         remote_ids = set(self.fetch_or_cache())
 
@@ -193,7 +197,8 @@ class Organism:
 
     def pull(self, n_jobs: int) -> None:
         """
-        Similar to ``git pull`` (synchronize the local and remote files):
+        Similarly to git pull, synchronize the local working directory with the remote repository.
+
             - download the PDB files corresponding to the RCSB PDB IDs which are not already in the organism directory.
             - every 10 downloaded files, report the global progress and the expected time to complete
               (based on the number of PDB files to be downloaded).
