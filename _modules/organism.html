@@ -249,17 +249,17 @@
 <span class="sd">    Keep synced the data directory with the remote RCSB database.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">directory</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">queries_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="s1">&#39;queries&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+
         <span class="c1"># Create the data directory if it does not exist.</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Creating directory:&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">)</span>
             <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">)</span>
 
-        <span class="c1"># Set of local RCSB IDs, which are already in the local directory (i.e. not to be downloaded).</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">local_pdb_ids</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="c1"># List of all the remote RCSB IDs.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">remote_pdb_ids</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="c1"># List of all the remote RCSB IDs that are not in the local directory.</span>
@@ -306,12 +306,12 @@
         <span class="c1"># Check if the ids are already downloaded. If so, read them from the _ids_&lt;date&gt;.txt file.</span>
         <span class="n">ids_cache_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="s1">&#39;_ids_&#39;</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">ids_cache_file</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Reading cached IDs from:&#39;</span><span class="p">,</span> <span class="n">ids_cache_file</span><span class="p">)</span>
             <span class="c1"># Read the ids from the _ids_&lt;date&gt;.txt file.</span>
             <span class="n">remote_ids</span> <span class="o">=</span> <span class="n">load_pdb_ids</span><span class="p">(</span><span class="n">ids_cache_file</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Get the list of PDB IDs from the RCSB website, given an advanced query in json format.</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Fetching remote IDs...&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Fetching remote IDs...&#39;</span><span class="p">)</span>
             <span class="n">remote_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_remote_ids</span><span class="p">(</span><span class="n">ids_cache_file</span><span class="p">)</span>
             <span class="c1"># Save the list of PDB IDs to a file.</span>
             <span class="n">store_pdb_ids</span><span class="p">(</span><span class="n">remote_ids</span><span class="p">,</span> <span class="n">ids_cache_file</span><span class="p">)</span>
@@ -343,22 +343,19 @@
         <span class="c1"># - the number of remote files already in the local organism directory;</span>
         <span class="c1"># - the number of PDB files that are in the remote database and not in the local organism directory;</span>
         <span class="c1"># - the number of removed/obsolete PDB files (i.e. those that are not in the remote database anymore).</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">remote_ids</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Total remote PDB files: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">remote_ids</span><span class="p">)))</span>
-        <span class="k">if</span> <span class="n">local_ids</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Local PDB files: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">local_ids</span><span class="p">)))</span>
-        <span class="k">if</span> <span class="n">n_downloaded_ok</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;💾 Already downloaded PDB files: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n_downloaded_ok</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">removed_ids</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;🗑 Files removed/obsolete: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">removed_ids</span><span class="p">)))</span>
         <span class="k">if</span> <span class="n">tbd_ids</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;🌍 Files to be downloaded: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tbd_ids</span><span class="p">)))</span>
+            <span class="n">completion_rate</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">n_downloaded_ok</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">remote_ids</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">n_downloaded_ok</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">remote_ids</span><span class="p">)</span><span class="si">}</span><span class="s1"> (</span><span class="si">{</span><span class="n">completion_rate</span><span class="si">}</span><span class="s1">%)&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;✅ Up to date.&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;🦜 Up to date (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">remote_ids</span><span class="p">)</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1"> structures).&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">removed_ids</span><span class="p">:</span>
+            <span class="c1"># Print the list of removed/obsolete PDB files.</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">removed_ids</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;🗑 Obsolete files (local but not remote): </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">removed_ids</span><span class="p">)</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">remote_pdb_ids</span> <span class="o">=</span> <span class="n">remote_ids</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">local_pdb_ids</span> <span class="o">=</span> <span class="n">local_ids</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tbd_pdb_ids</span> <span class="o">=</span> <span class="n">tbd_ids</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">obsolete_pdb_ids</span> <span class="o">=</span> <span class="n">removed_ids</span></div>
 
@@ -397,10 +394,13 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Downloaded </span><span class="si">{</span><span class="n">total_tbd_ids</span><span class="si">}</span><span class="s1"> files in </span><span class="si">{</span><span class="n">elapsed_time</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> seconds&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;(</span><span class="si">{</span><span class="n">elapsed_time</span> <span class="o">/</span> <span class="n">total_tbd_ids</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> seconds per file).&#39;</span><span class="p">)</span></div></div>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;(</span><span class="si">{</span><span class="n">elapsed_time</span> <span class="o">/</span> <span class="n">total_tbd_ids</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> seconds per file).&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Now refetch the local PDB IDs, to check if the files have been downloaded correctly.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span></div></div>
 
 
-<div class="viewcode-block" id="main"><a class="viewcode-back" href="../organism.html#organism.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">organism_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../organism.html#organism.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">organism_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Fetch the RCSB IDs for the organism from the RCSB website, and download the corresponding PDB files.</span>
 
@@ -408,7 +408,7 @@
 <span class="sd">    :param n_jobs: number of parallel jobs to use.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Create the organism object.</span>
-    <span class="n">organism</span> <span class="o">=</span> <span class="n">Organism</span><span class="p">(</span><span class="n">organism_dir</span><span class="p">)</span>
+    <span class="n">organism</span> <span class="o">=</span> <span class="n">Organism</span><span class="p">(</span><span class="n">organism_dir</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
 
     <span class="c1"># Fetch the remote RCSB IDs.</span>
     <span class="n">organism</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
@@ -426,9 +426,7 @@
         <span class="k">if</span> <span class="n">answer</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span>
             <span class="n">organism</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Download cancelled.&#39;</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;🍺 All PDB files are already in the organism directory.&#39;</span><span class="p">)</span></div>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Download cancelled.&#39;</span><span class="p">)</span></div>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
@@ -437,10 +435,11 @@
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;organism_dir&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;the directory of the organism&#39;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-j&#39;</span><span class="p">,</span> <span class="s1">&#39;--n_jobs&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">DEFAULT_JOBS</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;the number of parallel jobs for downloading (default: </span><span class="si">{</span><span class="n">DEFAULT_JOBS</span><span class="si">}</span><span class="s1">, max: </span><span class="si">{</span><span class="n">MAX_JOBS</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-v&#39;</span><span class="p">,</span> <span class="s1">&#39;--verbose&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;print verbose output&#39;</span><span class="p">)</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 
     <span class="c1"># Run the main function.</span>
-    <span class="n">main</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">organism_dir</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">n_jobs</span><span class="p">)</span>
+    <span class="n">main</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">organism_dir</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">n_jobs</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
 </pre></div>
 
           </div>
