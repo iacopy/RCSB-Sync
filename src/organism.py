@@ -73,10 +73,12 @@ class Organism:
     Keep synced the data directory with the remote RCSB database.
     """
 
-    def __init__(self, directory: str) -> None:
+    def __init__(self, directory: str, verbose: bool = False):
         self.directory = directory
         self.queries_dir = os.path.join(self.directory, 'queries')
         self.data_dir = os.path.join(self.directory, 'data')
+        self.verbose = verbose
+
         # Create the data directory if it does not exist.
         if not os.path.isdir(self.data_dir):
             print('Creating directory:', self.data_dir)
@@ -130,12 +132,12 @@ class Organism:
         # Check if the ids are already downloaded. If so, read them from the _ids_<date>.txt file.
         ids_cache_file = os.path.join(self.directory, '_ids_' + datetime.date.today().isoformat() + '.txt')
         if os.path.isfile(ids_cache_file):
-            print('Reading cached IDs from:', ids_cache_file)
             # Read the ids from the _ids_<date>.txt file.
             remote_ids = load_pdb_ids(ids_cache_file)
         else:
             # Get the list of PDB IDs from the RCSB website, given an advanced query in json format.
-            print('Fetching remote IDs...')
+            if self.verbose:
+                print('Fetching remote IDs...')
             remote_ids = self.fetch_remote_ids(ids_cache_file)
             # Save the list of PDB IDs to a file.
             store_pdb_ids(remote_ids, ids_cache_file)
@@ -167,19 +169,17 @@ class Organism:
         # - the number of remote files already in the local organism directory;
         # - the number of PDB files that are in the remote database and not in the local organism directory;
         # - the number of removed/obsolete PDB files (i.e. those that are not in the remote database anymore).
-        print('\n' + self.directory)
-        if remote_ids:
-            print('Total remote PDB files: ' + str(len(remote_ids)))
-        if local_ids:
-            print('Local PDB files: ' + str(len(local_ids)))
-        if n_downloaded_ok:
-            print('💾 Already downloaded PDB files: ' + str(n_downloaded_ok))
-        if removed_ids:
-            print('🗑 Files removed/obsolete: ' + str(len(removed_ids)))
         if tbd_ids:
-            print('🌍 Files to be downloaded: ' + str(len(tbd_ids)))
+            completion_rate = round(100 * n_downloaded_ok / len(remote_ids), 3)
+            print(f'{n_downloaded_ok}/{len(remote_ids)} ({completion_rate}%)')
         else:
-            print('✅ Up to date.')
+            if self.verbose:
+                print(f'🦜 Up to date ({len(remote_ids):,} structures).')
+
+        if removed_ids:
+            # Print the list of removed/obsolete PDB files.
+            print('\n'.join(removed_ids))
+            print(f'🗑 Obsolete files (local but not remote): {len(removed_ids):,}')
 
         self.remote_pdb_ids = remote_ids
         self.local_pdb_ids = local_ids
@@ -223,8 +223,11 @@ class Organism:
             print(f'\nDownloaded {total_tbd_ids} files in {elapsed_time:.2f} seconds', end=' ')
             print(f'({elapsed_time / total_tbd_ids:.2f} seconds per file).')
 
+        # Now refetch the local PDB IDs, to check if the files have been downloaded correctly.
+        self.fetch()
 
-def main(organism_dir: str, n_jobs: int = 1) -> None:
+
+def main(organism_dir: str, n_jobs: int = 1, verbose: bool = False) -> None:
     """
     Fetch the RCSB IDs for the organism from the RCSB website, and download the corresponding PDB files.
 
@@ -232,7 +235,7 @@ def main(organism_dir: str, n_jobs: int = 1) -> None:
     :param n_jobs: number of parallel jobs to use.
     """
     # Create the organism object.
-    organism = Organism(organism_dir)
+    organism = Organism(organism_dir, verbose=verbose)
 
     # Fetch the remote RCSB IDs.
     organism.fetch()
@@ -251,8 +254,6 @@ def main(organism_dir: str, n_jobs: int = 1) -> None:
             organism.pull(n_jobs=n_jobs)
         else:
             print('Download cancelled.')
-    else:
-        print('🍺 All PDB files are already in the organism directory.')
 
 
 if __name__ == '__main__':
@@ -261,7 +262,8 @@ if __name__ == '__main__':
     parser.add_argument('organism_dir', help='the directory of the organism')
     parser.add_argument('-j', '--n_jobs', type=int, default=DEFAULT_JOBS,
                         help=f'the number of parallel jobs for downloading (default: {DEFAULT_JOBS}, max: {MAX_JOBS})')
+    parser.add_argument('-v', '--verbose', action='store_true', help='print verbose output')
     args = parser.parse_args()
 
     # Run the main function.
-    main(args.organism_dir, args.n_jobs)
+    main(args.organism_dir, args.n_jobs, args.verbose)
