@@ -51,11 +51,14 @@ import argparse
 import datetime
 import os
 import time
-from typing import List, Set
+from typing import List
+from typing import Set
 
 # My stuff
 from download import download
+from rcsbids import load_pdb_ids
 from rcsbids import search_and_download_ids
+from rcsbids import store_pdb_ids
 
 IDS_SEPARATOR = '\n'
 SUFFIX_REMOVED = '.obsolete'
@@ -129,15 +132,13 @@ class Organism:
         if os.path.isfile(ids_cache_file):
             print('Reading cached IDs from:', ids_cache_file)
             # Read the ids from the _ids_<date>.txt file.
-            with open(ids_cache_file, 'r', encoding='ascii') as file_pointer:
-                remote_ids = file_pointer.read().split(IDS_SEPARATOR)
+            remote_ids = load_pdb_ids(ids_cache_file)
         else:
             # Get the list of PDB IDs from the RCSB website, given an advanced query in json format.
             print('Fetching remote IDs...')
             remote_ids = self.fetch_remote_ids(ids_cache_file)
             # Save the list of PDB IDs to a file.
-            with open(ids_cache_file, 'w', encoding='ascii') as file_pointer:
-                file_pointer.write(IDS_SEPARATOR.join(remote_ids))
+            store_pdb_ids(remote_ids, ids_cache_file)
         return remote_ids
 
     def fetch(self) -> None:
@@ -230,8 +231,6 @@ def main(organism_dir: str, n_jobs: int = 1) -> None:
     :param organism_dir: path to the organism directory.
     :param n_jobs: number of parallel jobs to use.
     """
-    # TODO: less verbose output.
-
     # Create the organism object.
     organism = Organism(organism_dir)
 

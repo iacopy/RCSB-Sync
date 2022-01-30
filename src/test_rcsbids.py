@@ -13,8 +13,9 @@ import os
 
 # My stuff
 from rcsbids import _load_query
-from rcsbids import _store_pdb_ids
+from rcsbids import load_pdb_ids
 from rcsbids import retrieve_pdb_ids
+from rcsbids import store_pdb_ids
 
 TEST_QUERY = _load_query('queries/test_query.json')
 # A real query, which returns 6 entries.
@@ -111,18 +112,31 @@ def test_retrieve_pdb_ids():
     assert ids == EXPECTED_IDS
 
 
-def test__store_pdb_ids():
+def test_store_pdb_ids():
     """
-    Test the _store_pdb_ids function, which stores the PDB IDs in a given file.
+    Test the store_pdb_ids function, which stores the PDB IDs in a given file.
 
     :return: None
     """
-    _store_pdb_ids(EXPECTED_IDS, 'test_pdb_ids.txt')
+    store_pdb_ids(EXPECTED_IDS, 'test_pdb_ids.txt')
     with open('test_pdb_ids.txt', 'r', encoding='ascii') as file_pointer:
         ids = file_pointer.read().split('\n')
     # the last line should be empty (the file should end with a newline)
     assert ids[-1] == ''
     assert ids[:-1] == EXPECTED_IDS
+    os.remove('test_pdb_ids.txt')
+
+
+def test_load_pdb_ids():
+    """
+    Test the load_pdb_ids function, which loads the PDB IDs from a given file.
+
+    :return: None
+    """
+    # Test with a separator different from the default one
+    store_pdb_ids(EXPECTED_IDS, 'test_pdb_ids.txt', separator=',')
+    ids = load_pdb_ids('test_pdb_ids.txt')
+    assert ids == EXPECTED_IDS
     os.remove('test_pdb_ids.txt')
 
 

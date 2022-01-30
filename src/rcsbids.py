@@ -54,12 +54,27 @@ def _load_query(query_file):
     return json.dumps(query)
 
 
-def _store_pdb_ids(ids, dest, separator=IDS_SEPARATOR):
-    # Store PDB IDs in a file.
-    print('Storing PDB IDs into file:', dest)
+def store_pdb_ids(ids, dest, separator=IDS_SEPARATOR):
+    """Store the list of PDB IDs in a file."""
     with open(dest, 'w', encoding='ascii') as file_pointer:
         for id_ in ids:
             file_pointer.write(id_ + separator)
+
+
+def load_pdb_ids(pdb_ids_file):
+    """
+    Load the list of PDB IDs from a file.
+
+    Automatically detect the separator used in the file, which is the 5th character.
+    Then check that last character of the file is the same character.
+
+    :param pdb_ids_file: path to the file containing the list of PDB IDs.
+    """
+    with open(pdb_ids_file, 'r', encoding='ascii') as file_pointer:
+        ids = file_pointer.read()
+    separator = ids[4]
+    assert ids[-1] == separator, f'The last character of the file {pdb_ids_file} is "{ids[-1]}", not "{separator}".'
+    return ids.split(separator)[:-1]
 
 
 def search_and_download_ids(query, output, separator=IDS_SEPARATOR):  # pragma: no cover
@@ -79,7 +94,7 @@ def search_and_download_ids(query, output, separator=IDS_SEPARATOR):  # pragma: 
     print(f'Found {len(ids)} PDB IDs.')
 
     # Store the list of PDB IDs in a file.
-    _store_pdb_ids(ids, output, separator=separator)
+    store_pdb_ids(ids, output, separator=separator)
     return ids
 
 
