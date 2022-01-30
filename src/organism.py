@@ -6,7 +6,7 @@ Usage
 
 ::
 
-    python organism.py --organism_dir organism_dir [--n_jobs n_jobs]
+    python organism.py organism_dir [--n_jobs n_jobs]
 
 Algorithm
 ~~~~~~~~~
