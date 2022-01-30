@@ -142,7 +142,7 @@ setup-virtualenv VIRTUALENV:
 # bootstrap documentation
 @_setup-doc:
     echo Setting up documentation...
-    sphinx-quickstart -a "{{AUTHOR}}" -p "{{PROJECT_NAME}}" -v {{DOC_INIT_VERSION}} -l {{DOC_LANGUAGE}} --sep --ext-autodoc --ext-coverage --ext-todo --ext-viewcode --no-makefile --no-batchfile ./{{DOC_DIRNAME}}
+    sphinx-quickstart -a "{{AUTHOR}}" -p "{{PROJECT_NAME}}" -v {{DOC_INIT_VERSION}} -l {{DOC_LANGUAGE}} --sep --ext-coverage --ext-todo --ext-viewcode --no-makefile --no-batchfile ./{{DOC_DIRNAME}}
 
     # move conf to main doc directory instead of its "source"
     mv ./{{DOC_DIRNAME}}/source/conf.py ./{{DOC_DIRNAME}}
