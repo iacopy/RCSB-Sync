@@ -1,196 +1,97 @@
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-
-
-
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
-    <title>organism module &mdash; RCSB Sync 0.1 documentation</title>
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    
-
-<link rel="stylesheet" href="_static/css/basicstrap-base.css" type="text/css" />
-<link rel="stylesheet" id="current-theme" href="_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
-<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
-
-<link rel="stylesheet" href="_static/css/font-awesome.min.css">
-
-<style type="text/css">
-  body {
-    padding-top: 60px;
-    padding-bottom: 40px;
-  }
-</style>
-
-<link rel="stylesheet" href="_static/css/basicstrap.css" type="text/css" />
-<link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-<link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-<link rel="stylesheet" href="_static/css/basicstrap.css" type="text/css" />
-    
-<script type="text/javascript">
-  var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:    './',
-            VERSION:     '0.1',
-            COLLAPSE_INDEX: false,
-            FILE_SUFFIX: '.html',
-            HAS_SOURCE:  true
-  };
-</script>
-    <script type="text/javascript" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/js/jquery.min.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/js/bootstrap3.min.js"></script>
-<script type="text/javascript" src="_static/js/jquery.cookie.min.js"></script>
-<script type="text/javascript" src="_static/js/basicstrap.js"></script>
-<script type="text/javascript">
-</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>organism module &mdash; RCSB Sync 🦜 0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="RCSB Sync 0.1 documentation" href="index.html" />
-    <link rel="up" title="src" href="modules.html" />
     <link rel="next" title="rcsbids module" href="rcsbids.html" />
     <link rel="prev" title="download module" href="download.html" /> 
-  </head>
-  <body role="document">
-    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="index.html">RCSB Sync 0.1 documentation</a>
-        </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-              <li class="dropdown visible-xs">
-                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
-                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
-                <ul>
-<li><a class="reference internal" href="#">organism module</a><ul>
-<li><a class="reference internal" href="#usage">Usage</a></li>
-<li><a class="reference internal" href="#algorithm">Algorithm</a></li>
-<li><a class="reference internal" href="#directory-structure">Directory structure</a></li>
-</ul>
-</li>
-</ul>
+</head>
 
-                </ul>
-              </li>
-
-            
-              <li><a href="download.html" title="download module" accesskey="P">previous </a></li>
-              <li><a href="rcsbids.html" title="rcsbids module" accesskey="N">next </a></li>
-              <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
-              <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
-              <li><a href="modules.html" accesskey="U">src</a></li>
-            
-            <li class="visible-xs"><a href="_sources/organism.rst.txt" rel="nofollow">Show Source</a></li>
-
-            <li class="visible-xs">
-                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="search.html" method="get">
-                  <div class="input-append input-group">
-                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
-                    <span class="input-group-btn">
-                    <input type="submit" class="btn" value="Go" />
-                    </span>
-                  </div>
-                  <input type="hidden" name="check_keywords" value="yes" />
-                  <input type="hidden" name="area" value="default" />
-                </form>
-            </li>
-
-            
-
-          </ul>
-
-        </div>
-      </div>
-    </div>
-    
-
-    <!-- container -->
-    <div class="container-fluid">
-
-      <!-- row -->
-      <div class="row">
-         
-<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
-  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
-  <div>
-    <h3><a href="index.html">Table of Contents</a></h3>
-    <ul>
-<li><a class="reference internal" href="#">organism module</a><ul>
-<li><a class="reference internal" href="#usage">Usage</a></li>
-<li><a class="reference internal" href="#algorithm">Algorithm</a></li>
-<li><a class="reference internal" href="#directory-structure">Directory structure</a></li>
-</ul>
-</li>
-</ul>
-
-  </div>
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="download.html"
-                          title="previous chapter">download module</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="rcsbids.html"
-                          title="next chapter">rcsbids module</a></p>
-  </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/organism.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" role="search">
-  <h3>Quick search</h3>
-  <form class="search form-inline" action="search.html" method="get">
-      <div class="input-append input-group">
-        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
-        <span class="input-group-btn">
-        <input type="submit" class="btn" value="Go" />
-        </span>
-      </div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> RCSB Sync 🦜
+          </a>
+              <div class="version">
+                0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
 </div>
-  </div>
-</div> 
-        
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">src</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="download.html">download module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">organism module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#algorithm">Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#directory-structure">Directory structure</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rcsbids.html">rcsbids module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_rcsbids.html">test_rcsbids module</a></li>
+</ul>
+</li>
+</ul>
 
-        <div class="col-md-9" id="content-wrapper">
-          <div class="document" role="main">
-            <div class="documentwrapper">
-              <div class="bodywrapper">
-                <div class="body">
-                  
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RCSB Sync 🦜</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="modules.html">src</a> &raquo;</li>
+      <li>organism module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/organism.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
   <section id="module-organism">
-<span id="organism-module"></span><h1>organism module<a class="headerlink" href="#module-organism" title="Permalink to this headline">¶</a></h1>
+<span id="organism-module"></span><h1>organism module<a class="headerlink" href="#module-organism" title="Permalink to this headline"></a></h1>
 <p>Download protein structures for an organism from the RCSB PDB database.</p>
 <section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
-<blockquote>
-<div><p>python organism.py –organism_dir organism_dir [–n_jobs n_jobs]</p>
-</div></blockquote>
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">organism</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">organism_dir</span> <span class="n">organism_dir</span> <span class="p">[</span><span class="o">--</span><span class="n">n_jobs</span> <span class="n">n_jobs</span><span class="p">]</span>
+</pre></div>
+</div>
 </section>
 <section id="algorithm">
-<h2>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h2>
+<h2>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline"></a></h2>
 <ol class="arabic simple" start="0">
 <li><p>If the ids are already downloaded (a <code class="docutils literal notranslate"><span class="pre">_ids_&lt;date&gt;.txt</span></code> file with current date exists), skip to the next step.</p></li>
 <li><p>Start by downloading the RCSB PDB IDs for the organism, using the queries in the <code class="docutils literal notranslate"><span class="pre">queries</span></code> directory.</p></li>
@@ -206,7 +107,7 @@ and skip those to save time.</p></li>
 </ol>
 </section>
 <section id="directory-structure">
-<h2>Directory structure<a class="headerlink" href="#directory-structure" title="Permalink to this headline">¶</a></h2>
+<h2>Directory structure<a class="headerlink" href="#directory-structure" title="Permalink to this headline"></a></h2>
 <p>The directory structures of organisms are as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>.
 ├── Organism
@@ -228,25 +129,26 @@ and skip those to save time.</p></li>
 </div>
 <dl class="py class">
 <dt class="sig sig-object py" id="organism.Organism">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">organism.</span></span><span class="sig-name descname"><span class="pre">Organism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/organism.html#Organism"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.Organism" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">organism.</span></span><span class="sig-name descname"><span class="pre">Organism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/organism.html#Organism"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.Organism" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Keep synced the data directory with the remote RCSB database.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="organism.Organism.fetch">
-<span class="sig-name descname"><span class="pre">fetch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/organism.html#Organism.fetch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.Organism.fetch" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Similar to <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">fetch</span></code>:</dt><dd><ul class="simple">
+<span class="sig-name descname"><span class="pre">fetch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/organism.html#Organism.fetch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.Organism.fetch" title="Permalink to this definition"></a></dt>
+<dd><p>Similarly to git fetch, check for updates, update “indexes”, but do not download the files.</p>
+<blockquote>
+<div><ul class="simple">
 <li><p>fetch the RCSB IDs for the organism from the RCSB website;</p></li>
 <li><p>check which PDB files are already in the local organism directory;</p></li>
 <li><p>check which PDB files are obsolete and mark them with the suffix ‘.removed’;</p></li>
+<li><p>print a sync report.</p></li>
 </ul>
-</dd>
-</dl>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="organism.Organism.fetch_or_cache">
-<span class="sig-name descname"><span class="pre">fetch_or_cache</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/organism.html#Organism.fetch_or_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.Organism.fetch_or_cache" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">fetch_or_cache</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/organism.html#Organism.fetch_or_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.Organism.fetch_or_cache" title="Permalink to this definition"></a></dt>
 <dd><p>Fetch the RCSB IDs for the organism from the RCSB website, or use the cached IDs if they exist.</p>
 <dl class="simple">
 <dt>Side effect:</dt><dd><ul class="simple">
@@ -264,7 +166,7 @@ and skip those to save time.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="organism.Organism.fetch_remote_ids">
-<span class="sig-name descname"><span class="pre">fetch_remote_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/organism.html#Organism.fetch_remote_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.Organism.fetch_remote_ids" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">fetch_remote_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/organism.html#Organism.fetch_remote_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.Organism.fetch_remote_ids" title="Permalink to this definition"></a></dt>
 <dd><p>Fetch the RCSB IDs for the organism from the RCSB website.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -275,34 +177,34 @@ and skip those to save time.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="organism.Organism.get_local_ids">
-<span class="sig-name descname"><span class="pre">get_local_ids</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">set</span></span></span><a class="reference internal" href="_modules/organism.html#Organism.get_local_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.Organism.get_local_ids" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_local_ids</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">set</span></span></span><a class="reference internal" href="_modules/organism.html#Organism.get_local_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.Organism.get_local_ids" title="Permalink to this definition"></a></dt>
 <dd><p>Get the PDB IDs that are already in the organism directory.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="organism.Organism.mark_obsolete">
-<span class="sig-name descname"><span class="pre">mark_obsolete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/organism.html#Organism.mark_obsolete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.Organism.mark_obsolete" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">mark_obsolete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/organism.html#Organism.mark_obsolete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.Organism.mark_obsolete" title="Permalink to this definition"></a></dt>
 <dd><p>Mark obsolete the local PDB files that are not in the remote database anymore.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="organism.Organism.pull">
-<span class="sig-name descname"><span class="pre">pull</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/organism.html#Organism.pull"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.Organism.pull" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Similar to <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">pull</span></code> (synchronize the local and remote files):</dt><dd><ul class="simple">
+<span class="sig-name descname"><span class="pre">pull</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/organism.html#Organism.pull"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.Organism.pull" title="Permalink to this definition"></a></dt>
+<dd><p>Similarly to git pull, synchronize the local working directory with the remote repository.</p>
+<blockquote>
+<div><ul class="simple">
 <li><p>download the PDB files corresponding to the RCSB PDB IDs which are not already in the organism directory.</p></li>
 <li><p>every 10 downloaded files, report the global progress and the expected time to complete
 (based on the number of PDB files to be downloaded).</p></li>
 </ul>
-</dd>
-</dl>
+</div></blockquote>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="organism.main">
-<span class="sig-prename descclassname"><span class="pre">organism.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">organism_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/organism.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.main" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">organism.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">organism_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/organism.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.main" title="Permalink to this definition"></a></dt>
 <dd><p>Fetch the RCSB IDs for the organism from the RCSB website, and download the corresponding PDB files.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -318,45 +220,34 @@ and skip those to save time.</p></li>
 </section>
 
 
-                </div>
-              </div>
-            </div>
+           </div>
           </div>
-        </div>
-        
-        
-      </div><!-- /row -->
-
-      <!-- row -->
-      <div class="row footer-relbar">
-<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
-  <div class="navbar-inner">
-    <ul class="nav navbar-nav ">
-        <li><a href="index.html">RCSB Sync 0.1 documentation</a></li>
-    </ul>
-<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
-      
-        <li><a href="download.html" title="download module" >previous</a></li>
-        <li><a href="rcsbids.html" title="rcsbids module" >next</a></li>
-        <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
-        <li><a href="genindex.html" title="General Index" >index</a></li>
-        <li><a href="modules.html" >src</a></li>
-        <li><a href="#">top</a></li> 
-      
-    </ul>
-  </div>
-</div>
-      </div><!-- /row -->
-
-      <!-- footer -->
-      <footer role="contentinfo">
-          &copy; Copyright 2022, Iacopo Marmorini.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.4.0.
-      </footer>
-      <!-- /footer -->
-
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="download.html" class="btn btn-neutral float-left" title="download module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rcsbids.html" class="btn btn-neutral float-right" title="rcsbids module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-    <!-- /container -->
 
-  </body>
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Iacopo Marmorini.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>
