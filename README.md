@@ -3,16 +3,19 @@
 
 Automatizza il download di strutture proteiche dal server remoto RCSB.
 
-Supporta il resume, cioè si può interrompere il download, e al successivo lancio il download riprenderà dal punto a cui era arrivato.
-
 Esempio:
 
     python src/organism.py ~/your_project/Rattus_norvegicus/ -j 2
 
+Vedi la documentazione su https://iacopy.github.io/rcsb-sync/.
+
 Funzionamento
 -------------
 
-Il programma è pensato per sincronizzare la directory di lavoro col database remoto.
+Il programma sincronizza la directory di lavoro col database remoto.
+
+Supporta il resume, cioè si può interrompere il download, e al successivo lancio il download riprenderà dal punto a cui era arrivato.
+
 Se il programma viene lanciato in giorni diversi, la prima volta di ogni giorno effettuerà nuovamente la ricerca su www.rcsb.org
 per ottenere la lista degli IDs eventualmente aggiornata.
 
