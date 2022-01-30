@@ -155,10 +155,10 @@ setup-virtualenv VIRTUALENV:
     # Check if setup is needed and call _setup-doc in this case.
     ls ./{{DOC_DIRNAME}}/conf.py || (just _setup-doc && just _exit "Now edit conf.py and recall just doc to build the documentation.")
 
-    echo Auto-generate modules documentation...
+    # echo Auto-generate modules documentation...
     # Positional args from seconds (if any) are paths you want to exclude from docs
     # -f overwrite existing .rst, --private include also "_"-starting attributes.
-    sphinx-apidoc -f -o ./{{DOC_DIRNAME}}/ ./src ./src/*git_status.py
+    # sphinx-apidoc -f -o ./{{DOC_DIRNAME}}/ ./src ./src/*git_status.py
 
     echo Building documentation...
     sphinx-build -b html -c ./{{DOC_DIRNAME}} ./{{DOC_DIRNAME}}/ ./{{DOC_DIRNAME}}/build/html -v
