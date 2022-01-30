@@ -33,6 +33,8 @@ def retrieve_pdb_ids(query: str) -> list:
 def _send_request(query: str) -> dict:
     """
     Send a request to the RCSB website and return the json response in a dictionary.
+
+    :param query: advanced query in json format.
     """
     # Documentation URL: https://search.rcsb.org/#search-api
     url_get = 'https://search.rcsb.org/rcsbsearch/v1/query?json=' + query
@@ -55,7 +57,12 @@ def _load_query(query_file: str) -> str:
 
 
 def store_pdb_ids(ids: list, dest: str, separator: str = IDS_SEPARATOR) -> None:
-    """Store the list of PDB IDs in a file."""
+    """Store the list of PDB IDs in a file.
+
+    :param ids: list of PDB IDs.
+    :param dest: path to the output file.
+    :param separator: separator used in the output file.
+    """
     with open(dest, 'w', encoding='ascii') as file_pointer:
         for id_ in ids:
             file_pointer.write(id_ + separator)
@@ -69,6 +76,7 @@ def load_pdb_ids(pdb_ids_file: str) -> list:
     Then check that last character of the file is the same character.
 
     :param pdb_ids_file: path to the file containing the list of PDB IDs.
+    :return: list of PDB IDs.
     """
     with open(pdb_ids_file, 'r', encoding='ascii') as file_pointer:
         ids = file_pointer.read()
@@ -82,6 +90,8 @@ def search_and_download_ids(query: str, output: str, separator: str = IDS_SEPARA
 
     :param query: path to the json file containing the advanced query.
     :param output: path to the output file.
+    :param separator: separator used in the output file.
+    :return: list of PDB IDs.
     """
     # Check if the query is a file or a string.
     if query.endswith('.json'):

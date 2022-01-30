@@ -60,7 +60,9 @@ def download_pdb(pdb_id: str, directory: str, compressed: bool = True) -> str:
     Download a PDB file from the RCSB website.
 
     :param pdb_id: PDB ID.
-    :return: Path to the downloaded file.
+    :param directory: directory to store the downloaded file.
+    :param compressed: whether to download compressed files.
+    :return: path to the downloaded file.
     """
     gzip_ext = '.gz' if compressed else ''
     # Documentation URL: https://www.rcsb.org/pdb/files/

@@ -107,7 +107,8 @@ class Organism:
         """
         Fetch the RCSB IDs for the organism from the RCSB website.
 
-        :return: List of RCSB IDs.
+        :param cache_file: path to the file where the list of RCSB IDs will be saved.
+        :return: list of RCSB IDs.
         """
         remote_ids = []
         for query_file in os.listdir(self.queries_dir):
@@ -200,6 +201,8 @@ class Organism:
             - download the PDB files corresponding to the RCSB PDB IDs which are not already in the organism directory.
             - every 10 downloaded files, report the global progress and the expected time to complete
               (based on the number of PDB files to be downloaded).
+
+        :param n_jobs: number of parallel jobs to download the PDB files.
         """
         if not self.remote_pdb_ids:
             # If the remote RCSB IDs have not been fetched yet, fetch them.
@@ -230,6 +233,7 @@ def main(organism_dir: str, n_jobs: int = 1, verbose: bool = False) -> None:
 
     :param organism_dir: path to the organism directory.
     :param n_jobs: number of parallel jobs to use.
+    :param verbose: quite quiet if False.
     """
     # Create the organism object.
     organism = Organism(organism_dir, verbose=verbose)
