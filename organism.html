@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>organism module &mdash; RCSB Sync 0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <title>organism module &mdash; RCSB Sync 🦜 0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
@@ -26,7 +26,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> RCSB Sync
+            <a href="index.html" class="icon icon-home"> RCSB Sync 🦜
           </a>
               <div class="version">
                 0.1
@@ -61,7 +61,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">RCSB Sync</a>
+          <a href="index.html">RCSB Sync 🦜</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -85,9 +85,9 @@
 <p>Download protein structures for an organism from the RCSB PDB database.</p>
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
-<blockquote>
-<div><p>python organism.py –organism_dir organism_dir [–n_jobs n_jobs]</p>
-</div></blockquote>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">organism</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">organism_dir</span> <span class="n">organism_dir</span> <span class="p">[</span><span class="o">--</span><span class="n">n_jobs</span> <span class="n">n_jobs</span><span class="p">]</span>
+</pre></div>
+</div>
 </section>
 <section id="algorithm">
 <h2>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h2>
@@ -134,14 +134,15 @@ and skip those to save time.</p></li>
 <dl class="method">
 <dt id="organism.Organism.fetch">
 <code class="sig-name descname">fetch</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/organism.html#Organism.fetch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#organism.Organism.fetch" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Similar to <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">fetch</span></code>:</dt><dd><ul class="simple">
+<dd><p>Similarly to git fetch, check for updates, update “indexes”, but do not download the files.</p>
+<blockquote>
+<div><ul class="simple">
 <li><p>fetch the RCSB IDs for the organism from the RCSB website;</p></li>
 <li><p>check which PDB files are already in the local organism directory;</p></li>
 <li><p>check which PDB files are obsolete and mark them with the suffix ‘.removed’;</p></li>
+<li><p>print a sync report.</p></li>
 </ul>
-</dd>
-</dl>
+</div></blockquote>
 </dd></dl>
 
 <dl class="method">
@@ -188,14 +189,14 @@ and skip those to save time.</p></li>
 <dl class="method">
 <dt id="organism.Organism.pull">
 <code class="sig-name descname">pull</code><span class="sig-paren">(</span><em class="sig-param">n_jobs: int</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/organism.html#Organism.pull"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#organism.Organism.pull" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Similar to <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">pull</span></code> (synchronize the local and remote files):</dt><dd><ul class="simple">
+<dd><p>Similarly to git pull, synchronize the local working directory with the remote repository.</p>
+<blockquote>
+<div><ul class="simple">
 <li><p>download the PDB files corresponding to the RCSB PDB IDs which are not already in the organism directory.</p></li>
 <li><p>every 10 downloaded files, report the global progress and the expected time to complete
 (based on the number of PDB files to be downloaded).</p></li>
 </ul>
-</dd>
-</dl>
+</div></blockquote>
 </dd></dl>
 
 </dd></dl>
