@@ -1,5 +1,5 @@
-RCSB-Sync
-=========
+🦜 RCSB-Sync
+============
 
 Automatizza il download di strutture proteiche dal server remoto RCSB.
 
