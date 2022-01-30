@@ -11,7 +11,7 @@ Usage
 Algorithm
 ~~~~~~~~~
 
-0. If the ids are already downloaded (a ``_ids_<date>.txt`` file with current date exists), skip to the next step.
+0. If the ids are already downloaded (a ``_ids_<date>.txt`` file with current date exists), skip to step 2.
 1. Start by downloading the RCSB PDB IDs for the organism, using the queries in the ``queries`` directory.
 2. Before downloading the PDB files, check which PDB files are already in the local organism directory,
    and skip those to save time.
