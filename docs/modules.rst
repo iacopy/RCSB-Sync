@@ -7,4 +7,3 @@ src
    download
    organism
    rcsbids
-   test_rcsbids
