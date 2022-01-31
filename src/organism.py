@@ -104,8 +104,6 @@ class Organism:
         """
         local_ids = set()
         for filename in os.listdir(self.data_dir):
-            # if filename.endswith('.pdb'):
-            #     local_ids.append(filename[:-4])
             if filename.endswith('pdb.gz'):
                 local_ids.add(filename[:-7])
         return local_ids
@@ -170,7 +168,6 @@ class Organism:
         n_downloaded_ok = len(local_ids) - len(removed_ids)
 
         # Print a numeric report of:
-        # - the number of local PDB files of the organism;
         # - the number of all remote PDB files of the organism;
         # - the number of remote files already in the local organism directory;
         # - the number of PDB files that are in the remote database and not in the local organism directory;
