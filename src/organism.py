@@ -11,7 +11,7 @@ Usage
 Algorithm
 ~~~~~~~~~
 
-0. If the ids are already downloaded (a ``_ids_<date>.txt`` file with current date exists), skip to step 2.
+0. If the ids are already downloaded (a ``_ids_<date>.txt`` cache file with current date exists), skip to step 2.
 1. Start by downloading the RCSB PDB IDs for the organism, using the queries in the ``queries`` directory.
 2. Before downloading the PDB files, check which PDB files are already in the local organism directory,
    and skip those to save time.
@@ -92,6 +92,12 @@ class Organism:
         # List of all the IDs that are in the local directory but are not in the remote database anymore.
         self.obsolete_pdb_ids: List[str] = []
 
+    def _get_cache_file(self) -> str:
+        """
+        Get the path to the pdb ids cache file for the organism.
+        """
+        return os.path.join(self.directory, '_ids_' + datetime.date.today().isoformat() + '.txt')
+
     def get_local_ids(self) -> set:
         """
         Get the PDB IDs that are already in the organism directory.
@@ -130,7 +136,7 @@ class Organism:
         :return: List of RCSB IDs.
         """
         # Check if the ids are already downloaded. If so, read them from the _ids_<date>.txt file.
-        ids_cache_file = os.path.join(self.directory, '_ids_' + datetime.date.today().isoformat() + '.txt')
+        ids_cache_file = self._get_cache_file()
         if os.path.isfile(ids_cache_file):
             # Read the ids from the _ids_<date>.txt file.
             remote_ids = load_pdb_ids(ids_cache_file)
