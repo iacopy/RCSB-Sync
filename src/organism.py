@@ -63,6 +63,7 @@ from rcsbids import store_pdb_ids
 
 IDS_SEPARATOR = '\n'
 SUFFIX_REMOVED = '.obsolete'
+PDB_EXT = '.pdb.gz'
 
 # Settings for the parallel download.
 DEFAULT_JOBS = 2
@@ -193,7 +194,7 @@ class Organism:
         Mark obsolete the local PDB files that are not in the remote database anymore.
         """
         for id_ in self.obsolete_pdb_ids:
-            pdb_file = os.path.join(self.data_dir, id_ + '.pdb.gz')
+            pdb_file = os.path.join(self.data_dir, id_ + PDB_EXT)
             if os.path.isfile(pdb_file):
                 print('Marking obsolete:', pdb_file, '->', pdb_file + SUFFIX_REMOVED)
                 os.rename(pdb_file, pdb_file + SUFFIX_REMOVED)
