@@ -15,11 +15,12 @@ Algorithm
 1. Start by downloading the RCSB PDB IDs for the organism, using the queries in the ``queries`` directory.
 2. Before downloading the PDB files, check which PDB files are already in the local organism directory,
    and skip those to save time.
-3. Some local PDB files are not in the RCSB database anymore, so we mark them with a suffix (for example '.removed').
-4. Print a numeric report of:
-   - the number of PDB files already in the organism directory;
+3. Some local PDB files are not in the RCSB database anymore, so we mark them with a suffix (for example '.obsolete').
+4. Print a report of:
+
+   - the number of DB files already in the organism directory;
    - the number of PDB files that will be downloaded;
-   - the number of removed/obsolete PDB files.
+   - the removed/obsolete PDB files.
 
 5. Download the PDB files corresponding to the RCSB PDB IDs which are not already in the organism directory.
 6. During the download, report the global progress and the expected time to completion.
@@ -148,7 +149,7 @@ class Organism:
 
             - fetch the RCSB IDs for the organism from the RCSB website;
             - check which PDB files are already in the local organism directory;
-            - check which PDB files are obsolete and mark them with the suffix '.removed';
+            - check which PDB files are obsolete and mark them with the suffix '.obsolete';
             - print a sync report.
         """
         remote_ids = set(self.fetch_or_cache())
