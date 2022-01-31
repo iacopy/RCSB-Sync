@@ -59,7 +59,6 @@ from typing import Set
 from download import download
 from rcsbids import load_pdb_ids
 from rcsbids import search_and_download_ids
-from rcsbids import store_pdb_ids
 
 IDS_SEPARATOR = '\n'
 SUFFIX_REMOVED = '.obsolete'
@@ -144,8 +143,6 @@ class Organism:
             if self.verbose:
                 print('Fetching remote IDs...')
             remote_ids = self.fetch_remote_ids(ids_cache_file)
-            # Save the list of PDB IDs to a file.
-            store_pdb_ids(remote_ids, ids_cache_file)
         return remote_ids
 
     def fetch(self) -> None:
