@@ -25,7 +25,6 @@ def retrieve_pdb_ids(query: str) -> list:
     :param query: advanced query in json format.
     :return: list of PDB IDs.
     """
-    # Get the list of PDB IDs from the RCSB website, given an advanced query in json format.
     json_response = _send_request(query)
     return [hit['identifier'] for hit in json_response['result_set']]
 
