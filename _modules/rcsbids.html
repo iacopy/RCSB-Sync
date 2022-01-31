@@ -201,7 +201,6 @@
 <span class="sd">    :param query: advanced query in json format.</span>
 <span class="sd">    :return: list of PDB IDs.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Get the list of PDB IDs from the RCSB website, given an advanced query in json format.</span>
     <span class="n">json_response</span> <span class="o">=</span> <span class="n">_send_request</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">hit</span><span class="p">[</span><span class="s1">&#39;identifier&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">json_response</span><span class="p">[</span><span class="s1">&#39;result_set&#39;</span><span class="p">]]</span></div>
 

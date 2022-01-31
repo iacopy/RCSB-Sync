@@ -206,15 +206,17 @@
 <div class="section" id="algorithm">
 <h2>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple" start="0">
-<li>If the ids are already downloaded (a <code class="docutils literal notranslate"><span class="pre">_ids_&lt;date&gt;.txt</span></code> file with current date exists), skip to step 2.</li>
+<li>If the ids are already downloaded (a <code class="docutils literal notranslate"><span class="pre">_ids_&lt;date&gt;.txt</span></code> cache file with current date exists), skip to step 2.</li>
 <li>Start by downloading the RCSB PDB IDs for the organism, using the queries in the <code class="docutils literal notranslate"><span class="pre">queries</span></code> directory.</li>
 <li>Before downloading the PDB files, check which PDB files are already in the local organism directory,
 and skip those to save time.</li>
-<li>Some local PDB files are not in the RCSB database anymore, so we mark them with a suffix (for example ‘.removed’).</li>
-<li>Print a numeric report of:
-- the number of PDB files already in the organism directory;
-- the number of PDB files that will be downloaded;
-- the number of removed/obsolete PDB files.</li>
+<li>Some local PDB files are not in the RCSB database anymore, so we mark them with a suffix (for example ‘.obsolete’).</li>
+<li>Print a report of:<ul>
+<li>the number of DB files already in the organism directory;</li>
+<li>the number of PDB files that will be downloaded;</li>
+<li>the removed/obsolete PDB files.</li>
+</ul>
+</li>
 <li>Download the PDB files corresponding to the RCSB PDB IDs which are not already in the organism directory.</li>
 <li>During the download, report the global progress and the expected time to completion.</li>
 </ol>
@@ -253,7 +255,7 @@ and skip those to save time.</li>
 <div><ul class="simple">
 <li>fetch the RCSB IDs for the organism from the RCSB website;</li>
 <li>check which PDB files are already in the local organism directory;</li>
-<li>check which PDB files are obsolete and mark them with the suffix ‘.removed’;</li>
+<li>check which PDB files are obsolete and mark them with the suffix ‘.obsolete’;</li>
 <li>print a sync report.</li>
 </ul>
 </div></blockquote>
