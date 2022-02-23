@@ -237,7 +237,6 @@ def main(organism_dir: str, n_jobs: int = 1, verbose: bool = False) -> None:
     :param n_jobs: number of parallel jobs to use.
     :param verbose: quite quiet if False.
     """
-    # Create the organism object.
     organism = Organism(organism_dir, verbose=verbose)
 
     # Fetch the remote RCSB IDs.
@@ -268,5 +267,4 @@ if __name__ == '__main__':
     parser.add_argument('-v', '--verbose', action='store_true', help='print verbose output')
     args = parser.parse_args()
 
-    # Run the main function.
     main(args.organism_dir, args.n_jobs, args.verbose)
