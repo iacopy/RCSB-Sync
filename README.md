@@ -1,6 +1,10 @@
 🦜 RCSB-Sync
 ============
 
+[![Testing](https://github.com/iacopy/RCSB-Sync/actions/workflows/ci.yml/badge.svg)](https://github.com/iacopy/RCSB-Sync/actions/workflows/ci.yml)
+[![Sphinx build](https://github.com/iacopy/RCSB-Sync/actions/workflows/sphinx.yml/badge.svg)](https://github.com/iacopy/RCSB-Sync/actions/workflows/sphinx.yml)
+[![pages-build-deployment](https://github.com/iacopy/RCSB-Sync/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/iacopy/RCSB-Sync/actions/workflows/pages/pages-build-deployment)
+
 Automatizza il download di strutture proteiche dal server remoto RCSB.
 
 Esempio:
