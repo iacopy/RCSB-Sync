@@ -159,6 +159,7 @@
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#usage">Usage</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="test_rcsbids.html">test_rcsbids module</a></li>
 </ul>
 </li>
 </ul>
@@ -186,6 +187,7 @@
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#usage">Usage</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="test_rcsbids.html">test_rcsbids module</a></li>
 </ul>
 </li>
 </ul>
@@ -206,15 +208,17 @@
 <div class="section" id="algorithm">
 <h2>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple" start="0">
-<li>If the ids are already downloaded (a <code class="docutils literal notranslate"><span class="pre">_ids_&lt;date&gt;.txt</span></code> file with current date exists), skip to step 2.</li>
+<li>If the ids are already downloaded (a <code class="docutils literal notranslate"><span class="pre">_ids_&lt;date&gt;.txt</span></code> cache file with current date exists), skip to step 2.</li>
 <li>Start by downloading the RCSB PDB IDs for the organism, using the queries in the <code class="docutils literal notranslate"><span class="pre">queries</span></code> directory.</li>
 <li>Before downloading the PDB files, check which PDB files are already in the local organism directory,
 and skip those to save time.</li>
-<li>Some local PDB files are not in the RCSB database anymore, so we mark them with a suffix (for example ‘.removed’).</li>
-<li>Print a numeric report of:
-- the number of PDB files already in the organism directory;
-- the number of PDB files that will be downloaded;
-- the number of removed/obsolete PDB files.</li>
+<li>Some local PDB files are not in the RCSB database anymore, so we mark them with a suffix (for example ‘.obsolete’).</li>
+<li>Print a report of:<ul>
+<li>the number of DB files already in the organism directory;</li>
+<li>the number of PDB files that will be downloaded;</li>
+<li>the removed/obsolete PDB files.</li>
+</ul>
+</li>
 <li>Download the PDB files corresponding to the RCSB PDB IDs which are not already in the organism directory.</li>
 <li>During the download, report the global progress and the expected time to completion.</li>
 </ol>
@@ -242,7 +246,7 @@ and skip those to save time.</li>
 </div>
 <dl class="py class">
 <dt class="sig sig-object py" id="organism.Organism">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><code class="sig-prename descclassname"><span class="pre">organism.</span></code><code class="sig-name descname"><span class="pre">Organism</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/organism.html#Organism"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.Organism" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><code class="sig-prename descclassname"><span class="pre">organism.</span></code><code class="sig-name descname"><span class="pre">Organism</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/organism.html#Organism"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.Organism" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Keep synced the data directory with the remote RCSB database.</p>
 <dl class="py method">
@@ -253,7 +257,7 @@ and skip those to save time.</li>
 <div><ul class="simple">
 <li>fetch the RCSB IDs for the organism from the RCSB website;</li>
 <li>check which PDB files are already in the local organism directory;</li>
-<li>check which PDB files are obsolete and mark them with the suffix ‘.removed’;</li>
+<li>check which PDB files are obsolete and mark them with the suffix ‘.obsolete’;</li>
 <li>print a sync report.</li>
 </ul>
 </div></blockquote>
@@ -288,7 +292,9 @@ and skip those to save time.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of RCSB IDs.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cache_file</strong> – path to the file where the list of RCSB IDs will be saved.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of RCSB IDs.</td>
 </tr>
 </tbody>
 </table>
@@ -317,13 +323,21 @@ and skip those to save time.</li>
 (based on the number of PDB files to be downloaded).</li>
 </ul>
 </div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n_jobs</strong> – number of parallel jobs to download the PDB files.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="organism.main">
-<code class="sig-prename descclassname"><span class="pre">organism.</span></code><code class="sig-name descname"><span class="pre">main</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">organism_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em><span class="n"><span class="pre">n_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/organism.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.main" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">organism.</span></code><code class="sig-name descname"><span class="pre">main</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">organism_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em><span class="n"><span class="pre">n_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/organism.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#organism.main" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetch the RCSB IDs for the organism from the RCSB website, and download the corresponding PDB files.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -332,6 +346,7 @@ and skip those to save time.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>organism_dir</strong> – path to the organism directory.</li>
 <li><strong>n_jobs</strong> – number of parallel jobs to use.</li>
+<li><strong>verbose</strong> – quite quiet if False.</li>
 </ul>
 </td>
 </tr>

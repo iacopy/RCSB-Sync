@@ -159,6 +159,7 @@
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#usage">Usage</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="test_rcsbids.html">test_rcsbids module</a></li>
 </ul>
 </li>
 </ul>
@@ -186,6 +187,7 @@
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#usage">Usage</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="test_rcsbids.html">test_rcsbids module</a></li>
 </ul>
 </li>
 </ul>
@@ -243,9 +245,15 @@ each process gets the same number of PDB IDs to download.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pdb_id</strong> – PDB ID.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>pdb_id</strong> – PDB ID.</li>
+<li><strong>directory</strong> – directory to store the downloaded file.</li>
+<li><strong>compressed</strong> – whether to download compressed files.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Path to the downloaded file.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">path to the downloaded file.</p>
+</td>
 </tr>
 </tbody>
 </table>
