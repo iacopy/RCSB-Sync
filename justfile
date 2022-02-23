@@ -1,8 +1,4 @@
-PROJECT_NAME := 'RCSB PyPDB'
-AUTHOR := 'Iacopo Marmorini'
 DOC_DIRNAME := 'docs'
-DOC_LANGUAGE := 'en'
-DOC_INIT_VERSION := '0.1'
 VIRTUALENVS_DIR := '~/.virtualenvs'
 
 # Quality requirements
@@ -18,15 +14,48 @@ MIN_COVERAGE := '100'
 @zen:
     python -m this
 
+# rename project and author
+@rename project author:
+    # replace string "Cleanpython" with {{project}} and "iacopy" with {{author}} in files
+    sed -i "" -e s/Cleanpython/"{{project}}"/g -e s/iacopy/"{{author}}"/g docs/conf.py
+    sed -i "" s/Cleanpython/"{{project}}"/g docs/index.rst
+    sed -i "" s/iacopy/"{{author}}"/g LICENSE
+
+    # Overwrite the default README.md
+    echo "# {{project}}\n" > README.md
+
+    # Remove the docs/build directory
+    rm -rf docs/build
+    # Remove all files from 'docs' directory except index.rst, conf.py, Makefile, and requirements.txt
+    find docs -not -name 'index.rst' -not -name 'conf.py' -not -name 'Makefile' -not -name 'requirements.txt' -delete
+
+# add github badges to the readme
+@badges username reponame:
+    # Generate badges
+    echo "[![Testing](https://github.com/{{username}}/{{reponame}}/actions/workflows/ci.yml/badge.svg)](https://github.com/{{username}}/{{reponame}}/actions/workflows/ci.yml)" >> README.md
+    echo "[![Sphinx build](https://github.com/{{username}}/{{reponame}}/actions/workflows/sphinx.yml/badge.svg)](https://github.com/{{username}}/{{reponame}}/actions/workflows/sphinx.yml)" >> README.md
+    echo "[![pages-build-deployment](https://github.com/{{username}}/{{reponame}}/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/{{username}}/{{reponame}}/actions/workflows/pages/pages-build-deployment)" >> README.md
+
+# WARNING! Reset git history, add all files and make initial commit
+@ginit:
+    # Reset git repo (remove all commits)
+    # this is useful when Cleanpython is cloned
+    rm -rf .git
+    git init
+    git branch -m main
+    git add .
+    git commit -m "Initial commit (based on CleanPython template)"
+
 # first time installation to get the new versions of libraries and check everything is ok
 @start:
     echo "Installing requirements..."
+    pip install --upgrade pip
     pip install -r update-requirements.txt
     echo "Complete checkup of code: lint and test coverage"
     just check
     echo "Creating documentation of current codebase"
     just doc
-    echo "updating requirements.txt"
+    echo "Updating requirements.txt"
     pip freeze > requirements.txt
     echo "Done."
     echo =========================================================================================
@@ -34,13 +63,16 @@ MIN_COVERAGE := '100'
 
 # install stuff: requirements and git hooks (assume virtualenv activated)
 install:
+    pip install --upgrade pip
     pip install -r requirements.txt
 
-# update requirements.txt
-update:
+# get the latest versions of the installed libraries and update requirements.txt
+up:
+    pip install --upgrade pip
     pip uninstall -y -r requirements.txt
     pip install -r update-requirements.txt
     pip freeze > requirements.txt
+    echo "Remember to commit the updated requirements.txt"
 
 # install pre-commit hooks (just lint) and pre-push hooks (just test)
 install-hooks:
@@ -51,7 +83,7 @@ install-hooks:
     echo "just test" > .git/hooks/pre-push&&chmod +x .git/hooks/pre-push
 
 # bootstrap your virtualenv
-setup-virtualenv VIRTUALENV:
+setenv VIRTUALENV:
     @echo Create virtualenv and use it to install requirements
     virtualenv -p python3 {{VIRTUALENVS_DIR}}/{{VIRTUALENV}}
     {{VIRTUALENVS_DIR}}/{{VIRTUALENV}}/bin/python -m pip install -r requirements.txt
@@ -59,19 +91,19 @@ setup-virtualenv VIRTUALENV:
 
 @_mypy:
     mypy --ignore-missing-imports src
-    echo "mypy  : OK"
+    echo "mypy  : OK ✔️"
 
 @_flake8:
     flake8 .
-    echo "flake8: OK"
+    echo "flake8: OK ✔️"
 
 @_pylint:
     pylint src
-    echo "pylint: OK"
+    echo "pylint: OK ✔️"
 
 @_isort:
-    isort --check-only --recursive --quiet . || just _fail "fix imports by calling \'just fix\'"
-    echo "isort:  OK"
+    isort --check-only --recursive --quiet . || just _fail "Fix imports by calling \'just fix\'."
+    echo "isort : OK ✔️"
 
 # statically check the codebase (mypy, flake8, pylint, isort)
 @lint:
@@ -93,32 +125,35 @@ setup-virtualenv VIRTUALENV:
 @test:
     pytest .
 
-# (run test if no coverage.xml found) create html report and open it
+# run tests with coverage.py, create html report and open it
 @cov:
-    ls coverage.xml || just _test-cov
+    just _test-cov
     coverage html  # create an HTML report
     just _open htmlcov/index.html
 
 # check if coverage satisfies requirements
 @_check-cov:
     coverage report --fail-under {{MIN_COVERAGE}}
-    echo "test coverage: OK"
+    echo "Test coverage {{MIN_COVERAGE}}%  : OK ✅"
 
 # complete checkup: code analysis, tests and coverage
 @check:
     just lint
     just _test-cov
     just _check-cov
-    echo Quality check OK!
+    echo Global quality check: OK ✅
 
 # ensure that working tree is clean
 @_working-tree-clean:
-    python src/git_status.py clean || just _fail "Your working tree is not clean."
+    git diff-index --quiet HEAD -- || just _fail "The working tree is not clean."
 
 # ensure that git repo is clean for commit
-# (contains only stuff in the index, not in the worktree)
+# (contains only staged files in the index, not in the worktree)
 @_index-only:
-    python src/git_status.py index || just _fail "Your working tree is not clean or you don\'t have changes to commit."
+    # Fail if there are untracked files
+    git diff-files --quiet --ignore-submodules -- || just _fail "Unstaged changes in index."
+    # Fail if the worktree is totally clean (nothing to commit)
+    git status -s | grep '^' || just _fail "Nothing to commit."
     echo git-staged files and clean worktree.
 
 # require quality and no garbage in the repo worktree
@@ -139,26 +174,24 @@ setup-virtualenv VIRTUALENV:
 @benchmarks K_SELECTOR="test":
     pytest --benchmark-enable --benchmark-only -k {{K_SELECTOR}} .
 
-# bootstrap documentation
+# bootstrap documentation (to test the recipe, `rm -rf docs`, then `just doc`)
 @_setup-doc:
     echo Setting up documentation...
-    sphinx-quickstart -a "{{AUTHOR}}" -p "{{PROJECT_NAME}}" -v {{DOC_INIT_VERSION}} -l {{DOC_LANGUAGE}} --sep --ext-coverage --ext-todo --ext-viewcode --no-makefile --no-batchfile ./{{DOC_DIRNAME}}
+    sphinx-quickstart --no-sep --ext-autodoc --ext-coverage --ext-todo --ext-viewcode --no-makefile --no-batchfile ./{{DOC_DIRNAME}}
 
-    # move conf to main doc directory instead of its "source"
-    mv ./{{DOC_DIRNAME}}/source/conf.py ./{{DOC_DIRNAME}}
-    @echo NB: please uncomment "sys.path.append" line on conf.py and pass "../src" as argument in order to generate the documentation correctly.
-    # TODO: automatize the previous step
-    echo Please rename PROJECT_NAME and AUTHOR in \'justfile\' to your project name and author name.
+    # uncomment "sys.path.append" line on conf.py and pass "../src" as argument in order to generate the documentation correctly.
+    # and fix also index.rst (adding "modules" to the toctree, otherwise the build does not work properly)
+    python confix.py
 
 # setup or build and open generated documentation
 @_build-doc:
     # Check if setup is needed and call _setup-doc in this case.
-    ls ./{{DOC_DIRNAME}}/conf.py || (just _setup-doc && just _exit "Now edit conf.py and recall just doc to build the documentation.")
+    ls ./{{DOC_DIRNAME}}/conf.py || just _setup-doc
 
-    # echo Auto-generate modules documentation...
+    echo Auto-generate modules documentation...
     # Positional args from seconds (if any) are paths you want to exclude from docs
     # -f overwrite existing .rst, --private include also "_"-starting attributes.
-    # sphinx-apidoc -f -o ./{{DOC_DIRNAME}}/ ./src ./src/*git_status.py
+    sphinx-apidoc -f -o ./{{DOC_DIRNAME}}/ ./src
 
     echo Building documentation...
     sphinx-build -b html -c ./{{DOC_DIRNAME}} ./{{DOC_DIRNAME}}/ ./{{DOC_DIRNAME}}/build/html -v
