@@ -138,7 +138,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../rcsbids.html#usage">Usage</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../test_rcsbids.html#test-rcsbids-module">test_rcsbids module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_rcsbids.html#module-test_rcsbids">test_rcsbids module</a></li>
 </ul>
 </li>
 </ul>
@@ -166,7 +166,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../rcsbids.html#usage">Usage</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../test_rcsbids.html#test-rcsbids-module">test_rcsbids module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../test_rcsbids.html#module-test_rcsbids">test_rcsbids module</a></li>
 </ul>
 </li>
 </ul>
@@ -214,7 +214,7 @@
 <span class="sd">    :param query: advanced query in json format.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Documentation URL: https://search.rcsb.org/#search-api</span>
-    <span class="n">url_get</span> <span class="o">=</span> <span class="s1">&#39;https://search.rcsb.org/rcsbsearch/v1/query?json=&#39;</span> <span class="o">+</span> <span class="n">query</span>
+    <span class="n">url_get</span> <span class="o">=</span> <span class="s1">&#39;https://search.rcsb.org/rcsbsearch/v2/query?json=&#39;</span> <span class="o">+</span> <span class="n">query</span>
     <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url_get</span><span class="p">)</span>
     <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>

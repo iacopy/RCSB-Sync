@@ -153,7 +153,7 @@
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#usage">Usage</a></li>
 </ul>
 </li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#test-rcsbids-module">test_rcsbids module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#module-test_rcsbids">test_rcsbids module</a></li>
 </ul>
 </li>
 </ul>
@@ -181,7 +181,7 @@
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#usage">Usage</a></li>
 </ul>
 </li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#test-rcsbids-module">test_rcsbids module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#module-test_rcsbids">test_rcsbids module</a></li>
 </ul>
 </li>
 </ul>
@@ -190,8 +190,69 @@
           </div>
           <div class="body">
             
-  <div class="section" id="test-rcsbids-module">
-<h1>test_rcsbids module<a class="headerlink" href="#test-rcsbids-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-test_rcsbids">
+<span id="test-rcsbids-module"></span><h1>test_rcsbids module<a class="headerlink" href="#module-test_rcsbids" title="Permalink to this headline">¶</a></h1>
+<p>Testing the functions of the rcsbids module,
+which are used to retrieve the PDB IDs from the RCSB database.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="test_rcsbids.test__load_query">
+<code class="sig-prename descclassname"><span class="pre">test_rcsbids.</span></code><code class="sig-name descname"><span class="pre">test__load_query</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/test_rcsbids.html#test__load_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_rcsbids.test__load_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test the _load_query function, which loads a query from a file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="test_rcsbids.test_load_pdb_ids">
+<code class="sig-prename descclassname"><span class="pre">test_rcsbids.</span></code><code class="sig-name descname"><span class="pre">test_load_pdb_ids</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/test_rcsbids.html#test_load_pdb_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_rcsbids.test_load_pdb_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test the load_pdb_ids function, which loads the PDB IDs from a given file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="test_rcsbids.test_retrieve_pdb_ids">
+<code class="sig-prename descclassname"><span class="pre">test_rcsbids.</span></code><code class="sig-name descname"><span class="pre">test_retrieve_pdb_ids</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/test_rcsbids.html#test_retrieve_pdb_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_rcsbids.test_retrieve_pdb_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a known JSON test query and check that the expected PDB IDs are returned.</p>
+<p>This is an API test, not a unit test.
+This query retrieve IDs of proteins whose the experimental method is THEORETICAL MODEL (I choose this because it returns only 6 entries, currently).
+NB: obviously, this test will fail when the number of entries change.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="test_rcsbids.test_store_pdb_ids">
+<code class="sig-prename descclassname"><span class="pre">test_rcsbids.</span></code><code class="sig-name descname"><span class="pre">test_store_pdb_ids</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/test_rcsbids.html#test_store_pdb_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_rcsbids.test_store_pdb_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test the store_pdb_ids function, which stores the PDB IDs in a given file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 
 
