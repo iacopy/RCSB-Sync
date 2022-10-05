@@ -36,7 +36,7 @@ def _send_request(query: str) -> dict:
     :param query: advanced query in json format.
     """
     # Documentation URL: https://search.rcsb.org/#search-api
-    url_get = 'https://search.rcsb.org/rcsbsearch/v1/query?json=' + query
+    url_get = 'https://search.rcsb.org/rcsbsearch/v2/query?json=' + query
     response = requests.get(url_get)
     response.raise_for_status()
     return response.json()
