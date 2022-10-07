@@ -9,7 +9,7 @@ Automatizza il download di strutture proteiche dal server remoto RCSB.
 
 Esempio:
 
-    python src/organism.py ~/your_project/Rattus_norvegicus/ -j 2
+    python src/project.py ~/your_project/Rattus_norvegicus/ -j 2
 
 Vedi la documentazione su https://iacopy.github.io/rcsb-sync/.
 
@@ -65,6 +65,6 @@ altrimenti il tasto copia la comprime in una sola riga).
 
 Creare un file .json che contenga tale stringa e posizionarlo dentro la cartella `queries`.
 
-Attenzione: modificare il valore `rows` che di default è 25, e impostarlo ad un valore superiore al numero totale di strutture restituite da quell'organismo.
+Attenzione: modificare il valore `rows` che di default è 25, e impostarlo ad un valore superiore al numero totale di strutture restituite da quella query.
 Per esempio, per l'uomo si può mettere anche 99999, in questo modo scarica tutti gli ID delle 55k strutture in un colpo solo,
 senza bisogno di fare 3 query con 3 range di data. Non so quale sia il valore massimo accettato, ma per ora funziona.
