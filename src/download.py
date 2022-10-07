@@ -2,8 +2,8 @@
 Download PDB files from the RCSB website.
 
 While you can use this module directly, it is intended to be used by the
-higher-level modules (e.g. the ``organism`` module which downloads PDB files
-of a given organism, to keep the local working directory up-to-date).
+higher-level modules (e.g. the ``project`` module which downloads PDB files
+of a given project, to keep the local working directory up-to-date).
 """
 # Standard Library
 import os

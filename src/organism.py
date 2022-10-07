@@ -1,37 +1,37 @@
 """
-Download protein structures for an organism from the RCSB PDB database.
+Download protein structures for a project from the RCSB PDB database.
 
 Usage
 ~~~~~
 
 ::
 
-    python organism.py organism_dir [--n_jobs n_jobs]
+    python project.py project_dir [--n_jobs n_jobs]
 
 Algorithm
 ~~~~~~~~~
 
 0. If the ids are already downloaded (a ``_ids_<date>.txt`` cache file with current date exists), skip to step 2.
-1. Start by downloading the RCSB PDB IDs for the organism, using the queries in the ``queries`` directory.
-2. Before downloading the PDB files, check which PDB files are already in the local organism directory,
+1. Start by downloading the RCSB PDB IDs for the project, using the queries in the ``queries`` directory.
+2. Before downloading the PDB files, check which PDB files are already in the local project directory,
    and skip those to save time.
 3. Some local PDB files are not in the RCSB database anymore, so we mark them with a suffix (for example '.obsolete').
 4. Print a report of:
 
-   - the number of DB files already in the organism directory;
+   - the number of DB files already in the project directory;
    - the number of PDB files that will be downloaded;
    - the removed/obsolete PDB files.
 
-5. Download the PDB files corresponding to the RCSB PDB IDs which are not already in the organism directory.
+5. Download the PDB files corresponding to the RCSB PDB IDs which are not already in the project directory.
 6. During the download, report the global progress and the expected time to completion.
 
 Directory structure
 ~~~~~~~~~~~~~~~~~~~
 
-The directory structures of organisms are as follows::
+The directory structures of a project is as follows::
 
     .
-    ├── Organism
+    ├── Project
     │   ├── _ids_2022-01-01.txt
     │   ├── _ids_2022-03-01.txt
     │   ├── queries
@@ -69,7 +69,7 @@ DEFAULT_JOBS = 2
 MAX_JOBS = os.cpu_count()
 
 
-class Organism:
+class Project:
     """
     Keep synced the data directory with the remote RCSB database.
     """
@@ -94,13 +94,13 @@ class Organism:
 
     def _get_cache_file(self) -> str:
         """
-        Get the path to the pdb ids cache file for the organism.
+        Get the path to the pdb ids cache file.
         """
         return os.path.join(self.directory, '_ids_' + datetime.date.today().isoformat() + '.txt')
 
     def get_local_ids(self) -> set:
         """
-        Get the PDB IDs that are already in the organism directory.
+        Get the PDB IDs that are already in the project directory.
         """
         local_ids = set()
         for filename in os.listdir(self.data_dir):
@@ -110,7 +110,7 @@ class Organism:
 
     def fetch_remote_ids(self, cache_file: str) -> List[str]:
         """
-        Fetch the RCSB IDs for the organism from the RCSB website.
+        Fetch the RCSB IDs from the RCSB website.
 
         :param cache_file: path to the file where the list of RCSB IDs will be saved.
         :return: list of RCSB IDs.
@@ -125,10 +125,10 @@ class Organism:
 
     def fetch_or_cache(self) -> List[str]:
         """
-        Fetch the RCSB IDs for the organism from the RCSB website, or use the cached IDs if they exist.
+        Fetch the RCSB IDs from the RCSB website, or use the cached IDs if they exist.
 
         Side effect:
-            - the remote RCSB IDs are saved in the organism directory, in a file named ``_ids_<date>.txt``
+            - the remote RCSB IDs are saved in the project directory, in a file named ``_ids_<date>.txt``
               (where <date> is the current date).
 
         :return: List of RCSB IDs.
@@ -149,14 +149,14 @@ class Organism:
         """
         Similarly to git fetch, check for updates, update "indexes", but do not download the files.
 
-            - fetch the RCSB IDs for the organism from the RCSB website;
-            - check which PDB files are already in the local organism directory;
+            - fetch the RCSB IDs from the RCSB website;
+            - check which PDB files are already in the local project directory;
             - check which PDB files are obsolete and mark them with the suffix '.obsolete';
             - print a sync report.
         """
         remote_ids = set(self.fetch_or_cache())
 
-        # Check which PDB files are already in the local organism directory, and skip those to save time.
+        # Check which PDB files are already in the local project directory, and skip those to save time.
         local_ids = self.get_local_ids()
         # Files to be downloaded.
         tbd_ids = [id_ for id_ in remote_ids if id_ not in local_ids]
@@ -166,9 +166,9 @@ class Organism:
         n_downloaded_ok = len(local_ids) - len(removed_ids)
 
         # Print a numeric report of:
-        # - the number of all remote PDB files of the organism;
-        # - the number of remote files already in the local organism directory;
-        # - the number of PDB files that are in the remote database and not in the local organism directory;
+        # - the number of all remote PDB files (in the RCSB database) related to the queries;
+        # - the number of remote files already in the local project directory;
+        # - the number of PDB files that are in the remote database and not in the local project directory;
         # - the number of removed/obsolete PDB files (i.e. those that are not in the remote database anymore).
         if tbd_ids:
             completion_rate = round(100 * n_downloaded_ok / len(remote_ids), 3)
@@ -200,7 +200,7 @@ class Organism:
         """
         Similarly to git pull, synchronize the local working directory with the remote repository.
 
-            - download the PDB files corresponding to the RCSB PDB IDs which are not already in the organism directory.
+            - download the PDB files corresponding to the RCSB PDB IDs which are not already in the project directory.
             - every 10 downloaded files, report the global progress and the expected time to complete
               (based on the number of PDB files to be downloaded).
 
@@ -210,7 +210,7 @@ class Organism:
             # If the remote RCSB IDs have not been fetched yet, fetch them.
             self.fetch()
 
-        # Download the PDB files corresponding to the RCSB PDB IDs which are not already in the organism directory.
+        # Download the PDB files corresponding to the RCSB PDB IDs which are not already in the project directory.
         tbd_ids = self.tbd_pdb_ids
         total_tbd_ids = len(tbd_ids)
 
@@ -229,31 +229,31 @@ class Organism:
         self.fetch()
 
 
-def main(organism_dir: str, n_jobs: int = 1, verbose: bool = False) -> None:
+def main(project_dir: str, n_jobs: int = 1, verbose: bool = False) -> None:
     """
-    Fetch the RCSB IDs for the organism from the RCSB website, and download the corresponding PDB files.
+    Fetch the RCSB IDs from the RCSB website, and download the corresponding PDB files.
 
-    :param organism_dir: path to the organism directory.
+    :param project_dir: path to the project directory.
     :param n_jobs: number of parallel jobs to use.
     :param verbose: quite quiet if False.
     """
-    organism = Organism(organism_dir, verbose=verbose)
+    project = Project(project_dir, verbose=verbose)
 
     # Fetch the remote RCSB IDs.
-    organism.fetch()
+    project.fetch()
 
     # Mark obsolete the local PDB files that are not in the remote database anymore.
     if (
-        organism.obsolete_pdb_ids
-        and input(f'\nMark {len(organism.obsolete_pdb_ids)} PDB files as obsolete? (y/n) ') == 'y'
+        project.obsolete_pdb_ids
+        and input(f'\nMark {len(project.obsolete_pdb_ids)} PDB files as obsolete? (y/n) ') == 'y'
     ):
-        organism.mark_obsolete()
+        project.mark_obsolete()
 
     # Ask the user to confirm the download of missing PDB files.
-    if len(organism.tbd_pdb_ids) > 0:
-        answer = input(f'\nDo you want to download {len(organism.tbd_pdb_ids)} PDB files? (y/n) ')
+    if len(project.tbd_pdb_ids) > 0:
+        answer = input(f'\nDo you want to download {len(project.tbd_pdb_ids)} PDB files? (y/n) ')
         if answer.lower() == 'y':
-            organism.pull(n_jobs=n_jobs)
+            project.pull(n_jobs=n_jobs)
         else:
             print('Download cancelled.')
 
@@ -261,10 +261,10 @@ def main(organism_dir: str, n_jobs: int = 1, verbose: bool = False) -> None:
 if __name__ == '__main__':
     # parse command line arguments
     parser = argparse.ArgumentParser(description='Download PDB files from the RCSB website.')
-    parser.add_argument('organism_dir', help='the directory of the organism')
+    parser.add_argument('project_dir', help='the directory of the project')
     parser.add_argument('-j', '--n_jobs', type=int, default=DEFAULT_JOBS,
                         help=f'the number of parallel jobs for downloading (default: {DEFAULT_JOBS}, max: {MAX_JOBS})')
     parser.add_argument('-v', '--verbose', action='store_true', help='print verbose output')
     args = parser.parse_args()
 
-    main(args.organism_dir, args.n_jobs, args.verbose)
+    main(args.project_dir, args.n_jobs, args.verbose)
