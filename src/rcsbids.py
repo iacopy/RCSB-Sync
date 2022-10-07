@@ -15,6 +15,7 @@ import json
 # 3rd party
 import requests
 
+# Constants
 IDS_SEPARATOR = '\n'
 
 
@@ -56,41 +57,32 @@ def _load_query(query_file: str) -> str:
     return json.dumps(query)
 
 
-def store_pdb_ids(ids: list, dest: str, separator: str = IDS_SEPARATOR) -> None:
+def store_pdb_ids(ids: list, dest: str) -> None:
     """Store the list of PDB IDs in a file.
 
     :param ids: list of PDB IDs.
     :param dest: path to the output file.
-    :param separator: separator used in the output file.
     """
     with open(dest, 'w', encoding='ascii') as file_pointer:
         for id_ in ids:
-            file_pointer.write(id_ + separator)
+            file_pointer.write(id_ + IDS_SEPARATOR)
 
 
 def load_pdb_ids(pdb_ids_file: str) -> list:
     """
     Load the list of PDB IDs from a file.
 
-    Automatically detect the separator used in the file, which is the 5th character.
-    Then check that last character of the file is the same character.
-
     :param pdb_ids_file: path to the file containing the list of PDB IDs.
     :return: list of PDB IDs.
     """
-    with open(pdb_ids_file, 'r', encoding='ascii') as file_pointer:
-        ids = file_pointer.read()
-    separator = ids[4]
-    assert ids[-1] == separator, f'The last character of the file {pdb_ids_file} is "{ids[-1]}", not "{separator}".'
-    return ids.split(separator)[:-1]
+    return [line.strip() for line in open(pdb_ids_file, 'r', encoding='ascii')]
 
 
-def search_and_download_ids(query: str, output: str, separator: str = IDS_SEPARATOR) -> list:  # pragma: no cover
+def search_and_download_ids(query: str, output: str) -> list:  # pragma: no cover
     """Search and download PDB IDs from the RCSB website, given an advanced query in json format.
 
     :param query: path to the json file containing the advanced query.
     :param output: path to the output file.
-    :param separator: separator used in the output file.
     :return: list of PDB IDs.
     """
     # Check if the query is a file or a string.
@@ -104,7 +96,7 @@ def search_and_download_ids(query: str, output: str, separator: str = IDS_SEPARA
     print(f'Found {len(ids)} PDB IDs.')
 
     # Store the list of PDB IDs in a file.
-    store_pdb_ids(ids, output, separator=separator)
+    store_pdb_ids(ids, output)
     return ids
 
 

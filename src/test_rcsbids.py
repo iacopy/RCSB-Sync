@@ -133,8 +133,7 @@ def test_load_pdb_ids():
 
     :return: None
     """
-    # Test with a separator different from the default one
-    store_pdb_ids(EXPECTED_IDS, 'test_pdb_ids.txt', separator=',')
+    store_pdb_ids(EXPECTED_IDS, 'test_pdb_ids.txt')
     ids = load_pdb_ids('test_pdb_ids.txt')
     assert ids == EXPECTED_IDS
     os.remove('test_pdb_ids.txt')
