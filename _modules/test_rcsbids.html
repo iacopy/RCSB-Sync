@@ -195,99 +195,119 @@
 <span class="kn">from</span> <span class="nn">rcsbids</span> <span class="kn">import</span> <span class="n">retrieve_pdb_ids</span>
 <span class="kn">from</span> <span class="nn">rcsbids</span> <span class="kn">import</span> <span class="n">store_pdb_ids</span>
 
-<span class="n">TEST_QUERY</span> <span class="o">=</span> <span class="n">_load_query</span><span class="p">(</span><span class="s1">&#39;queries/test_query.json&#39;</span><span class="p">)</span>
-<span class="c1"># A real query, which returns 6 entries.</span>
-<span class="n">EXPECTED_QUERY</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;{&quot;query&quot;:{&quot;type&quot;:&quot;group&quot;,&quot;logical_operator&quot;:&quot;and&quot;,&quot;nodes&quot;:[{&quot;type&quot;:&quot;terminal&quot;,&quot;service&quot;:&quot;text&quot;,&quot;parameters&quot;:{&quot;attribute&quot;:&quot;entity_poly.rcsb_entity_polymer_type&quot;,&quot;operator&quot;:&quot;exact_match&quot;,&quot;negation&quot;:false,&quot;value&quot;:&quot;Protein&quot;}},{&quot;type&quot;:&quot;terminal&quot;,&quot;service&quot;:&quot;text&quot;,&quot;parameters&quot;:{&quot;attribute&quot;:&quot;exptl.method&quot;,&quot;operator&quot;:&quot;exact_match&quot;,&quot;negation&quot;:false,&quot;value&quot;:&quot;THEORETICAL MODEL&quot;}}],&quot;label&quot;:&quot;text&quot;},&quot;return_type&quot;:&quot;entry&quot;,&quot;request_options&quot;:{&quot;pager&quot;:{&quot;start&quot;:0,&quot;rows&quot;:25},&quot;scoring_strategy&quot;:&quot;combined&quot;,&quot;sort&quot;:[{&quot;sort_by&quot;:&quot;score&quot;,&quot;direction&quot;:&quot;desc&quot;}]}}&quot;&quot;&quot;</span>
+<span class="c1"># Test data</span>
+<span class="n">TEST_QUERY_EXP</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;{</span>
+<span class="s2">  &quot;query&quot;: {</span>
+<span class="s2">    &quot;type&quot;: &quot;terminal&quot;,</span>
+<span class="s2">    &quot;label&quot;: &quot;text&quot;,</span>
+<span class="s2">    &quot;service&quot;: &quot;text&quot;,</span>
+<span class="s2">    &quot;parameters&quot;: {</span>
+<span class="s2">      &quot;attribute&quot;: &quot;rcsb_entity_source_organism.taxonomy_lineage.name&quot;,</span>
+<span class="s2">      &quot;operator&quot;: &quot;exact_match&quot;,</span>
+<span class="s2">      &quot;negation&quot;: false,</span>
+<span class="s2">      &quot;value&quot;: &quot;Verrucomicrobia subdivision 3&quot;</span>
+<span class="s2">    }</span>
+<span class="s2">  },</span>
+<span class="s2">  &quot;return_type&quot;: &quot;entry&quot;,</span>
+<span class="s2">  &quot;request_options&quot;: {</span>
+<span class="s2">    &quot;paginate&quot;: {</span>
+<span class="s2">      &quot;start&quot;: 0,</span>
+<span class="s2">      &quot;rows&quot;: 25</span>
+<span class="s2">    },</span>
+<span class="s2">    &quot;results_content_type&quot;: [</span>
+<span class="s2">      &quot;experimental&quot;</span>
+<span class="s2">    ],</span>
+<span class="s2">    &quot;sort&quot;: [</span>
+<span class="s2">      {</span>
+<span class="s2">        &quot;sort_by&quot;: &quot;score&quot;,</span>
+<span class="s2">        &quot;direction&quot;: &quot;desc&quot;</span>
+<span class="s2">      }</span>
+<span class="s2">    ],</span>
+<span class="s2">    &quot;scoring_strategy&quot;: &quot;combined&quot;</span>
+<span class="s2">  }</span>
+<span class="s2">}</span>
+<span class="s2">&quot;&quot;&quot;</span>
 
-<span class="c1"># The server response to the query above.</span>
-<span class="n">EXPECTED_JSON_RESPONSE</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;query_id&quot;</span><span class="p">:</span> <span class="s2">&quot;ed8fc6b7-7a04-4733-ba33-88740de1f970&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;result_type&quot;</span><span class="p">:</span> <span class="s2">&quot;entry&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;total_count&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
-    <span class="s2">&quot;result_set&quot;</span><span class="p">:</span> <span class="p">[{</span>
-        <span class="s2">&quot;identifier&quot;</span><span class="p">:</span> <span class="s2">&quot;1DWL&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
-        <span class="s2">&quot;services&quot;</span><span class="p">:</span> <span class="p">[{</span>
-            <span class="s2">&quot;service_type&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;nodes&quot;</span><span class="p">:</span> <span class="p">[{</span>
-                <span class="s2">&quot;node_id&quot;</span><span class="p">:</span> <span class="mi">31667</span><span class="p">,</span>
-                <span class="s2">&quot;original_score&quot;</span><span class="p">:</span> <span class="mf">10.145727157592773</span><span class="p">,</span>
-                <span class="s2">&quot;norm_score&quot;</span><span class="p">:</span> <span class="mf">1.0</span>
-            <span class="p">}]</span>
-        <span class="p">}]</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s2">&quot;identifier&quot;</span><span class="p">:</span> <span class="s2">&quot;1E08&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
-        <span class="s2">&quot;services&quot;</span><span class="p">:</span> <span class="p">[{</span>
-            <span class="s2">&quot;service_type&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;nodes&quot;</span><span class="p">:</span> <span class="p">[{</span>
-                <span class="s2">&quot;node_id&quot;</span><span class="p">:</span> <span class="mi">31667</span><span class="p">,</span>
-                <span class="s2">&quot;original_score&quot;</span><span class="p">:</span> <span class="mf">10.145727157592773</span><span class="p">,</span>
-                <span class="s2">&quot;norm_score&quot;</span><span class="p">:</span> <span class="mf">1.0</span>
-            <span class="p">}]</span>
-        <span class="p">}]</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s2">&quot;identifier&quot;</span><span class="p">:</span> <span class="s2">&quot;1GX7&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
-        <span class="s2">&quot;services&quot;</span><span class="p">:</span> <span class="p">[{</span>
-            <span class="s2">&quot;service_type&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;nodes&quot;</span><span class="p">:</span> <span class="p">[{</span>
-                <span class="s2">&quot;node_id&quot;</span><span class="p">:</span> <span class="mi">31667</span><span class="p">,</span>
-                <span class="s2">&quot;original_score&quot;</span><span class="p">:</span> <span class="mf">10.145727157592773</span><span class="p">,</span>
-                <span class="s2">&quot;norm_score&quot;</span><span class="p">:</span> <span class="mf">1.0</span>
-            <span class="p">}]</span>
-        <span class="p">}]</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s2">&quot;identifier&quot;</span><span class="p">:</span> <span class="s2">&quot;1OLN&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
-        <span class="s2">&quot;services&quot;</span><span class="p">:</span> <span class="p">[{</span>
-            <span class="s2">&quot;service_type&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;nodes&quot;</span><span class="p">:</span> <span class="p">[{</span>
-                <span class="s2">&quot;node_id&quot;</span><span class="p">:</span> <span class="mi">31667</span><span class="p">,</span>
-                <span class="s2">&quot;original_score&quot;</span><span class="p">:</span> <span class="mf">10.145727157592773</span><span class="p">,</span>
-                <span class="s2">&quot;norm_score&quot;</span><span class="p">:</span> <span class="mf">1.0</span>
-            <span class="p">}]</span>
-        <span class="p">}]</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s2">&quot;identifier&quot;</span><span class="p">:</span> <span class="s2">&quot;1UR6&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
-        <span class="s2">&quot;services&quot;</span><span class="p">:</span> <span class="p">[{</span>
-            <span class="s2">&quot;service_type&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;nodes&quot;</span><span class="p">:</span> <span class="p">[{</span>
-                <span class="s2">&quot;node_id&quot;</span><span class="p">:</span> <span class="mi">31667</span><span class="p">,</span>
-                <span class="s2">&quot;original_score&quot;</span><span class="p">:</span> <span class="mf">10.145727157592773</span><span class="p">,</span>
-                <span class="s2">&quot;norm_score&quot;</span><span class="p">:</span> <span class="mf">1.0</span>
-            <span class="p">}]</span>
-        <span class="p">}]</span>
-    <span class="p">},</span> <span class="p">{</span>
-        <span class="s2">&quot;identifier&quot;</span><span class="p">:</span> <span class="s2">&quot;1VYC&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
-        <span class="s2">&quot;services&quot;</span><span class="p">:</span> <span class="p">[{</span>
-            <span class="s2">&quot;service_type&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;nodes&quot;</span><span class="p">:</span> <span class="p">[{</span>
-                <span class="s2">&quot;node_id&quot;</span><span class="p">:</span> <span class="mi">31667</span><span class="p">,</span>
-                <span class="s2">&quot;original_score&quot;</span><span class="p">:</span> <span class="mf">10.145727157592773</span><span class="p">,</span>
-                <span class="s2">&quot;norm_score&quot;</span><span class="p">:</span> <span class="mf">1.0</span>
-            <span class="p">}]</span>
-        <span class="p">}]</span>
-    <span class="p">}]</span>
-<span class="p">}</span>
+<span class="n">TEST_QUERY_COMBO</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;{</span>
+<span class="s2">  &quot;query&quot;: {</span>
+<span class="s2">    &quot;type&quot;: &quot;terminal&quot;,</span>
+<span class="s2">    &quot;label&quot;: &quot;text&quot;,</span>
+<span class="s2">    &quot;service&quot;: &quot;text&quot;,</span>
+<span class="s2">    &quot;parameters&quot;: {</span>
+<span class="s2">      &quot;attribute&quot;: &quot;rcsb_entity_source_organism.taxonomy_lineage.name&quot;,</span>
+<span class="s2">      &quot;operator&quot;: &quot;exact_match&quot;,</span>
+<span class="s2">      &quot;negation&quot;: false,</span>
+<span class="s2">      &quot;value&quot;: &quot;Verrucomicrobia subdivision 3&quot;</span>
+<span class="s2">    }</span>
+<span class="s2">  },</span>
+<span class="s2">  &quot;return_type&quot;: &quot;entry&quot;,</span>
+<span class="s2">  &quot;request_options&quot;: {</span>
+<span class="s2">    &quot;paginate&quot;: {</span>
+<span class="s2">      &quot;start&quot;: 0,</span>
+<span class="s2">      &quot;rows&quot;: 25</span>
+<span class="s2">    },</span>
+<span class="s2">    &quot;results_content_type&quot;: [</span>
+<span class="s2">      &quot;computational&quot;,</span>
+<span class="s2">      &quot;experimental&quot;</span>
+<span class="s2">    ],</span>
+<span class="s2">    &quot;sort&quot;: [</span>
+<span class="s2">      {</span>
+<span class="s2">        &quot;sort_by&quot;: &quot;score&quot;,</span>
+<span class="s2">        &quot;direction&quot;: &quot;desc&quot;</span>
+<span class="s2">      }</span>
+<span class="s2">    ],</span>
+<span class="s2">    &quot;scoring_strategy&quot;: &quot;combined&quot;</span>
+<span class="s2">  }</span>
+<span class="s2">}</span>
+<span class="s2">&quot;&quot;&quot;</span>
 
-<span class="n">EXPECTED_IDS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;1DWL&#39;</span><span class="p">,</span> <span class="s1">&#39;1E08&#39;</span><span class="p">,</span> <span class="s1">&#39;1GX7&#39;</span><span class="p">,</span> <span class="s1">&#39;1OLN&#39;</span><span class="p">,</span> <span class="s1">&#39;1UR6&#39;</span><span class="p">,</span> <span class="s1">&#39;1VYC&#39;</span><span class="p">]</span>
+<span class="n">EXPECTED_COMBO</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;{</span>
+<span class="s2">	&quot;query_id&quot;: &quot;9aac1a6b-cdc5-4e30-8e81-718b331ce9b3&quot;,</span>
+<span class="s2">	&quot;result_type&quot;: &quot;entry&quot;,</span>
+<span class="s2">	&quot;total_count&quot;: 2,</span>
+<span class="s2">	&quot;result_set&quot;: [</span>
+<span class="s2">		{</span>
+<span class="s2">			&quot;identifier&quot;: &quot;AF_AFB9XEI9F1&quot;,</span>
+<span class="s2">			&quot;score&quot;: 1</span>
+<span class="s2">		},</span>
+<span class="s2">		{</span>
+<span class="s2">			&quot;identifier&quot;: &quot;AF_AFB9XEK4F1&quot;,</span>
+<span class="s2">			&quot;score&quot;: 1</span>
+<span class="s2">		}</span>
+<span class="s2">	]</span>
+<span class="s2">}&quot;&quot;&quot;</span>
 
 
-<div class="viewcode-block" id="test_retrieve_pdb_ids"><a class="viewcode-back" href="../test_rcsbids.html#test_rcsbids.test_retrieve_pdb_ids">[docs]</a><span class="k">def</span> <span class="nf">test_retrieve_pdb_ids</span><span class="p">():</span>
+<span class="c1"># The expected PDB IDs for the query above, which include also computational results, are from the AlphaFold DB.</span>
+<span class="n">EXPECTED_IDS_AF</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;AF_AFB9XEI9F1&#39;</span><span class="p">,</span> <span class="s1">&#39;AF_AFB9XEK4F1&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="test_retrieve_pdb_ids_zero"><a class="viewcode-back" href="../test_rcsbids.html#test_rcsbids.test_retrieve_pdb_ids_zero">[docs]</a><span class="k">def</span> <span class="nf">test_retrieve_pdb_ids_zero</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Perform a known JSON test query and check that the expected PDB IDs are returned.</span>
 
 <span class="sd">    This is an API test, not a unit test.</span>
-<span class="sd">    This query retrieve IDs of proteins whose the experimental method is THEORETICAL MODEL (I choose this because it returns only 6 entries, currently).</span>
-<span class="sd">    NB: obviously, this test will fail when the number of entries change.</span>
+<span class="sd">    This query retrieve IDs of proteins for an organism for which there are no experimental PDB entries.</span>
+<span class="sd">    WARNING: obviously, this test will fail when the number of entries change.</span>
 
 <span class="sd">    :return: None</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">ids</span> <span class="o">=</span> <span class="n">retrieve_pdb_ids</span><span class="p">(</span><span class="n">TEST_QUERY</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="n">ids</span> <span class="o">==</span> <span class="n">EXPECTED_IDS</span></div>
+    <span class="n">ids</span> <span class="o">=</span> <span class="n">retrieve_pdb_ids</span><span class="p">(</span><span class="n">TEST_QUERY_EXP</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">ids</span> <span class="o">==</span> <span class="p">[]</span></div>
+
+
+<div class="viewcode-block" id="test_retrieve_pdb_ids_computational"><a class="viewcode-back" href="../test_rcsbids.html#test_rcsbids.test_retrieve_pdb_ids_computational">[docs]</a><span class="k">def</span> <span class="nf">test_retrieve_pdb_ids_computational</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform a known JSON test query and check that the expected PDB IDs are returned.</span>
+
+<span class="sd">    This is an API test, not a unit test.</span>
+<span class="sd">    This query retrieve IDs of proteins for an organism for which there are no experimental PDB entries.</span>
+<span class="sd">    WARNING: obviously, this test will fail when the number of entries change.</span>
+
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ids</span> <span class="o">=</span> <span class="n">retrieve_pdb_ids</span><span class="p">(</span><span class="n">TEST_QUERY_COMBO</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">ids</span> <span class="o">==</span> <span class="n">EXPECTED_IDS_AF</span></div>
 
 
 <div class="viewcode-block" id="test_store_pdb_ids"><a class="viewcode-back" href="../test_rcsbids.html#test_rcsbids.test_store_pdb_ids">[docs]</a><span class="k">def</span> <span class="nf">test_store_pdb_ids</span><span class="p">():</span>
@@ -296,13 +316,13 @@
 
 <span class="sd">    :return: None</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">store_pdb_ids</span><span class="p">(</span><span class="n">EXPECTED_IDS</span><span class="p">,</span> <span class="s1">&#39;test_pdb_ids.txt&#39;</span><span class="p">)</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test_pdb_ids.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_pointer</span><span class="p">:</span>
+    <span class="n">store_pdb_ids</span><span class="p">(</span><span class="n">EXPECTED_IDS_AF</span><span class="p">,</span> <span class="s1">&#39;src/test_pdb_ids.txt&#39;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;src/test_pdb_ids.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_pointer</span><span class="p">:</span>
         <span class="n">ids</span> <span class="o">=</span> <span class="n">file_pointer</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="c1"># the last line should be empty (the file should end with a newline)</span>
     <span class="k">assert</span> <span class="n">ids</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
-    <span class="k">assert</span> <span class="n">ids</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">EXPECTED_IDS</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;test_pdb_ids.txt&#39;</span><span class="p">)</span></div>
+    <span class="k">assert</span> <span class="n">ids</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">EXPECTED_IDS_AF</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;src/test_pdb_ids.txt&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="test_load_pdb_ids"><a class="viewcode-back" href="../test_rcsbids.html#test_rcsbids.test_load_pdb_ids">[docs]</a><span class="k">def</span> <span class="nf">test_load_pdb_ids</span><span class="p">():</span>
@@ -312,10 +332,10 @@
 <span class="sd">    :return: None</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Test with a separator different from the default one</span>
-    <span class="n">store_pdb_ids</span><span class="p">(</span><span class="n">EXPECTED_IDS</span><span class="p">,</span> <span class="s1">&#39;test_pdb_ids.txt&#39;</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
-    <span class="n">ids</span> <span class="o">=</span> <span class="n">load_pdb_ids</span><span class="p">(</span><span class="s1">&#39;test_pdb_ids.txt&#39;</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="n">ids</span> <span class="o">==</span> <span class="n">EXPECTED_IDS</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;test_pdb_ids.txt&#39;</span><span class="p">)</span></div>
+    <span class="n">store_pdb_ids</span><span class="p">(</span><span class="n">EXPECTED_IDS_AF</span><span class="p">,</span> <span class="s1">&#39;src/test_pdb_ids.txt&#39;</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">ids</span> <span class="o">=</span> <span class="n">load_pdb_ids</span><span class="p">(</span><span class="s1">&#39;src/test_pdb_ids.txt&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">ids</span> <span class="o">==</span> <span class="n">EXPECTED_IDS_AF</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;src/test_pdb_ids.txt&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="test__load_query"><a class="viewcode-back" href="../test_rcsbids.html#test_rcsbids.test__load_query">[docs]</a><span class="k">def</span> <span class="nf">test__load_query</span><span class="p">():</span>
@@ -324,10 +344,11 @@
 
 <span class="sd">    :return: None</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">query</span> <span class="o">=</span> <span class="n">_load_query</span><span class="p">(</span><span class="s1">&#39;queries/test_query.json&#39;</span><span class="p">)</span>
+    <span class="n">expected</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;{&quot;query&quot;:{&quot;type&quot;:&quot;terminal&quot;,&quot;label&quot;:&quot;text&quot;,&quot;service&quot;:&quot;text&quot;,&quot;parameters&quot;:{&quot;attribute&quot;:&quot;rcsb_entity_source_organism.taxonomy_lineage.name&quot;,&quot;operator&quot;:&quot;exact_match&quot;,&quot;negation&quot;:false,&quot;value&quot;:&quot;Verrucomicrobia subdivision 3&quot;}},&quot;return_type&quot;:&quot;entry&quot;,&quot;request_options&quot;:{&quot;paginate&quot;:{&quot;start&quot;:0,&quot;rows&quot;:25},&quot;results_content_type&quot;:[&quot;computational&quot;,&quot;experimental&quot;],&quot;sort&quot;:[{&quot;sort_by&quot;:&quot;score&quot;,&quot;direction&quot;:&quot;desc&quot;}],&quot;scoring_strategy&quot;:&quot;combined&quot;}}&quot;&quot;&quot;</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">_load_query</span><span class="p">(</span><span class="s1">&#39;src/test_query_csm.json&#39;</span><span class="p">)</span>
     <span class="c1"># check that is one line and that matches the expected query</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span>
-    <span class="k">assert</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">query</span><span class="p">)</span> <span class="o">==</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">EXPECTED_QUERY</span><span class="p">)</span></div>
+    <span class="k">assert</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">query</span><span class="p">)</span> <span class="o">==</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span></div>
 </pre></div>
 
           </div>

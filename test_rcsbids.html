@@ -223,12 +223,29 @@ which are used to retrieve the PDB IDs from the RCSB database.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="test_rcsbids.test_retrieve_pdb_ids">
-<code class="sig-prename descclassname"><span class="pre">test_rcsbids.</span></code><code class="sig-name descname"><span class="pre">test_retrieve_pdb_ids</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/test_rcsbids.html#test_retrieve_pdb_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_rcsbids.test_retrieve_pdb_ids" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="test_rcsbids.test_retrieve_pdb_ids_computational">
+<code class="sig-prename descclassname"><span class="pre">test_rcsbids.</span></code><code class="sig-name descname"><span class="pre">test_retrieve_pdb_ids_computational</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/test_rcsbids.html#test_retrieve_pdb_ids_computational"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_rcsbids.test_retrieve_pdb_ids_computational" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform a known JSON test query and check that the expected PDB IDs are returned.</p>
 <p>This is an API test, not a unit test.
-This query retrieve IDs of proteins whose the experimental method is THEORETICAL MODEL (I choose this because it returns only 6 entries, currently).
-NB: obviously, this test will fail when the number of entries change.</p>
+This query retrieve IDs of proteins for an organism for which there are no experimental PDB entries.
+WARNING: obviously, this test will fail when the number of entries change.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="test_rcsbids.test_retrieve_pdb_ids_zero">
+<code class="sig-prename descclassname"><span class="pre">test_rcsbids.</span></code><code class="sig-name descname"><span class="pre">test_retrieve_pdb_ids_zero</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/test_rcsbids.html#test_retrieve_pdb_ids_zero"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_rcsbids.test_retrieve_pdb_ids_zero" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a known JSON test query and check that the expected PDB IDs are returned.</p>
+<p>This is an API test, not a unit test.
+This query retrieve IDs of proteins for an organism for which there are no experimental PDB entries.
+WARNING: obviously, this test will fail when the number of entries change.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
