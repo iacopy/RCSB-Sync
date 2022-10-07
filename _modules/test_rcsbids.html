@@ -331,8 +331,7 @@
 
 <span class="sd">    :return: None</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Test with a separator different from the default one</span>
-    <span class="n">store_pdb_ids</span><span class="p">(</span><span class="n">EXPECTED_IDS_AF</span><span class="p">,</span> <span class="s1">&#39;src/test_pdb_ids.txt&#39;</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">store_pdb_ids</span><span class="p">(</span><span class="n">EXPECTED_IDS_AF</span><span class="p">,</span> <span class="s1">&#39;src/test_pdb_ids.txt&#39;</span><span class="p">)</span>
     <span class="n">ids</span> <span class="o">=</span> <span class="n">load_pdb_ids</span><span class="p">(</span><span class="s1">&#39;src/test_pdb_ids.txt&#39;</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">ids</span> <span class="o">==</span> <span class="n">EXPECTED_IDS_AF</span>
     <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;src/test_pdb_ids.txt&#39;</span><span class="p">)</span></div>
