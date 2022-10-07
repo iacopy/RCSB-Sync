@@ -26,7 +26,7 @@ def retrieve_pdb_ids(query: str) -> list:
     :return: list of PDB IDs.
     """
     json_response = _send_request(query)
-    return [hit['identifier'] for hit in json_response['result_set']]
+    return [hit['identifier'] for hit in json_response.get('result_set', [])]
 
 
 def _send_request(query: str) -> dict:
@@ -39,7 +39,8 @@ def _send_request(query: str) -> dict:
     url_get = 'https://search.rcsb.org/rcsbsearch/v2/query?json=' + query
     response = requests.get(url_get)
     response.raise_for_status()
-    return response.json()
+    # Handle 204 No Content response
+    return {} if response.status_code == 204 else response.json()
 
 
 def _load_query(query_file: str) -> str:
