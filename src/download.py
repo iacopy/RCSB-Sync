@@ -18,7 +18,7 @@ import requests
 DOWNLOAD_URL = 'https://files.rcsb.org/download/'
 
 MAX_PROCESSES = os.cpu_count()
-DEFAULT_PROCESSES = 2
+DEFAULT_PROCESSES = 1
 #: This number impact the frequency of progress updates.
 #: It is the number of PDB files to download before a progress update is printed if a single process is used.
 #: This is scaled automatically to the number of processes used to keep the progress updates constant.
@@ -95,7 +95,7 @@ def parallel_download(pdb_ids: List[str], directory: str,
     :param pdb_ids: list of PDB IDs.
     :param directory: directory to store the downloaded files.
     :param compressed: whether to download compressed files.
-    :param n_jobs: number of processes to use (default: 2).
+    :param n_jobs: number of processes to use (default: 1).
     """
     # Create the directory if it does not exist.
     if not os.path.exists(directory):

@@ -65,7 +65,7 @@ SUFFIX_REMOVED = '.obsolete'
 PDB_EXT = '.pdb.gz'
 
 # Settings for the parallel download.
-DEFAULT_JOBS = 2
+DEFAULT_JOBS = 1
 MAX_JOBS = os.cpu_count()
 
 
