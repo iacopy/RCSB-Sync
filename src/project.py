@@ -52,13 +52,14 @@ import argparse
 import datetime
 import os
 import time
+from collections import namedtuple
 from typing import List
-from typing import Set
 
 # My stuff
 from download import download
 from rcsbids import load_pdb_ids
 from rcsbids import search_and_download_ids
+from rcsbids import store_pdb_ids
 
 IDS_SEPARATOR = '\n'
 SUFFIX_REMOVED = '.obsolete'
@@ -67,6 +68,10 @@ PDB_EXT = '.pdb.gz'
 # Settings for the parallel download.
 DEFAULT_JOBS = 1
 MAX_JOBS = os.cpu_count()
+
+
+# Named tuple to store the fetch results.
+FetchResult = namedtuple('FetchResult', ['tbd_ids', 'removed_ids'])
 
 
 class Project:
@@ -86,7 +91,7 @@ class Project:
             os.mkdir(self.data_dir)
 
         # List of all the remote RCSB IDs.
-        self.remote_pdb_ids: Set[str] = set()
+        self.remote_pdb_ids: List[str] = []
         # List of all the remote RCSB IDs that are not in the local directory.
         self.tbd_pdb_ids: List[str] = []
         # List of all the IDs that are in the local directory but are not in the remote database anymore.
@@ -120,7 +125,11 @@ class Project:
             if not query_file.endswith('.json'):
                 continue
             query = os.path.join(self.queries_dir, query_file)
-            remote_ids += search_and_download_ids(query, cache_file)
+            remote_ids += search_and_download_ids(query)
+
+        # Cache the ids.
+        store_pdb_ids(remote_ids, cache_file)
+
         return remote_ids
 
     def fetch_or_cache(self) -> List[str]:
@@ -145,7 +154,7 @@ class Project:
             remote_ids = self.fetch_remote_ids(ids_cache_file)
         return remote_ids
 
-    def fetch(self) -> None:
+    def fetch(self) -> FetchResult:
         """
         Similarly to git fetch, check for updates, update "indexes", but do not download the files.
 
@@ -154,13 +163,15 @@ class Project:
             - check which PDB files are obsolete and mark them with the suffix '.obsolete';
             - print a sync report.
         """
-        remote_ids = set(self.fetch_or_cache())
+        remote_ids = self.fetch_or_cache()
 
         # Check which PDB files are already in the local project directory, and skip those to save time.
         local_ids = self.get_local_ids()
         # Files to be downloaded.
         tbd_ids = [id_ for id_ in remote_ids if id_ not in local_ids]
         # Some local PDB files are not in the RCSB database anymore, so we mark them with the SUFFIX_REMOVED suffix.
+        print('Local IDs:', len(local_ids))
+        print('Remote IDs:', len(remote_ids))
         removed_ids = [id_ for id_ in local_ids if id_ not in remote_ids]
         # Now we can calculate the number of files already downloaded.
         n_downloaded_ok = len(local_ids) - len(removed_ids)
@@ -186,6 +197,9 @@ class Project:
         self.tbd_pdb_ids = tbd_ids
         self.obsolete_pdb_ids = removed_ids
 
+        # return tbd_ids, removed_ids in a namedtuple
+        return FetchResult(tbd_ids, removed_ids)
+
     def mark_obsolete(self) -> None:
         """
         Mark obsolete the local PDB files that are not in the remote database anymore.
@@ -208,10 +222,9 @@ class Project:
         """
         if not self.remote_pdb_ids:
             # If the remote RCSB IDs have not been fetched yet, fetch them.
-            self.fetch()
+            tbd_ids, _ = self.fetch()
 
         # Download the PDB files corresponding to the RCSB PDB IDs which are not already in the project directory.
-        tbd_ids = self.tbd_pdb_ids
         total_tbd_ids = len(tbd_ids)
 
         print('Downloading RCSB PDB files...')
@@ -240,18 +253,18 @@ def main(project_dir: str, n_jobs: int = 1, verbose: bool = False) -> None:
     project = Project(project_dir, verbose=verbose)
 
     # Fetch the remote RCSB IDs.
-    project.fetch()
+    tbd_ids, removed_ids = project.fetch()
 
     # Mark obsolete the local PDB files that are not in the remote database anymore.
     if (
-        project.obsolete_pdb_ids
-        and input(f'\nMark {len(project.obsolete_pdb_ids)} PDB files as obsolete? (y/n) ') == 'y'
+        removed_ids
+        and input(f'\nMark {len(removed_ids)} PDB files as obsolete? (y/n) ') == 'y'
     ):
         project.mark_obsolete()
 
     # Ask the user to confirm the download of missing PDB files.
-    if len(project.tbd_pdb_ids) > 0:
-        answer = input(f'\nDo you want to download {len(project.tbd_pdb_ids)} PDB files? (y/n) ')
+    if len(tbd_ids) > 0:
+        answer = input(f'\nDo you want to download {len(tbd_ids)} PDB files? (y/n) ')
         if answer.lower() == 'y':
             project.pull(n_jobs=n_jobs)
         else:
