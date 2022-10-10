@@ -59,6 +59,7 @@ from typing import List
 from download import download
 from rcsbids import load_pdb_ids
 from rcsbids import search_and_download_ids
+from rcsbids import store_pdb_ids
 
 IDS_SEPARATOR = '\n'
 SUFFIX_REMOVED = '.obsolete'
@@ -124,7 +125,11 @@ class Project:
             if not query_file.endswith('.json'):
                 continue
             query = os.path.join(self.queries_dir, query_file)
-            remote_ids += search_and_download_ids(query, cache_file)
+            remote_ids += search_and_download_ids(query)
+
+        # Cache the ids.
+        store_pdb_ids(remote_ids, cache_file)
+
         return remote_ids
 
     def fetch_or_cache(self) -> List[str]:
@@ -165,6 +170,8 @@ class Project:
         # Files to be downloaded.
         tbd_ids = [id_ for id_ in remote_ids if id_ not in local_ids]
         # Some local PDB files are not in the RCSB database anymore, so we mark them with the SUFFIX_REMOVED suffix.
+        print('Local IDs:', len(local_ids))
+        print('Remote IDs:', len(remote_ids))
         removed_ids = [id_ for id_ in local_ids if id_ not in remote_ids]
         # Now we can calculate the number of files already downloaded.
         n_downloaded_ok = len(local_ids) - len(removed_ids)
