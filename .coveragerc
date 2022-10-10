@@ -1,5 +1,6 @@
 [run]
 branch = True
+relative_files = true
 # avoid to report non-own files
 source = src
 omit =
