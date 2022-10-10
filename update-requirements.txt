@@ -13,6 +13,7 @@ hypothesis
 pytest
 pytest-benchmark
 pytest-cov
+types-requests
 
 # documentation
 Sphinx
