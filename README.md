@@ -2,6 +2,7 @@
 ============
 
 [![Testing](https://github.com/iacopy/RCSB-Sync/actions/workflows/ci.yml/badge.svg)](https://github.com/iacopy/RCSB-Sync/actions/workflows/ci.yml)
+[![Coverage badge](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/iacopy/RCSB-Sync/python-coverage-comment-action-data/endpoint.json)](https://github.com/iacopy/RCSB-Sync/tree/python-coverage-comment-action-data)
 [![Sphinx build](https://github.com/iacopy/RCSB-Sync/actions/workflows/sphinx.yml/badge.svg)](https://github.com/iacopy/RCSB-Sync/actions/workflows/sphinx.yml)
 [![pages-build-deployment](https://github.com/iacopy/RCSB-Sync/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/iacopy/RCSB-Sync/actions/workflows/pages/pages-build-deployment)
 
