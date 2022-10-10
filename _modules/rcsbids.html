@@ -244,7 +244,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Documentation URL: https://search.rcsb.org/#search-api</span>
     <span class="n">url_get</span> <span class="o">=</span> <span class="s1">&#39;https://search.rcsb.org/rcsbsearch/v2/query?json=&#39;</span> <span class="o">+</span> <span class="n">query</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url_get</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url_get</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
     <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
     <span class="c1"># Handle 204 No Content response</span>
     <span class="k">return</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">204</span> <span class="k">else</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
