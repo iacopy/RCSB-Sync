@@ -78,11 +78,10 @@ def load_pdb_ids(pdb_ids_file: str) -> list:
     return [line.strip() for line in open(pdb_ids_file, 'r', encoding='ascii')]
 
 
-def search_and_download_ids(query: str, output: str) -> list:  # pragma: no cover
+def search_and_download_ids(query: str) -> list:  # pragma: no cover
     """Search and download PDB IDs from the RCSB website, given an advanced query in json format.
 
-    :param query: path to the json file containing the advanced query.
-    :param output: path to the output file.
+    :param query: path to the json file containing the advanced query (or the advanced query in json string format).
     :return: list of PDB IDs.
     """
     # Check if the query is a file or a string.
@@ -95,8 +94,6 @@ def search_and_download_ids(query: str, output: str) -> list:  # pragma: no cove
     ids = retrieve_pdb_ids(query)
     print(f'Found {len(ids)} PDB IDs.')
 
-    # Store the list of PDB IDs in a file.
-    store_pdb_ids(ids, output)
     return ids
 
 
@@ -104,7 +101,6 @@ if __name__ == '__main__':
     # Parse the command line arguments.
     parser = argparse.ArgumentParser(description='Script to download RCSB PDB IDs.')
     parser.add_argument('-q', '--query', required=True, help='String or file path of json query')
-    parser.add_argument('-o', '--output', help='Output directory', required=True)
     args = parser.parse_args()
 
-    search_and_download_ids(args.query, args.output)
+    search_and_download_ids(args.query)
