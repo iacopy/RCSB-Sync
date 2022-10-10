@@ -38,7 +38,7 @@ def _send_request(query: str) -> dict:
     """
     # Documentation URL: https://search.rcsb.org/#search-api
     url_get = 'https://search.rcsb.org/rcsbsearch/v2/query?json=' + query
-    response = requests.get(url_get)
+    response = requests.get(url_get, timeout=60)
     response.raise_for_status()
     # Handle 204 No Content response
     return {} if response.status_code == 204 else response.json()

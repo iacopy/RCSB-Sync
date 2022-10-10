@@ -69,7 +69,7 @@ def download_pdb(pdb_id: str, directory: str, compressed: bool = True) -> str:
     pdb_url = DOWNLOAD_URL + pdb_id + '.pdb' + gzip_ext
     # print('Downloading PDB file from RCSB website:', pdb_url)
     dest = os.path.join(directory, pdb_id + '.pdb' + gzip_ext)
-    response = requests.get(pdb_url)
+    response = requests.get(pdb_url, timeout=60)
     if response.status_code == 404:
         print(f'PDB file not found: {pdb_id}')
         # Write an empty file to indicate that the PDB file was not found.
