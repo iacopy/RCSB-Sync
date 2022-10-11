@@ -4,6 +4,7 @@
 [![Testing](https://github.com/iacopy/RCSB-Sync/actions/workflows/ci.yml/badge.svg)](https://github.com/iacopy/RCSB-Sync/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/iacopy/RCSB-Sync/branch/main/graph/badge.svg?token=WR8dFNq0ci)](https://codecov.io/gh/iacopy/RCSB-Sync)
 [![Coverage badge](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/iacopy/RCSB-Sync/python-coverage-comment-action-data/endpoint.json)](https://github.com/iacopy/RCSB-Sync/tree/python-coverage-comment-action-data)
+[![Maintainability](https://api.codeclimate.com/v1/badges/0949c1768e6a83ea9a35/maintainability)](https://codeclimate.com/github/iacopy/RCSB-Sync/maintainability)
 [![Sphinx build](https://github.com/iacopy/RCSB-Sync/actions/workflows/sphinx.yml/badge.svg)](https://github.com/iacopy/RCSB-Sync/actions/workflows/sphinx.yml)
 [![pages-build-deployment](https://github.com/iacopy/RCSB-Sync/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/iacopy/RCSB-Sync/actions/workflows/pages/pages-build-deployment)
 
