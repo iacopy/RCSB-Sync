@@ -17,6 +17,8 @@ import requests
 
 # Constants
 IDS_SEPARATOR = '\n'
+# Documentation URL: https://search.rcsb.org/#search-api
+SEARCH_ENDPOINT_URI = 'https://search.rcsb.org/rcsbsearch/v2/query'
 
 
 def retrieve_pdb_ids(query: str) -> list:
@@ -36,8 +38,7 @@ def _send_request(query: str) -> dict:
 
     :param query: advanced query in json format.
     """
-    # Documentation URL: https://search.rcsb.org/#search-api
-    url_get = 'https://search.rcsb.org/rcsbsearch/v2/query?json=' + query
+    url_get = f'{SEARCH_ENDPOINT_URI}?json={query}'
     response = requests.get(url_get, timeout=60)
     response.raise_for_status()
     # Handle 204 No Content response
