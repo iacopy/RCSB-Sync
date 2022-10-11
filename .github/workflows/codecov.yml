@@ -1,0 +1,6 @@
+coverage:
+  status:
+    project:
+      default:
+        # Set blocking coverage targets so that each PR must increase coverage
+        target: auto  # auto compares coverage to the previous base commit
