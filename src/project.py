@@ -122,11 +122,8 @@ class Project:
         """
         print('Searching RCSB IDs...')
         remote_ids = []
-        for query_file in os.listdir(self.queries_dir):
-            if not query_file.endswith('.json'):
-                continue
-            query = os.path.join(self.queries_dir, query_file)
-            remote_ids += search_and_download_ids(query)
+        for query_file in (filename for filename in os.listdir(self.queries_dir) if filename.endswith('.json')):
+            remote_ids.extend(search_and_download_ids(os.path.join(self.queries_dir, query_file)))
 
         # Cache the ids.
         store_pdb_ids(remote_ids, cache_file)
