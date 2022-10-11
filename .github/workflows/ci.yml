@@ -43,6 +43,12 @@ jobs:
       uses: paambaati/codeclimate-action@v3.0.0
       env:
         CC_TEST_REPORTER_ID: 495554b5189c33d77f3404148524a617700107caa4fb990963753099aa3fc86c
+    # Codecov: https://app.codecov.io/gh/iacopy/RCSB-Sync/new
+    - name: Upload coverage reports to Codecov
+      run: |
+        curl -Os https://uploader.codecov.io/latest/linux/codecov
+        chmod +x codecov
+        ./codecov
     - name: Coverage comment
       id: coverage_comment
       uses: py-cov-action/python-coverage-comment-action@v3
