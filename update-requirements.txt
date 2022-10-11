@@ -12,6 +12,7 @@ coverage
 pytest
 pytest-benchmark
 pytest-cov
+responses
 types-requests
 
 # documentation

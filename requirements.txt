@@ -40,6 +40,7 @@ pytest-cov==4.0.0
 pytz==2022.4
 PyYAML==6.0
 requests==2.28.1
+responses==0.21.0
 snowballstemmer==2.2.0
 Sphinx==5.2.3
 sphinx-sizzle-theme==0.1.1
