@@ -120,6 +120,7 @@ class Project:
         :param cache_file: path to the file where the list of RCSB IDs will be saved.
         :return: list of RCSB IDs.
         """
+        print('Searching RCSB IDs...')
         remote_ids = []
         for query_file in os.listdir(self.queries_dir):
             if not query_file.endswith('.json'):
@@ -146,13 +147,9 @@ class Project:
         ids_cache_file = self._get_cache_file()
         if os.path.isfile(ids_cache_file):
             # Read the ids from the _ids_<date>.txt file.
-            remote_ids = load_pdb_ids(ids_cache_file)
-        else:
-            # Get the list of PDB IDs from the RCSB website, given an advanced query in json format.
-            if self.verbose:
-                print('Fetching remote IDs...')
-            remote_ids = self.fetch_remote_ids(ids_cache_file)
-        return remote_ids
+            return load_pdb_ids(ids_cache_file)
+        # Get the list of PDB IDs from the RCSB website, given an advanced query in json format.
+        return self.fetch_remote_ids(ids_cache_file)
 
     def fetch(self) -> FetchResult:
         """
