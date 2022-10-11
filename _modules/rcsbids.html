@@ -223,6 +223,8 @@
 
 <span class="c1"># Constants</span>
 <span class="n">IDS_SEPARATOR</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+<span class="c1"># Documentation URL: https://search.rcsb.org/#search-api</span>
+<span class="n">SEARCH_ENDPOINT_URI</span> <span class="o">=</span> <span class="s1">&#39;https://search.rcsb.org/rcsbsearch/v2/query&#39;</span>
 
 
 <div class="viewcode-block" id="retrieve_pdb_ids"><a class="viewcode-back" href="../rcsbids.html#rcsbids.retrieve_pdb_ids">[docs]</a><span class="k">def</span> <span class="nf">retrieve_pdb_ids</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
@@ -242,8 +244,7 @@
 
 <span class="sd">    :param query: advanced query in json format.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Documentation URL: https://search.rcsb.org/#search-api</span>
-    <span class="n">url_get</span> <span class="o">=</span> <span class="s1">&#39;https://search.rcsb.org/rcsbsearch/v2/query?json=&#39;</span> <span class="o">+</span> <span class="n">query</span>
+    <span class="n">url_get</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">SEARCH_ENDPOINT_URI</span><span class="si">}</span><span class="s1">?json=</span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s1">&#39;</span>
     <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url_get</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
     <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
     <span class="c1"># Handle 204 No Content response</span>
