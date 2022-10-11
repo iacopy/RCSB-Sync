@@ -15,6 +15,9 @@ from typing import List
 # 3rd party
 import requests
 
+# My stuff
+from utils import _human_readable_time
+
 DOWNLOAD_URL = 'https://files.rcsb.org/download/'
 
 MAX_PROCESSES = os.cpu_count()
@@ -31,28 +34,6 @@ def _chunks(lst, num):
     """
     for i in range(0, len(lst), num):
         yield lst[i:i + num]
-
-
-def _human_readable_time(seconds: float) -> str:
-    """
-    Convert seconds to a human-readable time.
-    """
-    minutes, seconds = divmod(seconds, 60)
-    hours, minutes = divmod(minutes, 60)
-    days, hours = divmod(hours, 24)
-    months, days = divmod(days, 30)
-    years, months = divmod(months, 12)
-    if years > 0:
-        return f'{years:.0f}y {days:.0f}d {hours:.0f}h {minutes:.0f}m {seconds:.0f}s'
-    if months > 0:
-        return f'{months:.0f}m {days:.0f}d {hours:.0f}h {minutes:.0f}m {seconds:.0f}s'
-    if days > 0:
-        return f'{days:.0f}d {hours:.0f}h {minutes:.0f}m {seconds:.0f}s'
-    if hours > 0:
-        return f'{hours:.0f}h {minutes:.0f}m {seconds:.0f}s'
-    if minutes > 0:
-        return f'{minutes:.0f}m {seconds:.0f}s'
-    return f'{seconds:.0f}s'
 
 
 def download_pdb(pdb_id: str, directory: str, compressed: bool = True) -> str:

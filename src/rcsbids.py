@@ -10,10 +10,12 @@ Usage
 """
 # Standard Library
 import argparse
-import json
 
 # 3rd party
 import requests
+
+# My stuff
+from utils import _load_query
 
 # Constants
 IDS_SEPARATOR = '\n'
@@ -43,19 +45,6 @@ def _send_request(query: str) -> dict:
     response.raise_for_status()
     # Handle 204 No Content response
     return {} if response.status_code == 204 else response.json()
-
-
-def _load_query(query_file: str) -> str:
-    """
-    Load the advanced query from a json file.
-
-    :param query_file: path to the json file.
-    :return: advanced query in json string format (single line).
-    """
-    with open(query_file, 'r', encoding='utf-8') as file_pointer:
-        query = json.load(file_pointer)
-    # return single line json string
-    return json.dumps(query)
 
 
 def store_pdb_ids(ids: list, dest: str) -> None:
