@@ -217,9 +217,7 @@ class Project:
 
         :param n_jobs: number of parallel jobs to download the PDB files.
         """
-        if not self.remote_pdb_ids:
-            # If the remote RCSB IDs have not been fetched yet, fetch them.
-            tbd_ids, _ = self.fetch()
+        tbd_ids, _ = self.fetch()
 
         # Download the PDB files corresponding to the RCSB PDB IDs which are not already in the project directory.
         total_tbd_ids = len(tbd_ids)
