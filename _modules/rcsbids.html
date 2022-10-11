@@ -216,10 +216,12 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="c1"># Standard Library</span>
 <span class="kn">import</span> <span class="nn">argparse</span>
-<span class="kn">import</span> <span class="nn">json</span>
 
 <span class="c1"># 3rd party</span>
 <span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="c1"># My stuff</span>
+<span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">_load_query</span>
 
 <span class="c1"># Constants</span>
 <span class="n">IDS_SEPARATOR</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
@@ -249,19 +251,6 @@
     <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
     <span class="c1"># Handle 204 No Content response</span>
     <span class="k">return</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">204</span> <span class="k">else</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-
-
-<span class="k">def</span> <span class="nf">_load_query</span><span class="p">(</span><span class="n">query_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Load the advanced query from a json file.</span>
-
-<span class="sd">    :param query_file: path to the json file.</span>
-<span class="sd">    :return: advanced query in json string format (single line).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">query_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_pointer</span><span class="p">:</span>
-        <span class="n">query</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file_pointer</span><span class="p">)</span>
-    <span class="c1"># return single line json string</span>
-    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="store_pdb_ids"><a class="viewcode-back" href="../rcsbids.html#rcsbids.store_pdb_ids">[docs]</a><span class="k">def</span> <span class="nf">store_pdb_ids</span><span class="p">(</span><span class="n">ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">dest</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
