@@ -107,11 +107,7 @@ class Project:
         """
         Get the PDB IDs that are already in the project directory.
         """
-        local_ids = set()
-        for filename in os.listdir(self.data_dir):
-            if filename.endswith('pdb.gz'):
-                local_ids.add(filename[:-7])
-        return local_ids
+        return {filename[:-7] for filename in os.listdir(self.data_dir) if filename.endswith('pdb.gz')}
 
     def fetch_remote_ids(self, cache_file: str) -> List[str]:
         """
