@@ -98,7 +98,7 @@ setenv VIRTUALENV:
     echo "flake8: OK ✔️"
 
 @_pylint:
-    pylint src
+    pylint $(git ls-files '*.py') --ignore=conf.py
     echo "pylint: OK ✔️"
 
 @_isort:
