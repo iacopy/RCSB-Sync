@@ -31,7 +31,7 @@ Directory structure
 The directory structures of a project is as follows::
 
     .
-    ├── Project
+    ├── ProjectName
     │   ├── _ids_2022-01-01.txt
     │   ├── _ids_2022-03-01.txt
     │   ├── queries
@@ -39,13 +39,15 @@ The directory structures of a project is as follows::
     │   │   ├── query_1.json
     │   │   └── query_2.json
     │   └── data
-    │       ├── 1i5r.pdb.gz
-    │       ├── 1k8o.pdb.gz
-    │       .
-    │       .
-    │       .
-    │       └── 1q9s.pdb.gz
-    ...
+    │       ├── query_01
+    │       │   ├── 1abc.pdb
+    │       │   ├── 1abd.pdb
+    │       │   └── 1abe.pdb
+    │       └── query_02
+    │           ├── 1abf.pdb
+    │           ├── 1abg.pdb
+    │           └── 1abh.pdb
+    └── README.md
 """
 # Standard Library
 import argparse
