@@ -33,7 +33,7 @@ def empty_project(tmp_path):
 
 
 @pytest.fixture
-def project_with_files(empty_project):  # pylint: disable=redefined-outer-name
+def project_with_files(empty_project):
     """Return a project with some downloaded files."""
     # add pdb.gz files inside the project directory
     hs01 = Path(empty_project.data_dir, 'hs01.pdb.gz')
@@ -55,7 +55,7 @@ def mocked_responses():
 
 
 @pytest.fixture
-def remote_server(mocked_responses):  # pylint: disable=redefined-outer-name
+def remote_server(mocked_responses):
     """Return a mocked remote server with ids."""
     mocked_responses.get(
         url=f'{SEARCH_ENDPOINT_URI}',
@@ -79,8 +79,8 @@ def test_project_non_existing_directory():
         Project('non-existing-directory')
 
 
-def test_updiff_the_first_time(empty_project,  # pylint: disable=redefined-outer-name, unused-argument
-                               remote_server):  # pylint: disable=redefined-outer-name, unused-argument
+def test_updiff_the_first_time(empty_project,
+                               remote_server):
     """
     Test that the first time the project check for updates, all the remote ids are considered to be downloaded.
     """
@@ -89,8 +89,8 @@ def test_updiff_the_first_time(empty_project,  # pylint: disable=redefined-outer
     assert removed_ids == []
 
 
-def test_second_updiff_same_results(empty_project,  # pylint: disable=redefined-outer-name, unused-argument
-                                    remote_server):  # pylint: disable=redefined-outer-name, unused-argument
+def test_second_updiff_same_results(empty_project,
+                                    remote_server):
     """
     Test two subsequent updiffs with no download.
     The second updiff (which loads ids from the local cache) should return the same ids as the first one.
@@ -115,7 +115,7 @@ def test_second_updiff_same_results(empty_project,  # pylint: disable=redefined-
     assert len(remote_server.calls) == 2
 
 
-def test_removed_handling(project_with_files, mocked_responses):  # pylint: disable=redefined-outer-name
+def test_removed_handling(project_with_files, mocked_responses):
     """
     Test that the remote-removed ids are handled properly.
     """

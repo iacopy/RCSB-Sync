@@ -9,6 +9,7 @@ pylint
 
 # testing
 coverage
+pylint-pytest
 pytest
 pytest-benchmark
 pytest-cov
