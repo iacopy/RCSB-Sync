@@ -90,13 +90,6 @@ class Project:
             print('Creating directory:', self.data_dir)
             os.mkdir(self.data_dir)
 
-        # List of all the remote RCSB IDs.
-        self.remote_pdb_ids: List[str] = []
-        # List of all the remote RCSB IDs that are not in the local directory.
-        self.tbd_pdb_ids: List[str] = []
-        # List of all the IDs that are in the local directory but are not in the remote database anymore.
-        self.obsolete_pdb_ids: List[str] = []
-
     def _get_cache_file(self) -> str:
         """
         Get the path to the pdb ids cache file.
@@ -153,21 +146,18 @@ class Project:
             - check which PDB files are obsolete and mark them with the suffix '.obsolete';
             - print a sync report.
         """
+        # Get the list of PDB IDs from the RCSB website.
         remote_ids = self.fetch_or_cache()
-
         # Check which PDB files are already in the local project directory, and skip those to save time.
         local_ids = self.get_local_ids()
-        # Files to be downloaded.
-        tbd_ids = [id_ for id_ in remote_ids if id_ not in local_ids]
         print('Local IDs:', len(local_ids))
         print('Remote IDs:', len(remote_ids))
 
-        # Some local PDB files are not in the RCSB database anymore, so we mark them with the SUFFIX_REMOVED suffix.
+        # Remote structures to be downloaded.
+        tbd_ids = [id_ for id_ in remote_ids if id_ not in local_ids]
+        # Local files to be removed (some local PDB files are not in the RCSB database anymore,
+        # so we mark them with the SUFFIX_REMOVED suffix).
         removed_ids = [id_ for id_ in local_ids if id_ not in remote_ids]
-
-        self.remote_pdb_ids = remote_ids
-        self.tbd_pdb_ids = tbd_ids
-        self.obsolete_pdb_ids = removed_ids
 
         return Diff(tbd_ids, removed_ids)
 
@@ -185,7 +175,7 @@ class Project:
         print('\n'.join(removed_ids))
         print(f'🗑 Obsolete files (local but not remote): {len(removed_ids):,}')
 
-        for id_ in self.obsolete_pdb_ids:
+        for id_ in removed_ids:
             pdb_file = os.path.join(self.data_dir, id_ + PDB_EXT)
             if os.path.isfile(pdb_file):
                 if self.verbose:
