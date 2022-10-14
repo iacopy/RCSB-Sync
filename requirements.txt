@@ -40,7 +40,7 @@ pytest-cov==4.0.0
 pytz==2022.4
 PyYAML==6.0
 requests==2.28.1
-responses==0.21.0
+responses==0.22.0
 snowballstemmer==2.2.0
 Sphinx==5.2.3
 sphinx-sizzle-theme==0.1.1
@@ -54,6 +54,7 @@ toml==0.10.2
 tomli==2.0.1
 tomlkit==0.11.5
 types-requests==2.28.11.2
+types-toml==0.10.8
 types-urllib3==1.26.25
 typing_extensions==4.4.0
 urllib3==1.26.12
