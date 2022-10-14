@@ -192,7 +192,7 @@ class Project:
                     print('Marking obsolete:', pdb_file, '->', pdb_file + SUFFIX_REMOVED)
                 os.rename(pdb_file, pdb_file + SUFFIX_REMOVED)
 
-    def pull(self, n_jobs: int) -> None:
+    def sync(self, n_jobs: int) -> None:
         """
         Similarly to git pull, synchronize the local working directory with the remote repository.
 
@@ -242,7 +242,7 @@ def main(project_dir: str, n_jobs: int = 1, verbose: bool = False) -> None:
     if len(fetch_result.tbd_ids) > 0:
         answer = input(f'\nDo you want to download {len(fetch_result.tbd_ids)} PDB files? (y/n) ')
         if answer.lower() == 'y':
-            project.pull(n_jobs=n_jobs)
+            project.sync(n_jobs=n_jobs)
         else:
             print('Download cancelled.')
 
