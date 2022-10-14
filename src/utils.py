@@ -49,14 +49,6 @@ def _human_readable_time(seconds: float) -> str:
     '1d 1h 1m 1s'
     >>> _human_readable_time(86400 * 2)
     '2d 0h 0m 0s'
-    >>> _human_readable_time(3600 * 24 * 365)
-    '1y 0d 0h 0m 0s'
-    >>> _human_readable_time(3600 * 24 * 365 * 2)
-    '2y 0d 0h 0m 0s'
-    >>> _human_readable_time(3600 * 24 * 365 * 2 + 3600 * 24 * 2 + 3600 * 2 + 60 * 2 + 2)
-    '2y 2d 2h 2m 2s'
-    >>> _human_readable_time(3600 * 24 * 365 * 2 + 3600 * 24 * 2 + 3600 * 2 + 60 * 2 + 2.123)
-    '2y 2d 2h 2m 2s'
 
     :param seconds: number of seconds.
     :return: human-readable time.
@@ -64,10 +56,7 @@ def _human_readable_time(seconds: float) -> str:
     minutes, seconds = divmod(seconds, 60)
     hours, minutes = divmod(minutes, 60)
     days, hours = divmod(hours, 24)
-    years, days = divmod(days, 365)
 
-    if years > 0:
-        return f'{years:.0f}y {days:.0f}d {hours:.0f}h {minutes:.0f}m {seconds:.0f}s'
     if days > 0:
         return f'{days:.0f}d {hours:.0f}h {minutes:.0f}m {seconds:.0f}s'
     if hours > 0:
