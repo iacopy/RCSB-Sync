@@ -54,6 +54,24 @@ def mocked_responses():
         yield rsps
 
 
+@pytest.fixture
+def remote_server(mocked_responses):  # pylint: disable=redefined-outer-name
+    """Return a mocked remote server with ids."""
+    mocked_responses.get(
+        url=f'{SEARCH_ENDPOINT_URI}',
+        body='{"result_set": [{"identifier": "hs01"}, {"identifier": "hs02"}]}',
+        status=200,
+        content_type="application/json",
+    )
+    mocked_responses.get(
+        url=f'{SEARCH_ENDPOINT_URI}',
+        body='{"result_set": [{"identifier": "rn01"}, {"identifier": "rn02"}]}',
+        status=200,
+        content_type="application/json",
+    )
+    return mocked_responses
+
+
 def test_project_non_existing_directory():
     """Test the creation of a project raises an exception if the directory does not exist."""
     # Create a project in a non-existing directory.
@@ -62,30 +80,17 @@ def test_project_non_existing_directory():
 
 
 def test_updiff_the_first_time(empty_project,  # pylint: disable=redefined-outer-name, unused-argument
-                               mocked_responses):  # pylint: disable=redefined-outer-name, unused-argument
+                               remote_server):  # pylint: disable=redefined-outer-name, unused-argument
     """
     Test that the first time the project check for updates, all the remote ids are considered to be downloaded.
     """
-    mocked_responses.get(
-        url=f'{SEARCH_ENDPOINT_URI}',
-        body='{"result_set": [{"identifier": "hs01"}, {"identifier": "hs02"}]}',
-        status=200,
-        content_type="application/json",
-    )
-    mocked_responses.get(
-        url=f'{SEARCH_ENDPOINT_URI}',
-        body='{"result_set": [{"identifier": "rn01"}, {"identifier": "rn02"}]}',
-        status=200,
-        content_type="application/json",
-    )
-
     tbd_ids, removed_ids = empty_project.updiff()
     assert set(tbd_ids) == {'hs01', 'hs02', 'rn01', 'rn02'}
     assert removed_ids == []
 
 
 def test_second_updiff_same_results(empty_project,  # pylint: disable=redefined-outer-name, unused-argument
-                                    mocked_responses):  # pylint: disable=redefined-outer-name, unused-argument
+                                    remote_server):  # pylint: disable=redefined-outer-name, unused-argument
     """
     Test two subsequent updiffs with no download.
     The second updiff (which loads ids from the local cache) should return the same ids as the first one.
@@ -93,26 +98,13 @@ def test_second_updiff_same_results(empty_project,  # pylint: disable=redefined-
 
     If the test fails, it could be indicating that the local cache is not working properly.
     """
-    mocked_responses.get(
-        url=f'{SEARCH_ENDPOINT_URI}',
-        body='{"result_set": [{"identifier": "hs01"}, {"identifier": "hs02"}]}',
-        status=200,
-        content_type="application/json",
-    )
-    mocked_responses.get(
-        url=f'{SEARCH_ENDPOINT_URI}',
-        body='{"result_set": [{"identifier": "rn01"}, {"identifier": "rn02"}]}',
-        status=200,
-        content_type="application/json",
-    )
-
     # First updiff.
     tbd_ids, removed_ids = empty_project.updiff()
     assert set(tbd_ids) == {'hs01', 'hs02', 'rn01', 'rn02'}
     assert removed_ids == []
 
     # The requests.get() method should be called two times, since there are two queries.
-    assert len(mocked_responses.calls) == 2
+    assert len(remote_server.calls) == 2
 
     # Second updiff.
     tbd_ids, removed_ids = empty_project.updiff()
@@ -120,7 +112,7 @@ def test_second_updiff_same_results(empty_project,  # pylint: disable=redefined-
     assert removed_ids == []
 
     # The second updiff should not call requests.get() (because the ids are loaded from the local cache).
-    assert len(mocked_responses.calls) == 2
+    assert len(remote_server.calls) == 2
 
 
 def test_removed_handling(project_with_files, mocked_responses):  # pylint: disable=redefined-outer-name
