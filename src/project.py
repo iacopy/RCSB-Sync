@@ -14,7 +14,7 @@ Algorithm
 0. If the ids are already downloaded (a ``_ids_<date>.txt`` cache file with current date exists), skip to step 2.
 1. Start by downloading the RCSB PDB IDs for the project, using the queries in the ``queries`` directory.
 2. Before downloading the PDB files, check which PDB files are already in the local project directory,
-   and skip those to save time.
+   and skip them.
 3. Some local PDB files are not in the RCSB database anymore, so we mark them with a suffix (for example '.obsolete').
 4. Print a report of:
 
