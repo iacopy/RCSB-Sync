@@ -61,9 +61,10 @@ def test_project_non_existing_directory():
         Project('non-existing-directory')
 
 
-def test_fetch_the_first_time(empty_project, mocked_responses):  # pylint: disable=redefined-outer-name, unused-argument
+def test_updiff_the_first_time(empty_project,  # pylint: disable=redefined-outer-name, unused-argument
+                               mocked_responses):  # pylint: disable=redefined-outer-name, unused-argument
     """
-    Test that the first time the project is fetched, all the remote ids are considered to be downloaded.
+    Test that the first time the project check for updates, all the remote ids are considered to be downloaded.
     """
     mocked_responses.get(
         url=f'{SEARCH_ENDPOINT_URI}',
@@ -78,17 +79,17 @@ def test_fetch_the_first_time(empty_project, mocked_responses):  # pylint: disab
         content_type="application/json",
     )
 
-    tbd_ids, removed_ids = empty_project.fetch()
+    tbd_ids, removed_ids = empty_project.updiff()
     assert set(tbd_ids) == {'hs01', 'hs02', 'rn01', 'rn02'}
     assert removed_ids == []
 
 
-def test_second_fetch_same_results(empty_project,  # pylint: disable=redefined-outer-name, unused-argument
-                                   mocked_responses):  # pylint: disable=redefined-outer-name, unused-argument
+def test_second_updiff_same_results(empty_project,  # pylint: disable=redefined-outer-name, unused-argument
+                                    mocked_responses):  # pylint: disable=redefined-outer-name, unused-argument
     """
-    Test two subsequent fetches with no download.
-    The second fetch (which loads ids from the local cache) should return the same ids as the first one.
-    The second fetch should not call the remote server.
+    Test two subsequent updiffs with no download.
+    The second updiff (which loads ids from the local cache) should return the same ids as the first one.
+    The second updiff should not call the remote server.
 
     If the test fails, it could be indicating that the local cache is not working properly.
     """
@@ -105,20 +106,20 @@ def test_second_fetch_same_results(empty_project,  # pylint: disable=redefined-o
         content_type="application/json",
     )
 
-    # First fetch.
-    tbd_ids, removed_ids = empty_project.fetch()
+    # First updiff.
+    tbd_ids, removed_ids = empty_project.updiff()
     assert set(tbd_ids) == {'hs01', 'hs02', 'rn01', 'rn02'}
     assert removed_ids == []
 
     # The requests.get() method should be called two times, since there are two queries.
     assert len(mocked_responses.calls) == 2
 
-    # Second fetch.
-    tbd_ids, removed_ids = empty_project.fetch()
+    # Second updiff.
+    tbd_ids, removed_ids = empty_project.updiff()
     assert set(tbd_ids) == {'hs01', 'hs02', 'rn01', 'rn02'}
     assert removed_ids == []
 
-    # The second fetch should not call requests.get() (because the ids are loaded from the local cache).
+    # The second updiff should not call requests.get() (because the ids are loaded from the local cache).
     assert len(mocked_responses.calls) == 2
 
 
@@ -140,15 +141,15 @@ def test_removed_handling(project_with_files, mocked_responses):  # pylint: disa
         content_type="application/json",
     )
 
-    fetch_result = project_with_files.fetch()
-    assert fetch_result.tbd_ids == []
-    assert fetch_result.removed_ids == ['rn02']
+    updiff_result = project_with_files.updiff()
+    assert updiff_result.tbd_ids == []
+    assert updiff_result.removed_ids == ['rn02']
 
     # The requests.get() method should be called two times, since there are two queries.
     assert len(mocked_responses.calls) == 2
 
     assert sorted(os.listdir(project_with_files.data_dir)) == [
         'hs01.pdb.gz', 'hs02.pdb.gz', 'rn01.pdb.gz', 'rn02.pdb.gz']
-    project_with_files.handle_removed(fetch_result)
+    project_with_files.handle_removed(updiff_result)
     assert sorted(os.listdir(project_with_files.data_dir)) == [
         'hs01.pdb.gz', 'hs02.pdb.gz', 'rn01.pdb.gz', 'rn02.pdb.gz.obsolete']

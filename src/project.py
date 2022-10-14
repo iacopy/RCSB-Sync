@@ -71,7 +71,7 @@ MAX_JOBS = os.cpu_count()
 
 
 # Named tuple to store the fetch results.
-FetchResult = namedtuple('FetchResult', ['tbd_ids', 'removed_ids'])
+Diff = namedtuple('Diff', ['tbd_ids', 'removed_ids'])
 
 
 class Project:
@@ -144,9 +144,9 @@ class Project:
         # Get the list of PDB IDs from the RCSB website, given an advanced query in json format.
         return self.fetch_remote_ids(ids_cache_file)
 
-    def fetch(self) -> FetchResult:
+    def updiff(self) -> Diff:
         """
-        Similarly to git fetch, check for updates, update "indexes", but do not download the files.
+        Check the remote server for updates and compute the diff, but do not download the files.
 
             - fetch the RCSB IDs from the RCSB website;
             - check which PDB files are already in the local project directory;
@@ -169,9 +169,9 @@ class Project:
         self.tbd_pdb_ids = tbd_ids
         self.obsolete_pdb_ids = removed_ids
 
-        return FetchResult(tbd_ids, removed_ids)
+        return Diff(tbd_ids, removed_ids)
 
-    def handle_removed(self, fetch_result: FetchResult) -> None:
+    def handle_removed(self, fetch_result: Diff) -> None:
         """
         Mark obsolete the local PDB files that are not in the remote database anymore.
         """
@@ -202,7 +202,7 @@ class Project:
 
         :param n_jobs: number of parallel jobs to download the PDB files.
         """
-        tbd_ids, _ = self.fetch()
+        tbd_ids, _ = self.updiff()
 
         # Download the PDB files corresponding to the RCSB PDB IDs which are not already in the project directory.
         total_tbd_ids = len(tbd_ids)
@@ -219,7 +219,7 @@ class Project:
             print(f'({elapsed_time / total_tbd_ids:.2f} seconds per file).')
 
         # Now refetch the local PDB IDs, to check if the files have been downloaded correctly.
-        self.fetch()
+        self.updiff()
 
 
 def main(project_dir: str, n_jobs: int = 1, verbose: bool = False) -> None:
@@ -233,7 +233,7 @@ def main(project_dir: str, n_jobs: int = 1, verbose: bool = False) -> None:
     project = Project(project_dir, verbose=verbose)
 
     # Fetch the remote RCSB IDs.
-    fetch_result = project.fetch()
+    fetch_result = project.updiff()
 
     # Mark obsolete the local PDB files that are not in the remote database anymore.
     project.handle_removed(fetch_result)
