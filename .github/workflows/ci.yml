@@ -37,7 +37,7 @@ jobs:
         pylint $(git ls-files '*.py') --ignore=conf.py
     - name: Test with pytest
       run: |
-        pytest --cov --cov-report=xml
+        pytest --cov --cov-report=xml .
     - name: Test & publish code coverage
       # https://github.com/marketplace/actions/code-climate-coverage-action
       uses: paambaati/codeclimate-action@v3.0.0
