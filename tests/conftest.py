@@ -43,6 +43,22 @@ def project_with_files(empty_project):
     return empty_project
 
 
+def result_set(ids):
+    """Return a json string with a list of ids."""
+    return '{"result_set": [' + ', '.join([f'{{"identifier": "{id_}"}}' for id_ in ids]) + ']}'
+
+
+def make_search_response(ids):
+    """Return an OK search response object with a list of ids."""
+    return responses.Response(
+        method='GET',
+        url=f'{SEARCH_ENDPOINT_URI}',
+        body=result_set(ids),
+        status=200,
+        content_type="application/json",
+    )
+
+
 @pytest.fixture
 def mocked_responses():
     """Return a mocked responses object."""
@@ -53,16 +69,26 @@ def mocked_responses():
 @pytest.fixture
 def remote_server(mocked_responses):
     """Return a mocked remote server with ids."""
-    mocked_responses.get(
-        url=f'{SEARCH_ENDPOINT_URI}',
-        body='{"result_set": [{"identifier": "hs01"}, {"identifier": "hs02"}]}',
-        status=200,
-        content_type="application/json",
+    # Add responses to the mocked server for the queries.
+    mocked_responses.add(
+        make_search_response(['hs01', 'hs02'])
     )
-    mocked_responses.get(
-        url=f'{SEARCH_ENDPOINT_URI}',
-        body='{"result_set": [{"identifier": "rn01"}, {"identifier": "rn02"}]}',
-        status=200,
-        content_type="application/json",
+    # Second query.
+    mocked_responses.add(
+        make_search_response(['rn01', 'rn02'])
+    )
+    return mocked_responses
+
+
+@pytest.fixture
+def remote_server_changed(mocked_responses):
+    """Return a mocked remote server with an id removed."""
+    # Add responses to the mocked server for the queries.
+    mocked_responses.add(
+        make_search_response(['hs01', 'hs02', 'hs03'])
+    )
+    # Second query.
+    mocked_responses.add(
+        make_search_response(['rn01'])
     )
     return mocked_responses
