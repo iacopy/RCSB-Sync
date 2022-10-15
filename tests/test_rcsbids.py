@@ -101,7 +101,7 @@ EXPECTED_COMBO = """{
 
 
 # The expected PDB IDs for the query above, which include also computational results, are from the AlphaFold DB.
-EXPECTED_IDS_AF = ['AF_AFB9XEI9F1', 'AF_AFB9XEK4F1']
+EXPECTED_IDS_AF = ["AF_AFB9XEI9F1", "AF_AFB9XEK4F1"]
 
 
 def test_retrieve_pdb_ids_zero():
@@ -138,13 +138,13 @@ def test_store_pdb_ids():
 
     :return: None
     """
-    store_pdb_ids(EXPECTED_IDS_AF, 'tests/test_pdb_ids.txt')
-    with open('tests/test_pdb_ids.txt', 'r', encoding='ascii') as file_pointer:
-        ids = file_pointer.read().split('\n')
+    store_pdb_ids(EXPECTED_IDS_AF, "tests/test_pdb_ids.txt")
+    with open("tests/test_pdb_ids.txt", "r", encoding="ascii") as file_pointer:
+        ids = file_pointer.read().split("\n")
     # the last line should be empty (the file should end with a newline)
-    assert ids[-1] == ''
+    assert ids[-1] == ""
     assert ids[:-1] == EXPECTED_IDS_AF
-    os.remove('tests/test_pdb_ids.txt')
+    os.remove("tests/test_pdb_ids.txt")
 
 
 def test_load_pdb_ids():
@@ -153,10 +153,10 @@ def test_load_pdb_ids():
 
     :return: None
     """
-    store_pdb_ids(EXPECTED_IDS_AF, 'tests/test_pdb_ids.txt')
-    ids = load_pdb_ids('tests/test_pdb_ids.txt')
+    store_pdb_ids(EXPECTED_IDS_AF, "tests/test_pdb_ids.txt")
+    ids = load_pdb_ids("tests/test_pdb_ids.txt")
     assert ids == EXPECTED_IDS_AF
-    os.remove('tests/test_pdb_ids.txt')
+    os.remove("tests/test_pdb_ids.txt")
 
 
 def test__load_query():
@@ -166,7 +166,7 @@ def test__load_query():
     :return: None
     """
     expected = """{"query":{"type":"terminal","label":"text","service":"text","parameters":{"attribute":"rcsb_entity_source_organism.taxonomy_lineage.name","operator":"exact_match","negation":false,"value":"Verrucomicrobia subdivision 3"}},"return_type":"entry","request_options":{"paginate":{"start":0,"rows":25},"results_content_type":["computational","experimental"],"sort":[{"sort_by":"score","direction":"desc"}],"scoring_strategy":"combined"}}"""
-    query = _load_query('tests/test_query_csm.json')
+    query = _load_query("tests/test_query_csm.json")
     # check that is one line and that matches the expected query
-    assert len(query.split('\n')) == 1
+    assert len(query.split("\n")) == 1
     assert json.loads(query) == json.loads(expected)

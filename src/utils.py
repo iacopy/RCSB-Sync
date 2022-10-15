@@ -13,7 +13,7 @@ def _load_query(query_file: str) -> str:
     :param query_file: path to the json file.
     :return: advanced query in json string format (single line).
     """
-    with open(query_file, 'r', encoding='utf-8') as file_pointer:
+    with open(query_file, "r", encoding="utf-8") as file_pointer:
         query = json.load(file_pointer)
     # return single line json string
     return json.dumps(query)
@@ -58,9 +58,9 @@ def _human_readable_time(seconds: float) -> str:
     days, hours = divmod(hours, 24)
 
     if days > 0:
-        return f'{days:.0f}d {hours:.0f}h {minutes:.0f}m {seconds:.0f}s'
+        return f"{days:.0f}d {hours:.0f}h {minutes:.0f}m {seconds:.0f}s"
     if hours > 0:
-        return f'{hours:.0f}h {minutes:.0f}m {seconds:.0f}s'
+        return f"{hours:.0f}h {minutes:.0f}m {seconds:.0f}s"
     if minutes > 0:
-        return f'{minutes:.0f}m {seconds:.0f}s'
-    return f'{seconds:.0f}s'
+        return f"{minutes:.0f}m {seconds:.0f}s"
+    return f"{seconds:.0f}s"
