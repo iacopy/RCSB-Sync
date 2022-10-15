@@ -1,4 +1,5 @@
 # base libraries without versions, useful for updating
+requests
 
 # linting
 autopep8
