@@ -112,10 +112,10 @@ setenv VIRTUALENV:
     just _pylint
     just _isort
 
-# auto fix imports and pep8 coding style
+# auto fix imports and coding style
 @fix:
     isort .
-    autopep8 --in-place -r .
+    black .
 
 # run tests with coverage
 @_test-cov:
