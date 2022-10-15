@@ -7,6 +7,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/0949c1768e6a83ea9a35/maintainability)](https://codeclimate.com/github/iacopy/RCSB-Sync/maintainability)
 [![Sphinx build](https://github.com/iacopy/RCSB-Sync/actions/workflows/sphinx.yml/badge.svg)](https://github.com/iacopy/RCSB-Sync/actions/workflows/sphinx.yml)
 [![pages-build-deployment](https://github.com/iacopy/RCSB-Sync/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/iacopy/RCSB-Sync/actions/workflows/pages/pages-build-deployment)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 Automatizza il download di strutture proteiche dal server remoto RCSB.
 

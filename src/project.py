@@ -61,9 +61,9 @@ from rcsbids import load_pdb_ids
 from rcsbids import search_and_download_ids
 from rcsbids import store_pdb_ids
 
-IDS_SEPARATOR = '\n'
-SUFFIX_REMOVED = '.obsolete'
-PDB_EXT = '.pdb.gz'
+IDS_SEPARATOR = "\n"
+SUFFIX_REMOVED = ".obsolete"
+PDB_EXT = ".pdb.gz"
 
 # Settings for the parallel download.
 DEFAULT_JOBS = 1
@@ -71,7 +71,7 @@ MAX_JOBS = os.cpu_count()
 
 
 # Named tuple to store the fetch results.
-Diff = namedtuple('Diff', ['tbd_ids', 'removed_ids'])
+Diff = namedtuple("Diff", ["tbd_ids", "removed_ids"])
 
 
 class Project:
@@ -81,26 +81,32 @@ class Project:
 
     def __init__(self, directory: str, verbose: bool = False):
         self.directory = directory
-        self.queries_dir = os.path.join(self.directory, 'queries')
-        self.data_dir = os.path.join(self.directory, 'data')
+        self.queries_dir = os.path.join(self.directory, "queries")
+        self.data_dir = os.path.join(self.directory, "data")
         self.verbose = verbose
 
         # Create the data directory if it does not exist.
         if not os.path.isdir(self.data_dir):
-            print('Creating directory:', self.data_dir)
+            print("Creating directory:", self.data_dir)
             os.mkdir(self.data_dir)
 
     def _get_cache_file(self) -> str:
         """
         Get the path to the pdb ids cache file.
         """
-        return os.path.join(self.directory, '_ids_' + datetime.date.today().isoformat() + '.txt')
+        return os.path.join(
+            self.directory, "_ids_" + datetime.date.today().isoformat() + ".txt"
+        )
 
     def get_local_ids(self) -> set:
         """
         Get the PDB IDs that are already in the project directory.
         """
-        return {filename[:-7] for filename in os.listdir(self.data_dir) if filename.endswith('pdb.gz')}
+        return {
+            filename[:-7]
+            for filename in os.listdir(self.data_dir)
+            if filename.endswith("pdb.gz")
+        }
 
     def fetch_remote_ids(self, cache_file: str) -> List[str]:
         """
@@ -109,10 +115,16 @@ class Project:
         :param cache_file: path to the file where the list of RCSB IDs will be saved.
         :return: list of RCSB IDs.
         """
-        print('Searching RCSB IDs...')
+        print("Searching RCSB IDs...")
         remote_ids = []
-        for query_file in (filename for filename in os.listdir(self.queries_dir) if filename.endswith('.json')):
-            remote_ids.extend(search_and_download_ids(os.path.join(self.queries_dir, query_file)))
+        for query_file in (
+            filename
+            for filename in os.listdir(self.queries_dir)
+            if filename.endswith(".json")
+        ):
+            remote_ids.extend(
+                search_and_download_ids(os.path.join(self.queries_dir, query_file))
+            )
 
         # Cache the ids.
         store_pdb_ids(remote_ids, cache_file)
@@ -150,8 +162,8 @@ class Project:
         remote_ids = self.fetch_or_cache()
         # Check which PDB files are already in the local project directory, and skip those to save time.
         local_ids = self.get_local_ids()
-        print('Local IDs:', len(local_ids))
-        print('Remote IDs:', len(remote_ids))
+        print("Local IDs:", len(local_ids))
+        print("Remote IDs:", len(remote_ids))
 
         # Remote structures to be downloaded.
         tbd_ids = [id_ for id_ in remote_ids if id_ not in local_ids]
@@ -172,14 +184,16 @@ class Project:
             return
 
         # Print the list of removed/obsolete PDB files.
-        print('\n'.join(removed_ids))
-        print(f'🗑 Obsolete files (local but not remote): {len(removed_ids):,}')
+        print("\n".join(removed_ids))
+        print(f"🗑 Obsolete files (local but not remote): {len(removed_ids):,}")
 
         for id_ in removed_ids:
             pdb_file = os.path.join(self.data_dir, id_ + PDB_EXT)
             if os.path.isfile(pdb_file):
                 if self.verbose:
-                    print('Marking obsolete:', pdb_file, '->', pdb_file + SUFFIX_REMOVED)
+                    print(
+                        "Marking obsolete:", pdb_file, "->", pdb_file + SUFFIX_REMOVED
+                    )
                 os.rename(pdb_file, pdb_file + SUFFIX_REMOVED)
 
     def sync(self, n_jobs: int) -> None:
@@ -197,16 +211,19 @@ class Project:
         # Download the PDB files corresponding to the RCSB PDB IDs which are not already in the project directory.
         total_tbd_ids = len(tbd_ids)
 
-        print('Downloading RCSB PDB files...')
+        print("Downloading RCSB PDB files...")
         start_time = time.time()
         try:
             download(tbd_ids, self.data_dir, compressed=True, n_jobs=n_jobs)
         except KeyboardInterrupt:
-            print('\nDownload interrupted by user.')
+            print("\nDownload interrupted by user.")
         else:
             elapsed_time = time.time() - start_time
-            print(f'\nDownloaded {total_tbd_ids} files in {elapsed_time:.2f} seconds', end=' ')
-            print(f'({elapsed_time / total_tbd_ids:.2f} seconds per file).')
+            print(
+                f"\nDownloaded {total_tbd_ids} files in {elapsed_time:.2f} seconds",
+                end=" ",
+            )
+            print(f"({elapsed_time / total_tbd_ids:.2f} seconds per file).")
 
         # Now refetch the local PDB IDs, to check if the files have been downloaded correctly.
         self.updiff()
@@ -230,20 +247,31 @@ def main(project_dir: str, n_jobs: int = 1, verbose: bool = False) -> None:
 
     # Ask the user to confirm the download of missing PDB files.
     if len(fetch_result.tbd_ids) > 0:
-        answer = input(f'\nDo you want to download {len(fetch_result.tbd_ids)} PDB files? (y/n) ')
-        if answer.lower() == 'y':
+        answer = input(
+            f"\nDo you want to download {len(fetch_result.tbd_ids)} PDB files? (y/n) "
+        )
+        if answer.lower() == "y":
             project.sync(n_jobs=n_jobs)
         else:
-            print('Download cancelled.')
+            print("Download cancelled.")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # parse command line arguments
-    parser = argparse.ArgumentParser(description='Download PDB files from the RCSB website.')
-    parser.add_argument('project_dir', help='the directory of the project')
-    parser.add_argument('-j', '--n_jobs', type=int, default=DEFAULT_JOBS,
-                        help=f'the number of parallel jobs for downloading (default: {DEFAULT_JOBS}, max: {MAX_JOBS})')
-    parser.add_argument('-v', '--verbose', action='store_true', help='print verbose output')
+    parser = argparse.ArgumentParser(
+        description="Download PDB files from the RCSB website."
+    )
+    parser.add_argument("project_dir", help="the directory of the project")
+    parser.add_argument(
+        "-j",
+        "--n_jobs",
+        type=int,
+        default=DEFAULT_JOBS,
+        help=f"the number of parallel jobs for downloading (default: {DEFAULT_JOBS}, max: {MAX_JOBS})",
+    )
+    parser.add_argument(
+        "-v", "--verbose", action="store_true", help="print verbose output"
+    )
     args = parser.parse_args()
 
     main(args.project_dir, args.n_jobs, args.verbose)

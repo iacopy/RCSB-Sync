@@ -18,7 +18,7 @@ import requests
 # My stuff
 from utils import _human_readable_time
 
-DOWNLOAD_URL = 'https://files.rcsb.org/download/'
+DOWNLOAD_URL = "https://files.rcsb.org/download/"
 
 MAX_PROCESSES = os.cpu_count()
 DEFAULT_PROCESSES = 1
@@ -33,7 +33,7 @@ def _chunks(lst, num):
     Yield successive n-sized chunks from lst.
     """
     for i in range(0, len(lst), num):
-        yield lst[i:i + num]
+        yield lst[i : i + num]
 
 
 def download_pdb(pdb_id: str, directory: str, compressed: bool = True) -> str:
@@ -45,31 +45,37 @@ def download_pdb(pdb_id: str, directory: str, compressed: bool = True) -> str:
     :param compressed: whether to download compressed files.
     :return: path to the downloaded file.
     """
-    gzip_ext = '.gz' if compressed else ''
+    gzip_ext = ".gz" if compressed else ""
     # Documentation URL: https://www.rcsb.org/pdb/files/
-    pdb_url = DOWNLOAD_URL + pdb_id + '.pdb' + gzip_ext
+    pdb_url = DOWNLOAD_URL + pdb_id + ".pdb" + gzip_ext
     # print('Downloading PDB file from RCSB website:', pdb_url)
-    dest = os.path.join(directory, pdb_id + '.pdb' + gzip_ext)
+    dest = os.path.join(directory, pdb_id + ".pdb" + gzip_ext)
     response = requests.get(pdb_url, timeout=60)
     if response.status_code == 404:
-        print(f'PDB file not found: {pdb_id}')
+        print(f"PDB file not found: {pdb_id}")
         # Write an empty file to indicate that the PDB file was not found.
-        content = b''
+        content = b""
         # And append the PDB ID to the list of 404 PDB files, inside the directory.
-        with open(os.path.join(directory, '404.txt'), 'a', encoding='ascii') as file_404:
-            file_404.write(f'{pdb_id}\n')
+        with open(
+            os.path.join(directory, "404.txt"), "a", encoding="ascii"
+        ) as file_404:
+            file_404.write(f"{pdb_id}\n")
     else:
         response.raise_for_status()
         content = response.content
     # Save the PDB file.
-    with open(dest, 'wb') as file_pointer:
+    with open(dest, "wb") as file_pointer:
         file_pointer.write(content)
     return dest
 
 
 # Use multiprocessing to download (typically thousands of) PDB files in parallel.
-def parallel_download(pdb_ids: List[str], directory: str,
-                      compressed: bool = True, n_jobs: int = DEFAULT_PROCESSES) -> List[str]:
+def parallel_download(
+    pdb_ids: List[str],
+    directory: str,
+    compressed: bool = True,
+    n_jobs: int = DEFAULT_PROCESSES,
+) -> List[str]:
     """
     Download PDB files from the RCSB website in parallel.
 
@@ -83,15 +89,19 @@ def parallel_download(pdb_ids: List[str], directory: str,
         os.makedirs(directory)
     # Download the PDB files in parallel.
     with Pool(processes=n_jobs) as pool:
-        ret = pool.map(partial(download_pdb, directory=directory, compressed=compressed), pdb_ids)
+        ret = pool.map(
+            partial(download_pdb, directory=directory, compressed=compressed), pdb_ids
+        )
         # remove null values
-        return [x for x in ret if x != '']
+        return [x for x in ret if x != ""]
 
 
-def download(pdb_ids: List[str],
-             directory: str,
-             compressed: bool = True,
-             n_jobs=DEFAULT_PROCESSES) -> None:
+def download(
+    pdb_ids: List[str],
+    directory: str,
+    compressed: bool = True,
+    n_jobs=DEFAULT_PROCESSES,
+) -> None:
     """
     Download PDB files from the RCSB website in parallel, reporting the progress.
 
@@ -117,15 +127,21 @@ def download(pdb_ids: List[str],
     chunk_len = CHUNK_LEN_PER_PROCESS * n_jobs
     # Subdivide the list of PDB IDs into chunks and download each chunk in parallel.
     for i, chunk in enumerate(_chunks(pdb_ids, chunk_len)):
-        print(f'Downloading chunk {i + 1}/{n_ids // chunk_len}: {len(chunk)} PDBs each with {n_jobs} processes')
+        print(
+            f"Downloading chunk {i + 1}/{n_ids // chunk_len}: {len(chunk)} PDBs each with {n_jobs} processes"
+        )
         # Download the chunk of PDB IDs.
         downloaded_chunk = parallel_download(chunk, directory, compressed, n_jobs)
 
-        downloaded_size += sum(os.path.getsize(file_path) for file_path in downloaded_chunk)
+        downloaded_size += sum(
+            os.path.getsize(file_path) for file_path in downloaded_chunk
+        )
         n_downloaded += len(chunk)
         progress = n_downloaded / n_ids
 
         # Report the global progress and the expected time to complete.
         eta_sec = ((time.time() - start_time) / n_downloaded) * (n_ids - n_downloaded)
         eta = _human_readable_time(eta_sec)
-        print(f'Downloaded {n_downloaded}/{n_ids} files ({progress:.2%}) - ETA: {eta} ⏳')
+        print(
+            f"Downloaded {n_downloaded}/{n_ids} files ({progress:.2%}) - ETA: {eta} ⏳"
+        )

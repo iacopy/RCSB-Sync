@@ -18,9 +18,9 @@ import requests
 from utils import _load_query
 
 # Constants
-IDS_SEPARATOR = '\n'
+IDS_SEPARATOR = "\n"
 # Documentation URL: https://search.rcsb.org/#search-api
-SEARCH_ENDPOINT_URI = 'https://search.rcsb.org/rcsbsearch/v2/query'
+SEARCH_ENDPOINT_URI = "https://search.rcsb.org/rcsbsearch/v2/query"
 
 
 def retrieve_pdb_ids(query: str) -> list:
@@ -31,7 +31,7 @@ def retrieve_pdb_ids(query: str) -> list:
     :return: list of PDB IDs.
     """
     json_response = _send_request(query)
-    return [hit['identifier'] for hit in json_response.get('result_set', [])]
+    return [hit["identifier"] for hit in json_response.get("result_set", [])]
 
 
 def _send_request(query: str) -> dict:
@@ -40,7 +40,7 @@ def _send_request(query: str) -> dict:
 
     :param query: advanced query in json format.
     """
-    url_get = f'{SEARCH_ENDPOINT_URI}?json={query}'
+    url_get = f"{SEARCH_ENDPOINT_URI}?json={query}"
     response = requests.get(url_get, timeout=60)
     response.raise_for_status()
     # Handle 204 No Content response
@@ -53,7 +53,7 @@ def store_pdb_ids(ids: list, dest: str) -> None:
     :param ids: list of PDB IDs.
     :param dest: path to the output file.
     """
-    with open(dest, 'w', encoding='ascii') as file_pointer:
+    with open(dest, "w", encoding="ascii") as file_pointer:
         for id_ in ids:
             file_pointer.write(id_ + IDS_SEPARATOR)
 
@@ -65,7 +65,7 @@ def load_pdb_ids(pdb_ids_file: str) -> list:
     :param pdb_ids_file: path to the file containing the list of PDB IDs.
     :return: list of PDB IDs.
     """
-    return [line.strip() for line in open(pdb_ids_file, 'r', encoding='ascii')]
+    return [line.strip() for line in open(pdb_ids_file, "r", encoding="ascii")]
 
 
 def search_and_download_ids(query: str) -> list:  # pragma: no cover
@@ -75,22 +75,24 @@ def search_and_download_ids(query: str) -> list:  # pragma: no cover
     :return: list of PDB IDs.
     """
     # Check if the query is a file or a string.
-    if query.endswith('.json'):
-        print('Loading query from file:', query)
+    if query.endswith(".json"):
+        print("Loading query from file:", query)
         query = _load_query(query)
 
     # Retrieve the list of PDB IDs from the RCSB website, given an advanced query in json format.
-    print('Retrieving PDB IDs from RCSB website...')
+    print("Retrieving PDB IDs from RCSB website...")
     ids = retrieve_pdb_ids(query)
-    print(f'Found {len(ids)} PDB IDs.')
+    print(f"Found {len(ids)} PDB IDs.")
 
     return ids
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Parse the command line arguments.
-    parser = argparse.ArgumentParser(description='Script to download RCSB PDB IDs.')
-    parser.add_argument('-q', '--query', required=True, help='String or file path of json query')
+    parser = argparse.ArgumentParser(description="Script to download RCSB PDB IDs.")
+    parser.add_argument(
+        "-q", "--query", required=True, help="String or file path of json query"
+    )
     args = parser.parse_args()
 
     search_and_download_ids(args.query)
