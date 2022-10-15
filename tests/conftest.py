@@ -1,11 +1,14 @@
 """
 Fixtures.
 """
+# Standard Library
 from pathlib import Path
 
+# 3rd party
 import pytest
 import responses
 
+# My stuff
 from project import Project
 from rcsbids import SEARCH_ENDPOINT_URI
 
