@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-<title>🦜 RCSB Sync - organism module</title>
+<title>🦜 RCSB Sync - utils module</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
@@ -43,8 +43,7 @@
     <script src="app-data.js"></script>
 <link rel="index" title="Index" href="genindex.html" />
 <link rel="search" title="Search" href="search.html" />
-<link rel="next" title="rcsbids module" href="rcsbids.html" />
-<link rel="prev" title="download module" href="download.html" />
+<link rel="prev" title="rcsbids module" href="rcsbids.html" />
 
 </head>
 <body class="full-height test">
@@ -63,8 +62,8 @@
 
       </div>
       <div id="hdr-centre" class="text-center stretch">
-        <h3 title="organism module">organism module</h3>
-        <h6>organism module</h6>
+        <h3 title="utils module">utils module</h3>
+        <h6>utils module</h6>
       </div>
       <div id="hdr-search">
         
@@ -81,7 +80,7 @@
       </div>
 
       <div id="hdr-source">
-        <a href="_sources/organism.rst.txt" class="btn btn-default" title="See the source for this page"><i class="fa fa-code"></i></a>
+        <a href="_sources/utils.rst.txt" class="btn btn-default" title="See the source for this page"><i class="fa fa-code"></i></a>
       </div>
 
       <div id="hdr-right">
@@ -90,18 +89,15 @@
   <div class="prev-next">
     
       <div class="pull-left">
-        <a class="btn btn-default prev" href="download.html" title="Previous chapter (download module)"><i class="fa fa-chevron-left mr-1em" aria-hidden="true"></i><span class="btn-text">download module</span></a>
+        <a class="btn btn-default prev" href="rcsbids.html" title="Previous chapter (rcsbids module)"><i class="fa fa-chevron-left mr-1em" aria-hidden="true"></i><span class="btn-text">rcsbids module</span></a>
       </div>
     
-      <div class="pull-right">
-        <a class="btn btn-default next" href="rcsbids.html" title="Next chapter (rcsbids module)"><span class="btn-text">rcsbids module</span>&nbsp;<i class="fa fa-chevron-right ml-1em" aria-hidden="true"></i></a>
-      </div>
     </div>
   
       </div>
       <div id="alt-hdr-right">
 
-        <a href="download.html"><i class="fa fa-chevron-left mr-8"></i></a>
+        <a href="rcsbids.html"><i class="fa fa-chevron-left mr-8"></i></a>
 
 
         <a href="index.html"><i class="fa fa-home mr-8"></i></a>
@@ -112,8 +108,6 @@
 
         <a href="genindex.html"><i class="fa fa-list mr-8"></i></a>
 
-
-        <a href="rcsbids.html"><i class="fa fa-chevron-right"></i></a>
 
       </div>
     </div>
@@ -159,8 +153,28 @@
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.parallel_download"><code class="docutils literal notranslate"><span class="pre">parallel_download()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#organism-module">organism module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rcsbids.html">rcsbids module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="project.html#module-project">project module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="project.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="project.html#algorithm">Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="project.html#directory-structure">Directory structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="project.html#project.Diff"><code class="docutils literal notranslate"><span class="pre">Diff</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Diff.removed_ids"><code class="docutils literal notranslate"><span class="pre">Diff.removed_ids</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Diff.tbd_ids"><code class="docutils literal notranslate"><span class="pre">Diff.tbd_ids</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="project.html#project.Project"><code class="docutils literal notranslate"><span class="pre">Project</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.fetch_or_cache"><code class="docutils literal notranslate"><span class="pre">Project.fetch_or_cache()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.fetch_remote_ids"><code class="docutils literal notranslate"><span class="pre">Project.fetch_remote_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.get_local_ids"><code class="docutils literal notranslate"><span class="pre">Project.get_local_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.handle_removed"><code class="docutils literal notranslate"><span class="pre">Project.handle_removed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.sync"><code class="docutils literal notranslate"><span class="pre">Project.sync()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.updiff"><code class="docutils literal notranslate"><span class="pre">Project.updiff()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rcsbids.html#module-rcsbids">rcsbids module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#usage">Usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#rcsbids.load_pdb_ids"><code class="docutils literal notranslate"><span class="pre">load_pdb_ids()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#rcsbids.retrieve_pdb_ids"><code class="docutils literal notranslate"><span class="pre">retrieve_pdb_ids()</span></code></a></li>
@@ -168,7 +182,7 @@
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#rcsbids.store_pdb_ids"><code class="docutils literal notranslate"><span class="pre">store_pdb_ids()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="test_rcsbids.html">test_rcsbids module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#module-utils">utils module</a></li>
 </ul>
 </li>
 </ul>
@@ -192,8 +206,28 @@
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.parallel_download"><code class="docutils literal notranslate"><span class="pre">parallel_download()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#organism-module">organism module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rcsbids.html">rcsbids module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="project.html#module-project">project module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="project.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="project.html#algorithm">Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="project.html#directory-structure">Directory structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="project.html#project.Diff"><code class="docutils literal notranslate"><span class="pre">Diff</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Diff.removed_ids"><code class="docutils literal notranslate"><span class="pre">Diff.removed_ids</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Diff.tbd_ids"><code class="docutils literal notranslate"><span class="pre">Diff.tbd_ids</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="project.html#project.Project"><code class="docutils literal notranslate"><span class="pre">Project</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.fetch_or_cache"><code class="docutils literal notranslate"><span class="pre">Project.fetch_or_cache()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.fetch_remote_ids"><code class="docutils literal notranslate"><span class="pre">Project.fetch_remote_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.get_local_ids"><code class="docutils literal notranslate"><span class="pre">Project.get_local_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.handle_removed"><code class="docutils literal notranslate"><span class="pre">Project.handle_removed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.sync"><code class="docutils literal notranslate"><span class="pre">Project.sync()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.updiff"><code class="docutils literal notranslate"><span class="pre">Project.updiff()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rcsbids.html#module-rcsbids">rcsbids module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#usage">Usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#rcsbids.load_pdb_ids"><code class="docutils literal notranslate"><span class="pre">load_pdb_ids()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#rcsbids.retrieve_pdb_ids"><code class="docutils literal notranslate"><span class="pre">retrieve_pdb_ids()</span></code></a></li>
@@ -201,7 +235,7 @@
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#rcsbids.store_pdb_ids"><code class="docutils literal notranslate"><span class="pre">store_pdb_ids()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="test_rcsbids.html">test_rcsbids module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#module-utils">utils module</a></li>
 </ul>
 </li>
 </ul>
@@ -210,8 +244,9 @@
           </div>
           <div class="body">
             
-  <div class="section" id="organism-module">
-<h1>organism module<a class="headerlink" href="#organism-module" title="Permalink to this heading">¶</a></h1>
+  <div class="section" id="module-utils">
+<span id="utils-module"></span><h1>utils module<a class="headerlink" href="#module-utils" title="Permalink to this heading">¶</a></h1>
+<p>Utils</p>
 </div>
 
 
