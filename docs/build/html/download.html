@@ -4,13 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+
 <title>🦜 RCSB Sync - download module</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap-theme.css" integrity="sha256-xOpS+e/dER8z72w+qryCieOGysQI8cELAVt3MHG0phY=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tooltipster@4.2.7/dist/css/tooltipster.bundle.min.css" integrity="sha256-Qc4lCfqZWYaHF5hgEOFrYzSIX9Rrxk0NPHRac+08QeQ=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tooltipster@4.2.7/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-light.min.css" integrity="sha256-Wa1I4jhSXeWd3N6RhfPlkqr1WlT+zS3Vh2YGCg0129E=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap-theme.min.css" integrity="sha256-8uHMIn1ru0GS5KO+zf7Zccf8Uw12IA5DrdEcmMuWLFM=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tooltipster@4.2.8/dist/css/tooltipster.bundle.min.css" integrity="sha256-Qc4lCfqZWYaHF5hgEOFrYzSIX9Rrxk0NPHRac+08QeQ=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tooltipster@4.2.8/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-light.min.css" integrity="sha256-Wa1I4jhSXeWd3N6RhfPlkqr1WlT+zS3Vh2YGCg0129E=" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Code+Pro|Source+Sans+Pro|Source+Serif+Pro|Roboto|Roboto+Mono" rel="stylesheet">
 <link href="https://fonts.red-dove.com/iosevka-ss09-regular/webfont.css" rel="stylesheet">
 
@@ -18,28 +19,31 @@
     <link rel="stylesheet" href="_static/css/sizzle.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/css/sizzle.css" type="text/css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js" integrity="sha256-G7A4JrJjJlFqP0yamznwPjAApIKPkadeHfyIwiaa9e0=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/tooltipster@4.2.7/dist/js/tooltipster.bundle.min.js" integrity="sha256-NOU7KrY2aTI4PxDegqYUIknk9qfxVCS0E4JfE9aMwaA=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/tooltipster@4.2.8/dist/js/tooltipster.bundle.min.js" integrity="sha256-v8akIv8SCqn5f3mbVB7vEWprIizxPh6oV0yhao/dbB4=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
-    <script type="text/javascript">
+    <script>
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
         VERSION:     '0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
+        LINK_SUFFIX: '.html',
         HAS_SOURCE:  false,
         SOURCELINK_SUFFIX: '.txt'
       };
       $(document).data('sizzle', {on_load: []});
     </script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
-      <script src="app-data.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="app-data.js"></script>
 <link rel="index" title="Index" href="genindex.html" />
 <link rel="search" title="Search" href="search.html" />
-<link rel="next" title="organism module" href="organism.html" />
+<link rel="next" title="project module" href="project.html" />
 <link rel="prev" title="src" href="modules.html" />
 
 </head>
@@ -90,7 +94,7 @@
       </div>
     
       <div class="pull-right">
-        <a class="btn btn-default next" href="organism.html" title="Next chapter (organism module)"><span class="btn-text">organism module</span>&nbsp;<i class="fa fa-chevron-right ml-1em" aria-hidden="true"></i></a>
+        <a class="btn btn-default next" href="project.html" title="Next chapter (project module)"><span class="btn-text">project module</span>&nbsp;<i class="fa fa-chevron-right ml-1em" aria-hidden="true"></i></a>
       </div>
     </div>
   
@@ -109,7 +113,7 @@
         <a href="genindex.html"><i class="fa fa-list mr-8"></i></a>
 
 
-        <a href="organism.html"><i class="fa fa-chevron-right"></i></a>
+        <a href="project.html"><i class="fa fa-chevron-right"></i></a>
 
       </div>
     </div>
@@ -148,18 +152,43 @@
     <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">src</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#module-download">download module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="organism.html">organism module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="organism.html#usage">Usage</a></li>
-<li class="toctree-l3"><a class="reference internal" href="organism.html#algorithm">Algorithm</a></li>
-<li class="toctree-l3"><a class="reference internal" href="organism.html#directory-structure">Directory structure</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#module-download">download module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#download.CHUNK_LEN_PER_PROCESS"><code class="docutils literal notranslate"><span class="pre">CHUNK_LEN_PER_PROCESS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#download.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#download.download_pdb"><code class="docutils literal notranslate"><span class="pre">download_pdb()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#download.parallel_download"><code class="docutils literal notranslate"><span class="pre">parallel_download()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="project.html">project module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="project.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="project.html#algorithm">Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="project.html#directory-structure">Directory structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="project.html#project.Diff"><code class="docutils literal notranslate"><span class="pre">Diff</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Diff.removed_ids"><code class="docutils literal notranslate"><span class="pre">Diff.removed_ids</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Diff.tbd_ids"><code class="docutils literal notranslate"><span class="pre">Diff.tbd_ids</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="project.html#project.Project"><code class="docutils literal notranslate"><span class="pre">Project</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.fetch_or_cache"><code class="docutils literal notranslate"><span class="pre">Project.fetch_or_cache()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.fetch_remote_ids"><code class="docutils literal notranslate"><span class="pre">Project.fetch_remote_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.get_local_ids"><code class="docutils literal notranslate"><span class="pre">Project.get_local_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.handle_removed"><code class="docutils literal notranslate"><span class="pre">Project.handle_removed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.sync"><code class="docutils literal notranslate"><span class="pre">Project.sync()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.updiff"><code class="docutils literal notranslate"><span class="pre">Project.updiff()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="rcsbids.html">rcsbids module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rcsbids.html#rcsbids.load_pdb_ids"><code class="docutils literal notranslate"><span class="pre">load_pdb_ids()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rcsbids.html#rcsbids.retrieve_pdb_ids"><code class="docutils literal notranslate"><span class="pre">retrieve_pdb_ids()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rcsbids.html#rcsbids.search_and_download_ids"><code class="docutils literal notranslate"><span class="pre">search_and_download_ids()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rcsbids.html#rcsbids.store_pdb_ids"><code class="docutils literal notranslate"><span class="pre">store_pdb_ids()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="test_rcsbids.html">test_rcsbids module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">utils module</a></li>
 </ul>
 </li>
 </ul>
@@ -176,18 +205,43 @@
     <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">src</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#module-download">download module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="organism.html">organism module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="organism.html#usage">Usage</a></li>
-<li class="toctree-l3"><a class="reference internal" href="organism.html#algorithm">Algorithm</a></li>
-<li class="toctree-l3"><a class="reference internal" href="organism.html#directory-structure">Directory structure</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#module-download">download module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#download.CHUNK_LEN_PER_PROCESS"><code class="docutils literal notranslate"><span class="pre">CHUNK_LEN_PER_PROCESS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#download.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#download.download_pdb"><code class="docutils literal notranslate"><span class="pre">download_pdb()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#download.parallel_download"><code class="docutils literal notranslate"><span class="pre">parallel_download()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="project.html">project module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="project.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="project.html#algorithm">Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="project.html#directory-structure">Directory structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="project.html#project.Diff"><code class="docutils literal notranslate"><span class="pre">Diff</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Diff.removed_ids"><code class="docutils literal notranslate"><span class="pre">Diff.removed_ids</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Diff.tbd_ids"><code class="docutils literal notranslate"><span class="pre">Diff.tbd_ids</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="project.html#project.Project"><code class="docutils literal notranslate"><span class="pre">Project</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.fetch_or_cache"><code class="docutils literal notranslate"><span class="pre">Project.fetch_or_cache()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.fetch_remote_ids"><code class="docutils literal notranslate"><span class="pre">Project.fetch_remote_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.get_local_ids"><code class="docutils literal notranslate"><span class="pre">Project.get_local_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.handle_removed"><code class="docutils literal notranslate"><span class="pre">Project.handle_removed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.sync"><code class="docutils literal notranslate"><span class="pre">Project.sync()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.updiff"><code class="docutils literal notranslate"><span class="pre">Project.updiff()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="rcsbids.html">rcsbids module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rcsbids.html#rcsbids.load_pdb_ids"><code class="docutils literal notranslate"><span class="pre">load_pdb_ids()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rcsbids.html#rcsbids.retrieve_pdb_ids"><code class="docutils literal notranslate"><span class="pre">retrieve_pdb_ids()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rcsbids.html#rcsbids.search_and_download_ids"><code class="docutils literal notranslate"><span class="pre">search_and_download_ids()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rcsbids.html#rcsbids.store_pdb_ids"><code class="docutils literal notranslate"><span class="pre">store_pdb_ids()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="test_rcsbids.html">test_rcsbids module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">utils module</a></li>
 </ul>
 </li>
 </ul>
@@ -197,11 +251,11 @@
           <div class="body">
             
   <div class="section" id="module-download">
-<span id="download-module"></span><h1>download module<a class="headerlink" href="#module-download" title="Permalink to this headline">¶</a></h1>
+<span id="download-module"></span><h1>download module<a class="headerlink" href="#module-download" title="Permalink to this heading">¶</a></h1>
 <p>Download PDB files from the RCSB website.</p>
 <p>While you can use this module directly, it is intended to be used by the
-higher-level modules (e.g. the <code class="docutils literal notranslate"><span class="pre">organism</span></code> module which downloads PDB files
-of a given organism, to keep the local working directory up-to-date).</p>
+higher-level modules (e.g. the <code class="docutils literal notranslate"><span class="pre">project</span></code> module which downloads PDB files
+of a given project, to keep the local working directory up-to-date).</p>
 <dl class="py data">
 <dt class="sig sig-object py" id="download.CHUNK_LEN_PER_PROCESS">
 <code class="sig-prename descclassname"><span class="pre">download.</span></code><code class="sig-name descname"><span class="pre">CHUNK_LEN_PER_PROCESS</span></code><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="headerlink" href="#download.CHUNK_LEN_PER_PROCESS" title="Permalink to this definition">¶</a></dt>
@@ -212,7 +266,7 @@ This is scaled automatically to the number of processes used to keep the progres
 
 <dl class="py function">
 <dt class="sig sig-object py" id="download.download">
-<code class="sig-prename descclassname"><span class="pre">download.</span></code><code class="sig-name descname"><span class="pre">download</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">pdb_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em><span class="n"><span class="pre">compressed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/download.html#download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#download.download" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">download.</span></code><code class="sig-name descname"><span class="pre">download</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">pdb_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em><span class="n"><span class="pre">compressed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/download.html#download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#download.download" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download PDB files from the RCSB website in parallel, reporting the progress.</p>
 <p>(actually, this is a wrapper around <code class="docutils literal notranslate"><span class="pre">parallel_download</span></code>)</p>
 <p>Since we want to periodically notify the user about the progress and the ETA,
@@ -261,7 +315,7 @@ each process gets the same number of PDB IDs to download.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="download.parallel_download">
-<code class="sig-prename descclassname"><span class="pre">download.</span></code><code class="sig-name descname"><span class="pre">parallel_download</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">pdb_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em><span class="n"><span class="pre">compressed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em><span class="n"><span class="pre">n_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/download.html#parallel_download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#download.parallel_download" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">download.</span></code><code class="sig-name descname"><span class="pre">parallel_download</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">pdb_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em><span class="n"><span class="pre">compressed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em><span class="n"><span class="pre">n_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/download.html#parallel_download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#download.parallel_download" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download PDB files from the RCSB website in parallel.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -271,7 +325,7 @@ each process gets the same number of PDB IDs to download.</p>
 <li><strong>pdb_ids</strong> – list of PDB IDs.</li>
 <li><strong>directory</strong> – directory to store the downloaded files.</li>
 <li><strong>compressed</strong> – whether to download compressed files.</li>
-<li><strong>n_jobs</strong> – number of processes to use (default: 2).</li>
+<li><strong>n_jobs</strong> – number of processes to use (default: 1).</li>
 </ul>
 </td>
 </tr>
@@ -290,11 +344,11 @@ each process gets the same number of PDB IDs to download.</p>
   <div id="footer-row" class="row">
 
     <div class="col-md-12">
-        <span></span><span class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
-        Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0 and the
+        <span title="Built on 2022-10-15" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
+        Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3 and the
         <a href="https://pypi.org/project/sphinx-sizzle-theme/"
 
-           title="0.0.9/821a5457 [2020-04-16T19:31:16]"
+           title="0.1.1/6a5828d9 [2022-05-03T16:20:16]"
 
         >Sizzle</a> theme.</span>
     </div>
@@ -570,6 +624,10 @@ $(document).ready(function() {
 
 
   function add_custom_tooltips() {
+    if (!sizzle.app_data) {
+      return;
+    }
+
     var info_tips = sizzle.app_data.custom_data['info-tips'] || {};
 
     if ($.isEmptyObject(info_tips)) {

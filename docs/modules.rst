@@ -5,6 +5,6 @@ src
    :maxdepth: 4
 
    download
-   organism
+   project
    rcsbids
-   test_rcsbids
+   utils
