@@ -9,7 +9,6 @@ import pytest
 
 # My stuff
 from project import Project
-from rcsbids import SEARCH_ENDPOINT_URI
 
 
 def test_project_non_existing_directory():
@@ -24,7 +23,7 @@ def test_updiff_the_first_time(empty_project, remote_server):
     Test that the first time the project check for updates, all the remote ids are considered to be downloaded.
     """
     tbd_ids, removed_ids = empty_project.updiff()
-    assert set(tbd_ids) == {"hs01", "hs02", "rn01", "rn02"}
+    assert set(tbd_ids) == {"hs01", "hs02", "hs03", "rn01", "rn02"}
     assert removed_ids == []
 
 
@@ -38,7 +37,7 @@ def test_second_updiff_same_results(empty_project, remote_server):
     """
     # First updiff.
     tbd_ids, removed_ids = empty_project.updiff()
-    assert set(tbd_ids) == {"hs01", "hs02", "rn01", "rn02"}
+    assert set(tbd_ids) == {"hs01", "hs02", "hs03", "rn01", "rn02"}
     assert removed_ids == []
 
     # The requests.get() method should be called two times, since there are two queries.
@@ -46,49 +45,38 @@ def test_second_updiff_same_results(empty_project, remote_server):
 
     # Second updiff.
     tbd_ids, removed_ids = empty_project.updiff()
-    assert set(tbd_ids) == {"hs01", "hs02", "rn01", "rn02"}
+    assert set(tbd_ids) == {"hs01", "hs02", "hs03", "rn01", "rn02"}
     assert removed_ids == []
 
     # The second updiff should not call requests.get() (because the ids are loaded from the local cache).
     assert len(remote_server.calls) == 2
 
 
-def test_removed_handling(project_with_files, mocked_responses):
+def test_updiff_remote_removal(project_with_files, remote_server_changed):
     """
     Test that the remote-removed ids are handled properly.
     """
-    # NB: this code should be refactored, since is a duplicate of a part of remote_server fixture.
-    mocked_responses.get(
-        url=f"{SEARCH_ENDPOINT_URI}",
-        body='{"result_set": [{"identifier": "hs01"}, {"identifier": "hs02"}]}',
-        status=200,
-        content_type="application/json",
-    )
-    # The remote server returns a different set of ids (rn02 is removed).
-    mocked_responses.get(
-        url=f"{SEARCH_ENDPOINT_URI}",
-        body='{"result_set": [{"identifier": "rn01"}]}',
-        status=200,
-        content_type="application/json",
-    )
-
-    updiff_result = project_with_files.updiff()
-    assert updiff_result.tbd_ids == []
-    assert updiff_result.removed_ids == ["rn02"]
-
-    # The requests.get() method should be called two times, since there are two queries.
-    assert len(mocked_responses.calls) == 2
-
     assert sorted(os.listdir(project_with_files.data_dir)) == [
         "hs01.pdb.gz",
         "hs02.pdb.gz",
+        "hs03.pdb.gz",
         "rn01.pdb.gz",
         "rn02.pdb.gz",
     ]
+    # Check for updates.
+    updiff_result = project_with_files.updiff()
+    assert updiff_result.tbd_ids == []
+    assert updiff_result.removed_ids == ["rn02"]
+    # The requests.get() method should be called two times, since there are two queries.
+    assert len(remote_server_changed.calls) == 2
+
+    # Call handle_removed.
     project_with_files.handle_removed(updiff_result)
+    # Check that the local file is marked as obsolete (removed remotely).
     assert sorted(os.listdir(project_with_files.data_dir)) == [
         "hs01.pdb.gz",
         "hs02.pdb.gz",
+        "hs03.pdb.gz",
         "rn01.pdb.gz",
         "rn02.pdb.gz.obsolete",
     ]

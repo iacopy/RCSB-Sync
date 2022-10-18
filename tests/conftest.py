@@ -37,10 +37,12 @@ def project_with_files(empty_project):
     # add pdb.gz files inside the project directory
     hs01 = Path(empty_project.data_dir, "hs01.pdb.gz")
     hs02 = Path(empty_project.data_dir, "hs02.pdb.gz")
+    hs03 = Path(empty_project.data_dir, "hs03.pdb.gz")
     rn01 = Path(empty_project.data_dir, "rn01.pdb.gz")
     rn02 = Path(empty_project.data_dir, "rn02.pdb.gz")
     hs01.write_text("hs01", encoding="ascii")
     hs02.write_text("hs02", encoding="ascii")
+    hs03.write_text("hs03", encoding="ascii")
     rn01.write_text("rn01", encoding="ascii")
     rn02.write_text("rn02", encoding="ascii")
     return empty_project
@@ -77,7 +79,7 @@ def mocked_responses():
 def remote_server(mocked_responses):
     """Return a mocked remote server with ids."""
     # Add responses to the mocked server for the queries.
-    mocked_responses.add(make_search_response(["hs01", "hs02"]))
+    mocked_responses.add(make_search_response(["hs01", "hs02", "hs03"]))
     # Second query.
     mocked_responses.add(make_search_response(["rn01", "rn02"]))
     return mocked_responses
