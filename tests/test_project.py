@@ -24,7 +24,7 @@ def test_updiff_the_first_time(empty_project, remote_server):
     Test that the first time the project check for updates, all the remote ids are considered to be downloaded.
     """
     tbd_ids, removed_ids = empty_project.updiff()
-    assert set(tbd_ids) == {"hs01", "hs02", "rn01", "rn02"}
+    assert set(tbd_ids) == {"hs01", "hs02", "hs03", "rn01", "rn02"}
     assert removed_ids == []
 
 
@@ -38,7 +38,7 @@ def test_second_updiff_same_results(empty_project, remote_server):
     """
     # First updiff.
     tbd_ids, removed_ids = empty_project.updiff()
-    assert set(tbd_ids) == {"hs01", "hs02", "rn01", "rn02"}
+    assert set(tbd_ids) == {"hs01", "hs02", "hs03", "rn01", "rn02"}
     assert removed_ids == []
 
     # The requests.get() method should be called two times, since there are two queries.
@@ -46,7 +46,7 @@ def test_second_updiff_same_results(empty_project, remote_server):
 
     # Second updiff.
     tbd_ids, removed_ids = empty_project.updiff()
-    assert set(tbd_ids) == {"hs01", "hs02", "rn01", "rn02"}
+    assert set(tbd_ids) == {"hs01", "hs02", "hs03", "rn01", "rn02"}
     assert removed_ids == []
 
     # The second updiff should not call requests.get() (because the ids are loaded from the local cache).

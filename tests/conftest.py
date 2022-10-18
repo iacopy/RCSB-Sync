@@ -77,7 +77,7 @@ def mocked_responses():
 def remote_server(mocked_responses):
     """Return a mocked remote server with ids."""
     # Add responses to the mocked server for the queries.
-    mocked_responses.add(make_search_response(["hs01", "hs02"]))
+    mocked_responses.add(make_search_response(["hs01", "hs02", "hs03"]))
     # Second query.
     mocked_responses.add(make_search_response(["rn01", "rn02"]))
     return mocked_responses
