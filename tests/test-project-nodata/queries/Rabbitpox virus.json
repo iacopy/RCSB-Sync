@@ -1,0 +1,30 @@
+{
+    "query": {
+      "type": "terminal",
+      "label": "text",
+      "service": "text",
+      "parameters": {
+        "attribute": "rcsb_entity_source_organism.taxonomy_lineage.name",
+        "operator": "contains_phrase",
+        "negation": false,
+        "value": "Rabbitpox virus"
+      }
+    },
+    "return_type": "entry",
+    "request_options": {
+      "paginate": {
+        "start": 0,
+        "rows": 25
+      },
+      "results_content_type": [
+        "experimental"
+      ],
+      "sort": [
+        {
+          "sort_by": "score",
+          "direction": "desc"
+        }
+      ],
+      "scoring_strategy": "combined"
+    }
+  }

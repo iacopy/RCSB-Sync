@@ -229,7 +229,9 @@ class Project:
         self.updiff()
 
 
-def main(project_dir: str, n_jobs: int = 1, verbose: bool = False, yes: bool = False) -> None:
+def main(
+    project_dir: str, n_jobs: int = 1, verbose: bool = False, yes: bool = False
+) -> None:
     """
     Fetch the RCSB IDs from the RCSB website, and download the corresponding PDB files.
 
@@ -275,6 +277,11 @@ if __name__ == "__main__":
     parser.add_argument(
         "-v", "--verbose", action="store_true", help="print verbose output"
     )
-    parser.add_argument("-y", "--yes", action="store_true", help="do not ask for confirmation before downloading")
+    parser.add_argument(
+        "-y",
+        "--yes",
+        action="store_true",
+        help="do not ask for confirmation before downloading",
+    )
     args = parser.parse_args()
     main(args.project_dir, args.n_jobs, args.verbose, args.yes)
