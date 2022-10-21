@@ -461,13 +461,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">updiff</span><span class="p">()</span></div></div>
 
 
-<div class="viewcode-block" id="main"><a class="viewcode-back" href="../project.html#project.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">project_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../project.html#project.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span>
+    <span class="n">project_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">yes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Fetch the RCSB IDs from the RCSB website, and download the corresponding PDB files.</span>
 
 <span class="sd">    :param project_dir: path to the project directory.</span>
 <span class="sd">    :param n_jobs: number of parallel jobs to use.</span>
 <span class="sd">    :param verbose: quite quiet if False.</span>
+<span class="sd">    :param yes: if True, do not ask for confirmation before downloading the PDB files.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="n">project_dir</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
 
@@ -477,15 +480,17 @@
     <span class="c1"># Mark obsolete the local PDB files that are not in the remote database anymore.</span>
     <span class="n">project</span><span class="o">.</span><span class="n">handle_removed</span><span class="p">(</span><span class="n">fetch_result</span><span class="p">)</span>
 
-    <span class="c1"># Ask the user to confirm the download of missing PDB files.</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fetch_result</span><span class="o">.</span><span class="n">tbd_ids</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">answer</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Do you want to download </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">fetch_result</span><span class="o">.</span><span class="n">tbd_ids</span><span class="p">)</span><span class="si">}</span><span class="s2"> PDB files? (y/n) &quot;</span>
-        <span class="p">)</span>
-        <span class="k">if</span> <span class="n">answer</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span>
-            <span class="n">project</span><span class="o">.</span><span class="n">sync</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Download cancelled.&quot;</span><span class="p">)</span></div>
+    <span class="c1"># Download the PDB files corresponding to the RCSB PDB IDs which are not already in the project directory.</span>
+    <span class="k">if</span> <span class="n">fetch_result</span><span class="o">.</span><span class="n">tbd_ids</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;📥 To be downloaded: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">fetch_result</span><span class="o">.</span><span class="n">tbd_ids</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">yes</span><span class="p">:</span>
+            <span class="n">answer</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Do you want to download the PDB files? [y/N] &quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">answer</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Aborting.&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
+
+        <span class="n">project</span><span class="o">.</span><span class="n">sync</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">)</span></div>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
@@ -504,9 +509,14 @@
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
         <span class="s2">&quot;-v&quot;</span><span class="p">,</span> <span class="s2">&quot;--verbose&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;print verbose output&quot;</span>
     <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-y&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--yes&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;do not ask for confirmation before downloading&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
-
-    <span class="n">main</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">project_dir</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">n_jobs</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
+    <span class="n">main</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">project_dir</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">n_jobs</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">yes</span><span class="p">)</span>
 </pre></div>
 
           </div>
