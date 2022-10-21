@@ -105,12 +105,17 @@ setenv VIRTUALENV:
     isort --check-only --recursive --quiet . || just _fail "Fix imports by calling \'just fix\'."
     echo "isort : OK ✔️"
 
+@_black:
+   black --check . || just _fail "Fix code formatting by calling \'just fix\'."
+   echo "black : OK ✔️"
+
 # statically check the codebase (mypy, flake8, pylint, isort)
 @lint:
     just _mypy
     just _flake8
     just _pylint
     just _isort
+    just _black
 
 # auto fix imports and coding style
 @fix:
