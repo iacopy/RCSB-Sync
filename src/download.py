@@ -84,9 +84,6 @@ def parallel_download(
     :param compressed: whether to download compressed files.
     :param n_jobs: number of processes to use (default: 1).
     """
-    # Create the directory if it does not exist.
-    if not os.path.exists(directory):
-        os.makedirs(directory)
     # Download the PDB files in parallel.
     with Pool(processes=n_jobs) as pool:
         ret = pool.map(

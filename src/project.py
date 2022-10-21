@@ -229,13 +229,16 @@ class Project:
         self.updiff()
 
 
-def main(project_dir: str, n_jobs: int = 1, verbose: bool = False) -> None:
+def main(
+    project_dir: str, n_jobs: int = 1, verbose: bool = False, yes: bool = False
+) -> None:
     """
     Fetch the RCSB IDs from the RCSB website, and download the corresponding PDB files.
 
     :param project_dir: path to the project directory.
     :param n_jobs: number of parallel jobs to use.
     :param verbose: quite quiet if False.
+    :param yes: if True, do not ask for confirmation before downloading the PDB files.
     """
     project = Project(project_dir, verbose=verbose)
 
@@ -245,15 +248,17 @@ def main(project_dir: str, n_jobs: int = 1, verbose: bool = False) -> None:
     # Mark obsolete the local PDB files that are not in the remote database anymore.
     project.handle_removed(fetch_result)
 
-    # Ask the user to confirm the download of missing PDB files.
-    if len(fetch_result.tbd_ids) > 0:
-        answer = input(
-            f"\nDo you want to download {len(fetch_result.tbd_ids)} PDB files? (y/n) "
-        )
-        if answer.lower() == "y":
-            project.sync(n_jobs=n_jobs)
-        else:
-            print("Download cancelled.")
+    # Download the PDB files corresponding to the RCSB PDB IDs which are not already in the project directory.
+    if fetch_result.tbd_ids:
+        print(f"📥 To be downloaded: {len(fetch_result.tbd_ids):,}")
+
+        if not yes:
+            answer = input("Do you want to download the PDB files? [y/N] ")
+            if answer.lower() != "y":
+                print("Aborting.")
+                return
+
+        project.sync(n_jobs=n_jobs)
 
 
 if __name__ == "__main__":
@@ -272,6 +277,11 @@ if __name__ == "__main__":
     parser.add_argument(
         "-v", "--verbose", action="store_true", help="print verbose output"
     )
+    parser.add_argument(
+        "-y",
+        "--yes",
+        action="store_true",
+        help="do not ask for confirmation before downloading",
+    )
     args = parser.parse_args()
-
-    main(args.project_dir, args.n_jobs, args.verbose)
+    main(args.project_dir, args.n_jobs, args.verbose, args.yes)
