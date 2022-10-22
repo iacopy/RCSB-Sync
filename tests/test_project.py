@@ -18,16 +18,16 @@ def test_project_non_existing_directory():
         Project("non-existing-directory")
 
 
-def test_updiff_the_first_time(empty_project, remote_server):
+def test_updiff_the_first_time(new_project, remote_server):
     """
     Test that the first time the project check for updates, all the remote ids are considered to be downloaded.
     """
-    tbd_ids, removed_ids = empty_project.updiff()
+    tbd_ids, removed_ids = new_project.updiff()
     assert set(tbd_ids) == {"hs01", "hs02", "hs03", "rn01", "rn02"}
     assert removed_ids == []
 
 
-def test_second_updiff_same_results(empty_project, remote_server):
+def test_second_updiff_same_results(new_project, remote_server):
     """
     Test two subsequent updiffs with no download.
     The second updiff (which loads ids from the local cache) should return the same ids as the first one.
@@ -36,7 +36,7 @@ def test_second_updiff_same_results(empty_project, remote_server):
     If the test fails, it could be indicating that the local cache is not working properly.
     """
     # First updiff.
-    tbd_ids, removed_ids = empty_project.updiff()
+    tbd_ids, removed_ids = new_project.updiff()
     assert set(tbd_ids) == {"hs01", "hs02", "hs03", "rn01", "rn02"}
     assert removed_ids == []
 
@@ -44,7 +44,7 @@ def test_second_updiff_same_results(empty_project, remote_server):
     assert len(remote_server.calls) == 2
 
     # Second updiff.
-    tbd_ids, removed_ids = empty_project.updiff()
+    tbd_ids, removed_ids = new_project.updiff()
     assert set(tbd_ids) == {"hs01", "hs02", "hs03", "rn01", "rn02"}
     assert removed_ids == []
 
