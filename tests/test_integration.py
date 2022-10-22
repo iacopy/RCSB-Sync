@@ -135,3 +135,35 @@ def test_project_no_updates():
 
     # post-checks
     checks(project_dir)
+
+
+@patch("builtins.input", lambda *args: "n")
+def test_main_outdated__but_user_dont_sync():
+    """
+    When the first time the project check for updates, all the remote ids are considered to be downloaded.
+    Test that the user can choose not to download anything.
+    """
+    project_dir = os.path.join(os.path.dirname(__file__), "test-project-nodata")
+
+    with patch("project.Project.sync") as mock_sync:
+        # launch main, ask the user input (no to download)
+        project.main(project_dir)
+
+    # The sync() method should not be called (because the user answered "n" to the question).
+    mock_sync.assert_not_called()
+
+
+@patch("builtins.input", lambda *args: "y")
+def test_main_outdated__and_user_sync():
+    """
+    When the first time the project check for updates, all the remote ids are considered to be downloaded.
+    Test that the user can choose not to download anything.
+    """
+    project_dir = os.path.join(os.path.dirname(__file__), "test-project-nodata")
+
+    with patch("project.Project.sync") as mock_sync:
+        # launch main, ask the user input (yes to download)
+        project.main(project_dir)
+
+    # The sync() method should be called (because the user answered "y" to the question).
+    mock_sync.assert_called_once()
