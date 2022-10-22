@@ -79,11 +79,10 @@ class Project:
     Keep synced the data directory with the remote RCSB database.
     """
 
-    def __init__(self, directory: str, verbose: bool = False):
+    def __init__(self, directory: str):
         self.directory = directory
         self.queries_dir = os.path.join(self.directory, "queries")
         self.data_dir = os.path.join(self.directory, "data")
-        self.verbose = verbose
 
         # Create the data directory if it does not exist.
         if not os.path.isdir(self.data_dir):
@@ -190,10 +189,7 @@ class Project:
         for id_ in removed_ids:
             pdb_file = os.path.join(self.data_dir, id_ + PDB_EXT)
             assert os.path.isfile(pdb_file), f"File {pdb_file} not found."
-            if self.verbose:
-                print(
-                    "Marking obsolete:", pdb_file, "->", pdb_file + SUFFIX_REMOVED
-                )
+            print("Marking obsolete:", pdb_file, "->", pdb_file + SUFFIX_REMOVED)
             os.rename(pdb_file, pdb_file + SUFFIX_REMOVED)
 
     def sync(self, n_jobs: int) -> None:
@@ -229,18 +225,15 @@ class Project:
         self.updiff()
 
 
-def main(
-    project_dir: str, n_jobs: int = 1, verbose: bool = False, yes: bool = False
-) -> None:
+def main(project_dir: str, n_jobs: int = 1, yes: bool = False) -> None:
     """
     Fetch the RCSB IDs from the RCSB website, and download the corresponding PDB files.
 
     :param project_dir: path to the project directory.
     :param n_jobs: number of parallel jobs to use.
-    :param verbose: quite quiet if False.
     :param yes: if True, do not ask for confirmation before downloading the PDB files.
     """
-    project = Project(project_dir, verbose=verbose)
+    project = Project(project_dir)
 
     # Fetch the remote RCSB IDs.
     fetch_result = project.updiff()
@@ -275,13 +268,10 @@ if __name__ == "__main__":
         help=f"the number of parallel jobs for downloading (default: {DEFAULT_JOBS}, max: {MAX_JOBS})",
     )
     parser.add_argument(
-        "-v", "--verbose", action="store_true", help="print verbose output"
-    )
-    parser.add_argument(
         "-y",
         "--yes",
         action="store_true",
         help="do not ask for confirmation before downloading",
     )
     args = parser.parse_args()
-    main(args.project_dir, args.n_jobs, args.verbose, args.yes)
+    main(args.project_dir, args.n_jobs, args.yes)
