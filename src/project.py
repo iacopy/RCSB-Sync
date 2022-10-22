@@ -189,12 +189,12 @@ class Project:
 
         for id_ in removed_ids:
             pdb_file = os.path.join(self.data_dir, id_ + PDB_EXT)
-            if os.path.isfile(pdb_file):
-                if self.verbose:
-                    print(
-                        "Marking obsolete:", pdb_file, "->", pdb_file + SUFFIX_REMOVED
-                    )
-                os.rename(pdb_file, pdb_file + SUFFIX_REMOVED)
+            assert os.path.isfile(pdb_file), f"File {pdb_file} not found."
+            if self.verbose:
+                print(
+                    "Marking obsolete:", pdb_file, "->", pdb_file + SUFFIX_REMOVED
+                )
+            os.rename(pdb_file, pdb_file + SUFFIX_REMOVED)
 
     def sync(self, n_jobs: int) -> None:
         """
