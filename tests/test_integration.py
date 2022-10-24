@@ -17,14 +17,13 @@ import project
 pytestmark = pytest.mark.integration
 
 
-@pytest.fixture
-def project_dir_cleanup():
+def check_nodata(project_dir):
     """
-    Fixture to clean up the data directory.
+    Check that the project directory contains no data.
     """
-    project_dir = os.path.join(os.path.dirname(__file__), "test-project-nodata")
-    # pre-checks
     assert os.path.isdir(project_dir)
+    # check that the data directory does not exist
+    assert not os.path.isdir(os.path.join(project_dir, "data"))
     # check the main level: no files, only the queries directory
     assert sorted(os.listdir(project_dir)) == ["queries"]
     # check queries directory contain 2 json files
@@ -34,8 +33,75 @@ def project_dir_cleanup():
         "Radianthus crispus.json",
     ]
 
-    yield project_dir
 
+def check_data__old_layout(project_dir, allow_cache=False):
+    """
+    Check that the project directory contains the data, in the old layout.
+    """
+    assert os.path.isdir(project_dir)
+    # check that the data directory exists
+    assert os.path.isdir(os.path.join(project_dir, "data"))
+    # check that the data directory contains the downloaded files
+    assert set(os.listdir(os.path.join(project_dir, "data"))) == {
+        "2FFK.pdb.gz",
+        "2FIN.pdb.gz",
+        "1YZW.pdb.gz",
+        "6DEJ.pdb.gz",
+        "6Y1G.pdb.gz",
+    }
+
+    if not allow_cache:
+        # check the main level: no files, only the queries directory
+        assert sorted(os.listdir(project_dir)) == ["data", "queries"]
+    # check queries directory contain 2 json files
+    queries_dir = os.path.join(project_dir, "queries")
+    assert sorted(os.listdir(queries_dir)) == [
+        "Rabbitpox virus.json",
+        "Radianthus crispus.json",
+    ]
+
+
+def check_data__new_layout(project_dir, allow_cache=False):
+    """
+    Check that the project directory contains the data, in the new layout.
+    """
+    assert os.path.isdir(project_dir)
+    # check that the data directory exists
+    assert os.path.isdir(os.path.join(project_dir, "data"))
+
+    if not allow_cache:
+        # check the main level: no files, only the queries directory
+        assert sorted(os.listdir(project_dir)) == ["data", "queries"]
+
+    # check queries directory contain 2 json files
+    queries_dir = os.path.join(project_dir, "queries")
+    assert sorted(os.listdir(queries_dir)) == [
+        "Rabbitpox virus.json",
+        "Radianthus crispus.json",
+    ]
+
+    # Check that the data directory contains the downloaded files
+    # The data directory should contain 2 directories ("Rabbitpox virus" and "Radianthus crispus")
+    assert set(os.listdir(os.path.join(project_dir, "data"))) == {
+        "Rabbitpox virus",
+        "Radianthus crispus",
+    }
+    # check the data subdirectories
+    assert set(os.listdir(os.path.join(project_dir, "data", "Rabbitpox virus"))) == {
+        "2FFK.pdb.gz",
+        "2FIN.pdb.gz",
+    }
+    assert set(os.listdir(os.path.join(project_dir, "data", "Radianthus crispus"))) == {
+        "1YZW.pdb.gz",
+        "6DEJ.pdb.gz",
+        "6Y1G.pdb.gz",
+    }
+
+
+def clean_cache_files(project_dir):
+    """
+    Clean the cache files.
+    """
     # remove '.DS_Store' file if present
     if os.path.isfile(os.path.join(project_dir, ".DS_Store")):
         os.remove(os.path.join(project_dir, ".DS_Store"))
@@ -43,20 +109,77 @@ def project_dir_cleanup():
     for file in os.listdir(project_dir):
         if file.startswith("_ids_"):
             os.remove(os.path.join(project_dir, file))
+
+
+@pytest.fixture
+def project_w_data_cleanup():
+    """
+    Fixture to clean up the project directory after the test.
+    """
+    project_dir = os.path.join(os.path.dirname(__file__), "test-project-w-data")
+    # pre-checks
+    check_data__old_layout(project_dir)
+
+    yield project_dir
+
+    # cleanup of cache files (but not the downloaded files)
+    clean_cache_files(project_dir)
+
+
+@pytest.fixture
+def project_nodata_cleanup():
+    """
+    Fixture to clean up the data directory after the test.
+    """
+    project_dir = os.path.join(os.path.dirname(__file__), "test-project-nodata")
+    # pre-checks
+    check_nodata(project_dir)
+
+    yield project_dir
+
+    # cleanup of downloaded files and cache
+    clean_cache_files(project_dir)
+    # remove the data directory
     data_dir = os.path.join(project_dir, "data")
     # Completely remove the data directory, even if it is not empty.
     if os.path.isdir(data_dir):
         shutil.rmtree(data_dir)
 
 
+def test_project_download__old_layout(project_nodata_cleanup):
+    """
+    Test that the project downloads the files in the old layout.
+    """
+    project_dir = os.path.join(os.path.dirname(__file__), "test-project-nodata")
+
+    # pre-checks
+    check_nodata(project_dir)
+
+    project.main(project_dir, yes=True)
+
+    # check that the data directory exists
+    check_data__old_layout(project_dir, allow_cache=True)
+    data_stat_1 = os.stat(os.path.join(project_dir, "data"))
+
+    # Relaunch the project to check that the files are not downloaded again
+    # NB: this should be a separate test.
+    project.main(project_dir, yes=True)
+
+    check_data__old_layout(project_dir, allow_cache=True)
+    data_stat_2 = os.stat(os.path.join(project_dir, "data"))
+    assert data_stat_1 == data_stat_2
+
+    # cleanup of downloaded files and cache (done by the fixture)
+
+
 @pytest.mark.xfail(
     reason="This test will pass with the data directory layout v2", strict=True
 )
-def test_project_download(project_dir_cleanup):
+def test_project_download(project_nodata_cleanup):
     """
     Start from an existing directory with real queries.
     """
-    project_dir = project_dir_cleanup
+    project_dir = project_nodata_cleanup
 
     # launch main, bypassing the user input (yes to download)
     project.main(project_dir, yes=True)
@@ -78,48 +201,20 @@ def test_project_download(project_dir_cleanup):
         "6Y1G.pdb.gz",
     ]
 
+    # cleanup of downloaded files and cache (done by the fixture)
+
 
 @pytest.mark.xfail(
     reason="This test will pass with the data directory layout v2", strict=True
 )
-def test_project_no_updates():
+def test_project_no_updates(project_w_data_cleanup):
     """
     The database is already synced, no need to update.
     If we run the program again, it should not download anything, and the data directory should not change.
     """
-
-    def checks(project_dir):
-        assert os.path.isdir(project_dir)
-        # check the main level: no files, only the queries directory (skip the cache file)
-        assert [
-            dir_ for dir_ in sorted(os.listdir(project_dir)) if not dir_.startswith("_")
-        ] == ["data", "queries"]
-        # check queries directory contain 2 json files
-        queries_dir = os.path.join(project_dir, "queries")
-        assert sorted(os.listdir(queries_dir)) == [
-            "Rabbitpox virus.json",
-            "Radianthus crispus.json",
-        ]
-
-        # The data directory should contain 2 directories ("Rabbitpox virus" and "Radianthus crispus")
-        data_dir = os.path.join(project_dir, "data")
-        assert sorted(os.listdir(data_dir)) == ["Rabbitpox virus", "Radianthus crispus"]
-        # The "Rabbitpox virus" directory should contain 2 files.
-        assert sorted(os.listdir(os.path.join(data_dir, "Rabbitpox virus"))) == [
-            "2FFK.pdb.gz",
-            "2FIN.pdb.gz",
-        ]
-
-        # The "Radianthus crispus" directory should contain 3 files.
-        assert sorted(os.listdir(os.path.join(data_dir, "Radianthus crispus"))) == [
-            "1YZW.pdb.gz",
-            "6DEJ.pdb.gz",
-            "6Y1G.pdb.gz",
-        ]
-
     project_dir = os.path.join(os.path.dirname(__file__), "test-project-w-data")
     # pre-checks
-    checks(project_dir)
+    check_data__new_layout(project_dir)
 
     # mock the sync (download) method to avoid actually downloading anything
     # (to be removed in the integration test: useful now because the actual implementation
@@ -134,11 +229,11 @@ def test_project_no_updates():
     mock_sync.assert_not_called()
 
     # post-checks
-    checks(project_dir)
+    check_data__new_layout(project_dir)
 
 
 @patch("builtins.input", lambda *args: "n")
-def test_main_outdated__but_user_dont_sync():
+def test_main_outdated__but_user_dont_sync(project_nodata_cleanup):
     """
     When the first time the project check for updates, all the remote ids are considered to be downloaded.
     Test that the user can choose not to download anything.
@@ -154,7 +249,7 @@ def test_main_outdated__but_user_dont_sync():
 
 
 @patch("builtins.input", lambda *args: "y")
-def test_main_outdated__and_user_sync():
+def test_main_outdated__and_user_sync(project_nodata_cleanup):
     """
     When the first time the project check for updates, all the remote ids are considered to be downloaded.
     Test that the user can choose not to download anything.
