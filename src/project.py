@@ -211,7 +211,7 @@ class Project:
         start_time = time.time()
         try:
             download(tbd_ids, self.data_dir, compressed=True, n_jobs=n_jobs)
-        except KeyboardInterrupt:
+        except KeyboardInterrupt:  # pragma: no cover
             print("\nDownload interrupted by user.")
         else:
             elapsed_time = time.time() - start_time
