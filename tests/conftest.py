@@ -18,9 +18,9 @@ RN_QUERY = '{"query": {"query_type": "terminal", "search_type": "text", "value":
 
 
 @pytest.fixture
-def empty_project(tmp_path):
-    """Return an empty project."""
-    # Create a project in a temporary directory.
+def new_project(tmp_path):
+    """Return a directory with queries but no data."""
+    # Create project files in a temporary directory.
     queries = tmp_path / "queries"
     queries.mkdir()
     # Create a fake query file.
@@ -32,20 +32,20 @@ def empty_project(tmp_path):
 
 
 @pytest.fixture
-def project_with_files(empty_project):
+def project_with_files(new_project):
     """Return a project with some downloaded files."""
     # add pdb.gz files inside the project directory
-    hs01 = Path(empty_project.data_dir, "hs01.pdb.gz")
-    hs02 = Path(empty_project.data_dir, "hs02.pdb.gz")
-    hs03 = Path(empty_project.data_dir, "hs03.pdb.gz")
-    rn01 = Path(empty_project.data_dir, "rn01.pdb.gz")
-    rn02 = Path(empty_project.data_dir, "rn02.pdb.gz")
+    hs01 = Path(new_project.data_dir, "hs01.pdb.gz")
+    hs02 = Path(new_project.data_dir, "hs02.pdb.gz")
+    hs03 = Path(new_project.data_dir, "hs03.pdb.gz")
+    rn01 = Path(new_project.data_dir, "rn01.pdb.gz")
+    rn02 = Path(new_project.data_dir, "rn02.pdb.gz")
     hs01.write_text("hs01", encoding="ascii")
     hs02.write_text("hs02", encoding="ascii")
     hs03.write_text("hs03", encoding="ascii")
     rn01.write_text("rn01", encoding="ascii")
     rn02.write_text("rn02", encoding="ascii")
-    return empty_project
+    return new_project
 
 
 def result_set(ids):
