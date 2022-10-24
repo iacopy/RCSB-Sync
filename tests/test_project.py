@@ -27,6 +27,28 @@ def test_updiff_the_first_time__datav1(new_project, remote_server):
     assert removed_ids == []
 
 
+def test_updiff_resume_rn__datav1(project_with_hs_files__datav1, remote_server):
+    """
+    Test that resuming a download works properly (Homo sapiens is already downloaded).
+    """
+    # Check for updates.
+    updiff_result = project_with_hs_files__datav1.updiff()
+    assert updiff_result.tbd_ids == ["rn01", "rn02"]
+    assert updiff_result.removed_ids == []
+
+
+def test_updiff_resume_hs__datav1(project_with_rn_files__datav1, remote_server):
+    """
+    Test that resuming a download works properly (Rattus norvegicus is already downloaded).
+    """
+    # Check for updates.
+    updiff_result = project_with_rn_files__datav1.updiff()
+    assert updiff_result.tbd_ids == ["hs01", "hs02", "hs03"]
+    assert updiff_result.removed_ids == []
+    # The requests.get() method should be called two times, since there are two queries.
+    assert len(remote_server.calls) == 2
+
+
 @pytest.mark.xfail(reason="The new data layout (datav2) is not implemented yet.", strict=True)
 def test_updiff_the_first_time__datav2(new_project, remote_server):
     """
@@ -37,6 +59,34 @@ def test_updiff_the_first_time__datav2(new_project, remote_server):
     assert tbd_ids == {
         "Homo sapiens": ["hs01", "hs02", "hs03"],
         "Rattus norvegicus": ["rn01", "rn02"],
+    }
+    assert removed_ids == []
+
+
+@pytest.mark.xfail(reason="The new data layout (datav2) is not implemented yet.", strict=True)
+def test_updiff_resume_rn__datav2(project_with_hs_files, remote_server):
+    """
+    Test that resuming a download works properly (Homo sapiens is already downloaded).
+    """
+    tbd_ids, removed_ids = project_with_hs_files.updiff()
+
+    assert tbd_ids == {
+        "Homo sapiens": [],
+        "Rattus norvegicus": ["rn01", "rn02"],
+    }
+    assert removed_ids == []
+
+
+@pytest.mark.xfail(reason="The new data layout (datav2) is not implemented yet.", strict=True)
+def test_updiff_resume_hs__datav2(project_with_hs_files, remote_server):
+    """
+    Test that resuming a download works properly (Rattus norvegicus is already downloaded).
+    """
+    tbd_ids, removed_ids = project_with_hs_files.updiff()
+
+    assert tbd_ids == {
+        "Homo sapiens": ["hs01", "hs02", "hs03"],
+        "Rattus norvegicus": [],
     }
     assert removed_ids == []
 
