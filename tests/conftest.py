@@ -48,6 +48,27 @@ def project_with_files__datav1(new_project):
     return new_project
 
 
+@pytest.fixture
+def project_with_files__datav2(new_project):
+    """Return a project with some downloaded files."""
+    # add pdb.gz files inside the project directory
+    hs_dir = Path(new_project.data_dir, "Homo sapiens")
+    hs_dir.mkdir(parents=True)
+    hs01 = Path(hs_dir, "hs01.pdb.gz")
+    hs02 = Path(hs_dir, "hs02.pdb.gz")
+    hs03 = Path(hs_dir, "hs03.pdb.gz")
+    hs01.write_text("hs01", encoding="ascii")
+    hs02.write_text("hs02", encoding="ascii")
+    hs03.write_text("hs03", encoding="ascii")
+    rn_dir = Path(new_project.data_dir, "Rattus norvegicus")
+    rn_dir.mkdir(parents=True)
+    rn01 = Path(rn_dir, "rn01.pdb.gz")
+    rn02 = Path(rn_dir, "rn02.pdb.gz")
+    rn01.write_text("rn01", encoding="ascii")
+    rn02.write_text("rn02", encoding="ascii")
+    return new_project
+
+
 def result_set(ids):
     """Return a json string with a list of ids."""
     return (

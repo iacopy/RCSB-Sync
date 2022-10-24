@@ -27,6 +27,20 @@ def test_updiff_the_first_time__datav1(new_project, remote_server):
     assert removed_ids == []
 
 
+@pytest.mark.xfail(reason="The new data layout (datav2) is not implemented yet.", strict=True)
+def test_updiff_the_first_time__datav2(new_project, remote_server):
+    """
+    Test that the first time the project check for updates, all the remote ids are considered to be downloaded.
+    """
+    tbd_ids, removed_ids = new_project.updiff()
+
+    assert tbd_ids == {
+        "Homo sapiens": ["hs01", "hs02", "hs03"],
+        "Rattus norvegicus": ["rn01", "rn02"],
+    }
+    assert removed_ids == []
+
+
 def test_second_updiff_same_results__datav1(new_project, remote_server):
     """
     Test two subsequent updiffs with no download.
@@ -50,6 +64,26 @@ def test_second_updiff_same_results__datav1(new_project, remote_server):
 
     # The second updiff should not call requests.get() (because the ids are loaded from the local cache).
     assert len(remote_server.calls) == 2
+
+
+def test_updiff_uptodate__datav1(project_with_files__datav1, remote_server):
+    """
+    Test that the updiff method returns an empty list of ids if the local data is up-to-date.
+    """
+    # Check for updates.
+    updiff_result = project_with_files__datav1.updiff()
+    assert updiff_result.tbd_ids == []
+
+
+@pytest.mark.xfail(reason="The new data layout (datav2) is not implemented yet.", strict=True)
+def test_updiff_uptodate(project_with_files__datav2, remote_server):
+    """
+    Test that the updiff method returns an empty list of ids if the local data is up-to-date.
+    """
+    # Check for updates.
+    updiff_result = project_with_files__datav2.updiff()
+    print(project_with_files__datav2.data_dir)
+    assert updiff_result.tbd_ids == {}
 
 
 def test_updiff_remote_removal__datav1(project_with_files__datav1, remote_server_changed):
