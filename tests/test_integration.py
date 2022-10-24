@@ -34,7 +34,7 @@ def check_nodata(project_dir):
     ]
 
 
-def check_data__old_layout(project_dir, allow_cache=False):
+def check_data__datav1(project_dir, allow_cache=False):
     """
     Check that the project directory contains the data, in the old layout.
     """
@@ -118,7 +118,7 @@ def project_w_data_cleanup():
     """
     project_dir = os.path.join(os.path.dirname(__file__), "test-project-w-data")
     # pre-checks
-    check_data__old_layout(project_dir)
+    check_data__datav1(project_dir)
 
     yield project_dir
 
@@ -146,7 +146,7 @@ def project_nodata_cleanup():
         shutil.rmtree(data_dir)
 
 
-def test_project_download__old_layout(project_nodata_cleanup):
+def test_project_download__datav1(project_nodata_cleanup):
     """
     Test that the project downloads the files in the old layout.
     """
@@ -158,14 +158,14 @@ def test_project_download__old_layout(project_nodata_cleanup):
     project.main(project_dir, yes=True)
 
     # check that the data directory exists
-    check_data__old_layout(project_dir, allow_cache=True)
+    check_data__datav1(project_dir, allow_cache=True)
     data_stat_1 = os.stat(os.path.join(project_dir, "data"))
 
     # Relaunch the project to check that the files are not downloaded again
     # NB: this should be a separate test.
     project.main(project_dir, yes=True)
 
-    check_data__old_layout(project_dir, allow_cache=True)
+    check_data__datav1(project_dir, allow_cache=True)
     data_stat_2 = os.stat(os.path.join(project_dir, "data"))
     assert data_stat_1 == data_stat_2
 

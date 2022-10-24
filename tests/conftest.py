@@ -24,15 +24,15 @@ def new_project(tmp_path):
     queries = tmp_path / "queries"
     queries.mkdir()
     # Create a fake query file.
-    query_file1 = queries / "Homo_sapiens.json"
-    query_file2 = queries / "Rattus_norvegicus.json"
+    query_file1 = queries / "Homo sapiens.json"
+    query_file2 = queries / "Rattus norvegicus.json"
     query_file1.write_text(HS_QUERY)
     query_file2.write_text(RN_QUERY)
     return Project(tmp_path)
 
 
 @pytest.fixture
-def project_with_files(new_project):
+def project_with_files__datav1(new_project):
     """Return a project with some downloaded files."""
     # add pdb.gz files inside the project directory
     hs01 = Path(new_project.data_dir, "hs01.pdb.gz")

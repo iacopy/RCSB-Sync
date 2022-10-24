@@ -18,7 +18,7 @@ def test_project_non_existing_directory():
         Project("non-existing-directory")
 
 
-def test_updiff_the_first_time(new_project, remote_server):
+def test_updiff_the_first_time__datav1(new_project, remote_server):
     """
     Test that the first time the project check for updates, all the remote ids are considered to be downloaded.
     """
@@ -27,7 +27,7 @@ def test_updiff_the_first_time(new_project, remote_server):
     assert removed_ids == []
 
 
-def test_second_updiff_same_results(new_project, remote_server):
+def test_second_updiff_same_results__datav1(new_project, remote_server):
     """
     Test two subsequent updiffs with no download.
     The second updiff (which loads ids from the local cache) should return the same ids as the first one.
@@ -52,11 +52,11 @@ def test_second_updiff_same_results(new_project, remote_server):
     assert len(remote_server.calls) == 2
 
 
-def test_updiff_remote_removal(project_with_files, remote_server_changed):
+def test_updiff_remote_removal__datav1(project_with_files__datav1, remote_server_changed):
     """
     Test that the remote-removed ids are handled properly.
     """
-    assert sorted(os.listdir(project_with_files.data_dir)) == [
+    assert sorted(os.listdir(project_with_files__datav1.data_dir)) == [
         "hs01.pdb.gz",
         "hs02.pdb.gz",
         "hs03.pdb.gz",
@@ -64,16 +64,16 @@ def test_updiff_remote_removal(project_with_files, remote_server_changed):
         "rn02.pdb.gz",
     ]
     # Check for updates.
-    updiff_result = project_with_files.updiff()
+    updiff_result = project_with_files__datav1.updiff()
     assert updiff_result.tbd_ids == []
     assert updiff_result.removed_ids == ["rn02"]
     # The requests.get() method should be called two times, since there are two queries.
     assert len(remote_server_changed.calls) == 2
 
     # Call handle_removed.
-    project_with_files.handle_removed(updiff_result)
+    project_with_files__datav1.handle_removed(updiff_result)
     # Check that the local file is marked as obsolete (removed remotely).
-    assert sorted(os.listdir(project_with_files.data_dir)) == [
+    assert sorted(os.listdir(project_with_files__datav1.data_dir)) == [
         "hs01.pdb.gz",
         "hs02.pdb.gz",
         "hs03.pdb.gz",
