@@ -9,6 +9,7 @@ import pytest
 
 # My stuff
 from project import Project
+from project2 import Project2
 
 
 def test_project_non_existing_directory():
@@ -49,46 +50,39 @@ def test_updiff_resume_hs__datav1(project_with_rn_files__datav1, remote_server):
     assert len(remote_server.calls) == 2
 
 
-@pytest.mark.xfail(reason="The new data layout (datav2) is not implemented yet.", strict=True)
-def test_updiff_the_first_time__datav2(new_project, remote_server):
+def test_updiff_the_first_time__datav2(new_project_dir, remote_server):
     """
     Test that the first time the project check for updates, all the remote ids are considered to be downloaded.
     """
-    tbd_ids, removed_ids = new_project.updiff()
+    new_project = Project2(new_project_dir)
+    diffs = new_project.updiff()
 
-    assert tbd_ids == {
-        "Homo sapiens": ["hs01", "hs02", "hs03"],
-        "Rattus norvegicus": ["rn01", "rn02"],
-    }
-    assert removed_ids == {}
+    assert diffs["Homo sapiens"].tbd_ids == ["hs01", "hs02", "hs03"]
+    assert diffs["Homo sapiens"].removed_ids == []
+    assert diffs["Rattus norvegicus"].tbd_ids == ["rn01", "rn02"]
+    assert diffs["Rattus norvegicus"].removed_ids == []
 
 
-@pytest.mark.xfail(reason="The new data layout (datav2) is not implemented yet.", strict=True)
 def test_updiff_resume_rn__datav2(project_with_hs_files, remote_server):
     """
     Test that resuming a download works properly (Homo sapiens is already downloaded).
     """
-    tbd_ids, removed_ids = project_with_hs_files.updiff()
-
-    assert tbd_ids == {
-        "Homo sapiens": [],
-        "Rattus norvegicus": ["rn01", "rn02"],
-    }
-    assert removed_ids == {}
+    diffs = project_with_hs_files.updiff()
+    assert diffs["Homo sapiens"].tbd_ids == []
+    assert diffs["Homo sapiens"].removed_ids == []
+    assert diffs["Rattus norvegicus"].tbd_ids == ["rn01", "rn02"]
+    assert diffs["Rattus norvegicus"].removed_ids == []
 
 
-@pytest.mark.xfail(reason="The new data layout (datav2) is not implemented yet.", strict=True)
-def test_updiff_resume_hs__datav2(project_with_hs_files, remote_server):
+def test_updiff_resume_hs__datav2(project_with_rn_files, remote_server):
     """
     Test that resuming a download works properly (Rattus norvegicus is already downloaded).
     """
-    tbd_ids, removed_ids = project_with_hs_files.updiff()
-
-    assert tbd_ids == {
-        "Homo sapiens": ["hs01", "hs02", "hs03"],
-        "Rattus norvegicus": [],
-    }
-    assert removed_ids == {}
+    diffs = project_with_rn_files.updiff()
+    assert diffs["Homo sapiens"].tbd_ids == ["hs01", "hs02", "hs03"]
+    assert diffs["Homo sapiens"].removed_ids == []
+    assert diffs["Rattus norvegicus"].tbd_ids == []
+    assert diffs["Rattus norvegicus"].removed_ids == []
 
 
 def test_second_updiff_same_results__datav1(new_project, remote_server):
@@ -125,18 +119,21 @@ def test_updiff_uptodate__datav1(project_with_files__datav1, remote_server):
     assert updiff_result.tbd_ids == []
 
 
-@pytest.mark.xfail(reason="The new data layout (datav2) is not implemented yet.", strict=True)
-def test_updiff_uptodate(project_with_files__datav2, remote_server):
+def test_updiff_uptodate__datav2(project_with_files__datav2, remote_server):
     """
     Test that the updiff method returns an empty list of ids if the local data is up-to-date.
     """
     # Check for updates.
     updiff_result = project_with_files__datav2.updiff()
-    print(project_with_files__datav2.data_dir)
-    assert updiff_result.tbd_ids == {}
+    assert updiff_result["Homo sapiens"].tbd_ids == []
+    assert updiff_result["Homo sapiens"].removed_ids == []
+    assert updiff_result["Rattus norvegicus"].tbd_ids == []
+    assert updiff_result["Rattus norvegicus"].removed_ids == []
 
 
-def test_updiff_remote_removal__datav1(project_with_files__datav1, remote_server_changed):
+def test_updiff_remote_removal__datav1(
+    project_with_files__datav1, remote_server_changed
+):
     """
     Test that the remote-removed ids are handled properly.
     """

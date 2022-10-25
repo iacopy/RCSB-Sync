@@ -10,6 +10,7 @@ import responses
 
 # My stuff
 from project import Project
+from project2 import Project2
 from rcsbids import SEARCH_ENDPOINT_URI
 
 # Fake json queries
@@ -18,7 +19,7 @@ RN_QUERY = '{"query": {"query_type": "terminal", "search_type": "text", "value":
 
 
 @pytest.fixture
-def new_project(tmp_path):
+def new_project_dir(tmp_path):
     """Return a directory with queries but no data."""
     # Create project files in a temporary directory.
     queries = tmp_path / "queries"
@@ -28,7 +29,13 @@ def new_project(tmp_path):
     query_file2 = queries / "Rattus norvegicus.json"
     query_file1.write_text(HS_QUERY)
     query_file2.write_text(RN_QUERY)
-    return Project(tmp_path)
+    return tmp_path
+
+
+@pytest.fixture
+def new_project(new_project_dir):
+    """Return a new project of old type."""
+    return Project(new_project_dir)
 
 
 @pytest.fixture
@@ -73,52 +80,53 @@ def project_with_rn_files__datav1(new_project):
 
 
 @pytest.fixture
-def project_with_files__datav2(new_project):
+def project_with_files__datav2(new_project_dir):
     """Return a project with some downloaded files."""
     # add pdb.gz files inside the project directory
-    hs_dir = Path(new_project.data_dir, "Homo sapiens")
-    hs_dir.mkdir(parents=True)
+    prj = Project2(new_project_dir)
+    hs_dir = Path(prj.data_dir, "Homo sapiens")
+    # hs_dir.mkdir(parents=True)
     hs01 = Path(hs_dir, "hs01.pdb.gz")
     hs02 = Path(hs_dir, "hs02.pdb.gz")
     hs03 = Path(hs_dir, "hs03.pdb.gz")
     hs01.write_text("hs01", encoding="ascii")
     hs02.write_text("hs02", encoding="ascii")
     hs03.write_text("hs03", encoding="ascii")
-    rn_dir = Path(new_project.data_dir, "Rattus norvegicus")
-    rn_dir.mkdir(parents=True)
+    rn_dir = Path(prj.data_dir, "Rattus norvegicus")
+    # rn_dir.mkdir(parents=True)
     rn01 = Path(rn_dir, "rn01.pdb.gz")
     rn02 = Path(rn_dir, "rn02.pdb.gz")
     rn01.write_text("rn01", encoding="ascii")
     rn02.write_text("rn02", encoding="ascii")
-    return new_project
+    return prj
 
 
 @pytest.fixture
-def project_with_hs_files(new_project):
+def project_with_hs_files(new_project_dir):
     """Return a project with 3 Homo sapiens fake pdb files."""
+    prj = Project2(new_project_dir)
     # add pdb.gz files inside the project directory
-    hs_dir = Path(new_project.data_dir, "Homo sapiens")
-    hs_dir.mkdir(parents=True)
+    hs_dir = Path(prj.data_dir, "Homo sapiens")
     hs01 = Path(hs_dir, "hs01.pdb.gz")
     hs02 = Path(hs_dir, "hs02.pdb.gz")
     hs03 = Path(hs_dir, "hs03.pdb.gz")
     hs01.write_text("hs01", encoding="ascii")
     hs02.write_text("hs02", encoding="ascii")
     hs03.write_text("hs03", encoding="ascii")
-    return new_project
+    return prj
 
 
 @pytest.fixture
-def project_with_rn_files(new_project):
+def project_with_rn_files(new_project_dir):
     """Return a project with Rattus norvegicus fake pdb files."""
+    prj = Project2(new_project_dir)
     # add pdb.gz files inside the project directory
-    rn_dir = Path(new_project.data_dir, "Rattus norvegicus")
-    rn_dir.mkdir(parents=True)
+    rn_dir = Path(prj.data_dir, "Rattus norvegicus")
     rn01 = Path(rn_dir, "rn01.pdb.gz")
     rn02 = Path(rn_dir, "rn02.pdb.gz")
     rn01.write_text("rn01", encoding="ascii")
     rn02.write_text("rn02", encoding="ascii")
-    return new_project
+    return prj
 
 
 def result_set(ids):

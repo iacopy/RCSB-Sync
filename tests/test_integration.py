@@ -12,6 +12,7 @@ import pytest
 
 # My stuff
 import project
+import project2
 
 # Mark all tests in this module as integration tests.
 pytestmark = pytest.mark.integration
@@ -61,7 +62,7 @@ def check_data__datav1(project_dir, allow_cache=False):
     ]
 
 
-def check_data__new_layout(project_dir, allow_cache=False):
+def check_data__datav2(project_dir, allow_cache=False):
     """
     Check that the project directory contains the data, in the new layout.
     """
@@ -112,13 +113,28 @@ def clean_cache_files(project_dir):
 
 
 @pytest.fixture
-def project_w_data_cleanup():
+def project_w_datav1_cleanup():
     """
     Fixture to clean up the project directory after the test.
     """
     project_dir = os.path.join(os.path.dirname(__file__), "test-project-w-data")
     # pre-checks
     check_data__datav1(project_dir)
+
+    yield project_dir
+
+    # cleanup of cache files (but not the downloaded files)
+    clean_cache_files(project_dir)
+
+
+@pytest.fixture
+def project_w_datav2_cleanup():
+    """
+    Fixture to clean up the project directory after the test.
+    """
+    project_dir = os.path.join(os.path.dirname(__file__), "test-project-w-data")
+    # pre-checks
+    check_data__datav2(project_dir)
 
     yield project_dir
 
@@ -172,17 +188,14 @@ def test_project_download__datav1(project_nodata_cleanup):
     # cleanup of downloaded files and cache (done by the fixture)
 
 
-@pytest.mark.xfail(
-    reason="This test will pass with the data directory layout v2", strict=True
-)
-def test_project_download(project_nodata_cleanup):
+def test_project_download_datav2(project_nodata_cleanup):
     """
     Start from an existing directory with real queries.
     """
     project_dir = project_nodata_cleanup
 
     # launch main, bypassing the user input (yes to download)
-    project.main(project_dir, yes=True)
+    project2.main(project_dir, yes=True)
 
     # post-checks
     # The data directory should contain 2 directories ("Rabbitpox virus" and "Radianthus crispus")
@@ -204,32 +217,29 @@ def test_project_download(project_nodata_cleanup):
     # cleanup of downloaded files and cache (done by the fixture)
 
 
-@pytest.mark.xfail(
-    reason="This test will pass with the data directory layout v2", strict=True
-)
-def test_project_no_updates(project_w_data_cleanup):
+def test_project_no_updates__datav2(project_w_datav2_cleanup):
     """
     The database is already synced, no need to update.
     If we run the program again, it should not download anything, and the data directory should not change.
     """
     project_dir = os.path.join(os.path.dirname(__file__), "test-project-w-data")
     # pre-checks
-    check_data__new_layout(project_dir)
+    check_data__datav2(project_dir)
 
     # mock the sync (download) method to avoid actually downloading anything
     # (to be removed in the integration test: useful now because the actual implementation
     # would download the data again, since the current directory layout searches for the dowloaded data
     # in the wrong place)
-    with patch("project.Project.sync") as mock_sync:
+    with patch("project2.Project2.do_sync") as mock_sync:
         # launch main, bypassing the user input (yes to download)
-        project.main(project_dir, yes=True)
+        project2.main(project_dir, yes=True)
 
     # check that the sync function was *not* called (no download)
     # (to be removed when the actual implementation is fixed)
     mock_sync.assert_not_called()
 
     # post-checks
-    check_data__new_layout(project_dir)
+    check_data__datav2(project_dir)
 
 
 @patch("builtins.input", lambda *args: "n")
@@ -259,6 +269,39 @@ def test_main_outdated__and_user_sync(project_nodata_cleanup):
     with patch("project.Project.sync") as mock_sync:
         # launch main, ask the user input (yes to download)
         project.main(project_dir)
+
+    # The sync() method should be called (because the user answered "y" to the question).
+    mock_sync.assert_called_once()
+
+
+# project2: user input
+@patch("builtins.input", lambda *args: "n")
+def test_main2_outdated__but_user_dont_sync(project_nodata_cleanup):
+    """
+    When the first time the project check for updates, all the remote ids are considered to be downloaded.
+    Test that the user can choose not to download anything.
+    """
+    project_dir = os.path.join(os.path.dirname(__file__), "test-project-nodata")
+
+    with patch("project2.Project2.do_sync") as mock_sync:
+        # launch main, ask the user input (no to download)
+        project2.main(project_dir)
+
+    # The sync() method should not be called (because the user answered "n" to the question).
+    mock_sync.assert_not_called()
+
+
+@patch("builtins.input", lambda *args: "y")
+def test_main2_outdated__and_user_sync(project_nodata_cleanup):
+    """
+    When the first time the project check for updates, all the remote ids are considered to be downloaded.
+    Test that the user can choose not to download anything.
+    """
+    project_dir = os.path.join(os.path.dirname(__file__), "test-project-nodata")
+
+    with patch("project2.Project2.do_sync") as mock_sync:
+        # launch main, ask the user input (yes to download)
+        project2.main(project_dir)
 
     # The sync() method should be called (because the user answered "y" to the question).
     mock_sync.assert_called_once()
