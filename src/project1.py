@@ -11,6 +11,7 @@ Usage
 Algorithm
 ~~~~~~~~~
 
+0. If the ids are already downloaded (a ``_ids_<date>.txt`` cache file with current date exists), skip to step 2.
 1. Start by downloading the RCSB PDB IDs for the project, using the queries in the ``queries`` directory.
 2. Before downloading the PDB files, check which PDB files are already in the local project directory,
    and skip them.
@@ -37,7 +38,7 @@ The directory structures of a project is as follows::
     │   │   ├── query_0.json
     │   │   ├── query_1.json
     │   │   └── query_2.json
-    │   └── database
+    │   └── data
     │       ├── query_01
     │       │   ├── 1abc.pdb
     │       │   ├── 1abd.pdb
@@ -50,14 +51,19 @@ The directory structures of a project is as follows::
 """
 # Standard Library
 import argparse
+import datetime
 import os
+import time
 from collections import namedtuple
-from typing import Dict
 from typing import List
 
 # My stuff
-import download
-import rcsbids
+from download import download
+from rcsbids import load_pdb_ids
+from rcsbids import search_and_download_ids
+from rcsbids import store_pdb_ids
+
+# pylint: disable=duplicate-code
 
 IDS_SEPARATOR = "\n"
 SUFFIX_REMOVED = ".obsolete"
@@ -70,7 +76,6 @@ MAX_JOBS = os.cpu_count()
 
 # Named tuple to store the fetch results.
 Diff = namedtuple("Diff", ["tbd_ids", "removed_ids"])
-DataMap = Dict[str, List[str]]
 
 
 class Project:
@@ -88,59 +93,78 @@ class Project:
             print("Creating directory:", self.data_dir)
             os.mkdir(self.data_dir)
 
-        # Create the query data directories if they don't exist.
+    def _get_cache_file(self) -> str:
+        """
+        Get the path to the pdb ids cache file.
+        """
+        return os.path.join(
+            self.directory, "_ids_" + datetime.date.today().isoformat() + ".txt"
+        )
+
+    def get_local_ids(self) -> set:
+        """
+        Get the PDB IDs that are already in the project directory.
+        """
+        return {
+            filename[:-7]
+            for filename in os.listdir(self.data_dir)
+            if filename.endswith("pdb.gz")
+        }
+
+    def fetch_remote_ids(self, cache_file: str) -> List[str]:
+        """
+        Fetch the RCSB IDs from the RCSB website.
+
+        :param cache_file: path to the file where the list of RCSB IDs will be saved.
+        :return: list of RCSB IDs.
+        """
+        print("Searching RCSB IDs...")
+        remote_ids = []
         for query_file in (
             filename
             for filename in os.listdir(self.queries_dir)
             if filename.endswith(".json")
         ):
-            name = os.path.splitext(query_file)[0]
-            query_data_dir = os.path.join(self.data_dir, name)
-            os.makedirs(query_data_dir, exist_ok=True)
+            remote_ids.extend(
+                search_and_download_ids(os.path.join(self.queries_dir, query_file))
+            )
 
-    def get_data_files_for_query(self, query_name: str) -> List[str]:
-        """
-        Get the list of PDB files in the query data directory.
-        """
-        query_data_dir = os.path.join(self.data_dir, query_name)
-        return [
-            filename
-            for filename in os.listdir(query_data_dir)
-            if filename.endswith(PDB_EXT)
-        ]
+        # Cache the ids.
+        store_pdb_ids(remote_ids, cache_file)
 
-    def get_local_query_ids(self, query_name) -> set:
-        """
-        Get the PDB IDs that are already in the project directory.
-        """
-        return {filename[:-7] for filename in self.get_data_files_for_query(query_name)}
+        return remote_ids
 
-    def fetch_or_cache_query(self, query_path: str) -> List[str]:
+    def fetch_or_cache(self) -> List[str]:
         """
-        Fetch the RCSB IDs from the RCSB website.
+        Fetch the RCSB IDs from the RCSB website, or use the cached IDs if they exist.
+
+        Side effect:
+            - the remote RCSB IDs are saved in the project directory, in a file named ``_ids_<date>.txt``
+              (where <date> is the current date).
 
         :return: List of RCSB IDs.
         """
+        # Check if the ids are already downloaded. If so, read them from the _ids_<date>.txt file.
+        ids_cache_file = self._get_cache_file()
+        if os.path.isfile(ids_cache_file):
+            # Read the ids from the _ids_<date>.txt file.
+            return load_pdb_ids(ids_cache_file)
         # Get the list of PDB IDs from the RCSB website, given an advanced query in json format.
-        return rcsbids.search_and_download_ids(query_path)
+        return self.fetch_remote_ids(ids_cache_file)
 
-
-    def updiff_query(self, query_path: str) -> Diff:
+    def updiff(self) -> Diff:
         """
-        Check the remote server for updates for a query and compute the diff, but do not download the files.
+        Check the remote server for updates and compute the diff, but do not download the files.
 
             - fetch the RCSB IDs from the RCSB website;
             - check which PDB files are already in the local project directory;
             - check which PDB files are obsolete and mark them with the suffix '.obsolete';
             - print a sync report.
-
-        :param query_path: path to the query file.
         """
-        query_name = os.path.splitext(os.path.basename(query_path))[0]
         # Get the list of PDB IDs from the RCSB website.
-        remote_ids = self.fetch_or_cache_query(query_path)
+        remote_ids = self.fetch_or_cache()
         # Check which PDB files are already in the local project directory, and skip those to save time.
-        local_ids = self.get_local_query_ids(query_name)
+        local_ids = self.get_local_ids()
         print("Local IDs:", len(local_ids))
         print("Remote IDs:", len(remote_ids))
 
@@ -152,53 +176,57 @@ class Project:
 
         return Diff(tbd_ids, removed_ids)
 
-    def updiff(self) -> Dict[str, Diff]:
-        """
-        Fetch ids for each query and report the difference with the local data.
-
-        :return: a dictionary mapping query names to Diff objects.
-        """
-        ret = {}
-        for query_file in (
-            filename
-            for filename in sorted(os.listdir(self.queries_dir))
-            if filename.endswith(".json")
-        ):
-            name = os.path.splitext(query_file)[0]
-            query_path = os.path.join(self.queries_dir, query_file)
-            print(f"Query: {name}")
-            ret[name] = self.updiff_query(query_path)
-            print("ret[name].tbd_ids", ret[name].tbd_ids)
-        return ret
-
-    def mark_removed(self, query_name: str, to_remove: List[str]) -> None:
+    def handle_removed(self, fetch_result: Diff) -> None:
         """
         Mark obsolete the local PDB files that are not in the remote database anymore.
-
-        :param query_name: name of the query.
-        :param to_remove: list of PDB IDs to remove.
         """
-        query_data_dir = os.path.join(self.data_dir, query_name)
-        for id_ in to_remove:
-            pdb_file = os.path.join(query_data_dir, id_ + PDB_EXT)
+        # Fetch the remote RCSB IDs.
+        removed_ids = fetch_result.removed_ids
+
+        if not removed_ids:
+            return
+
+        # Print the list of removed/obsolete PDB files.
+        print("\n".join(removed_ids))
+        print(f"🗑 Obsolete files (local but not remote): {len(removed_ids):,}")
+
+        for id_ in removed_ids:
+            pdb_file = os.path.join(self.data_dir, id_ + PDB_EXT)
             assert os.path.isfile(pdb_file), f"File {pdb_file} not found."
             print("Marking obsolete:", pdb_file, "->", pdb_file + SUFFIX_REMOVED)
             os.rename(pdb_file, pdb_file + SUFFIX_REMOVED)
 
-    def do_sync(self, diffs: Dict[str, Diff], n_jobs: int) -> None:
+    def sync(self, n_jobs: int) -> None:
         """
-        Synchronize the local directory with the remote repository.
+        Similarly to git pull, synchronize the local working directory with the remote repository.
 
-        :param diffs: a dictionary mapping query names to Diff objects.
+            - download the PDB files corresponding to the RCSB PDB IDs which are not already in the project directory.
+            - every 10 downloaded files, report the global progress and the expected time to complete
+              (based on the number of PDB files to be downloaded).
+
         :param n_jobs: number of parallel jobs to download the PDB files.
         """
-        for query_name, diff in diffs.items():
-            print(f"Syncing query {query_name}...")
-            self.mark_removed(query_name, diff.removed_ids)
-            query_data_dir = os.path.join(self.data_dir, query_name)
-            download.download(
-                diff.tbd_ids, query_data_dir, compressed=True, n_jobs=n_jobs
+        tbd_ids, _ = self.updiff()
+
+        # Download the PDB files corresponding to the RCSB PDB IDs which are not already in the project directory.
+        total_tbd_ids = len(tbd_ids)
+
+        print("Downloading RCSB PDB files...")
+        start_time = time.time()
+        try:
+            download(tbd_ids, self.data_dir, compressed=True, n_jobs=n_jobs)
+        except KeyboardInterrupt:  # pragma: no cover
+            print("\nDownload interrupted by user.")
+        else:
+            elapsed_time = time.time() - start_time
+            print(
+                f"\nDownloaded {total_tbd_ids} files in {elapsed_time:.2f} seconds",
+                end=" ",
             )
+            print(f"({elapsed_time / total_tbd_ids:.2f} seconds per file).")
+
+        # Now refetch the local PDB IDs, to check if the files have been downloaded correctly.
+        self.updiff()
 
 
 def main(project_dir: str, n_jobs: int = 1, yes: bool = False) -> None:
@@ -212,27 +240,22 @@ def main(project_dir: str, n_jobs: int = 1, yes: bool = False) -> None:
     project = Project(project_dir)
 
     # Fetch the remote RCSB IDs.
-    diffs = project.updiff()
+    fetch_result = project.updiff()
 
-    # Report the differences.
-    for query_name, diff in diffs.items():
-        print(f"Query: {query_name}")
-        print(f"New files (remote but not local): {len(diff.tbd_ids):,}")
-        print(f"Obsolete files (local but not remote): {len(diff.removed_ids):,}")
-
-    # Count the total number of files to be downloaded.
-    total_tbd_ids = sum(len(diff.tbd_ids) for diff in diffs.values())
-    print(f"📥 Total new files to be downloaded: {total_tbd_ids:,}")
+    # Mark obsolete the local PDB files that are not in the remote database anymore.
+    project.handle_removed(fetch_result)
 
     # Download the PDB files corresponding to the RCSB PDB IDs which are not already in the project directory.
-    if total_tbd_ids:
+    if fetch_result.tbd_ids:
+        print(f"📥 To be downloaded: {len(fetch_result.tbd_ids):,}")
+
         if not yes:
             answer = input("Do you want to download the PDB files? [y/N] ")
             if answer.lower() != "y":
                 print("Aborting.")
                 return
 
-        project.do_sync(diffs, n_jobs=n_jobs)
+        project.sync(n_jobs=n_jobs)
 
 
 if __name__ == "__main__":
