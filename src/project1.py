@@ -63,6 +63,8 @@ from rcsbids import load_pdb_ids
 from rcsbids import search_and_download_ids
 from rcsbids import store_pdb_ids
 
+# pylint: disable=duplicate-code
+
 IDS_SEPARATOR = "\n"
 SUFFIX_REMOVED = ".obsolete"
 PDB_EXT = ".pdb.gz"

@@ -2,15 +2,18 @@
 Fixtures.
 """
 # Standard Library
+import os
+import shutil
 from pathlib import Path
 
 # 3rd party
 import pytest
 import responses
+import testutils
 
 # My stuff
-from project import Project
-from project2 import Project2
+import project1
+import project2
 from rcsbids import SEARCH_ENDPOINT_URI
 
 # Fake json queries
@@ -35,7 +38,27 @@ def new_project_dir(tmp_path):
 @pytest.fixture
 def new_project(new_project_dir):
     """Return a new project of old type."""
-    return Project(new_project_dir)
+    return project1.Project(new_project_dir)
+
+
+@pytest.fixture
+def project_nodata_cleanup():
+    """
+    Fixture to clean up the data directory after the test.
+    """
+    project_dir = os.path.join(os.path.dirname(__file__), "test-project-nodata")
+    # pre-checks
+    testutils.check_nodata(project_dir)
+
+    yield project_dir
+
+    # cleanup of downloaded files and cache
+    testutils.clean_cache_files(project_dir)
+    # remove the data directory
+    data_dir = os.path.join(project_dir, "data")
+    # Completely remove the data directory, even if it is not empty.
+    if os.path.isdir(data_dir):
+        shutil.rmtree(data_dir)
 
 
 @pytest.fixture
@@ -83,7 +106,7 @@ def project_with_rn_files__datav1(new_project):
 def project_with_files__datav2(new_project_dir):
     """Return a project with some downloaded files."""
     # add pdb.gz files inside the project directory
-    prj = Project2(new_project_dir)
+    prj = project2.Project(new_project_dir)
     hs_dir = Path(prj.data_dir, "Homo sapiens")
     # hs_dir.mkdir(parents=True)
     hs01 = Path(hs_dir, "hs01.pdb.gz")
@@ -104,7 +127,7 @@ def project_with_files__datav2(new_project_dir):
 @pytest.fixture
 def project_with_hs_files(new_project_dir):
     """Return a project with 3 Homo sapiens fake pdb files."""
-    prj = Project2(new_project_dir)
+    prj = project2.Project(new_project_dir)
     # add pdb.gz files inside the project directory
     hs_dir = Path(prj.data_dir, "Homo sapiens")
     hs01 = Path(hs_dir, "hs01.pdb.gz")
@@ -119,7 +142,7 @@ def project_with_hs_files(new_project_dir):
 @pytest.fixture
 def project_with_rn_files(new_project_dir):
     """Return a project with Rattus norvegicus fake pdb files."""
-    prj = Project2(new_project_dir)
+    prj = project2.Project(new_project_dir)
     # add pdb.gz files inside the project directory
     rn_dir = Path(prj.data_dir, "Rattus norvegicus")
     rn01 = Path(rn_dir, "rn01.pdb.gz")

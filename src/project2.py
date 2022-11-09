@@ -75,7 +75,7 @@ Diff = namedtuple("Diff", ["tbd_ids", "removed_ids"])
 DataMap = Dict[str, List[str]]
 
 
-class Project2:
+class Project:
     """
     Keep synced the data directory with the remote RCSB database.
     """
@@ -222,7 +222,7 @@ def main(project_dir: str, n_jobs: int = 1, yes: bool = False) -> None:
     :param n_jobs: number of parallel jobs to use.
     :param yes: if True, do not ask for confirmation before downloading the PDB files.
     """
-    project = Project2(project_dir)
+    project = Project(project_dir)
 
     # Fetch the remote RCSB IDs.
     diffs = project.updiff()
