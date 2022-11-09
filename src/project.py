@@ -122,7 +122,6 @@ class Project:
         # Get the list of PDB IDs from the RCSB website, given an advanced query in json format.
         return rcsbids.search_and_download_ids(query_path)
 
-
     def updiff_query(self, query_path: str) -> Diff:
         """
         Check the remote server for updates for a query and compute the diff, but do not download the files.
