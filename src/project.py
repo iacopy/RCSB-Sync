@@ -11,7 +11,6 @@ Usage
 Algorithm
 ~~~~~~~~~
 
-0. If the ids are already downloaded (a ``_ids_<date>.txt`` cache file with current date exists), skip to step 2.
 1. Start by downloading the RCSB PDB IDs for the project, using the queries in the ``queries`` directory.
 2. Before downloading the PDB files, check which PDB files are already in the local project directory,
    and skip them.
@@ -51,7 +50,6 @@ The directory structures of a project is as follows::
 """
 # Standard Library
 import argparse
-import datetime
 import os
 from collections import namedtuple
 from typing import Dict
@@ -100,16 +98,6 @@ class Project:
             query_data_dir = os.path.join(self.data_dir, name)
             os.makedirs(query_data_dir, exist_ok=True)
 
-    def _get_query_cache_file(self, query_name: str) -> str:
-        """
-        Get the path to the pdb ids cache file.
-        """
-        return os.path.join(
-            self.directory,
-            ".cache",
-            f"{query_name}_ids_" + datetime.date.today().isoformat() + ".txt",
-        )
-
     def get_data_files_for_query(self, query_name: str) -> List[str]:
         """
         Get the list of PDB files in the query data directory.
@@ -129,20 +117,13 @@ class Project:
 
     def fetch_or_cache_query(self, query_path: str) -> List[str]:
         """
-        Fetch the RCSB IDs from the RCSB website, or use the cached IDs if they exist.
-
-        Side effect:
-            - the remote RCSB IDs are saved in the project directory, in a file named ``_ids_<date>.txt``
-              (where <date> is the current date).
+        Fetch the RCSB IDs from the RCSB website.
 
         :return: List of RCSB IDs.
         """
-        # Check if the ids are already downloaded. If so, read them from the cache file.
-        ids_cache_file = self._get_query_cache_file(query_path)
-        if os.path.isfile(ids_cache_file):
-            return rcsbids.load_pdb_ids(ids_cache_file)
         # Get the list of PDB IDs from the RCSB website, given an advanced query in json format.
         return rcsbids.search_and_download_ids(query_path)
+
 
     def updiff_query(self, query_path: str) -> Diff:
         """
