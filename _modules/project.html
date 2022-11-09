@@ -265,13 +265,11 @@
 
 <span class="sd">    .</span>
 <span class="sd">    ├── ProjectName</span>
-<span class="sd">    │   ├── _ids_2022-01-01.txt</span>
-<span class="sd">    │   ├── _ids_2022-03-01.txt</span>
 <span class="sd">    │   ├── queries</span>
 <span class="sd">    │   │   ├── query_0.json</span>
 <span class="sd">    │   │   ├── query_1.json</span>
 <span class="sd">    │   │   └── query_2.json</span>
-<span class="sd">    │   └── database</span>
+<span class="sd">    │   └── data</span>
 <span class="sd">    │       ├── query_01</span>
 <span class="sd">    │       │   ├── 1abc.pdb</span>
 <span class="sd">    │       │   ├── 1abd.pdb</span>
@@ -357,7 +355,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Get the list of PDB IDs from the RCSB website, given an advanced query in json format.</span>
         <span class="k">return</span> <span class="n">rcsbids</span><span class="o">.</span><span class="n">search_and_download_ids</span><span class="p">(</span><span class="n">query_path</span><span class="p">)</span></div>
-
 
 <div class="viewcode-block" id="Project.updiff_query"><a class="viewcode-back" href="../project.html#project.Project.updiff_query">[docs]</a>    <span class="k">def</span> <span class="nf">updiff_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Diff</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
