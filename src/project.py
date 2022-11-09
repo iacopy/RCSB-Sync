@@ -110,16 +110,22 @@ class Project:
             f"{query_name}_ids_" + datetime.date.today().isoformat() + ".txt",
         )
 
+    def get_data_files_for_query(self, query_name: str) -> List[str]:
+        """
+        Get the list of PDB files in the query data directory.
+        """
+        query_data_dir = os.path.join(self.data_dir, query_name)
+        return [
+            filename
+            for filename in os.listdir(query_data_dir)
+            if filename.endswith(PDB_EXT)
+        ]
+
     def get_local_query_ids(self, query_name) -> set:
         """
         Get the PDB IDs that are already in the project directory.
         """
-        query_data_dir = os.path.join(self.data_dir, query_name)
-        return {
-            filename[:-7]
-            for filename in os.listdir(query_data_dir)
-            if filename.endswith("pdb.gz")
-        }
+        return {filename[:-7] for filename in self.get_data_files_for_query(query_name)}
 
     def fetch_or_cache_query(self, query_path: str) -> List[str]:
         """
