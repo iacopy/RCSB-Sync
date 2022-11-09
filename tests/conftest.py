@@ -12,8 +12,8 @@ import responses
 import testutils
 
 # My stuff
+import project
 import project1
-import project2
 from rcsbids import SEARCH_ENDPOINT_URI
 
 # Fake json queries
@@ -106,7 +106,7 @@ def project_with_rn_files__datav1(new_project):
 def project_with_files__datav2(new_project_dir):
     """Return a project with some downloaded files."""
     # add pdb.gz files inside the project directory
-    prj = project2.Project(new_project_dir)
+    prj = project.Project(new_project_dir)
     hs_dir = Path(prj.data_dir, "Homo sapiens")
     # hs_dir.mkdir(parents=True)
     hs01 = Path(hs_dir, "hs01.pdb.gz")
@@ -127,7 +127,7 @@ def project_with_files__datav2(new_project_dir):
 @pytest.fixture
 def project_with_hs_files(new_project_dir):
     """Return a project with 3 Homo sapiens fake pdb files."""
-    prj = project2.Project(new_project_dir)
+    prj = project.Project(new_project_dir)
     # add pdb.gz files inside the project directory
     hs_dir = Path(prj.data_dir, "Homo sapiens")
     hs01 = Path(hs_dir, "hs01.pdb.gz")
@@ -142,7 +142,7 @@ def project_with_hs_files(new_project_dir):
 @pytest.fixture
 def project_with_rn_files(new_project_dir):
     """Return a project with Rattus norvegicus fake pdb files."""
-    prj = project2.Project(new_project_dir)
+    prj = project.Project(new_project_dir)
     # add pdb.gz files inside the project directory
     rn_dir = Path(prj.data_dir, "Rattus norvegicus")
     rn01 = Path(rn_dir, "rn01.pdb.gz")

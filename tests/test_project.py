@@ -2,14 +2,14 @@
 Unit tests for the project module.
 """
 # My stuff
-import project2
+import project
 
 
 def test_updiff_the_first_time__datav2(new_project_dir, remote_server):
     """
     Test that the first time the project check for updates, all the remote ids are considered to be downloaded.
     """
-    new_project = project2.Project(new_project_dir)
+    new_project = project.Project(new_project_dir)
     diffs = new_project.updiff()
 
     assert diffs["Homo sapiens"].tbd_ids == ["hs01", "hs02", "hs03"]
