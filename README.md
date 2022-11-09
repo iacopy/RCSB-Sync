@@ -24,8 +24,8 @@ Il programma sincronizza la directory di lavoro col database remoto.
 
 Supporta il resume, cioè si può interrompere il download, e al successivo lancio il download riprenderà dal punto a cui era arrivato.
 
-Se il programma viene lanciato in giorni diversi, la prima volta di ogni giorno effettuerà nuovamente la ricerca su www.rcsb.org
-per ottenere la lista degli IDs eventualmente aggiornata.
+Quando il programma viene lanciato effetta una ricerca su www.rcsb.org, utilizzando le query impostate,
+per ottenere la lista dei PDB IDs aggiornata.
 
 Se la directory locale non è sincronizzata, viene chiesto all'utente se effettuare la sincronizzazione
 (scaricare i file non ancora presenti in locale e/o marcare i file obsoleti).
@@ -40,20 +40,23 @@ Struttura directory
 Lo script è pensato per lavorare su directory organizzate in questo modo:
 
     .
-    ├── Rattus_norvegicus  # creato manualmente
-    │   ├── _ids_2022-01-01.txt  # creato automaticamente
-    │   ├── _ids_2022-03-01.txt  # creato automaticamente
+    ├── Project_name   # creato manualmente
     │   ├── queries    # creata manualmente
-    │   │   ├── query_0.json  # creata manualmente, nome arbitrario, necessaria almeno una
-    │   │   ├── query_1.json  # come sopra
-    │   │   └── query_2.json  # come sopra
+    │   │   ├── query_x.json  # creata manualmente, nome arbitrario, necessaria almeno una
+    │   │   └── query_y.json  # come sopra
+    │   │
     │   └── data  # creata automaticamente
-    │       ├── 1i5r.pdb.gz  # scaricato automaticamente
-    │       ├── 1k8o.pdb.gz  # come sopra
-    │       .
-    │       .
-    │       .
-    │       └── 1q9s.pdb.gz  # come sopra
+    │       ├── query_x
+    │       │   ├── 1abc.pdb  # scaricato automaticamente
+    │       │   ├── 7kik.pdb  # scaricato automaticamente
+    │       │   └── 3e6x.pdb  # scaricato automaticamente
+    │       └── query_y
+    |           ├── 2i5r.pdb.gz  # scaricato automaticamente
+    │           ├── 1k8o.pdb.gz  # scaricato automaticamente
+    │           .
+    │           .
+    │           .
+    │           └── 5q9s.pdb.gz  # scaricato automaticamente
 
 Preparazione query
 ------------------
@@ -69,6 +72,6 @@ altrimenti il tasto copia la comprime in una sola riga).
 
 Creare un file .json che contenga tale stringa e posizionarlo dentro la cartella `queries`.
 
-Attenzione: modificare il valore `rows` che di default è 25, e impostarlo ad un valore superiore al numero totale di strutture restituite da quella query.
+**Attenzione**: modificare il valore `rows` che di default è 25, e impostarlo ad un valore superiore al numero totale di strutture restituite da quella query.
 Per esempio, per l'uomo si può mettere anche 99999, in questo modo scarica tutti gli ID delle 55k strutture in un colpo solo,
 senza bisogno di fare 3 query con 3 range di data. Non so quale sia il valore massimo accettato, ma per ora funziona.
