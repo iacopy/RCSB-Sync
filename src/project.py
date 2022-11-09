@@ -31,13 +31,11 @@ The directory structures of a project is as follows::
 
     .
     ├── ProjectName
-    │   ├── _ids_2022-01-01.txt
-    │   ├── _ids_2022-03-01.txt
     │   ├── queries
     │   │   ├── query_0.json
     │   │   ├── query_1.json
     │   │   └── query_2.json
-    │   └── database
+    │   └── data
     │       ├── query_01
     │       │   ├── 1abc.pdb
     │       │   ├── 1abd.pdb
@@ -123,7 +121,6 @@ class Project:
         """
         # Get the list of PDB IDs from the RCSB website, given an advanced query in json format.
         return rcsbids.search_and_download_ids(query_path)
-
 
     def updiff_query(self, query_path: str) -> Diff:
         """

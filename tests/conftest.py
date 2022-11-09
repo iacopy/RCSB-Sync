@@ -13,7 +13,6 @@ import testutils
 
 # My stuff
 import project
-import project1
 from rcsbids import SEARCH_ENDPOINT_URI
 
 # Fake json queries
@@ -36,12 +35,6 @@ def new_project_dir(tmp_path):
 
 
 @pytest.fixture
-def new_project(new_project_dir):
-    """Return a new project of old type."""
-    return project1.Project(new_project_dir)
-
-
-@pytest.fixture
 def project_nodata_cleanup():
     """
     Fixture to clean up the data directory after the test.
@@ -59,47 +52,6 @@ def project_nodata_cleanup():
     # Completely remove the data directory, even if it is not empty.
     if os.path.isdir(data_dir):
         shutil.rmtree(data_dir)
-
-
-@pytest.fixture
-def project_with_files__datav1(new_project):
-    """Return a project with some downloaded files."""
-    # add pdb.gz files inside the project directory
-    hs01 = Path(new_project.data_dir, "hs01.pdb.gz")
-    hs02 = Path(new_project.data_dir, "hs02.pdb.gz")
-    hs03 = Path(new_project.data_dir, "hs03.pdb.gz")
-    rn01 = Path(new_project.data_dir, "rn01.pdb.gz")
-    rn02 = Path(new_project.data_dir, "rn02.pdb.gz")
-    hs01.write_text("hs01", encoding="ascii")
-    hs02.write_text("hs02", encoding="ascii")
-    hs03.write_text("hs03", encoding="ascii")
-    rn01.write_text("rn01", encoding="ascii")
-    rn02.write_text("rn02", encoding="ascii")
-    return new_project
-
-
-@pytest.fixture
-def project_with_hs_files__datav1(new_project):
-    """Return a project with some downloaded files."""
-    # add pdb.gz files inside the project directory
-    hs01 = Path(new_project.data_dir, "hs01.pdb.gz")
-    hs02 = Path(new_project.data_dir, "hs02.pdb.gz")
-    hs03 = Path(new_project.data_dir, "hs03.pdb.gz")
-    hs01.write_text("hs01", encoding="ascii")
-    hs02.write_text("hs02", encoding="ascii")
-    hs03.write_text("hs03", encoding="ascii")
-    return new_project
-
-
-@pytest.fixture
-def project_with_rn_files__datav1(new_project):
-    """Return a project with some downloaded files."""
-    # add pdb.gz files inside the project directory
-    rn01 = Path(new_project.data_dir, "rn01.pdb.gz")
-    rn02 = Path(new_project.data_dir, "rn02.pdb.gz")
-    rn01.write_text("rn01", encoding="ascii")
-    rn02.write_text("rn02", encoding="ascii")
-    return new_project
 
 
 @pytest.fixture
