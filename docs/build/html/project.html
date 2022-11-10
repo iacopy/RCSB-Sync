@@ -27,7 +27,7 @@
     <script>
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.1',
+        VERSION:     '0.2.0b',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         LINK_SUFFIX: '.html',
@@ -59,7 +59,7 @@
       <div id="hdr-left">
         <i class="fa fa-bars menu-toggle"></i>
         
-<a href="index.html" class="text-logo">🦜 RCSB Sync 0.1 documentation</a>
+<a href="index.html" class="text-logo">🦜 RCSB Sync 0.2.0b documentation</a>
 
       </div>
       <div id="hdr-centre" class="text-center stretch">
@@ -152,7 +152,7 @@
     <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html#src">src</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="download.html">download module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="download.html#module-download">download module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.CHUNK_LEN_PER_PROCESS"><code class="docutils literal notranslate"><span class="pre">CHUNK_LEN_PER_PROCESS</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.download_pdb"><code class="docutils literal notranslate"><span class="pre">download_pdb()</span></code></a></li>
@@ -169,12 +169,13 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#project.Project"><code class="docutils literal notranslate"><span class="pre">Project</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#project.Project.fetch_or_cache"><code class="docutils literal notranslate"><span class="pre">Project.fetch_or_cache()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#project.Project.fetch_remote_ids"><code class="docutils literal notranslate"><span class="pre">Project.fetch_remote_ids()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#project.Project.get_local_ids"><code class="docutils literal notranslate"><span class="pre">Project.get_local_ids()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#project.Project.handle_removed"><code class="docutils literal notranslate"><span class="pre">Project.handle_removed()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#project.Project.sync"><code class="docutils literal notranslate"><span class="pre">Project.sync()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#project.Project.do_sync"><code class="docutils literal notranslate"><span class="pre">Project.do_sync()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#project.Project.fetch_or_cache_query"><code class="docutils literal notranslate"><span class="pre">Project.fetch_or_cache_query()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#project.Project.get_data_files_for_query"><code class="docutils literal notranslate"><span class="pre">Project.get_data_files_for_query()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#project.Project.get_local_query_ids"><code class="docutils literal notranslate"><span class="pre">Project.get_local_query_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#project.Project.mark_removed"><code class="docutils literal notranslate"><span class="pre">Project.mark_removed()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#project.Project.updiff"><code class="docutils literal notranslate"><span class="pre">Project.updiff()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#project.Project.updiff_query"><code class="docutils literal notranslate"><span class="pre">Project.updiff_query()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
@@ -205,7 +206,7 @@
     <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html#src">src</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="download.html">download module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="download.html#module-download">download module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.CHUNK_LEN_PER_PROCESS"><code class="docutils literal notranslate"><span class="pre">CHUNK_LEN_PER_PROCESS</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.download_pdb"><code class="docutils literal notranslate"><span class="pre">download_pdb()</span></code></a></li>
@@ -222,12 +223,13 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#project.Project"><code class="docutils literal notranslate"><span class="pre">Project</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#project.Project.fetch_or_cache"><code class="docutils literal notranslate"><span class="pre">Project.fetch_or_cache()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#project.Project.fetch_remote_ids"><code class="docutils literal notranslate"><span class="pre">Project.fetch_remote_ids()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#project.Project.get_local_ids"><code class="docutils literal notranslate"><span class="pre">Project.get_local_ids()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#project.Project.handle_removed"><code class="docutils literal notranslate"><span class="pre">Project.handle_removed()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#project.Project.sync"><code class="docutils literal notranslate"><span class="pre">Project.sync()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#project.Project.do_sync"><code class="docutils literal notranslate"><span class="pre">Project.do_sync()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#project.Project.fetch_or_cache_query"><code class="docutils literal notranslate"><span class="pre">Project.fetch_or_cache_query()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#project.Project.get_data_files_for_query"><code class="docutils literal notranslate"><span class="pre">Project.get_data_files_for_query()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#project.Project.get_local_query_ids"><code class="docutils literal notranslate"><span class="pre">Project.get_local_query_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#project.Project.mark_removed"><code class="docutils literal notranslate"><span class="pre">Project.mark_removed()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#project.Project.updiff"><code class="docutils literal notranslate"><span class="pre">Project.updiff()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#project.Project.updiff_query"><code class="docutils literal notranslate"><span class="pre">Project.updiff_query()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
@@ -261,8 +263,7 @@
 </div>
 <div class="section" id="algorithm">
 <h2>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this heading">¶</a></h2>
-<ol class="arabic simple" start="0">
-<li>If the ids are already downloaded (a <code class="docutils literal notranslate"><span class="pre">_ids_&lt;date&gt;.txt</span></code> cache file with current date exists), skip to step 2.</li>
+<ol class="arabic simple">
 <li>Start by downloading the RCSB PDB IDs for the project, using the queries in the <code class="docutils literal notranslate"><span class="pre">queries</span></code> directory.</li>
 <li>Before downloading the PDB files, check which PDB files are already in the local project directory,
 and skip them.</li>
@@ -281,21 +282,21 @@ and skip them.</li>
 <h2>Directory structure<a class="headerlink" href="#directory-structure" title="Permalink to this heading">¶</a></h2>
 <p>The directory structures of a project is as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>.
-├── Project
-│   ├── _ids_2022-01-01.txt
-│   ├── _ids_2022-03-01.txt
+├── ProjectName
 │   ├── queries
 │   │   ├── query_0.json
 │   │   ├── query_1.json
 │   │   └── query_2.json
 │   └── data
-│       ├── 1i5r.pdb.gz
-│       ├── 1k8o.pdb.gz
-│       .
-│       .
-│       .
-│       └── 1q9s.pdb.gz
-...
+│       ├── query_01
+│       │   ├── 1abc.pdb
+│       │   ├── 1abd.pdb
+│       │   └── 1abe.pdb
+│       └── query_02
+│           ├── 1abf.pdb
+│           ├── 1abg.pdb
+│           └── 1abh.pdb
+└── README.md
 </pre></div>
 </div>
 </div>
@@ -319,20 +320,31 @@ and skip them.</li>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="project.Project">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><code class="sig-prename descclassname"><span class="pre">project.</span></code><code class="sig-name descname"><span class="pre">Project</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/project.html#Project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.Project" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><code class="sig-prename descclassname"><span class="pre">project.</span></code><code class="sig-name descname"><span class="pre">Project</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/project.html#Project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.Project" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Keep synced the data directory with the remote RCSB database.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="project.Project.fetch_or_cache">
-<code class="sig-name descname"><span class="pre">fetch_or_cache</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/project.html#Project.fetch_or_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.Project.fetch_or_cache" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fetch the RCSB IDs from the RCSB website, or use the cached IDs if they exist.</p>
-<dl class="docutils">
-<dt>Side effect:</dt><dd><ul class="simple">
-<li>the remote RCSB IDs are saved in the project directory, in a file named <code class="docutils literal notranslate"><span class="pre">_ids_&lt;date&gt;.txt</span></code>
-(where &lt;date&gt; is the current date).</li>
+<dt class="sig sig-object py" id="project.Project.do_sync">
+<code class="sig-name descname"><span class="pre">do_sync</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">diffs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#project.Diff" title="project.Diff"><span class="pre">Diff</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em><span class="n"><span class="pre">n_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/project.html#Project.do_sync"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.Project.do_sync" title="Permalink to this definition">¶</a></dt>
+<dd><p>Synchronize the local directory with the remote repository.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>diffs</strong> – a dictionary mapping query names to Diff objects.</li>
+<li><strong>n_jobs</strong> – number of parallel jobs to download the PDB files.</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="project.Project.fetch_or_cache_query">
+<code class="sig-name descname"><span class="pre">fetch_or_cache_query</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">query_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/project.html#Project.fetch_or_cache_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.Project.fetch_or_cache_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch the RCSB IDs from the RCSB website.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -344,49 +356,30 @@ and skip them.</li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="project.Project.fetch_remote_ids">
-<code class="sig-name descname"><span class="pre">fetch_remote_ids</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">cache_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/project.html#Project.fetch_remote_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.Project.fetch_remote_ids" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fetch the RCSB IDs from the RCSB website.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cache_file</strong> – path to the file where the list of RCSB IDs will be saved.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of RCSB IDs.</td>
-</tr>
-</tbody>
-</table>
+<dt class="sig sig-object py" id="project.Project.get_data_files_for_query">
+<code class="sig-name descname"><span class="pre">get_data_files_for_query</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">query_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/project.html#Project.get_data_files_for_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.Project.get_data_files_for_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the list of PDB files in the query data directory.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="project.Project.get_local_ids">
-<code class="sig-name descname"><span class="pre">get_local_ids</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">set</span></span></span><a class="reference internal" href="_modules/project.html#Project.get_local_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.Project.get_local_ids" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="project.Project.get_local_query_ids">
+<code class="sig-name descname"><span class="pre">get_local_query_ids</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">query_name</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">set</span></span></span><a class="reference internal" href="_modules/project.html#Project.get_local_query_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.Project.get_local_query_ids" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the PDB IDs that are already in the project directory.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="project.Project.handle_removed">
-<code class="sig-name descname"><span class="pre">handle_removed</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">fetch_result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#project.Diff" title="project.Diff"><span class="pre">Diff</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/project.html#Project.handle_removed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.Project.handle_removed" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="project.Project.mark_removed">
+<code class="sig-name descname"><span class="pre">mark_removed</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">query_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em><span class="n"><span class="pre">to_remove</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/project.html#Project.mark_removed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.Project.mark_removed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mark obsolete the local PDB files that are not in the remote database anymore.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="project.Project.sync">
-<code class="sig-name descname"><span class="pre">sync</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">n_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/project.html#Project.sync"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.Project.sync" title="Permalink to this definition">¶</a></dt>
-<dd><p>Similarly to git pull, synchronize the local working directory with the remote repository.</p>
-<blockquote>
-<div><ul class="simple">
-<li>download the PDB files corresponding to the RCSB PDB IDs which are not already in the project directory.</li>
-<li>every 10 downloaded files, report the global progress and the expected time to complete
-(based on the number of PDB files to be downloaded).</li>
-</ul>
-</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n_jobs</strong> – number of parallel jobs to download the PDB files.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>query_name</strong> – name of the query.</li>
+<li><strong>to_remove</strong> – list of PDB IDs to remove.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -394,8 +387,22 @@ and skip them.</li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="project.Project.updiff">
-<code class="sig-name descname"><span class="pre">updiff</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#project.Diff" title="project.Diff"><span class="pre">Diff</span></a></span></span><a class="reference internal" href="_modules/project.html#Project.updiff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.Project.updiff" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check the remote server for updates and compute the diff, but do not download the files.</p>
+<code class="sig-name descname"><span class="pre">updiff</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#project.Diff" title="project.Diff"><span class="pre">Diff</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/project.html#Project.updiff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.Project.updiff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch ids for each query and report the difference with the local data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a dictionary mapping query names to Diff objects.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="project.Project.updiff_query">
+<code class="sig-name descname"><span class="pre">updiff_query</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">query_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#project.Diff" title="project.Diff"><span class="pre">Diff</span></a></span></span><a class="reference internal" href="_modules/project.html#Project.updiff_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.Project.updiff_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the remote server for updates for a query and compute the diff, but do not download the files.</p>
 <blockquote>
 <div><ul class="simple">
 <li>fetch the RCSB IDs from the RCSB website;</li>
@@ -404,13 +411,21 @@ and skip them.</li>
 <li>print a sync report.</li>
 </ul>
 </div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>query_path</strong> – path to the query file.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="project.main">
-<code class="sig-prename descclassname"><span class="pre">project.</span></code><code class="sig-name descname"><span class="pre">main</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">project_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em><span class="n"><span class="pre">n_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/project.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.main" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">project.</span></code><code class="sig-name descname"><span class="pre">main</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">project_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em><span class="n"><span class="pre">n_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em><span class="n"><span class="pre">yes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/project.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.main" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetch the RCSB IDs from the RCSB website, and download the corresponding PDB files.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -419,7 +434,7 @@ and skip them.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>project_dir</strong> – path to the project directory.</li>
 <li><strong>n_jobs</strong> – number of parallel jobs to use.</li>
-<li><strong>verbose</strong> – quite quiet if False.</li>
+<li><strong>yes</strong> – if True, do not ask for confirmation before downloading the PDB files.</li>
 </ul>
 </td>
 </tr>
@@ -438,8 +453,8 @@ and skip them.</li>
   <div id="footer-row" class="row">
 
     <div class="col-md-12">
-        <span title="Built on 2022-10-15" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
-        Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3 and the
+        <span title="Built on 2022-11-10" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
+        Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0 and the
         <a href="https://pypi.org/project/sphinx-sizzle-theme/"
 
            title="0.1.1/6a5828d9 [2022-05-03T16:20:16]"

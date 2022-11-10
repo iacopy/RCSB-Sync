@@ -28,7 +28,7 @@
     <script>
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.1',
+        VERSION:     '0.2.0b',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         LINK_SUFFIX: '.html',
@@ -58,7 +58,7 @@
       <div id="hdr-left">
         <i class="fa fa-bars menu-toggle"></i>
         
-<a href="index.html" class="text-logo">🦜 RCSB Sync 0.1 documentation</a>
+<a href="index.html" class="text-logo">🦜 RCSB Sync 0.2.0b documentation</a>
 
       </div>
       <div id="hdr-centre" class="text-center stretch">
@@ -126,7 +126,7 @@
     <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="modules.html#src">src</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="download.html">download module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="download.html#module-download">download module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.CHUNK_LEN_PER_PROCESS"><code class="docutils literal notranslate"><span class="pre">CHUNK_LEN_PER_PROCESS</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.download_pdb"><code class="docutils literal notranslate"><span class="pre">download_pdb()</span></code></a></li>
@@ -143,18 +143,19 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="project.html#project.Project"><code class="docutils literal notranslate"><span class="pre">Project</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.fetch_or_cache"><code class="docutils literal notranslate"><span class="pre">Project.fetch_or_cache()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.fetch_remote_ids"><code class="docutils literal notranslate"><span class="pre">Project.fetch_remote_ids()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.get_local_ids"><code class="docutils literal notranslate"><span class="pre">Project.get_local_ids()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.handle_removed"><code class="docutils literal notranslate"><span class="pre">Project.handle_removed()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.sync"><code class="docutils literal notranslate"><span class="pre">Project.sync()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.do_sync"><code class="docutils literal notranslate"><span class="pre">Project.do_sync()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.fetch_or_cache_query"><code class="docutils literal notranslate"><span class="pre">Project.fetch_or_cache_query()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.get_data_files_for_query"><code class="docutils literal notranslate"><span class="pre">Project.get_data_files_for_query()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.get_local_query_ids"><code class="docutils literal notranslate"><span class="pre">Project.get_local_query_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.mark_removed"><code class="docutils literal notranslate"><span class="pre">Project.mark_removed()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.updiff"><code class="docutils literal notranslate"><span class="pre">Project.updiff()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.updiff_query"><code class="docutils literal notranslate"><span class="pre">Project.updiff_query()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="rcsbids.html">rcsbids module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rcsbids.html#module-rcsbids">rcsbids module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#usage">Usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#rcsbids.load_pdb_ids"><code class="docutils literal notranslate"><span class="pre">load_pdb_ids()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#rcsbids.retrieve_pdb_ids"><code class="docutils literal notranslate"><span class="pre">retrieve_pdb_ids()</span></code></a></li>
@@ -179,7 +180,7 @@
     <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="modules.html#src">src</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="download.html">download module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="download.html#module-download">download module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.CHUNK_LEN_PER_PROCESS"><code class="docutils literal notranslate"><span class="pre">CHUNK_LEN_PER_PROCESS</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.download_pdb"><code class="docutils literal notranslate"><span class="pre">download_pdb()</span></code></a></li>
@@ -196,18 +197,19 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="project.html#project.Project"><code class="docutils literal notranslate"><span class="pre">Project</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.fetch_or_cache"><code class="docutils literal notranslate"><span class="pre">Project.fetch_or_cache()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.fetch_remote_ids"><code class="docutils literal notranslate"><span class="pre">Project.fetch_remote_ids()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.get_local_ids"><code class="docutils literal notranslate"><span class="pre">Project.get_local_ids()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.handle_removed"><code class="docutils literal notranslate"><span class="pre">Project.handle_removed()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.sync"><code class="docutils literal notranslate"><span class="pre">Project.sync()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.do_sync"><code class="docutils literal notranslate"><span class="pre">Project.do_sync()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.fetch_or_cache_query"><code class="docutils literal notranslate"><span class="pre">Project.fetch_or_cache_query()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.get_data_files_for_query"><code class="docutils literal notranslate"><span class="pre">Project.get_data_files_for_query()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.get_local_query_ids"><code class="docutils literal notranslate"><span class="pre">Project.get_local_query_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.mark_removed"><code class="docutils literal notranslate"><span class="pre">Project.mark_removed()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.updiff"><code class="docutils literal notranslate"><span class="pre">Project.updiff()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.updiff_query"><code class="docutils literal notranslate"><span class="pre">Project.updiff_query()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="rcsbids.html">rcsbids module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rcsbids.html#module-rcsbids">rcsbids module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#usage">Usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#rcsbids.load_pdb_ids"><code class="docutils literal notranslate"><span class="pre">load_pdb_ids()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#rcsbids.retrieve_pdb_ids"><code class="docutils literal notranslate"><span class="pre">retrieve_pdb_ids()</span></code></a></li>
@@ -232,7 +234,6 @@
  | <a href="#D"><strong>D</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
- | <a href="#H"><strong>H</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#P"><strong>P</strong></a>
@@ -255,6 +256,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="project.html#project.Diff">Diff (class in project)</a>
 </li>
+      <li><a href="project.html#project.Project.do_sync">do_sync() (project.Project method)</a>
+</li>
       <li>
     download
 
@@ -274,11 +277,7 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="project.html#project.Project.fetch_or_cache">fetch_or_cache() (project.Project method)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="project.html#project.Project.fetch_remote_ids">fetch_remote_ids() (project.Project method)</a>
+      <li><a href="project.html#project.Project.fetch_or_cache_query">fetch_or_cache_query() (project.Project method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -286,15 +285,11 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="project.html#project.Project.get_local_ids">get_local_ids() (project.Project method)</a>
+      <li><a href="project.html#project.Project.get_data_files_for_query">get_data_files_for_query() (project.Project method)</a>
 </li>
   </ul></td>
-</tr></table>
-
-<h2 id="H">H</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="project.html#project.Project.handle_removed">handle_removed() (project.Project method)</a>
+      <li><a href="project.html#project.Project.get_local_query_ids">get_local_query_ids() (project.Project method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -311,6 +306,8 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="project.html#project.main">main() (in module project)</a>
+</li>
+      <li><a href="project.html#project.Project.mark_removed">mark_removed() (project.Project method)</a>
 </li>
       <li>
     module
@@ -375,8 +372,6 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="rcsbids.html#rcsbids.store_pdb_ids">store_pdb_ids() (in module rcsbids)</a>
 </li>
-      <li><a href="project.html#project.Project.sync">sync() (project.Project method)</a>
-</li>
   </ul></td>
 </tr></table>
 
@@ -392,6 +387,8 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="project.html#project.Project.updiff">updiff() (project.Project method)</a>
+</li>
+      <li><a href="project.html#project.Project.updiff_query">updiff_query() (project.Project method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -415,8 +412,8 @@
   <div id="footer-row" class="row">
 
     <div class="col-md-12">
-        <span title="Built on 2022-10-15" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
-        Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3 and the
+        <span title="Built on 2022-11-10" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
+        Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0 and the
         <a href="https://pypi.org/project/sphinx-sizzle-theme/"
 
            title="0.1.1/6a5828d9 [2022-05-03T16:20:16]"
