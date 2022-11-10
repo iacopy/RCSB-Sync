@@ -1,5 +1,4 @@
-🦜 RCSB-Sync
-============
+# 🦜 RCSB-Sync
 
 [![Testing](https://github.com/iacopy/RCSB-Sync/actions/workflows/ci.yml/badge.svg)](https://github.com/iacopy/RCSB-Sync/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/iacopy/RCSB-Sync/branch/main/graph/badge.svg?token=WR8dFNq0ci)](https://codecov.io/gh/iacopy/RCSB-Sync)
@@ -17,8 +16,7 @@ Esempio:
 
 Vedi la documentazione su https://iacopy.github.io/rcsb-sync/.
 
-Funzionamento
--------------
+## Funzionamento
 
 Il programma sincronizza la directory di lavoro col database remoto.
 
@@ -34,8 +32,7 @@ tramite l'aggiunta di un suffisso al nome del file.
 
 Vengono scaricati file .pdb in formato compresso (.gz).
 
-Struttura directory
--------------------
+## Struttura directory
 
 Lo script è pensato per lavorare su directory organizzate in questo modo:
 
@@ -58,8 +55,7 @@ Lo script è pensato per lavorare su directory organizzate in questo modo:
     │           .
     │           └── 5q9s.pdb.gz  # scaricato automaticamente
 
-Preparazione query
-------------------
+## Preparazione query
 
 La sottodirectory `queries` deve essere popolata manualmente, la prima volta.
 Serve almeno una query in formato JSON per ottenere automaticamente la lista dei PDB IDs che saranno utilizzati per scaricare i file .pdb delle strutture proteiche.
@@ -75,3 +71,178 @@ Creare un file .json che contenga tale stringa e posizionarlo dentro la cartella
 **Attenzione**: modificare il valore `rows` che di default è 25, e impostarlo ad un valore superiore al numero totale di strutture restituite da quella query.
 Per esempio, per l'uomo si può mettere anche 99999, in questo modo scarica tutti gli ID delle 55k strutture in un colpo solo,
 senza bisogno di fare 3 query con 3 range di data. Non so quale sia il valore massimo accettato, ma per ora funziona.
+
+## Esempi di query
+
+### Minimale (solo organismo)
+
+JSON:
+
+    {
+        "query": {
+            "type": "terminal",
+            "label": "text",
+            "service": "text",
+            "parameters": {
+            "attribute": "rcsb_entity_source_organism.taxonomy_lineage.name",
+            "operator": "exact_match",
+            "negation": false,
+            "value": "Homo sapiens"
+            }
+        },
+        "return_type": "entry",
+        "request_options": {
+            "paginate": {
+            "start": 0,
+            "rows": 99999
+            },
+            "results_content_type": [
+            "experimental"
+            ],
+            "sort": [
+            {
+                "sort_by": "score",
+                "direction": "desc"
+            }
+            ],
+            "scoring_strategy": "combined"
+        }
+    }
+
+### Seleziona organismo e proteine
+
+JSON:
+
+    {
+        "query": {
+            "type": "group",
+            "logical_operator": "and",
+            "nodes": [
+            {
+                "type": "terminal",
+                "service": "text",
+                "parameters": {
+                "attribute": "entity_poly.rcsb_entity_polymer_type",
+                "operator": "exact_match",
+                "negation": false,
+                "value": "Protein"
+                }
+            },
+            {
+                "type": "terminal",
+                "service": "text",
+                "parameters": {
+                "attribute": "rcsb_entity_source_organism.taxonomy_lineage.name",
+                "operator": "exact_match",
+                "negation": false,
+                "value": "Homo sapiens"
+                }
+            }
+            ],
+            "label": "text"
+        },
+        "return_type": "entry",
+        "request_options": {
+            "paginate": {
+            "start": 0,
+            "rows": 25
+            },
+            "results_content_type": [
+            "experimental"
+            ],
+            "sort": [
+            {
+                "sort_by": "score",
+                "direction": "desc"
+            }
+            ],
+            "scoring_strategy": "combined"
+        }
+    }
+
+### Seleziona organismo, proteine e metodi specifici
+
+JSON:
+
+    {
+        "query": {
+            "type": "group",
+            "logical_operator": "and",
+            "nodes": [
+            {
+                "type": "terminal",
+                "service": "text",
+                "parameters": {
+                "attribute": "entity_poly.rcsb_entity_polymer_type",
+                "operator": "exact_match",
+                "negation": false,
+                "value": "Protein"
+                }
+            },
+            {
+                "type": "group",
+                "nodes": [
+                {
+                    "type": "terminal",
+                    "service": "text",
+                    "parameters": {
+                    "attribute": "exptl.method",
+                    "operator": "exact_match",
+                    "negation": false,
+                    "value": "X-RAY DIFFRACTION"
+                    }
+                },
+                {
+                    "type": "terminal",
+                    "service": "text",
+                    "parameters": {
+                    "attribute": "exptl.method",
+                    "operator": "exact_match",
+                    "negation": false,
+                    "value": "SOLUTION NMR"
+                    }
+                },
+                {
+                    "type": "terminal",
+                    "service": "text",
+                    "parameters": {
+                    "attribute": "exptl.method",
+                    "operator": "exact_match",
+                    "negation": false,
+                    "value": "ELECTRON MICROSCOPY"
+                    }
+                }
+                ],
+                "logical_operator": "or"
+            },
+            {
+                "type": "terminal",
+                "service": "text",
+                "parameters": {
+                "attribute": "rcsb_entity_source_organism.taxonomy_lineage.name",
+                "operator": "exact_match",
+                "negation": false,
+                "value": "Homo sapiens"
+                }
+            }
+            ],
+            "label": "text"
+        },
+        "return_type": "entry",
+        "request_options": {
+            "paginate": {
+            "start": 0,
+            "rows": 99999
+            },
+            "results_content_type": [
+            "experimental"
+            ],
+            "sort": [
+            {
+                "sort_by": "score",
+                "direction": "desc"
+            }
+            ],
+            "scoring_strategy": "combined"
+        }
+    }
