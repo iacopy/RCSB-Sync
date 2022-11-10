@@ -66,7 +66,7 @@
   "request_options": {
     "paginate": {
       "start": 0,
-      "rows": 25000
+      "rows": 999999
     },
     "results_content_type": [
       "experimental"
