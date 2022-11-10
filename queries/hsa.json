@@ -4,56 +4,50 @@
     "logical_operator": "and",
     "nodes": [
       {
+        "type": "terminal",
+        "service": "text",
+        "parameters": {
+          "attribute": "entity_poly.rcsb_entity_polymer_type",
+          "operator": "exact_match",
+          "negation": false,
+          "value": "Protein"
+        }
+      },
+      {
         "type": "group",
         "nodes": [
           {
             "type": "terminal",
             "service": "text",
             "parameters": {
-              "attribute": "entity_poly.rcsb_entity_polymer_type",
+              "attribute": "exptl.method",
               "operator": "exact_match",
               "negation": false,
-              "value": "Protein"
+              "value": "X-RAY DIFFRACTION"
             }
           },
           {
-            "type": "group",
-            "nodes": [
-              {
-                "type": "terminal",
-                "service": "text",
-                "parameters": {
-                  "attribute": "exptl.method",
-                  "operator": "exact_match",
-                  "negation": false,
-                  "value": "X-RAY DIFFRACTION"
-                }
-              },
-              {
-                "type": "terminal",
-                "service": "text",
-                "parameters": {
-                  "attribute": "exptl.method",
-                  "operator": "exact_match",
-                  "negation": false,
-                  "value": "SOLUTION NMR"
-                }
-              },
-              {
-                "type": "terminal",
-                "service": "text",
-                "parameters": {
-                  "attribute": "exptl.method",
-                  "operator": "exact_match",
-                  "negation": false,
-                  "value": "ELECTRON MICROSCOPY"
-                }
-              }
-            ],
-            "logical_operator": "or"
+            "type": "terminal",
+            "service": "text",
+            "parameters": {
+              "attribute": "exptl.method",
+              "operator": "exact_match",
+              "negation": false,
+              "value": "SOLUTION NMR"
+            }
+          },
+          {
+            "type": "terminal",
+            "service": "text",
+            "parameters": {
+              "attribute": "exptl.method",
+              "operator": "exact_match",
+              "negation": false,
+              "value": "ELECTRON MICROSCOPY"
+            }
           }
         ],
-        "logical_operator": "and"
+        "logical_operator": "or"
       },
       {
         "type": "terminal",
@@ -70,16 +64,19 @@
   },
   "return_type": "entry",
   "request_options": {
-    "pager": {
+    "paginate": {
       "start": 0,
       "rows": 99999
     },
-    "scoring_strategy": "combined",
+    "results_content_type": [
+      "experimental"
+    ],
     "sort": [
       {
         "sort_by": "score",
         "direction": "desc"
       }
-    ]
+    ],
+    "scoring_strategy": "combined"
   }
 }

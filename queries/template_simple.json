@@ -7,21 +7,24 @@
       "attribute": "rcsb_entity_source_organism.taxonomy_lineage.name",
       "operator": "exact_match",
       "negation": false,
-      "value": "$organism"
+      "value": "$TAXONOMY_LINEAGE_NAME"
     }
   },
   "return_type": "entry",
   "request_options": {
-    "pager": {
+    "paginate": {
       "start": 0,
       "rows": 99999
     },
-    "scoring_strategy": "combined",
+    "results_content_type": [
+      "experimental"
+    ],
     "sort": [
       {
         "sort_by": "score",
         "direction": "desc"
       }
-    ]
+    ],
+    "scoring_strategy": "combined"
   }
 }
