@@ -163,9 +163,7 @@ class Project:
         ):
             name = os.path.splitext(query_file)[0]
             query_path = os.path.join(self.queries_dir, query_file)
-            print(f"Query: {name}")
             ret[name] = self.updiff_query(query_path)
-            print("ret[name].tbd_ids", ret[name].tbd_ids)
         return ret
 
     def mark_removed(self, query_name: str, to_remove: List[str]) -> None:
