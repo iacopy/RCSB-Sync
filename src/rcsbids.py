@@ -80,11 +80,7 @@ def search_and_download_ids(query: str) -> list:  # pragma: no cover
         query = _load_query(query)
 
     # Retrieve the list of PDB IDs from the RCSB website, given an advanced query in json format.
-    print("Retrieving PDB IDs from RCSB website...")
-    ids = retrieve_pdb_ids(query)
-    print(f"Found {len(ids)} PDB IDs.")
-
-    return ids
+    return retrieve_pdb_ids(query)
 
 
 if __name__ == "__main__":
