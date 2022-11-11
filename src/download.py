@@ -18,7 +18,10 @@ import requests
 # My stuff
 from utils import _human_readable_time
 
-DOWNLOAD_URL = "https://files.rcsb.org/download/"
+DOWNLOAD_URL_RCSB = "https://files.rcsb.org/download/"
+DOWNLOAD_URL_ALPHAFOLD = "https://alphafold.ebi.ac.uk/files/"
+ALPHAFOLD_SUFFIX = "-F1-model_v4"
+# e.g. https://alphafold.ebi.ac.uk/files/AF-P01308-F1-model_v4.pdb
 
 MAX_PROCESSES = os.cpu_count()
 DEFAULT_PROCESSES = 1
@@ -36,6 +39,22 @@ def _chunks(lst, num):
         yield lst[i : i + num]
 
 
+def is_alphafold_id(pdb_id: str) -> bool:
+    """
+    Check whether the PDB ID is an AlphaFold ID.
+    """
+    return pdb_id.startswith("AF-")
+
+
+def get_download_url(pdb_id: str) -> str:
+    """
+    Based on the PDB ID, return the right URL to download the PDB file.
+    """
+    if is_alphafold_id(pdb_id):
+        return f"{DOWNLOAD_URL_ALPHAFOLD}{pdb_id}{ALPHAFOLD_SUFFIX}.pdb"
+    return f"{DOWNLOAD_URL_RCSB}{pdb_id}.pdb"
+
+
 def download_pdb(pdb_id: str, directory: str, compressed: bool = True) -> str:
     """
     Download a PDB file from the RCSB website.
@@ -45,11 +64,16 @@ def download_pdb(pdb_id: str, directory: str, compressed: bool = True) -> str:
     :param compressed: whether to download compressed files.
     :return: path to the downloaded file.
     """
-    gzip_ext = ".gz" if compressed else ""
     # Documentation URL: https://www.rcsb.org/pdb/files/
-    pdb_url = DOWNLOAD_URL + pdb_id + ".pdb" + gzip_ext
-    # print('Downloading PDB file from RCSB website:', pdb_url)
-    dest = os.path.join(directory, pdb_id + ".pdb" + gzip_ext)
+    pdb_url = get_download_url(pdb_id)
+    dest = os.path.join(directory, f"{pdb_id}.pdb")
+
+    # RCSB makes available compressed files, which are smaller and faster to download.
+    if compressed and not is_alphafold_id(pdb_id):
+        pdb_url += ".gz"
+        dest += ".gz"
+
+    # Download the PDB file.
     response = requests.get(pdb_url, timeout=60)
     if response.status_code == 404:
         print(f"PDB file not found: {pdb_id}")
@@ -63,6 +87,7 @@ def download_pdb(pdb_id: str, directory: str, compressed: bool = True) -> str:
     else:
         response.raise_for_status()
         content = response.content
+
     # Save the PDB file.
     with open(dest, "wb") as file_pointer:
         file_pointer.write(content)
