@@ -66,6 +66,10 @@ def test_mark_removed__datav2(project_with_files__datav2, remote_server_changed)
     # The sync should mark the files removed from the server as obsolete.
     project_with_files__datav2.do_sync(updiff_result, n_jobs=1)
 
+    assert sorted(
+        os.listdir(os.path.join(project_with_files__datav2.data_dir, "Homo sapiens"))
+    ) == ["hs01.pdb.gz", "hs02.pdb.obsolete", "hs03.pdb"]
+
     # Check that the local file is marked as obsolete (removed remotely).
     assert sorted(
         os.listdir(

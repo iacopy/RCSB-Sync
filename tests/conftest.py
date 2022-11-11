@@ -62,8 +62,8 @@ def project_with_files__datav2(new_project_dir):
     hs_dir = Path(prj.data_dir, "Homo sapiens")
     # hs_dir.mkdir(parents=True)
     hs01 = Path(hs_dir, "hs01.pdb.gz")
-    hs02 = Path(hs_dir, "hs02.pdb.gz")
-    hs03 = Path(hs_dir, "hs03.pdb.gz")
+    hs02 = Path(hs_dir, "hs02.pdb")
+    hs03 = Path(hs_dir, "hs03.pdb")
     hs01.write_text("hs01", encoding="ascii")
     hs02.write_text("hs02", encoding="ascii")
     hs03.write_text("hs03", encoding="ascii")
@@ -144,8 +144,8 @@ def remote_server(mocked_responses):
 @pytest.fixture
 def remote_server_changed(mocked_responses):
     """Return a mocked remote server with an id removed."""
-    # Add responses to the mocked server for the queries.
-    mocked_responses.add(make_search_response(["hs01", "hs02", "hs03"]))
-    # Second query.
+    # Add responses to the mocked server for the queries ("hs02" is removed).
+    mocked_responses.add(make_search_response(["hs01", "hs03"]))
+    # Second query ("rn02" is removed).
     mocked_responses.add(make_search_response(["rn01"]))
     return mocked_responses
