@@ -14,6 +14,11 @@ import download
 HUMAN_INSULIN = "3i40"
 HUMAN_INSULIN_SIZE = 64476
 HUMAN_INSULIN_SIZE_COMPRESSED = 13849
+# AlphaFoldDB
+# https://alphafold.ebi.ac.uk/files/AF-P01308-F1-model_v3.cif
+# https://alphafold.ebi.ac.uk/files/AF-P01308-F1-model_v4.pdb
+HUMAN_INSULIN_ALPHAFOLD = "AF_AFP01308F1"
+HUMAN_INSULIN_ALPHAFOLD_SIZE = 72575
 
 
 @pytest.mark.webtest
@@ -48,6 +53,31 @@ def test_download_real_pdb():
     assert (
         os.path.getsize(dest) == HUMAN_INSULIN_SIZE
     ), "Wrong size for the downloaded file (?!)"
+    os.remove(dest)
+
+
+@pytest.mark.webtest
+def test_download_real_alphafold_pdb():
+    """
+    Test the download_pdb function.
+    """
+    pdb_id = HUMAN_INSULIN_ALPHAFOLD
+    dest = download.download_pdb(pdb_id, directory=".", compressed=False)
+    assert os.path.exists(dest)
+    assert (
+        os.path.getsize(dest) == HUMAN_INSULIN_ALPHAFOLD_SIZE
+    ), "Wrong size for the downloaded file (?!)"
+
+    reference_file = os.path.join(
+        os.path.dirname(__file__), "test_AF-P01308-F1-model_v4.pdb"
+    )
+    with open(dest, "r", encoding="ascii") as file_pointer:
+        content = file_pointer.read()
+    with open(reference_file, "r", encoding="ascii") as file_pointer:
+        reference = file_pointer.read()
+    assert "TITLE     ALPHAFOLD MONOMER V2.0 PREDICTION FOR INSULIN (P01308)" in content
+    assert content == reference, "Wrong content for the downloaded file (?!)"
+
     os.remove(dest)
 
 
