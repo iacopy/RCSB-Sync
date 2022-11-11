@@ -77,8 +77,8 @@ def project_with_files__datav2(new_project_dir):
 
 
 @pytest.fixture
-def project_with_hs_files(new_project_dir):
-    """Return a project with 3 Homo sapiens fake pdb files."""
+def project_with_hs_files_gz(new_project_dir):
+    """Return a project with 3 Homo sapiens fake pdb.gz files."""
     prj = project.Project(new_project_dir)
     # add pdb.gz files inside the project directory
     hs_dir = Path(prj.data_dir, "Homo sapiens")
@@ -97,8 +97,8 @@ def project_with_rn_files(new_project_dir):
     prj = project.Project(new_project_dir)
     # add pdb.gz files inside the project directory
     rn_dir = Path(prj.data_dir, "Rattus norvegicus")
-    rn01 = Path(rn_dir, "rn01.pdb.gz")
-    rn02 = Path(rn_dir, "rn02.pdb.gz")
+    rn01 = Path(rn_dir, "rn01.pdb")
+    rn02 = Path(rn_dir, "rn02.pdb")
     rn01.write_text("rn01", encoding="ascii")
     rn02.write_text("rn02", encoding="ascii")
     return prj

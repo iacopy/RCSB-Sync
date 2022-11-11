@@ -22,11 +22,11 @@ def test_updiff_the_first_time__datav2(new_project_dir, remote_server):
     assert diffs["Rattus norvegicus"].removed_ids == []
 
 
-def test_updiff_resume_rn__datav2(project_with_hs_files, remote_server):
+def test_updiff_resume_rn__datav2(project_with_hs_files_gz, remote_server):
     """
     Test that resuming a download works properly (Homo sapiens is already downloaded).
     """
-    diffs = project_with_hs_files.updiff()
+    diffs = project_with_hs_files_gz.updiff()
     assert diffs["Homo sapiens"].tbd_ids == []
     assert diffs["Homo sapiens"].removed_ids == []
     assert diffs["Rattus norvegicus"].tbd_ids == ["rn01", "rn02"]
