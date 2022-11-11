@@ -87,8 +87,12 @@ if __name__ == "__main__":
     # Parse the command line arguments.
     parser = argparse.ArgumentParser(description="Script to download RCSB PDB IDs.")
     parser.add_argument(
-        "-q", "--query", required=True, help="String or file path of json query"
+        "-q",
+        "--query",
+        default="tests/test-project-nodata/queries/Rabbitpox virus.json",
+        help="String or file path of json query",
     )
     args = parser.parse_args()
 
-    search_and_download_ids(args.query)
+    for pdb_id in search_and_download_ids(args.query):
+        print(pdb_id)
