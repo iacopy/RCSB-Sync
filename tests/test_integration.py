@@ -16,7 +16,7 @@ import project
 pytestmark = pytest.mark.integration
 
 
-def check_data__datav2(project_dir, allow_cache=False):
+def check_data(project_dir, allow_cache=False):
     """
     Check that the project directory contains the data, in the new layout.
     """
@@ -54,13 +54,13 @@ def check_data__datav2(project_dir, allow_cache=False):
 
 
 @pytest.fixture
-def project_w_datav2_cleanup():
+def project_w_data_cleanup():
     """
     Fixture to clean up the project directory after the test.
     """
     project_dir = os.path.join(os.path.dirname(__file__), "test-project-w-data")
     # pre-checks
-    check_data__datav2(project_dir)
+    check_data(project_dir)
 
     yield project_dir
 
@@ -68,7 +68,7 @@ def project_w_datav2_cleanup():
     testutils.clean_cache_files(project_dir)
 
 
-def test_project_download_datav2(project_nodata_cleanup):
+def test_project_download(project_nodata_cleanup):
     """
     Start from an existing directory with real queries.
     """
@@ -119,14 +119,14 @@ def test_project_download_uncompressed(project_rabbitpox_nodata_cleanup):
     # cleanup of downloaded files and cache (done by the fixture)
 
 
-def test_project_no_updates__datav2(project_w_datav2_cleanup):
+def test_project_no_updates(project_w_data_cleanup):
     """
     The database is already synced, no need to update.
     If we run the program again, it should not download anything, and the data directory should not change.
     """
     project_dir = os.path.join(os.path.dirname(__file__), "test-project-w-data")
     # pre-checks
-    check_data__datav2(project_dir)
+    check_data(project_dir)
 
     # mock the sync (download) method to avoid actually downloading anything
     # (to be removed in the integration test: useful now because the actual implementation
@@ -141,7 +141,7 @@ def test_project_no_updates__datav2(project_w_datav2_cleanup):
     mock_sync.assert_not_called()
 
     # post-checks
-    check_data__datav2(project_dir)
+    check_data(project_dir)
 
 
 # user input

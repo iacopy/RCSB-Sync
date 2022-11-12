@@ -74,7 +74,7 @@ def project_rabbitpox_nodata_cleanup():
 
 
 @pytest.fixture
-def project_with_files__datav2(new_project_dir):
+def project_with_files(new_project_dir):
     """Return a project with some downloaded files."""
     # add pdb.gz files inside the project directory
     prj = project.Project(new_project_dir)

@@ -8,7 +8,7 @@ import os
 import project
 
 
-def test_updiff_the_first_time__datav2(new_project_dir, remote_server):
+def test_updiff_the_first_time(new_project_dir, remote_server):
     """
     Test that the first time the project check for updates, all the remote ids are considered to be downloaded.
     """
@@ -21,7 +21,7 @@ def test_updiff_the_first_time__datav2(new_project_dir, remote_server):
     assert diffs["Rattus norvegicus"].removed_ids == []
 
 
-def test_updiff_resume_rn__datav2(project_with_hs_files_gz, remote_server):
+def test_updiff_resume_rn(project_with_hs_files_gz, remote_server):
     """
     Test that resuming a download works properly (Homo sapiens is already downloaded).
     """
@@ -32,7 +32,7 @@ def test_updiff_resume_rn__datav2(project_with_hs_files_gz, remote_server):
     assert diffs["Rattus norvegicus"].removed_ids == []
 
 
-def test_updiff_resume_hs__datav2(project_with_rn_files, remote_server):
+def test_updiff_resume_hs(project_with_rn_files, remote_server):
     """
     Test that resuming a download works properly (Rattus norvegicus is already downloaded).
     """
@@ -43,44 +43,42 @@ def test_updiff_resume_hs__datav2(project_with_rn_files, remote_server):
     assert diffs["Rattus norvegicus"].removed_ids == []
 
 
-def test_updiff_uptodate__datav2(project_with_files__datav2, remote_server):
+def test_updiff_uptodate(project_with_files, remote_server):
     """
     Test that the updiff method returns an empty list of ids if the local data is up-to-date.
     """
     # Check for updates.
-    updiff_result = project_with_files__datav2.updiff()
+    updiff_result = project_with_files.updiff()
     assert updiff_result["Homo sapiens"].tbd_ids == []
     assert updiff_result["Homo sapiens"].removed_ids == []
     assert updiff_result["Rattus norvegicus"].tbd_ids == []
     assert updiff_result["Rattus norvegicus"].removed_ids == []
 
 
-def test_mark_removed__datav2(project_with_files__datav2, remote_server_changed):
+def test_mark_removed(project_with_files, remote_server_changed):
     """
     Test that obsolete files are properly marked.
     """
     # Check for updates.
-    updiff_result = project_with_files__datav2.updiff()
+    updiff_result = project_with_files.updiff()
 
     # The sync should mark the files removed from the server as obsolete.
-    project_with_files__datav2.do_sync(updiff_result, n_jobs=1)
+    project_with_files.do_sync(updiff_result, n_jobs=1)
 
     assert sorted(
-        os.listdir(os.path.join(project_with_files__datav2.data_dir, "Homo sapiens"))
+        os.listdir(os.path.join(project_with_files.data_dir, "Homo sapiens"))
     ) == ["hs01.pdb.gz", "hs02.pdb.obsolete", "hs03.pdb"]
 
     # Check that the local file is marked as obsolete (removed remotely).
     assert sorted(
-        os.listdir(
-            os.path.join(project_with_files__datav2.data_dir, "Rattus norvegicus")
-        )
+        os.listdir(os.path.join(project_with_files.data_dir, "Rattus norvegicus"))
     ) == [
         "rn01.pdb.gz",
         "rn02.pdb.gz.obsolete",
     ]
 
     # Check that Project.get_data_files_for_query only returns the non-obsolete files.
-    assert project_with_files__datav2.get_data_files_for_query("Rattus norvegicus") == [
+    assert project_with_files.get_data_files_for_query("Rattus norvegicus") == [
         "rn01.pdb.gz",
     ]
 
