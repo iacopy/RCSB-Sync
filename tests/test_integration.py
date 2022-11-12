@@ -75,7 +75,7 @@ def test_project_download_datav2(project_nodata_cleanup):
     project_dir = project_nodata_cleanup
 
     # launch main, bypassing the user input (yes to download)
-    project.main(project_dir, yes=True)
+    project.main(project_dir, yes=True, compressed=True)
 
     # post-checks
     # The data directory should contain 2 directories ("Rabbitpox virus" and "Radianthus crispus")
@@ -92,6 +92,28 @@ def test_project_download_datav2(project_nodata_cleanup):
         "1YZW.pdb.gz",
         "6DEJ.pdb.gz",
         "6Y1G.pdb.gz",
+    ]
+
+    # cleanup of downloaded files and cache (done by the fixture)
+
+
+def test_project_download_uncompressed(project_rabbitpox_nodata_cleanup):
+    """
+    Start from an existing directory with real queries.
+    """
+    project_dir = project_rabbitpox_nodata_cleanup
+
+    # launch main, bypassing the user input (yes to download)
+    project.main(project_dir, yes=True, compressed=False)
+
+    # post-checks
+    # The data directory should contain 1 directory ("Rabbitpox virus")
+    data_dir = os.path.join(project_dir, "data")
+    assert sorted(os.listdir(data_dir)) == ["Rabbitpox virus"]
+    # The "Rabbitpox virus" directory should contain 2 files.
+    assert sorted(os.listdir(os.path.join(data_dir, "Rabbitpox virus"))) == [
+        "2FFK.pdb",
+        "2FIN.pdb",
     ]
 
     # cleanup of downloaded files and cache (done by the fixture)
