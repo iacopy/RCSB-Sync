@@ -2,7 +2,6 @@
 Unit tests for the project module.
 """
 # Standard Library
-# Standard library
 import os
 
 # My stuff
@@ -83,4 +82,54 @@ def test_mark_removed__datav2(project_with_files__datav2, remote_server_changed)
     # Check that Project.get_data_files_for_query only returns the non-obsolete files.
     assert project_with_files__datav2.get_data_files_for_query("Rattus norvegicus") == [
         "rn01.pdb.gz",
+    ]
+
+
+def test_mark_removed_af2(
+    project_with_af2_volvox_files, remote_server_af2_volvox_removed
+):
+    """
+    Test that obsolete files are properly marked.
+    """
+    # Check for updates.
+    updiff_result = project_with_af2_volvox_files.updiff()
+
+    # The sync should mark the files removed from the server as obsolete.
+    project_with_af2_volvox_files.do_sync(updiff_result, n_jobs=1)
+
+    assert sorted(
+        os.listdir(os.path.join(project_with_af2_volvox_files.data_dir, "Volvox"))
+    ) == [
+        "5K2L.pdb",
+        "5YZ6.pdb",
+        "5YZK.pdb",
+        "AF-P08436-F1-model_v4.pdb.obsolete",
+        "AF-P08437-F1-model_v4.pdb",
+        "AF-P08471-F1-model_v4.pdb.obsolete",
+        "AF-P11481-F1-model_v4.pdb",
+        "AF-P11482-F1-model_v4.pdb",
+        "AF-P16865-F1-model_v4.pdb",
+        "AF-P16866-F1-model_v4.pdb",
+        "AF-P16867-F1-model_v4.pdb",
+        "AF-P16868-F1-model_v4.pdb",
+        "AF-P20904-F1-model_v4.pdb",
+        "AF-P21997-F1-model_v4.pdb",
+        "AF-P31584-F1-model_v4.pdb",
+        "AF-P36841-F1-model_v4.pdb",
+        "AF-P36861-F1-model_v4.pdb",
+        "AF-P36862-F1-model_v4.pdb",
+        "AF-P36863-F1-model_v4.pdb",
+        "AF-P36864-F1-model_v4.pdb",
+        "AF-P81131-F1-model_v4.pdb",
+        "AF-P81132-F1-model_v4.pdb",
+        "AF-Q08864-F1-model_v4.pdb",
+        "AF-Q08865-F1-model_v4.pdb",
+        "AF-Q10723-F1-model_v4.pdb",
+        "AF-Q41643-F1-model_v4.pdb",
+        "AF-Q9SBM5-F1-model_v4.pdb",
+        "AF-Q9SBM8-F1-model_v4.pdb",
+        "AF-Q9SBN3-F1-model_v4.pdb",
+        "AF-Q9SBN4-F1-model_v4.pdb",
+        "AF-Q9SBN5-F1-model_v4.pdb",
+        "AF-Q9SBN6-F1-model_v4.pdb",
     ]
