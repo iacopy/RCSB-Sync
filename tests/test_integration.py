@@ -58,7 +58,7 @@ def project_w_data_cleanup():
     """
     Fixture to clean up the project directory after the test.
     """
-    project_dir = os.path.join(os.path.dirname(__file__), "test-project-w-data")
+    project_dir = os.path.join(os.path.dirname(__file__), "test-prj-w-data")
     # pre-checks
     check_data(project_dir)
 
@@ -124,7 +124,7 @@ def test_project_no_updates(project_w_data_cleanup):
     The database is already synced, no need to update.
     If we run the program again, it should not download anything, and the data directory should not change.
     """
-    project_dir = os.path.join(os.path.dirname(__file__), "test-project-w-data")
+    project_dir = os.path.join(os.path.dirname(__file__), "test-prj-w-data")
     # pre-checks
     check_data(project_dir)
 
@@ -151,7 +151,7 @@ def test_main2_outdated__but_user_dont_sync(project_nodata_cleanup):
     When the first time the project check for updates, all the remote ids are considered to be downloaded.
     Test that the user can choose not to download anything.
     """
-    project_dir = os.path.join(os.path.dirname(__file__), "test-project-nodata")
+    project_dir = os.path.join(os.path.dirname(__file__), "test-prj-nodata")
 
     with patch("project.Project.do_sync") as mock_sync:
         # launch main, ask the user input (no to download)
@@ -167,7 +167,7 @@ def test_main2_outdated__and_user_sync(project_nodata_cleanup):
     When the first time the project check for updates, all the remote ids are considered to be downloaded.
     Test that the user can choose not to download anything.
     """
-    project_dir = os.path.join(os.path.dirname(__file__), "test-project-nodata")
+    project_dir = os.path.join(os.path.dirname(__file__), "test-prj-nodata")
 
     with patch("project.Project.do_sync") as mock_sync:
         # launch main, ask the user input (yes to download)

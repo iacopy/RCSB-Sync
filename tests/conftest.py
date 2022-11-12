@@ -39,7 +39,7 @@ def project_nodata_cleanup():
     """
     Fixture to clean up the data directory after the test.
     """
-    project_dir = os.path.join(os.path.dirname(__file__), "test-project-nodata")
+    project_dir = os.path.join(os.path.dirname(__file__), "test-prj-nodata")
     # pre-checks
     testutils.check_nodata(project_dir)
 
@@ -59,9 +59,7 @@ def project_rabbitpox_nodata_cleanup():
     """
     Fixture to clean up the data directory after the test.
     """
-    project_dir = os.path.join(
-        os.path.dirname(__file__), "test-project-rabbitpox-nodata"
-    )
+    project_dir = os.path.join(os.path.dirname(__file__), "test-prj-rabbitpox-nodata")
     yield project_dir
 
     # # cleanup of downloaded files and cache
