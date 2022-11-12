@@ -59,7 +59,8 @@ import rcsbids
 
 IDS_SEPARATOR = "\n"
 SUFFIX_REMOVED = ".obsolete"
-PDB_EXT = ".pdb.gz"
+PDB_EXT = ".pdb"
+COMPRESSED_EXT = ".pdb.gz"
 
 # Settings for the parallel download.
 DEFAULT_JOBS = 1
@@ -69,6 +70,34 @@ MAX_JOBS = os.cpu_count()
 # Named tuple to store the fetch results.
 Diff = namedtuple("Diff", ["tbd_ids", "removed_ids"])
 DataMap = Dict[str, List[str]]
+
+
+def filename_to_id(filename: str) -> str:
+    """
+    Convert a filename to a RCSB PDB ID.
+
+    :param filename: the filename.
+    :return: the RCSB PDB ID.
+
+    >>> filename_to_id("1abc.pdb")
+    '1abc'
+    >>> filename_to_id("1abc.pdb.gz")
+    '1abc'
+    """
+    return filename.split(".")[0]
+
+
+def pdb_id_to_filename(pdb_id: str) -> str:
+    """
+    Convert a RCSB PDB ID to a filename.
+
+    :param pdb_id: the RCSB PDB ID.
+    :return: the filename.
+
+    >>> pdb_id_to_filename("1abc")
+    '1abc.pdb'
+    """
+    return pdb_id + PDB_EXT
 
 
 class Project:
@@ -104,14 +133,17 @@ class Project:
         return [
             filename
             for filename in os.listdir(query_data_dir)
-            if filename.endswith(PDB_EXT)
+            if (filename.endswith(PDB_EXT) or filename.endswith(COMPRESSED_EXT))
         ]
 
     def get_local_query_ids(self, query_name) -> set:
         """
         Get the PDB IDs that are already in the project directory.
         """
-        return {filename[:-7] for filename in self.get_data_files_for_query(query_name)}
+        return {
+            filename_to_id(filename)
+            for filename in self.get_data_files_for_query(query_name)
+        }
 
     def fetch_or_cache_query(self, query_path: str) -> List[str]:
         """
@@ -176,7 +208,12 @@ class Project:
         query_data_dir = os.path.join(self.data_dir, query_name)
         for id_ in to_remove:
             pdb_file = os.path.join(query_data_dir, id_ + PDB_EXT)
-            assert os.path.isfile(pdb_file), f"File {pdb_file} not found."
+            # Problem: the file may be compressed.
+            if not os.path.isfile(pdb_file):
+                pdb_file = os.path.join(query_data_dir, id_ + COMPRESSED_EXT)
+                assert os.path.isfile(
+                    pdb_file
+                ), f"File {pdb_file[:-3]} or {pdb_file} not found."
             print("Marking obsolete:", pdb_file, "->", pdb_file + SUFFIX_REMOVED)
             os.rename(pdb_file, pdb_file + SUFFIX_REMOVED)
 

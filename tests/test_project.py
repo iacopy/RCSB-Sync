@@ -22,11 +22,11 @@ def test_updiff_the_first_time__datav2(new_project_dir, remote_server):
     assert diffs["Rattus norvegicus"].removed_ids == []
 
 
-def test_updiff_resume_rn__datav2(project_with_hs_files, remote_server):
+def test_updiff_resume_rn__datav2(project_with_hs_files_gz, remote_server):
     """
     Test that resuming a download works properly (Homo sapiens is already downloaded).
     """
-    diffs = project_with_hs_files.updiff()
+    diffs = project_with_hs_files_gz.updiff()
     assert diffs["Homo sapiens"].tbd_ids == []
     assert diffs["Homo sapiens"].removed_ids == []
     assert diffs["Rattus norvegicus"].tbd_ids == ["rn01", "rn02"]
@@ -65,6 +65,10 @@ def test_mark_removed__datav2(project_with_files__datav2, remote_server_changed)
 
     # The sync should mark the files removed from the server as obsolete.
     project_with_files__datav2.do_sync(updiff_result, n_jobs=1)
+
+    assert sorted(
+        os.listdir(os.path.join(project_with_files__datav2.data_dir, "Homo sapiens"))
+    ) == ["hs01.pdb.gz", "hs02.pdb.obsolete", "hs03.pdb"]
 
     # Check that the local file is marked as obsolete (removed remotely).
     assert sorted(
