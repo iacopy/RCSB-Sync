@@ -55,6 +55,25 @@ def project_nodata_cleanup():
 
 
 @pytest.fixture
+def project_rabbitpox_nodata_cleanup():
+    """
+    Fixture to clean up the data directory after the test.
+    """
+    project_dir = os.path.join(
+        os.path.dirname(__file__), "test-project-rabbitpox-nodata"
+    )
+    yield project_dir
+
+    # # cleanup of downloaded files and cache
+    testutils.clean_cache_files(project_dir)
+    # # remove the data directory
+    data_dir = os.path.join(project_dir, "data")
+    # Completely remove the data directory, even if it is not empty.
+    if os.path.isdir(data_dir):
+        shutil.rmtree(data_dir)
+
+
+@pytest.fixture
 def project_with_files__datav2(new_project_dir):
     """Return a project with some downloaded files."""
     # add pdb.gz files inside the project directory
