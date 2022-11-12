@@ -72,34 +72,6 @@ Diff = namedtuple("Diff", ["tbd_ids", "removed_ids"])
 DataMap = Dict[str, List[str]]
 
 
-def filename_to_id(filename: str) -> str:
-    """
-    Convert a filename to a RCSB PDB ID.
-
-    :param filename: the filename.
-    :return: the RCSB PDB ID.
-
-    >>> filename_to_id("1abc.pdb")
-    '1abc'
-    >>> filename_to_id("1abc.pdb.gz")
-    '1abc'
-    """
-    return filename.split(".")[0]
-
-
-def pdb_id_to_filename(pdb_id: str) -> str:
-    """
-    Convert a RCSB PDB ID to a filename.
-
-    :param pdb_id: the RCSB PDB ID.
-    :return: the filename.
-
-    >>> pdb_id_to_filename("1abc")
-    '1abc.pdb'
-    """
-    return pdb_id + PDB_EXT
-
-
 class Project:
     """
     Keep synced the data directory with the remote RCSB database.
@@ -141,7 +113,7 @@ class Project:
         Get the PDB IDs that are already in the project directory.
         """
         return {
-            filename_to_id(filename)
+            download.filename_to_pdb_id(filename)
             for filename in self.get_data_files_for_query(query_name)
         }
 
@@ -207,10 +179,10 @@ class Project:
         """
         query_data_dir = os.path.join(self.data_dir, query_name)
         for id_ in to_remove:
-            pdb_file = os.path.join(query_data_dir, id_ + PDB_EXT)
+            pdb_file = os.path.join(query_data_dir, download.pdb_id_to_filename(id_))
             # Problem: the file may be compressed.
             if not os.path.isfile(pdb_file):
-                pdb_file = os.path.join(query_data_dir, id_ + COMPRESSED_EXT)
+                pdb_file += ".gz"
                 assert os.path.isfile(
                     pdb_file
                 ), f"File {pdb_file[:-3]} or {pdb_file} not found."

@@ -149,3 +149,144 @@ def remote_server_changed(mocked_responses):
     # Second query ("rn02" is removed).
     mocked_responses.add(make_search_response(["rn01"]))
     return mocked_responses
+
+
+@pytest.fixture
+def remote_server_af2_volvox(mocked_responses):
+    """Return a mocked remote server with experimental and AlphaFoldDB ids."""
+    #: Real ids of Volvox.
+    volvox_ids = [
+        "5K2L",
+        "5YZ6",
+        "5YZK",
+        "AF_AFP08436F1",
+        "AF_AFP08437F1",
+        "AF_AFP08471F1",
+        "AF_AFP11481F1",
+        "AF_AFP11482F1",
+        "AF_AFP16865F1",
+        "AF_AFP16866F1",
+        "AF_AFP16867F1",
+        "AF_AFP16868F1",
+        "AF_AFP20904F1",
+        "AF_AFP21997F1",
+        "AF_AFP31584F1",
+        "AF_AFP36841F1",
+        "AF_AFP36861F1",
+        "AF_AFP36862F1",
+        "AF_AFP36863F1",
+        "AF_AFP36864F1",
+        "AF_AFP81131F1",
+        "AF_AFP81132F1",
+        "AF_AFQ08864F1",
+        "AF_AFQ08865F1",
+        "AF_AFQ10723F1",
+        "AF_AFQ41643F1",
+        "AF_AFQ9SBM5F1",
+        "AF_AFQ9SBM8F1",
+        "AF_AFQ9SBN3F1",
+        "AF_AFQ9SBN4F1",
+        "AF_AFQ9SBN5F1",
+        "AF_AFQ9SBN6F1",
+    ]
+
+    # Add responses to the mocked server for the queries.
+    mocked_responses.add(make_search_response(volvox_ids))
+    return mocked_responses
+
+
+@pytest.fixture
+def remote_server_af2_volvox_removed(mocked_responses):
+    """Return a mocked remote server with experimental and AlphaFoldDB ids."""
+    #: Real ids of Volvox.
+    volvox_ids = [
+        "5K2L",
+        "5YZ6",
+        "5YZK",
+        # "AF_AFP08436F1",  # Removed
+        "AF_AFP08437F1",
+        # "AF_AFP08471F1",  # Removed
+        "AF_AFP11481F1",
+        "AF_AFP11482F1",
+        "AF_AFP16865F1",
+        "AF_AFP16866F1",
+        "AF_AFP16867F1",
+        "AF_AFP16868F1",
+        "AF_AFP20904F1",
+        "AF_AFP21997F1",
+        "AF_AFP31584F1",
+        "AF_AFP36841F1",
+        "AF_AFP36861F1",
+        "AF_AFP36862F1",
+        "AF_AFP36863F1",
+        "AF_AFP36864F1",
+        "AF_AFP81131F1",
+        "AF_AFP81132F1",
+        "AF_AFQ08864F1",
+        "AF_AFQ08865F1",
+        "AF_AFQ10723F1",
+        "AF_AFQ41643F1",
+        "AF_AFQ9SBM5F1",
+        "AF_AFQ9SBM8F1",
+        "AF_AFQ9SBN3F1",
+        "AF_AFQ9SBN4F1",
+        "AF_AFQ9SBN5F1",
+        "AF_AFQ9SBN6F1",
+    ]
+
+    # Add responses to the mocked server for the queries.
+    mocked_responses.add(make_search_response(volvox_ids))
+    return mocked_responses
+
+
+# AlphaFold2 tests
+@pytest.fixture
+def project_with_af2_volvox_files(tmp_path):
+    """Return a project with some downloaded files."""
+    # Create project files in a temporary directory.
+    queries = tmp_path / "queries"
+    queries.mkdir()
+    # Create a fake query file.
+    query_file1 = queries / "Volvox.json"
+    query_file1.write_text(HS_QUERY)
+
+    prj = project.Project(tmp_path)
+    volvox_dir = Path(prj.data_dir, "Volvox")
+    files = [
+        ("5K2L.pdb", "Content of 5K2L"),
+        ("5YZ6.pdb", "Content of 5YZ6"),
+        ("5YZK.pdb", "Content of 5YZK"),
+        ("AF-P08436-F1-model_v4.pdb", "Content of AF-P08436-F1-model_v4"),
+        ("AF-P08437-F1-model_v4.pdb", "Content of AF-P08437-F1-model_v4"),
+        ("AF-P08471-F1-model_v4.pdb", "Content of AF-P08471-F1-model_v4"),
+        ("AF-P11481-F1-model_v4.pdb", "Content of AF-P11481-F1-model_v4"),
+        ("AF-P11482-F1-model_v4.pdb", "Content of AF-P11482-F1-model_v4"),
+        ("AF-P16865-F1-model_v4.pdb", "Content of AF-P16865-F1-model_v4"),
+        ("AF-P16866-F1-model_v4.pdb", "Content of AF-P16866-F1-model_v4"),
+        ("AF-P16867-F1-model_v4.pdb", "Content of AF-P16867-F1-model_v4"),
+        ("AF-P16868-F1-model_v4.pdb", "Content of AF-P16868-F1-model_v4"),
+        ("AF-P20904-F1-model_v4.pdb", "Content of AF-P20904-F1-model_v4"),
+        ("AF-P21997-F1-model_v4.pdb", "Content of AF-P21997-F1-model_v4"),
+        ("AF-P31584-F1-model_v4.pdb", "Content of AF-P31584-F1-model_v4"),
+        ("AF-P36841-F1-model_v4.pdb", "Content of AF-P36841-F1-model_v4"),
+        ("AF-P36861-F1-model_v4.pdb", "Content of AF-P36861-F1-model_v4"),
+        ("AF-P36862-F1-model_v4.pdb", "Content of AF-P36862-F1-model_v4"),
+        ("AF-P36863-F1-model_v4.pdb", "Content of AF-P36863-F1-model_v4"),
+        ("AF-P36864-F1-model_v4.pdb", "Content of AF-P36864-F1-model_v4"),
+        ("AF-P81131-F1-model_v4.pdb", "Content of AF-P81131-F1-model_v4"),
+        ("AF-P81132-F1-model_v4.pdb", "Content of AF-P81132-F1-model_v4"),
+        ("AF-Q08864-F1-model_v4.pdb", "Content of AF-Q08864-F1-model_v4"),
+        ("AF-Q08865-F1-model_v4.pdb", "Content of AF-Q08865-F1-model_v4"),
+        ("AF-Q10723-F1-model_v4.pdb", "Content of AF-Q10723-F1-model_v4"),
+        ("AF-Q41643-F1-model_v4.pdb", "Content of AF-Q41643-F1-model_v4"),
+        ("AF-Q9SBM5-F1-model_v4.pdb", "Content of AF-Q9SBM5-F1-model_v4"),
+        ("AF-Q9SBM8-F1-model_v4.pdb", "Content of AF-Q9SBM8-F1-model_v4"),
+        ("AF-Q9SBN3-F1-model_v4.pdb", "Content of AF-Q9SBN3-F1-model_v4"),
+        ("AF-Q9SBN4-F1-model_v4.pdb", "Content of AF-Q9SBN4-F1-model_v4"),
+        ("AF-Q9SBN5-F1-model_v4.pdb", "Content of AF-Q9SBN5-F1-model_v4"),
+        ("AF-Q9SBN6-F1-model_v4.pdb", "Content of AF-Q9SBN6-F1-model_v4"),
+    ]
+    for filename, fake_content in files:
+        pfile = Path(volvox_dir, filename)
+        pfile.write_text(fake_content, encoding="ascii")
+    return prj
