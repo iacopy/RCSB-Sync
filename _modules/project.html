@@ -157,7 +157,9 @@
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.updiff_query"><code class="docutils literal notranslate"><span class="pre">Project.updiff_query()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../project.html#project.filename_to_id"><code class="docutils literal notranslate"><span class="pre">filename_to_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../project.html#project.pdb_id_to_filename"><code class="docutils literal notranslate"><span class="pre">pdb_id_to_filename()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../rcsbids.html#module-rcsbids">rcsbids module</a><ul>
@@ -211,7 +213,9 @@
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.updiff_query"><code class="docutils literal notranslate"><span class="pre">Project.updiff_query()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../project.html#project.filename_to_id"><code class="docutils literal notranslate"><span class="pre">filename_to_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../project.html#project.pdb_id_to_filename"><code class="docutils literal notranslate"><span class="pre">pdb_id_to_filename()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../rcsbids.html#module-rcsbids">rcsbids module</a><ul>
@@ -293,7 +297,8 @@
 
 <span class="n">IDS_SEPARATOR</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 <span class="n">SUFFIX_REMOVED</span> <span class="o">=</span> <span class="s2">&quot;.obsolete&quot;</span>
-<span class="n">PDB_EXT</span> <span class="o">=</span> <span class="s2">&quot;.pdb.gz&quot;</span>
+<span class="n">PDB_EXT</span> <span class="o">=</span> <span class="s2">&quot;.pdb&quot;</span>
+<span class="n">COMPRESSED_EXT</span> <span class="o">=</span> <span class="s2">&quot;.pdb.gz&quot;</span>
 
 <span class="c1"># Settings for the parallel download.</span>
 <span class="n">DEFAULT_JOBS</span> <span class="o">=</span> <span class="mi">1</span>
@@ -303,6 +308,34 @@
 <span class="c1"># Named tuple to store the fetch results.</span>
 <span class="n">Diff</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;Diff&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;tbd_ids&quot;</span><span class="p">,</span> <span class="s2">&quot;removed_ids&quot;</span><span class="p">])</span>
 <span class="n">DataMap</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
+
+
+<div class="viewcode-block" id="filename_to_id"><a class="viewcode-back" href="../project.html#project.filename_to_id">[docs]</a><span class="k">def</span> <span class="nf">filename_to_id</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a filename to a RCSB PDB ID.</span>
+
+<span class="sd">    :param filename: the filename.</span>
+<span class="sd">    :return: the RCSB PDB ID.</span>
+
+<span class="sd">    &gt;&gt;&gt; filename_to_id(&quot;1abc.pdb&quot;)</span>
+<span class="sd">    &#39;1abc&#39;</span>
+<span class="sd">    &gt;&gt;&gt; filename_to_id(&quot;1abc.pdb.gz&quot;)</span>
+<span class="sd">    &#39;1abc&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">filename</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="pdb_id_to_filename"><a class="viewcode-back" href="../project.html#project.pdb_id_to_filename">[docs]</a><span class="k">def</span> <span class="nf">pdb_id_to_filename</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a RCSB PDB ID to a filename.</span>
+
+<span class="sd">    :param pdb_id: the RCSB PDB ID.</span>
+<span class="sd">    :return: the filename.</span>
+
+<span class="sd">    &gt;&gt;&gt; pdb_id_to_filename(&quot;1abc&quot;)</span>
+<span class="sd">    &#39;1abc.pdb&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">pdb_id</span> <span class="o">+</span> <span class="n">PDB_EXT</span></div>
 
 
 <div class="viewcode-block" id="Project"><a class="viewcode-back" href="../project.html#project.Project">[docs]</a><span class="k">class</span> <span class="nc">Project</span><span class="p">:</span>
@@ -338,14 +371,17 @@
         <span class="k">return</span> <span class="p">[</span>
             <span class="n">filename</span>
             <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">query_data_dir</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">PDB_EXT</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">PDB_EXT</span><span class="p">)</span> <span class="ow">or</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">COMPRESSED_EXT</span><span class="p">))</span>
         <span class="p">]</span></div>
 
 <div class="viewcode-block" id="Project.get_local_query_ids"><a class="viewcode-back" href="../project.html#project.Project.get_local_query_ids">[docs]</a>    <span class="k">def</span> <span class="nf">get_local_query_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the PDB IDs that are already in the project directory.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span><span class="n">filename</span><span class="p">[:</span><span class="o">-</span><span class="mi">7</span><span class="p">]</span> <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data_files_for_query</span><span class="p">(</span><span class="n">query_name</span><span class="p">)}</span></div>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="n">filename_to_id</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data_files_for_query</span><span class="p">(</span><span class="n">query_name</span><span class="p">)</span>
+        <span class="p">}</span></div>
 
 <div class="viewcode-block" id="Project.fetch_or_cache_query"><a class="viewcode-back" href="../project.html#project.Project.fetch_or_cache_query">[docs]</a>    <span class="k">def</span> <span class="nf">fetch_or_cache_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -410,7 +446,12 @@
         <span class="n">query_data_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">query_name</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">id_</span> <span class="ow">in</span> <span class="n">to_remove</span><span class="p">:</span>
             <span class="n">pdb_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">query_data_dir</span><span class="p">,</span> <span class="n">id_</span> <span class="o">+</span> <span class="n">PDB_EXT</span><span class="p">)</span>
-            <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">pdb_file</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;File </span><span class="si">{</span><span class="n">pdb_file</span><span class="si">}</span><span class="s2"> not found.&quot;</span>
+            <span class="c1"># Problem: the file may be compressed.</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">pdb_file</span><span class="p">):</span>
+                <span class="n">pdb_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">query_data_dir</span><span class="p">,</span> <span class="n">id_</span> <span class="o">+</span> <span class="n">COMPRESSED_EXT</span><span class="p">)</span>
+                <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span>
+                    <span class="n">pdb_file</span>
+                <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;File </span><span class="si">{</span><span class="n">pdb_file</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2"> or </span><span class="si">{</span><span class="n">pdb_file</span><span class="si">}</span><span class="s2"> not found.&quot;</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Marking obsolete:&quot;</span><span class="p">,</span> <span class="n">pdb_file</span><span class="p">,</span> <span class="s2">&quot;-&gt;&quot;</span><span class="p">,</span> <span class="n">pdb_file</span> <span class="o">+</span> <span class="n">SUFFIX_REMOVED</span><span class="p">)</span>
             <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">pdb_file</span><span class="p">,</span> <span class="n">pdb_file</span> <span class="o">+</span> <span class="n">SUFFIX_REMOVED</span><span class="p">)</span></div>
 
@@ -495,7 +536,7 @@
   <div id="footer-row" class="row">
 
     <div class="col-md-12">
-        <span title="Built on 2022-11-10" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
+        <span title="Built on 2022-11-12" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
         Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0 and the
         <a href="https://pypi.org/project/sphinx-sizzle-theme/"
 
