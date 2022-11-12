@@ -9,9 +9,13 @@ def check_nodata(project_dir):
     """
     Check that the project directory contains no data.
     """
-    assert os.path.isdir(project_dir)
+    assert os.path.isdir(
+        project_dir
+    ), f"Project directory {project_dir} does not exist."
     # check that the data directory does not exist
-    assert not os.path.isdir(os.path.join(project_dir, "data"))
+    assert not os.path.isdir(
+        os.path.join(project_dir, "data")
+    ), f"Data directory {os.path.join(project_dir, 'data')} exists."
     # check the main level: no files, only the queries directory
     assert sorted(os.listdir(project_dir)) == ["queries"]
     # check queries directory contain 2 json files
