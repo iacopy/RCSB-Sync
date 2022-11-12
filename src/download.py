@@ -20,7 +20,7 @@ from utils import _human_readable_time
 
 DOWNLOAD_URL_RCSB = "https://files.rcsb.org/download/"
 DOWNLOAD_URL_ALPHAFOLD = "https://alphafold.ebi.ac.uk/files/"
-ALPHAFOLD_SUFFIX = "-F1-model_v4"
+ALPHAFOLD_SUFFIX = "model_v4"
 # e.g. https://alphafold.ebi.ac.uk/files/AF-P01308-F1-model_v4.pdb
 
 MAX_PROCESSES = os.cpu_count()
@@ -43,7 +43,69 @@ def is_alphafold_id(pdb_id: str) -> bool:
     """
     Check whether the PDB ID is an AlphaFold ID.
     """
-    return pdb_id.startswith("AF-")
+    if pdb_id.startswith("AF"):
+        assert pdb_id.startswith(
+            "AF_AF"
+        ), f"Unexpected AlphaFold ID (should start with 'AF_AF'): {pdb_id}"
+    return pdb_id.startswith("AF_")
+
+
+def alphafold_id_to_file(pdb_id: str) -> str:
+    """
+    Convert an AlphaFold ID to the corresponding PDB file name.
+
+    >>> alphafold_id_to_file("AF_AFP08437F1")
+    'AF-P08437-F1-model_v4.pdb'
+    >>> alphafold_id_to_file("AF_AFP01308F2")
+    'AF-P01308-F2-model_v4.pdb'
+    """
+    f_n = pdb_id[-2:]  # e.g. "F1"
+    assert f_n in (
+        "F1",
+        "F2",
+        "F3",
+        "F4",
+        "F5",
+        "F6",
+        "F7",
+        "F8",
+        "F9",
+    ), f"Unknown AlphaFold ID: {pdb_id}"
+    return f"AF-{pdb_id[5:-2]}-{f_n}-{ALPHAFOLD_SUFFIX}.pdb"
+
+
+def pdb_id_to_filename(pdb_id: str) -> str:
+    """
+    Convert a PDB ID to the corresponding PDB file name.
+
+    >>> pdb_id_to_filename("1abc")
+    '1abc.pdb'
+    >>> pdb_id_to_filename("1abc")
+    '1abc.pdb'
+    >>> pdb_id_to_filename("AF_AFP01308F1")
+    'AF-P01308-F1-model_v4.pdb'
+    """
+    if is_alphafold_id(pdb_id):
+        return alphafold_id_to_file(pdb_id)
+    return f"{pdb_id}.pdb"
+
+
+def filename_to_pdb_id(filename: str) -> str:
+    """
+    Convert a PDB file name to the corresponding PDB ID.
+
+    >>> filename_to_pdb_id("1abc.pdb")
+    '1abc'
+    >>> filename_to_pdb_id("1abc.pdb.gz")
+    '1abc'
+    >>> filename_to_pdb_id("AF-P01308-F1-model_v4.pdb")
+    'AF_AFP01308F1'
+    """
+    if filename.startswith("AF-"):
+        # e.g. AF-P01308-F1-model_v4.pdb
+        return "AF_AF" + filename[3 : -len(f"-{ALPHAFOLD_SUFFIX}.pdb")].replace("-", "")
+    # e.g. 1abc.pdb
+    return filename.split(".")[0]
 
 
 def get_download_url(pdb_id: str) -> str:
@@ -51,7 +113,7 @@ def get_download_url(pdb_id: str) -> str:
     Based on the PDB ID, return the right URL to download the PDB file.
     """
     if is_alphafold_id(pdb_id):
-        return f"{DOWNLOAD_URL_ALPHAFOLD}{pdb_id}{ALPHAFOLD_SUFFIX}.pdb"
+        return DOWNLOAD_URL_ALPHAFOLD + alphafold_id_to_file(pdb_id)
     return f"{DOWNLOAD_URL_RCSB}{pdb_id}.pdb"
 
 
@@ -65,8 +127,10 @@ def download_pdb(pdb_id: str, directory: str, compressed: bool = True) -> str:
     :return: path to the downloaded file.
     """
     # Documentation URL: https://www.rcsb.org/pdb/files/
+    file_name = pdb_id_to_filename(pdb_id)
+
     pdb_url = get_download_url(pdb_id)
-    dest = os.path.join(directory, f"{pdb_id}.pdb")
+    dest = os.path.join(directory, file_name)
 
     # RCSB makes available compressed files, which are smaller and faster to download.
     if compressed and not is_alphafold_id(pdb_id):
@@ -76,7 +140,7 @@ def download_pdb(pdb_id: str, directory: str, compressed: bool = True) -> str:
     # Download the PDB file.
     response = requests.get(pdb_url, timeout=60)
     if response.status_code == 404:
-        print(f"PDB file not found: {pdb_id}")
+        print(f"PDB file not found for id '{pdb_id}'")
         # Write an empty file to indicate that the PDB file was not found.
         content = b""
         # And append the PDB ID to the list of 404 PDB files, inside the directory.
