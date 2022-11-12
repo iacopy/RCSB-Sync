@@ -189,7 +189,9 @@ class Project:
             print("Marking obsolete:", pdb_file, "->", pdb_file + SUFFIX_REMOVED)
             os.rename(pdb_file, pdb_file + SUFFIX_REMOVED)
 
-    def do_sync(self, diffs: Dict[str, Diff], n_jobs: int) -> None:
+    def do_sync(
+        self, diffs: Dict[str, Diff], n_jobs: int, compressed: bool = False
+    ) -> None:
         """
         Synchronize the local directory with the remote repository.
 
@@ -201,11 +203,13 @@ class Project:
             self.mark_removed(query_name, diff.removed_ids)
             query_data_dir = os.path.join(self.data_dir, query_name)
             download.download(
-                diff.tbd_ids, query_data_dir, compressed=True, n_jobs=n_jobs
+                diff.tbd_ids, query_data_dir, compressed=compressed, n_jobs=n_jobs
             )
 
 
-def main(project_dir: str, n_jobs: int = 1, yes: bool = False) -> None:
+def main(
+    project_dir: str, n_jobs: int = 1, yes: bool = False, compressed: bool = False
+):
     """
     Fetch the RCSB IDs from the RCSB website, and download the corresponding PDB files.
 
@@ -236,7 +240,7 @@ def main(project_dir: str, n_jobs: int = 1, yes: bool = False) -> None:
                 print("Aborting.")
                 return
 
-        project.do_sync(diffs, n_jobs=n_jobs)
+        project.do_sync(diffs, n_jobs=n_jobs, compressed=compressed)
 
 
 if __name__ == "__main__":
@@ -258,5 +262,10 @@ if __name__ == "__main__":
         action="store_true",
         help="do not ask for confirmation before downloading",
     )
+    parser.add_argument(
+        "--compressed",
+        action="store_true",
+        help="download compressed PDB files (not available for AlphaFold DB)",
+    )
     args = parser.parse_args()
-    main(args.project_dir, args.n_jobs, args.yes)
+    main(args.project_dir, args.n_jobs, args.yes, args.compressed)
