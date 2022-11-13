@@ -28,7 +28,7 @@ DEFAULT_PROCESSES = 1
 #: This number impact the frequency of progress updates.
 #: It is the number of PDB files to download before a progress update is printed if a single process is used.
 #: This is scaled automatically to the number of processes used to keep the progress updates constant.
-CHUNK_LEN_PER_PROCESS = 10
+CHUNK_LEN_PER_PROCESS = 20
 
 
 def _chunks(lst, num):
