@@ -205,6 +205,34 @@ def download(
     :param compressed: whether to download compressed files.
     :param n_jobs: number of processes to use (default: 2).
     """
+
+    def print_progress(
+        n_downloaded: int,
+        n_ids: int,
+        start_time: float,
+        downloaded_size: int,
+        n_jobs: int,
+    ) -> None:
+        """
+        Print the progress of the download.
+
+        :param n_downloaded: number of PDB files already downloaded.
+        :param n_ids: total number of PDB files to download.
+        :param start_time: time when the download started.
+        :param downloaded_size: size of the downloaded files.
+        :param n_jobs: number of processes used.
+        """
+        progress = n_downloaded / n_ids
+        # Report the global progress and the expected time to complete.
+        t_sec = time.time() - start_time
+        t_hs = _human_readable_time(t_sec)
+        speed = n_downloaded / t_sec
+        eta_sec = (t_sec / n_downloaded) * (n_ids - n_downloaded)
+        eta = _human_readable_time(eta_sec)
+        prog = f"{t_hs}: {n_downloaded:,}/{n_ids:,} ({progress:.2%}) files ({downloaded_size / 1e6:.2f} MB)"
+        timing = f"{speed:,.1f}/s | {n_jobs}j; ETA: {eta} ⏳"
+        print(f"{prog} ({timing})")
+
     n_ids = len(pdb_ids)
     downloaded_size = 0
     n_downloaded = 0
@@ -212,10 +240,10 @@ def download(
 
     chunk_len = CHUNK_LEN_PER_PROCESS * n_jobs
     # Subdivide the list of PDB IDs into chunks and download each chunk in parallel.
-    for i, chunk in enumerate(_chunks(pdb_ids, chunk_len)):
-        print(
-            f"Downloading chunk {i + 1}/{n_ids // chunk_len}: {len(chunk)} PDBs each with {n_jobs} processes"
-        )
+    for chunk in _chunks(pdb_ids, chunk_len):
+        # print(
+        #     f"Downloading chunk {i + 1}/{n_ids // chunk_len}: {len(chunk)} PDBs each with {n_jobs} processes"
+        # )
         # Download the chunk of PDB IDs.
         downloaded_chunk = parallel_download(chunk, directory, compressed, n_jobs)
 
@@ -223,11 +251,6 @@ def download(
             os.path.getsize(file_path) for file_path in downloaded_chunk
         )
         n_downloaded += len(chunk)
-        progress = n_downloaded / n_ids
 
         # Report the global progress and the expected time to complete.
-        eta_sec = ((time.time() - start_time) / n_downloaded) * (n_ids - n_downloaded)
-        eta = _human_readable_time(eta_sec)
-        print(
-            f"Downloaded {n_downloaded}/{n_ids} files ({progress:.2%}) - ETA: {eta} ⏳"
-        )
+        print_progress(n_downloaded, n_ids, start_time, downloaded_size, n_jobs)
