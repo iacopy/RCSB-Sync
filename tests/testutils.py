@@ -21,8 +21,8 @@ def check_nodata(project_dir):
     # check queries directory contain 2 json files
     queries_dir = os.path.join(project_dir, "queries")
     assert sorted(os.listdir(queries_dir)) == [
-        "Rabbitpox virus.json",
-        "Radianthus crispus.json",
+        "Rabbitpox_virus.json",
+        "Radianthus_crispus.json",
     ]
 
 
