@@ -169,6 +169,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#algorithm">Algorithm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#directory-structure">Directory structure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#project.DirStatus"><code class="docutils literal notranslate"><span class="pre">DirStatus</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#project.DirStatus.n_local"><code class="docutils literal notranslate"><span class="pre">DirStatus.n_local</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#project.DirStatus.n_remote"><code class="docutils literal notranslate"><span class="pre">DirStatus.n_remote</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#project.DirStatus.removed_ids"><code class="docutils literal notranslate"><span class="pre">DirStatus.removed_ids</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#project.DirStatus.tbd_ids"><code class="docutils literal notranslate"><span class="pre">DirStatus.tbd_ids</span></code></a></li>
 </ul>
@@ -184,6 +186,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#project.pformat_status"><code class="docutils literal notranslate"><span class="pre">pformat_status()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="rcsbids.html">rcsbids module</a><ul>
@@ -228,6 +231,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#algorithm">Algorithm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#directory-structure">Directory structure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#project.DirStatus"><code class="docutils literal notranslate"><span class="pre">DirStatus</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#project.DirStatus.n_local"><code class="docutils literal notranslate"><span class="pre">DirStatus.n_local</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#project.DirStatus.n_remote"><code class="docutils literal notranslate"><span class="pre">DirStatus.n_remote</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#project.DirStatus.removed_ids"><code class="docutils literal notranslate"><span class="pre">DirStatus.removed_ids</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#project.DirStatus.tbd_ids"><code class="docutils literal notranslate"><span class="pre">DirStatus.tbd_ids</span></code></a></li>
 </ul>
@@ -243,6 +248,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#project.pformat_status"><code class="docutils literal notranslate"><span class="pre">pformat_status()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="rcsbids.html">rcsbids module</a><ul>
@@ -312,18 +318,30 @@ and skip them.</li>
 </div>
 <dl class="py class">
 <dt class="sig sig-object py" id="project.DirStatus">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><code class="sig-prename descclassname"><span class="pre">project.</span></code><code class="sig-name descname"><span class="pre">DirStatus</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">tbd_ids</span></span></em>, <em><span class="n"><span class="pre">removed_ids</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#project.DirStatus" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><code class="sig-prename descclassname"><span class="pre">project.</span></code><code class="sig-name descname"><span class="pre">DirStatus</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">n_local</span></span></em>, <em><span class="n"><span class="pre">n_remote</span></span></em>, <em><span class="n"><span class="pre">tbd_ids</span></span></em>, <em><span class="n"><span class="pre">removed_ids</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#project.DirStatus" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="project.DirStatus.n_local">
+<code class="sig-name descname"><span class="pre">n_local</span></code><a class="headerlink" href="#project.DirStatus.n_local" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="project.DirStatus.n_remote">
+<code class="sig-name descname"><span class="pre">n_remote</span></code><a class="headerlink" href="#project.DirStatus.n_remote" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="project.DirStatus.removed_ids">
 <code class="sig-name descname"><span class="pre">removed_ids</span></code><a class="headerlink" href="#project.DirStatus.removed_ids" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 1</p>
+<dd><p>Alias for field number 3</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="project.DirStatus.tbd_ids">
 <code class="sig-name descname"><span class="pre">tbd_ids</span></code><a class="headerlink" href="#project.DirStatus.tbd_ids" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 0</p>
+<dd><p>Alias for field number 2</p>
 </dd></dl>
 
 </dd></dl>
@@ -448,6 +466,22 @@ and skip them.</li>
 <li><strong>yes</strong> – if True, do not ask for confirmation before downloading the PDB files.</li>
 </ul>
 </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="project.pformat_status">
+<code class="sig-prename descclassname"><span class="pre">project.</span></code><code class="sig-name descname"><span class="pre">pformat_status</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">project_status</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#project.DirStatus" title="project.DirStatus"><span class="pre">DirStatus</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/project.html#pformat_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.pformat_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a nice string table with the status of the project.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>project_status</strong> – dictionary with the status of the project.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a string with the table.</td>
 </tr>
 </tbody>
 </table>
