@@ -139,14 +139,18 @@ class Project:
 
     def get_data_files_for_query(self, query_name: str) -> List[str]:
         """
-        Get the list of PDB files in the query data directory.
+        Get the list of local PDB files in the data directory for a given query.
         """
         query_data_dir = os.path.join(self.data_dir, query_name)
-        return [
-            filename
-            for filename in os.listdir(query_data_dir)
-            if (filename.endswith(PDB_EXT) or filename.endswith(COMPRESSED_EXT))
-        ]
+        ret = []
+        for filename in os.listdir(query_data_dir):
+            # Report hidden files if found, suggesting the command to remove them.
+            if filename.startswith("."):
+                print(f"rm {os.path.join(query_data_dir, filename)}")
+                continue
+            if filename.endswith(PDB_EXT) or filename.endswith(COMPRESSED_EXT):
+                ret.append(filename)
+        return ret
 
     def get_local_query_ids(self, query_name) -> set:
         """
@@ -190,6 +194,12 @@ class Project:
         # Local files to be removed (some local PDB files are not in the RCSB database anymore,
         # so we mark them with the SUFFIX_REMOVED suffix).
         removed_ids = [id_ for id_ in local_ids if id_ not in remote_ids]
+
+        # Report the removed files.
+        if removed_ids:
+            print(f"Found {len(removed_ids):,} removed files for query {query_name}:")
+            for id_ in removed_ids:
+                print(f"  {id_}")
 
         return DirStatus(n_local, n_remote, tbd_ids, removed_ids)
 
