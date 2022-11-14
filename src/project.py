@@ -139,14 +139,18 @@ class Project:
 
     def get_data_files_for_query(self, query_name: str) -> List[str]:
         """
-        Get the list of PDB files in the query data directory.
+        Get the list of local PDB files in the data directory for a given query.
         """
         query_data_dir = os.path.join(self.data_dir, query_name)
-        return [
-            filename
-            for filename in os.listdir(query_data_dir)
-            if (filename.endswith(PDB_EXT) or filename.endswith(COMPRESSED_EXT))
-        ]
+        ret = []
+        for filename in os.listdir(query_data_dir):
+            # Report hidden files if found, suggesting the command to remove them.
+            if filename.startswith("."):
+                print(f"rm {os.path.join(query_data_dir, filename)}")
+                continue
+            if filename.endswith(PDB_EXT) or filename.endswith(COMPRESSED_EXT):
+                ret.append(filename)
+        return ret
 
     def get_local_query_ids(self, query_name) -> set:
         """
