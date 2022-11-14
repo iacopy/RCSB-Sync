@@ -54,24 +54,17 @@ def alphafold_id_to_file(pdb_id: str) -> str:
     """
     Convert an AlphaFold ID to the corresponding PDB file name.
 
+    NB: there are gigantic protein like https://www.rcsb.org/uniprot/Q8WZ42
+
     >>> alphafold_id_to_file("AF_AFP08437F1")
     'AF-P08437-F1-model_v4.pdb'
     >>> alphafold_id_to_file("AF_AFP01308F2")
     'AF-P01308-F2-model_v4.pdb'
+    >>> alphafold_id_to_file("AF_AFQ8WZ42F166")
+    'AF-Q8WZ42-F166-model_v4.pdb'
     """
-    f_n = pdb_id[-2:]  # e.g. "F1"
-    assert f_n in (
-        "F1",
-        "F2",
-        "F3",
-        "F4",
-        "F5",
-        "F6",
-        "F7",
-        "F8",
-        "F9",
-    ), f"Unknown AlphaFold ID: {pdb_id}"
-    return f"AF-{pdb_id[5:-2]}-{f_n}-{ALPHAFOLD_SUFFIX}.pdb"
+    last_f = pdb_id.rfind("F")
+    return f"AF-{pdb_id[5:last_f]}-{pdb_id[last_f:]}-{ALPHAFOLD_SUFFIX}.pdb"
 
 
 def pdb_id_to_filename(pdb_id: str) -> str:
@@ -84,6 +77,8 @@ def pdb_id_to_filename(pdb_id: str) -> str:
     '1abc.pdb'
     >>> pdb_id_to_filename("AF_AFP01308F1")
     'AF-P01308-F1-model_v4.pdb'
+    >>> pdb_id_to_filename("AF_AFQ8WZ42F166")
+    'AF-Q8WZ42-F166-model_v4.pdb'
     """
     if is_alphafold_id(pdb_id):
         return alphafold_id_to_file(pdb_id)
@@ -100,6 +95,8 @@ def filename_to_pdb_id(filename: str) -> str:
     '1abc'
     >>> filename_to_pdb_id("AF-P01308-F1-model_v4.pdb")
     'AF_AFP01308F1'
+    >>> filename_to_pdb_id("AF-Q8WZ42-F166-model_v4.pdb")
+    'AF_AFQ8WZ42F166'
     """
     if filename.startswith("AF-"):
         # e.g. AF-P01308-F1-model_v4.pdb
