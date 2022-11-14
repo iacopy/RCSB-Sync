@@ -126,7 +126,7 @@ class Project:
         # Get the list of PDB IDs from the RCSB website, given an advanced query in json format.
         return rcsbids.search_and_download_ids(query_path)
 
-    def updiff_query(self, query_path: str) -> Diff:
+    def get_status_query(self, query_path: str) -> Diff:
         """
         Check the remote server for updates for a query and compute the diff, but do not download the files.
 
@@ -153,7 +153,7 @@ class Project:
 
         return Diff(tbd_ids, removed_ids)
 
-    def updiff(self) -> Dict[str, Diff]:
+    def get_status(self) -> Dict[str, Diff]:
         """
         Fetch ids for each query and report the difference with the local data.
 
@@ -167,7 +167,7 @@ class Project:
         ):
             name = os.path.splitext(query_file)[0]
             query_path = os.path.join(self.queries_dir, query_file)
-            ret[name] = self.updiff_query(query_path)
+            ret[name] = self.get_status_query(query_path)
         return ret
 
     def mark_removed(self, query_name: str, to_remove: List[str]) -> None:
@@ -220,7 +220,7 @@ def main(
     project = Project(project_dir)
 
     # Fetch the remote RCSB IDs.
-    diffs = project.updiff()
+    diffs = project.get_status()
 
     # Report the differences.
     for query_name, diff in diffs.items():
