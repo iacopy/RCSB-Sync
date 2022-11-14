@@ -15,10 +15,10 @@ def test_updiff_the_first_time(new_project_dir, remote_server):
     new_project = project.Project(new_project_dir)
     diffs = new_project.updiff()
 
-    assert diffs["Homo sapiens"].tbd_ids == ["hs01", "hs02", "hs03"]
-    assert diffs["Homo sapiens"].removed_ids == []
-    assert diffs["Rattus norvegicus"].tbd_ids == ["rn01", "rn02"]
-    assert diffs["Rattus norvegicus"].removed_ids == []
+    assert diffs["Homo_sapiens"].tbd_ids == ["hs01", "hs02", "hs03"]
+    assert diffs["Homo_sapiens"].removed_ids == []
+    assert diffs["Rattus_norvegicus"].tbd_ids == ["rn01", "rn02"]
+    assert diffs["Rattus_norvegicus"].removed_ids == []
 
 
 def test_updiff_resume_rn(project_with_hs_files_gz, remote_server):
@@ -26,10 +26,10 @@ def test_updiff_resume_rn(project_with_hs_files_gz, remote_server):
     Test that resuming a download works properly (Homo sapiens is already downloaded).
     """
     diffs = project_with_hs_files_gz.updiff()
-    assert diffs["Homo sapiens"].tbd_ids == []
-    assert diffs["Homo sapiens"].removed_ids == []
-    assert diffs["Rattus norvegicus"].tbd_ids == ["rn01", "rn02"]
-    assert diffs["Rattus norvegicus"].removed_ids == []
+    assert diffs["Homo_sapiens"].tbd_ids == []
+    assert diffs["Homo_sapiens"].removed_ids == []
+    assert diffs["Rattus_norvegicus"].tbd_ids == ["rn01", "rn02"]
+    assert diffs["Rattus_norvegicus"].removed_ids == []
 
 
 def test_updiff_resume_hs(project_with_rn_files, remote_server):
@@ -37,10 +37,10 @@ def test_updiff_resume_hs(project_with_rn_files, remote_server):
     Test that resuming a download works properly (Rattus norvegicus is already downloaded).
     """
     diffs = project_with_rn_files.updiff()
-    assert diffs["Homo sapiens"].tbd_ids == ["hs01", "hs02", "hs03"]
-    assert diffs["Homo sapiens"].removed_ids == []
-    assert diffs["Rattus norvegicus"].tbd_ids == []
-    assert diffs["Rattus norvegicus"].removed_ids == []
+    assert diffs["Homo_sapiens"].tbd_ids == ["hs01", "hs02", "hs03"]
+    assert diffs["Homo_sapiens"].removed_ids == []
+    assert diffs["Rattus_norvegicus"].tbd_ids == []
+    assert diffs["Rattus_norvegicus"].removed_ids == []
 
 
 def test_updiff_uptodate(project_with_files, remote_server):
@@ -49,10 +49,10 @@ def test_updiff_uptodate(project_with_files, remote_server):
     """
     # Check for updates.
     updiff_result = project_with_files.updiff()
-    assert updiff_result["Homo sapiens"].tbd_ids == []
-    assert updiff_result["Homo sapiens"].removed_ids == []
-    assert updiff_result["Rattus norvegicus"].tbd_ids == []
-    assert updiff_result["Rattus norvegicus"].removed_ids == []
+    assert updiff_result["Homo_sapiens"].tbd_ids == []
+    assert updiff_result["Homo_sapiens"].removed_ids == []
+    assert updiff_result["Rattus_norvegicus"].tbd_ids == []
+    assert updiff_result["Rattus_norvegicus"].removed_ids == []
 
 
 def test_mark_removed(project_with_files, remote_server_changed):
@@ -66,19 +66,19 @@ def test_mark_removed(project_with_files, remote_server_changed):
     project_with_files.do_sync(updiff_result, n_jobs=1)
 
     assert sorted(
-        os.listdir(os.path.join(project_with_files.data_dir, "Homo sapiens"))
+        os.listdir(os.path.join(project_with_files.data_dir, "Homo_sapiens"))
     ) == ["hs01.pdb.gz", "hs02.pdb.obsolete", "hs03.pdb"]
 
     # Check that the local file is marked as obsolete (removed remotely).
     assert sorted(
-        os.listdir(os.path.join(project_with_files.data_dir, "Rattus norvegicus"))
+        os.listdir(os.path.join(project_with_files.data_dir, "Rattus_norvegicus"))
     ) == [
         "rn01.pdb.gz",
         "rn02.pdb.gz.obsolete",
     ]
 
     # Check that Project.get_data_files_for_query only returns the non-obsolete files.
-    assert project_with_files.get_data_files_for_query("Rattus norvegicus") == [
+    assert project_with_files.get_data_files_for_query("Rattus_norvegicus") == [
         "rn01.pdb.gz",
     ]
 
