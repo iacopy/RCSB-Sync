@@ -157,9 +157,9 @@
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.fetch_or_cache_query"><code class="docutils literal notranslate"><span class="pre">Project.fetch_or_cache_query()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_data_files_for_query"><code class="docutils literal notranslate"><span class="pre">Project.get_data_files_for_query()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_local_query_ids"><code class="docutils literal notranslate"><span class="pre">Project.get_local_query_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_status"><code class="docutils literal notranslate"><span class="pre">Project.get_status()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_status_query"><code class="docutils literal notranslate"><span class="pre">Project.get_status_query()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.mark_removed"><code class="docutils literal notranslate"><span class="pre">Project.mark_removed()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.updiff"><code class="docutils literal notranslate"><span class="pre">Project.updiff()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.updiff_query"><code class="docutils literal notranslate"><span class="pre">Project.updiff_query()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
@@ -216,9 +216,9 @@
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.fetch_or_cache_query"><code class="docutils literal notranslate"><span class="pre">Project.fetch_or_cache_query()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_data_files_for_query"><code class="docutils literal notranslate"><span class="pre">Project.get_data_files_for_query()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_local_query_ids"><code class="docutils literal notranslate"><span class="pre">Project.get_local_query_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_status"><code class="docutils literal notranslate"><span class="pre">Project.get_status()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_status_query"><code class="docutils literal notranslate"><span class="pre">Project.get_status_query()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.mark_removed"><code class="docutils literal notranslate"><span class="pre">Project.mark_removed()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.updiff"><code class="docutils literal notranslate"><span class="pre">Project.updiff()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.updiff_query"><code class="docutils literal notranslate"><span class="pre">Project.updiff_query()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
@@ -370,7 +370,7 @@
         <span class="c1"># Get the list of PDB IDs from the RCSB website, given an advanced query in json format.</span>
         <span class="k">return</span> <span class="n">rcsbids</span><span class="o">.</span><span class="n">search_and_download_ids</span><span class="p">(</span><span class="n">query_path</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Project.updiff_query"><a class="viewcode-back" href="../project.html#project.Project.updiff_query">[docs]</a>    <span class="k">def</span> <span class="nf">updiff_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Diff</span><span class="p">:</span>
+<div class="viewcode-block" id="Project.get_status_query"><a class="viewcode-back" href="../project.html#project.Project.get_status_query">[docs]</a>    <span class="k">def</span> <span class="nf">get_status_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Diff</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Check the remote server for updates for a query and compute the diff, but do not download the files.</span>
 
@@ -397,7 +397,7 @@
 
         <span class="k">return</span> <span class="n">Diff</span><span class="p">(</span><span class="n">tbd_ids</span><span class="p">,</span> <span class="n">removed_ids</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Project.updiff"><a class="viewcode-back" href="../project.html#project.Project.updiff">[docs]</a>    <span class="k">def</span> <span class="nf">updiff</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Diff</span><span class="p">]:</span>
+<div class="viewcode-block" id="Project.get_status"><a class="viewcode-back" href="../project.html#project.Project.get_status">[docs]</a>    <span class="k">def</span> <span class="nf">get_status</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Diff</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fetch ids for each query and report the difference with the local data.</span>
 
@@ -411,7 +411,7 @@
         <span class="p">):</span>
             <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">query_file</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">query_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">queries_dir</span><span class="p">,</span> <span class="n">query_file</span><span class="p">)</span>
-            <span class="n">ret</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">updiff_query</span><span class="p">(</span><span class="n">query_path</span><span class="p">)</span>
+            <span class="n">ret</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_status_query</span><span class="p">(</span><span class="n">query_path</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ret</span></div>
 
 <div class="viewcode-block" id="Project.mark_removed"><a class="viewcode-back" href="../project.html#project.Project.mark_removed">[docs]</a>    <span class="k">def</span> <span class="nf">mark_removed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">to_remove</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -464,7 +464,7 @@
     <span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="n">project_dir</span><span class="p">)</span>
 
     <span class="c1"># Fetch the remote RCSB IDs.</span>
-    <span class="n">diffs</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">updiff</span><span class="p">()</span>
+    <span class="n">diffs</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">get_status</span><span class="p">()</span>
 
     <span class="c1"># Report the differences.</span>
     <span class="k">for</span> <span class="n">query_name</span><span class="p">,</span> <span class="n">diff</span> <span class="ow">in</span> <span class="n">diffs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -523,7 +523,7 @@
   <div id="footer-row" class="row">
 
     <div class="col-md-12">
-        <span title="Built on 2022-11-13" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
+        <span title="Built on 2022-11-14" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
         Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0 and the
         <a href="https://pypi.org/project/sphinx-sizzle-theme/"
 
