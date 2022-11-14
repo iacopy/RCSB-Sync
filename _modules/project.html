@@ -389,14 +389,18 @@
 
 <div class="viewcode-block" id="Project.get_data_files_for_query"><a class="viewcode-back" href="../project.html#project.Project.get_data_files_for_query">[docs]</a>    <span class="k">def</span> <span class="nf">get_data_files_for_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get the list of PDB files in the query data directory.</span>
+<span class="sd">        Get the list of local PDB files in the data directory for a given query.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">query_data_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">query_name</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">[</span>
-            <span class="n">filename</span>
-            <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">query_data_dir</span><span class="p">)</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">PDB_EXT</span><span class="p">)</span> <span class="ow">or</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">COMPRESSED_EXT</span><span class="p">))</span>
-        <span class="p">]</span></div>
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">query_data_dir</span><span class="p">):</span>
+            <span class="c1"># Report hidden files if found, suggesting the command to remove them.</span>
+            <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;rm </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">query_data_dir</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">PDB_EXT</span><span class="p">)</span> <span class="ow">or</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">COMPRESSED_EXT</span><span class="p">):</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
 
 <div class="viewcode-block" id="Project.get_local_query_ids"><a class="viewcode-back" href="../project.html#project.Project.get_local_query_ids">[docs]</a>    <span class="k">def</span> <span class="nf">get_local_query_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -440,6 +444,12 @@
         <span class="c1"># Local files to be removed (some local PDB files are not in the RCSB database anymore,</span>
         <span class="c1"># so we mark them with the SUFFIX_REMOVED suffix).</span>
         <span class="n">removed_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">id_</span> <span class="k">for</span> <span class="n">id_</span> <span class="ow">in</span> <span class="n">local_ids</span> <span class="k">if</span> <span class="n">id_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">remote_ids</span><span class="p">]</span>
+
+        <span class="c1"># Report the removed files.</span>
+        <span class="k">if</span> <span class="n">removed_ids</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">removed_ids</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> removed files for query </span><span class="si">{</span><span class="n">query_name</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">id_</span> <span class="ow">in</span> <span class="n">removed_ids</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">id_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">DirStatus</span><span class="p">(</span><span class="n">n_local</span><span class="p">,</span> <span class="n">n_remote</span><span class="p">,</span> <span class="n">tbd_ids</span><span class="p">,</span> <span class="n">removed_ids</span><span class="p">)</span></div>
 
