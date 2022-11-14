@@ -95,7 +95,7 @@ def test_mark_removed(project_with_files, remote_server_changed):
 
     assert sorted(
         os.listdir(os.path.join(project_with_files.data_dir, "Homo_sapiens"))
-    ) == ["hs01.pdb.gz", "hs02.pdb.obsolete", "hs03.pdb"]
+    ) == [".hidden.pdb", "hs01.pdb.gz", "hs02.pdb.obsolete", "hs03.pdb"]
 
     # Check that the local file is marked as obsolete (removed remotely).
     assert sorted(

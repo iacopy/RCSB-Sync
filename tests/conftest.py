@@ -90,6 +90,9 @@ def project_with_files(new_project_dir):
     rn02 = Path(rn_dir, "rn02.pdb.gz")
     rn01.write_text("rn01", encoding="ascii")
     rn02.write_text("rn02", encoding="ascii")
+    # add also a random hidden file
+    hidden_file = Path(hs_dir, ".hidden.pdb")
+    hidden_file.write_text("hidden", encoding="ascii")
     return prj
 
 
