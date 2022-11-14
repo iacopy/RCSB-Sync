@@ -68,8 +68,8 @@ MAX_JOBS = os.cpu_count()
 
 
 # Named tuple to store the fetch results.
-Diff = namedtuple("Diff", ["tbd_ids", "removed_ids"])
-DataMap = Dict[str, List[str]]
+DirStatus = namedtuple("DirStatus", ["tbd_ids", "removed_ids"])
+ProjectStatus = Dict[str, DirStatus]
 
 
 class Project:
@@ -126,16 +126,16 @@ class Project:
         # Get the list of PDB IDs from the RCSB website, given an advanced query in json format.
         return rcsbids.search_and_download_ids(query_path)
 
-    def get_status_query(self, query_path: str) -> Diff:
+    def get_status_query(self, query_path: str) -> DirStatus:
         """
-        Check the remote server for updates for a query and compute the diff, but do not download the files.
+        Check the remote server for updates for a query and compute the status.
 
             - fetch the RCSB IDs from the RCSB website;
             - check which PDB files are already in the local project directory;
-            - check which PDB files are obsolete and mark them with the suffix '.obsolete';
-            - print a sync report.
+            - check which PDB files are obsolete;
 
         :param query_path: path to the query file.
+        :return: a DirStatus object.
         """
         query_name = os.path.splitext(os.path.basename(query_path))[0]
         # Get the list of PDB IDs from the RCSB website.
@@ -151,13 +151,13 @@ class Project:
         # so we mark them with the SUFFIX_REMOVED suffix).
         removed_ids = [id_ for id_ in local_ids if id_ not in remote_ids]
 
-        return Diff(tbd_ids, removed_ids)
+        return DirStatus(tbd_ids, removed_ids)
 
-    def get_status(self) -> Dict[str, Diff]:
+    def get_status(self) -> ProjectStatus:
         """
-        Fetch ids for each query and report the difference with the local data.
+        Fetch ids for each query and report the sync status of the project.
 
-        :return: a dictionary mapping query names to Diff objects.
+        :return: ProjectStatus, a dictionary mapping query names to DirStatus objects.
         """
         ret = {}
         for query_file in (
@@ -190,20 +190,20 @@ class Project:
             os.rename(pdb_file, pdb_file + SUFFIX_REMOVED)
 
     def do_sync(
-        self, diffs: Dict[str, Diff], n_jobs: int, compressed: bool = False
+        self, project_status: ProjectStatus, n_jobs: int, compressed: bool = False
     ) -> None:
         """
         Synchronize the local directory with the remote repository.
 
-        :param diffs: a dictionary mapping query names to Diff objects.
+        :param project_status: a dictionary mapping query names to DirStatus objects.
         :param n_jobs: number of parallel jobs to download the PDB files.
         """
-        for query_name, diff in diffs.items():
+        for query_name, dir_status in project_status.items():
             print(f"Syncing query {query_name}...")
-            self.mark_removed(query_name, diff.removed_ids)
+            self.mark_removed(query_name, dir_status.removed_ids)
             query_data_dir = os.path.join(self.data_dir, query_name)
             download.download(
-                diff.tbd_ids, query_data_dir, compressed=compressed, n_jobs=n_jobs
+                dir_status.tbd_ids, query_data_dir, compressed=compressed, n_jobs=n_jobs
             )
 
 
@@ -220,16 +220,18 @@ def main(
     project = Project(project_dir)
 
     # Fetch the remote RCSB IDs.
-    diffs = project.get_status()
+    project_status = project.get_status()
 
     # Report the differences.
-    for query_name, diff in diffs.items():
+    for query_name, dir_status in project_status.items():
         print(f"Query: {query_name}")
-        print(f"New files (remote but not local): {len(diff.tbd_ids):,}")
-        print(f"Obsolete files (local but not remote): {len(diff.removed_ids):,}")
+        print(f"New files (remote but not local): {len(dir_status.tbd_ids):,}")
+        print(f"Obsolete files (local but not remote): {len(dir_status.removed_ids):,}")
 
     # Count the total number of files to be downloaded.
-    total_tbd_ids = sum(len(diff.tbd_ids) for diff in diffs.values())
+    total_tbd_ids = sum(
+        len(dir_status.tbd_ids) for dir_status in project_status.values()
+    )
     print(f"📥 Total new files to be downloaded: {total_tbd_ids:,}")
 
     # Download the PDB files corresponding to the RCSB PDB IDs which are not already in the project directory.
@@ -240,7 +242,7 @@ def main(
                 print("Aborting.")
                 return
 
-        project.do_sync(diffs, n_jobs=n_jobs, compressed=compressed)
+        project.do_sync(project_status, n_jobs=n_jobs, compressed=compressed)
 
 
 if __name__ == "__main__":
