@@ -147,9 +147,9 @@
 <li class="toctree-l3"><a class="reference internal" href="../project.html#usage">Usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#algorithm">Algorithm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#directory-structure">Directory structure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../project.html#project.Diff"><code class="docutils literal notranslate"><span class="pre">Diff</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Diff.removed_ids"><code class="docutils literal notranslate"><span class="pre">Diff.removed_ids</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Diff.tbd_ids"><code class="docutils literal notranslate"><span class="pre">Diff.tbd_ids</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../project.html#project.DirStatus"><code class="docutils literal notranslate"><span class="pre">DirStatus</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.DirStatus.removed_ids"><code class="docutils literal notranslate"><span class="pre">DirStatus.removed_ids</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.DirStatus.tbd_ids"><code class="docutils literal notranslate"><span class="pre">DirStatus.tbd_ids</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.Project"><code class="docutils literal notranslate"><span class="pre">Project</span></code></a><ul>
@@ -206,9 +206,9 @@
 <li class="toctree-l3"><a class="reference internal" href="../project.html#usage">Usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#algorithm">Algorithm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#directory-structure">Directory structure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../project.html#project.Diff"><code class="docutils literal notranslate"><span class="pre">Diff</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Diff.removed_ids"><code class="docutils literal notranslate"><span class="pre">Diff.removed_ids</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Diff.tbd_ids"><code class="docutils literal notranslate"><span class="pre">Diff.tbd_ids</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../project.html#project.DirStatus"><code class="docutils literal notranslate"><span class="pre">DirStatus</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.DirStatus.removed_ids"><code class="docutils literal notranslate"><span class="pre">DirStatus.removed_ids</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.DirStatus.tbd_ids"><code class="docutils literal notranslate"><span class="pre">DirStatus.tbd_ids</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.Project"><code class="docutils literal notranslate"><span class="pre">Project</span></code></a><ul>
@@ -312,8 +312,8 @@
 
 
 <span class="c1"># Named tuple to store the fetch results.</span>
-<span class="n">Diff</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;Diff&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;tbd_ids&quot;</span><span class="p">,</span> <span class="s2">&quot;removed_ids&quot;</span><span class="p">])</span>
-<span class="n">DataMap</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
+<span class="n">DirStatus</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;DirStatus&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;tbd_ids&quot;</span><span class="p">,</span> <span class="s2">&quot;removed_ids&quot;</span><span class="p">])</span>
+<span class="n">ProjectStatus</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DirStatus</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="Project"><a class="viewcode-back" href="../project.html#project.Project">[docs]</a><span class="k">class</span> <span class="nc">Project</span><span class="p">:</span>
@@ -370,16 +370,16 @@
         <span class="c1"># Get the list of PDB IDs from the RCSB website, given an advanced query in json format.</span>
         <span class="k">return</span> <span class="n">rcsbids</span><span class="o">.</span><span class="n">search_and_download_ids</span><span class="p">(</span><span class="n">query_path</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Project.get_status_query"><a class="viewcode-back" href="../project.html#project.Project.get_status_query">[docs]</a>    <span class="k">def</span> <span class="nf">get_status_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Diff</span><span class="p">:</span>
+<div class="viewcode-block" id="Project.get_status_query"><a class="viewcode-back" href="../project.html#project.Project.get_status_query">[docs]</a>    <span class="k">def</span> <span class="nf">get_status_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DirStatus</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Check the remote server for updates for a query and compute the diff, but do not download the files.</span>
+<span class="sd">        Check the remote server for updates for a query and compute the status.</span>
 
 <span class="sd">            - fetch the RCSB IDs from the RCSB website;</span>
 <span class="sd">            - check which PDB files are already in the local project directory;</span>
-<span class="sd">            - check which PDB files are obsolete and mark them with the suffix &#39;.obsolete&#39;;</span>
-<span class="sd">            - print a sync report.</span>
+<span class="sd">            - check which PDB files are obsolete;</span>
 
 <span class="sd">        :param query_path: path to the query file.</span>
+<span class="sd">        :return: a DirStatus object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">query_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">query_path</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
         <span class="c1"># Get the list of PDB IDs from the RCSB website.</span>
@@ -395,13 +395,13 @@
         <span class="c1"># so we mark them with the SUFFIX_REMOVED suffix).</span>
         <span class="n">removed_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">id_</span> <span class="k">for</span> <span class="n">id_</span> <span class="ow">in</span> <span class="n">local_ids</span> <span class="k">if</span> <span class="n">id_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">remote_ids</span><span class="p">]</span>
 
-        <span class="k">return</span> <span class="n">Diff</span><span class="p">(</span><span class="n">tbd_ids</span><span class="p">,</span> <span class="n">removed_ids</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">DirStatus</span><span class="p">(</span><span class="n">tbd_ids</span><span class="p">,</span> <span class="n">removed_ids</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Project.get_status"><a class="viewcode-back" href="../project.html#project.Project.get_status">[docs]</a>    <span class="k">def</span> <span class="nf">get_status</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Diff</span><span class="p">]:</span>
+<div class="viewcode-block" id="Project.get_status"><a class="viewcode-back" href="../project.html#project.Project.get_status">[docs]</a>    <span class="k">def</span> <span class="nf">get_status</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProjectStatus</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Fetch ids for each query and report the difference with the local data.</span>
+<span class="sd">        Fetch ids for each query and report the sync status of the project.</span>
 
-<span class="sd">        :return: a dictionary mapping query names to Diff objects.</span>
+<span class="sd">        :return: ProjectStatus, a dictionary mapping query names to DirStatus objects.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ret</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">query_file</span> <span class="ow">in</span> <span class="p">(</span>
@@ -434,20 +434,20 @@
             <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">pdb_file</span><span class="p">,</span> <span class="n">pdb_file</span> <span class="o">+</span> <span class="n">SUFFIX_REMOVED</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Project.do_sync"><a class="viewcode-back" href="../project.html#project.Project.do_sync">[docs]</a>    <span class="k">def</span> <span class="nf">do_sync</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">diffs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Diff</span><span class="p">],</span> <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">compressed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">project_status</span><span class="p">:</span> <span class="n">ProjectStatus</span><span class="p">,</span> <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">compressed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Synchronize the local directory with the remote repository.</span>
 
-<span class="sd">        :param diffs: a dictionary mapping query names to Diff objects.</span>
+<span class="sd">        :param project_status: a dictionary mapping query names to DirStatus objects.</span>
 <span class="sd">        :param n_jobs: number of parallel jobs to download the PDB files.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">query_name</span><span class="p">,</span> <span class="n">diff</span> <span class="ow">in</span> <span class="n">diffs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">query_name</span><span class="p">,</span> <span class="n">dir_status</span> <span class="ow">in</span> <span class="n">project_status</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Syncing query </span><span class="si">{</span><span class="n">query_name</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">mark_removed</span><span class="p">(</span><span class="n">query_name</span><span class="p">,</span> <span class="n">diff</span><span class="o">.</span><span class="n">removed_ids</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mark_removed</span><span class="p">(</span><span class="n">query_name</span><span class="p">,</span> <span class="n">dir_status</span><span class="o">.</span><span class="n">removed_ids</span><span class="p">)</span>
             <span class="n">query_data_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">query_name</span><span class="p">)</span>
             <span class="n">download</span><span class="o">.</span><span class="n">download</span><span class="p">(</span>
-                <span class="n">diff</span><span class="o">.</span><span class="n">tbd_ids</span><span class="p">,</span> <span class="n">query_data_dir</span><span class="p">,</span> <span class="n">compressed</span><span class="o">=</span><span class="n">compressed</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span>
+                <span class="n">dir_status</span><span class="o">.</span><span class="n">tbd_ids</span><span class="p">,</span> <span class="n">query_data_dir</span><span class="p">,</span> <span class="n">compressed</span><span class="o">=</span><span class="n">compressed</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span>
             <span class="p">)</span></div></div>
 
 
@@ -464,16 +464,18 @@
     <span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="n">project_dir</span><span class="p">)</span>
 
     <span class="c1"># Fetch the remote RCSB IDs.</span>
-    <span class="n">diffs</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">get_status</span><span class="p">()</span>
+    <span class="n">project_status</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">get_status</span><span class="p">()</span>
 
     <span class="c1"># Report the differences.</span>
-    <span class="k">for</span> <span class="n">query_name</span><span class="p">,</span> <span class="n">diff</span> <span class="ow">in</span> <span class="n">diffs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">query_name</span><span class="p">,</span> <span class="n">dir_status</span> <span class="ow">in</span> <span class="n">project_status</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Query: </span><span class="si">{</span><span class="n">query_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;New files (remote but not local): </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">tbd_ids</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Obsolete files (local but not remote): </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">removed_ids</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;New files (remote but not local): </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dir_status</span><span class="o">.</span><span class="n">tbd_ids</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Obsolete files (local but not remote): </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dir_status</span><span class="o">.</span><span class="n">removed_ids</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="c1"># Count the total number of files to be downloaded.</span>
-    <span class="n">total_tbd_ids</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">tbd_ids</span><span class="p">)</span> <span class="k">for</span> <span class="n">diff</span> <span class="ow">in</span> <span class="n">diffs</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="n">total_tbd_ids</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">dir_status</span><span class="o">.</span><span class="n">tbd_ids</span><span class="p">)</span> <span class="k">for</span> <span class="n">dir_status</span> <span class="ow">in</span> <span class="n">project_status</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+    <span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;📥 Total new files to be downloaded: </span><span class="si">{</span><span class="n">total_tbd_ids</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="c1"># Download the PDB files corresponding to the RCSB PDB IDs which are not already in the project directory.</span>
@@ -484,7 +486,7 @@
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Aborting.&quot;</span><span class="p">)</span>
                 <span class="k">return</span>
 
-        <span class="n">project</span><span class="o">.</span><span class="n">do_sync</span><span class="p">(</span><span class="n">diffs</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">,</span> <span class="n">compressed</span><span class="o">=</span><span class="n">compressed</span><span class="p">)</span></div>
+        <span class="n">project</span><span class="o">.</span><span class="n">do_sync</span><span class="p">(</span><span class="n">project_status</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">,</span> <span class="n">compressed</span><span class="o">=</span><span class="n">compressed</span><span class="p">)</span></div>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
