@@ -191,6 +191,12 @@ class Project:
         # so we mark them with the SUFFIX_REMOVED suffix).
         removed_ids = [id_ for id_ in local_ids if id_ not in remote_ids]
 
+        # Report the removed files.
+        if removed_ids:
+            print(f"Found {len(removed_ids):,} removed files for query {query_name}:")
+            for id_ in removed_ids:
+                print(f"  {id_}")
+
         return DirStatus(n_local, n_remote, tbd_ids, removed_ids)
 
     def get_status(self) -> ProjectStatus:
