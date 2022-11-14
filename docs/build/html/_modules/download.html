@@ -27,7 +27,7 @@
     <script>
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.1',
+        VERSION:     '0.2.0b',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         LINK_SUFFIX: '.html',
@@ -57,7 +57,7 @@
       <div id="hdr-left">
         <i class="fa fa-bars menu-toggle"></i>
         
-<a href="../index.html" class="text-logo">🦜 RCSB Sync 0.1 documentation</a>
+<a href="../index.html" class="text-logo">🦜 RCSB Sync 0.2.0b documentation</a>
 
       </div>
       <div id="hdr-centre" class="text-center stretch">
@@ -133,9 +133,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../modules.html#src">src</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../download.html#module-download">download module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.CHUNK_LEN_PER_PROCESS"><code class="docutils literal notranslate"><span class="pre">CHUNK_LEN_PER_PROCESS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.alphafold_id_to_file"><code class="docutils literal notranslate"><span class="pre">alphafold_id_to_file()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.download_pdb"><code class="docutils literal notranslate"><span class="pre">download_pdb()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.filename_to_pdb_id"><code class="docutils literal notranslate"><span class="pre">filename_to_pdb_id()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.get_download_url"><code class="docutils literal notranslate"><span class="pre">get_download_url()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.is_alphafold_id"><code class="docutils literal notranslate"><span class="pre">is_alphafold_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.parallel_download"><code class="docutils literal notranslate"><span class="pre">parallel_download()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.pdb_id_to_filename"><code class="docutils literal notranslate"><span class="pre">pdb_id_to_filename()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../project.html#module-project">project module</a><ul>
@@ -148,12 +153,13 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.Project"><code class="docutils literal notranslate"><span class="pre">Project</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.fetch_or_cache"><code class="docutils literal notranslate"><span class="pre">Project.fetch_or_cache()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.fetch_remote_ids"><code class="docutils literal notranslate"><span class="pre">Project.fetch_remote_ids()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_local_ids"><code class="docutils literal notranslate"><span class="pre">Project.get_local_ids()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.handle_removed"><code class="docutils literal notranslate"><span class="pre">Project.handle_removed()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.sync"><code class="docutils literal notranslate"><span class="pre">Project.sync()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.updiff"><code class="docutils literal notranslate"><span class="pre">Project.updiff()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.do_sync"><code class="docutils literal notranslate"><span class="pre">Project.do_sync()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.fetch_or_cache_query"><code class="docutils literal notranslate"><span class="pre">Project.fetch_or_cache_query()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_data_files_for_query"><code class="docutils literal notranslate"><span class="pre">Project.get_data_files_for_query()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_local_query_ids"><code class="docutils literal notranslate"><span class="pre">Project.get_local_query_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_status"><code class="docutils literal notranslate"><span class="pre">Project.get_status()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_status_query"><code class="docutils literal notranslate"><span class="pre">Project.get_status_query()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.mark_removed"><code class="docutils literal notranslate"><span class="pre">Project.mark_removed()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
@@ -186,9 +192,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../modules.html#src">src</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../download.html#module-download">download module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.CHUNK_LEN_PER_PROCESS"><code class="docutils literal notranslate"><span class="pre">CHUNK_LEN_PER_PROCESS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.alphafold_id_to_file"><code class="docutils literal notranslate"><span class="pre">alphafold_id_to_file()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.download_pdb"><code class="docutils literal notranslate"><span class="pre">download_pdb()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.filename_to_pdb_id"><code class="docutils literal notranslate"><span class="pre">filename_to_pdb_id()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.get_download_url"><code class="docutils literal notranslate"><span class="pre">get_download_url()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.is_alphafold_id"><code class="docutils literal notranslate"><span class="pre">is_alphafold_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.parallel_download"><code class="docutils literal notranslate"><span class="pre">parallel_download()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.pdb_id_to_filename"><code class="docutils literal notranslate"><span class="pre">pdb_id_to_filename()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../project.html#module-project">project module</a><ul>
@@ -201,12 +212,13 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.Project"><code class="docutils literal notranslate"><span class="pre">Project</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.fetch_or_cache"><code class="docutils literal notranslate"><span class="pre">Project.fetch_or_cache()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.fetch_remote_ids"><code class="docutils literal notranslate"><span class="pre">Project.fetch_remote_ids()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_local_ids"><code class="docutils literal notranslate"><span class="pre">Project.get_local_ids()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.handle_removed"><code class="docutils literal notranslate"><span class="pre">Project.handle_removed()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.sync"><code class="docutils literal notranslate"><span class="pre">Project.sync()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.updiff"><code class="docutils literal notranslate"><span class="pre">Project.updiff()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.do_sync"><code class="docutils literal notranslate"><span class="pre">Project.do_sync()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.fetch_or_cache_query"><code class="docutils literal notranslate"><span class="pre">Project.fetch_or_cache_query()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_data_files_for_query"><code class="docutils literal notranslate"><span class="pre">Project.get_data_files_for_query()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_local_query_ids"><code class="docutils literal notranslate"><span class="pre">Project.get_local_query_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_status"><code class="docutils literal notranslate"><span class="pre">Project.get_status()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_status_query"><code class="docutils literal notranslate"><span class="pre">Project.get_status_query()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.mark_removed"><code class="docutils literal notranslate"><span class="pre">Project.mark_removed()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
@@ -250,14 +262,17 @@
 <span class="c1"># My stuff</span>
 <span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">_human_readable_time</span>
 
-<span class="n">DOWNLOAD_URL</span> <span class="o">=</span> <span class="s1">&#39;https://files.rcsb.org/download/&#39;</span>
+<span class="n">DOWNLOAD_URL_RCSB</span> <span class="o">=</span> <span class="s2">&quot;https://files.rcsb.org/download/&quot;</span>
+<span class="n">DOWNLOAD_URL_ALPHAFOLD</span> <span class="o">=</span> <span class="s2">&quot;https://alphafold.ebi.ac.uk/files/&quot;</span>
+<span class="n">ALPHAFOLD_SUFFIX</span> <span class="o">=</span> <span class="s2">&quot;model_v4&quot;</span>
+<span class="c1"># e.g. https://alphafold.ebi.ac.uk/files/AF-P01308-F1-model_v4.pdb</span>
 
 <span class="n">MAX_PROCESSES</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span>
 <span class="n">DEFAULT_PROCESSES</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="c1">#: This number impact the frequency of progress updates.</span>
 <span class="c1">#: It is the number of PDB files to download before a progress update is printed if a single process is used.</span>
 <span class="c1">#: This is scaled automatically to the number of processes used to keep the progress updates constant.</span>
-<span class="n">CHUNK_LEN_PER_PROCESS</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">CHUNK_LEN_PER_PROCESS</span> <span class="o">=</span> <span class="mi">20</span>
 
 
 <span class="k">def</span> <span class="nf">_chunks</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">num</span><span class="p">):</span>
@@ -265,7 +280,85 @@
 <span class="sd">    Yield successive n-sized chunks from lst.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">),</span> <span class="n">num</span><span class="p">):</span>
-        <span class="k">yield</span> <span class="n">lst</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">num</span><span class="p">]</span>
+        <span class="k">yield</span> <span class="n">lst</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">num</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="is_alphafold_id"><a class="viewcode-back" href="../download.html#download.is_alphafold_id">[docs]</a><span class="k">def</span> <span class="nf">is_alphafold_id</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check whether the PDB ID is an AlphaFold ID.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">pdb_id</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;AF&quot;</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">pdb_id</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span>
+            <span class="s2">&quot;AF_AF&quot;</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected AlphaFold ID (should start with &#39;AF_AF&#39;): </span><span class="si">{</span><span class="n">pdb_id</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="n">pdb_id</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;AF_&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="alphafold_id_to_file"><a class="viewcode-back" href="../download.html#download.alphafold_id_to_file">[docs]</a><span class="k">def</span> <span class="nf">alphafold_id_to_file</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert an AlphaFold ID to the corresponding PDB file name.</span>
+
+<span class="sd">    &gt;&gt;&gt; alphafold_id_to_file(&quot;AF_AFP08437F1&quot;)</span>
+<span class="sd">    &#39;AF-P08437-F1-model_v4.pdb&#39;</span>
+<span class="sd">    &gt;&gt;&gt; alphafold_id_to_file(&quot;AF_AFP01308F2&quot;)</span>
+<span class="sd">    &#39;AF-P01308-F2-model_v4.pdb&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">f_n</span> <span class="o">=</span> <span class="n">pdb_id</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span>  <span class="c1"># e.g. &quot;F1&quot;</span>
+    <span class="k">assert</span> <span class="n">f_n</span> <span class="ow">in</span> <span class="p">(</span>
+        <span class="s2">&quot;F1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;F2&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;F3&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;F4&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;F5&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;F6&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;F7&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;F8&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;F9&quot;</span><span class="p">,</span>
+    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unknown AlphaFold ID: </span><span class="si">{</span><span class="n">pdb_id</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;AF-</span><span class="si">{</span><span class="n">pdb_id</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">f_n</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">ALPHAFOLD_SUFFIX</span><span class="si">}</span><span class="s2">.pdb&quot;</span></div>
+
+
+<div class="viewcode-block" id="pdb_id_to_filename"><a class="viewcode-back" href="../download.html#download.pdb_id_to_filename">[docs]</a><span class="k">def</span> <span class="nf">pdb_id_to_filename</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a PDB ID to the corresponding PDB file name.</span>
+
+<span class="sd">    &gt;&gt;&gt; pdb_id_to_filename(&quot;1abc&quot;)</span>
+<span class="sd">    &#39;1abc.pdb&#39;</span>
+<span class="sd">    &gt;&gt;&gt; pdb_id_to_filename(&quot;1abc&quot;)</span>
+<span class="sd">    &#39;1abc.pdb&#39;</span>
+<span class="sd">    &gt;&gt;&gt; pdb_id_to_filename(&quot;AF_AFP01308F1&quot;)</span>
+<span class="sd">    &#39;AF-P01308-F1-model_v4.pdb&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">is_alphafold_id</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">alphafold_id_to_file</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pdb_id</span><span class="si">}</span><span class="s2">.pdb&quot;</span></div>
+
+
+<div class="viewcode-block" id="filename_to_pdb_id"><a class="viewcode-back" href="../download.html#download.filename_to_pdb_id">[docs]</a><span class="k">def</span> <span class="nf">filename_to_pdb_id</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a PDB file name to the corresponding PDB ID.</span>
+
+<span class="sd">    &gt;&gt;&gt; filename_to_pdb_id(&quot;1abc.pdb&quot;)</span>
+<span class="sd">    &#39;1abc&#39;</span>
+<span class="sd">    &gt;&gt;&gt; filename_to_pdb_id(&quot;1abc.pdb.gz&quot;)</span>
+<span class="sd">    &#39;1abc&#39;</span>
+<span class="sd">    &gt;&gt;&gt; filename_to_pdb_id(&quot;AF-P01308-F1-model_v4.pdb&quot;)</span>
+<span class="sd">    &#39;AF_AFP01308F1&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;AF-&quot;</span><span class="p">):</span>
+        <span class="c1"># e.g. AF-P01308-F1-model_v4.pdb</span>
+        <span class="k">return</span> <span class="s2">&quot;AF_AF&quot;</span> <span class="o">+</span> <span class="n">filename</span><span class="p">[</span><span class="mi">3</span> <span class="p">:</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;-</span><span class="si">{</span><span class="n">ALPHAFOLD_SUFFIX</span><span class="si">}</span><span class="s2">.pdb&quot;</span><span class="p">)]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="c1"># e.g. 1abc.pdb</span>
+    <span class="k">return</span> <span class="n">filename</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="get_download_url"><a class="viewcode-back" href="../download.html#download.get_download_url">[docs]</a><span class="k">def</span> <span class="nf">get_download_url</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Based on the PDB ID, return the right URL to download the PDB file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">is_alphafold_id</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">DOWNLOAD_URL_ALPHAFOLD</span> <span class="o">+</span> <span class="n">alphafold_id_to_file</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">DOWNLOAD_URL_RCSB</span><span class="si">}{</span><span class="n">pdb_id</span><span class="si">}</span><span class="s2">.pdb&quot;</span></div>
 
 
 <div class="viewcode-block" id="download_pdb"><a class="viewcode-back" href="../download.html#download.download_pdb">[docs]</a><span class="k">def</span> <span class="nf">download_pdb</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">compressed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -277,31 +370,45 @@
 <span class="sd">    :param compressed: whether to download compressed files.</span>
 <span class="sd">    :return: path to the downloaded file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">gzip_ext</span> <span class="o">=</span> <span class="s1">&#39;.gz&#39;</span> <span class="k">if</span> <span class="n">compressed</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
     <span class="c1"># Documentation URL: https://www.rcsb.org/pdb/files/</span>
-    <span class="n">pdb_url</span> <span class="o">=</span> <span class="n">DOWNLOAD_URL</span> <span class="o">+</span> <span class="n">pdb_id</span> <span class="o">+</span> <span class="s1">&#39;.pdb&#39;</span> <span class="o">+</span> <span class="n">gzip_ext</span>
-    <span class="c1"># print(&#39;Downloading PDB file from RCSB website:&#39;, pdb_url)</span>
-    <span class="n">dest</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">pdb_id</span> <span class="o">+</span> <span class="s1">&#39;.pdb&#39;</span> <span class="o">+</span> <span class="n">gzip_ext</span><span class="p">)</span>
+    <span class="n">file_name</span> <span class="o">=</span> <span class="n">pdb_id_to_filename</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">)</span>
+
+    <span class="n">pdb_url</span> <span class="o">=</span> <span class="n">get_download_url</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">)</span>
+    <span class="n">dest</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+
+    <span class="c1"># RCSB makes available compressed files, which are smaller and faster to download.</span>
+    <span class="k">if</span> <span class="n">compressed</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_alphafold_id</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">):</span>
+        <span class="n">pdb_url</span> <span class="o">+=</span> <span class="s2">&quot;.gz&quot;</span>
+        <span class="n">dest</span> <span class="o">+=</span> <span class="s2">&quot;.gz&quot;</span>
+
+    <span class="c1"># Download the PDB file.</span>
     <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pdb_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;PDB file not found: </span><span class="si">{</span><span class="n">pdb_id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PDB file not found for id &#39;</span><span class="si">{</span><span class="n">pdb_id</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
         <span class="c1"># Write an empty file to indicate that the PDB file was not found.</span>
-        <span class="n">content</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span>
         <span class="c1"># And append the PDB ID to the list of 404 PDB files, inside the directory.</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="s1">&#39;404.txt&#39;</span><span class="p">),</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_404</span><span class="p">:</span>
-            <span class="n">file_404</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">pdb_id</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="s2">&quot;404.txt&quot;</span><span class="p">),</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;ascii&quot;</span>
+        <span class="p">)</span> <span class="k">as</span> <span class="n">file_404</span><span class="p">:</span>
+            <span class="n">file_404</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pdb_id</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
         <span class="n">content</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
+
     <span class="c1"># Save the PDB file.</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_pointer</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_pointer</span><span class="p">:</span>
         <span class="n">file_pointer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">dest</span></div>
 
 
 <span class="c1"># Use multiprocessing to download (typically thousands of) PDB files in parallel.</span>
-<div class="viewcode-block" id="parallel_download"><a class="viewcode-back" href="../download.html#download.parallel_download">[docs]</a><span class="k">def</span> <span class="nf">parallel_download</span><span class="p">(</span><span class="n">pdb_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                      <span class="n">compressed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_PROCESSES</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<div class="viewcode-block" id="parallel_download"><a class="viewcode-back" href="../download.html#download.parallel_download">[docs]</a><span class="k">def</span> <span class="nf">parallel_download</span><span class="p">(</span>
+    <span class="n">pdb_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">compressed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_PROCESSES</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Download PDB files from the RCSB website in parallel.</span>
 
@@ -310,20 +417,21 @@
 <span class="sd">    :param compressed: whether to download compressed files.</span>
 <span class="sd">    :param n_jobs: number of processes to use (default: 1).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Create the directory if it does not exist.</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
     <span class="c1"># Download the PDB files in parallel.</span>
     <span class="k">with</span> <span class="n">Pool</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
-        <span class="n">ret</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">download_pdb</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="n">directory</span><span class="p">,</span> <span class="n">compressed</span><span class="o">=</span><span class="n">compressed</span><span class="p">),</span> <span class="n">pdb_ids</span><span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+            <span class="n">partial</span><span class="p">(</span><span class="n">download_pdb</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="n">directory</span><span class="p">,</span> <span class="n">compressed</span><span class="o">=</span><span class="n">compressed</span><span class="p">),</span> <span class="n">pdb_ids</span>
+        <span class="p">)</span>
         <span class="c1"># remove null values</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ret</span> <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ret</span> <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="download"><a class="viewcode-back" href="../download.html#download.download">[docs]</a><span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="n">pdb_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-             <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-             <span class="n">compressed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-             <span class="n">n_jobs</span><span class="o">=</span><span class="n">DEFAULT_PROCESSES</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="download"><a class="viewcode-back" href="../download.html#download.download">[docs]</a><span class="k">def</span> <span class="nf">download</span><span class="p">(</span>
+    <span class="n">pdb_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">compressed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">n_jobs</span><span class="o">=</span><span class="n">DEFAULT_PROCESSES</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Download PDB files from the RCSB website in parallel, reporting the progress.</span>
 
@@ -341,6 +449,34 @@
 <span class="sd">    :param compressed: whether to download compressed files.</span>
 <span class="sd">    :param n_jobs: number of processes to use (default: 2).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">print_progress</span><span class="p">(</span>
+        <span class="n">n_downloaded</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">n_ids</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">start_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">downloaded_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Print the progress of the download.</span>
+
+<span class="sd">        :param n_downloaded: number of PDB files already downloaded.</span>
+<span class="sd">        :param n_ids: total number of PDB files to download.</span>
+<span class="sd">        :param start_time: time when the download started.</span>
+<span class="sd">        :param downloaded_size: size of the downloaded files.</span>
+<span class="sd">        :param n_jobs: number of processes used.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">progress</span> <span class="o">=</span> <span class="n">n_downloaded</span> <span class="o">/</span> <span class="n">n_ids</span>
+        <span class="c1"># Report the global progress and the expected time to complete.</span>
+        <span class="n">t_sec</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+        <span class="n">t_hs</span> <span class="o">=</span> <span class="n">_human_readable_time</span><span class="p">(</span><span class="n">t_sec</span><span class="p">)</span>
+        <span class="n">speed</span> <span class="o">=</span> <span class="n">n_downloaded</span> <span class="o">/</span> <span class="n">t_sec</span>
+        <span class="n">eta_sec</span> <span class="o">=</span> <span class="p">(</span><span class="n">t_sec</span> <span class="o">/</span> <span class="n">n_downloaded</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">n_ids</span> <span class="o">-</span> <span class="n">n_downloaded</span><span class="p">)</span>
+        <span class="n">eta</span> <span class="o">=</span> <span class="n">_human_readable_time</span><span class="p">(</span><span class="n">eta_sec</span><span class="p">)</span>
+        <span class="n">prog</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">t_hs</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">n_downloaded</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">n_ids</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">progress</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">) files (</span><span class="si">{</span><span class="n">downloaded_size</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> MB)&quot;</span>
+        <span class="n">timing</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">speed</span><span class="si">:</span><span class="s2">,.1f</span><span class="si">}</span><span class="s2">/s | </span><span class="si">{</span><span class="n">n_jobs</span><span class="si">}</span><span class="s2">j; ETA: </span><span class="si">{</span><span class="n">eta</span><span class="si">}</span><span class="s2"> ⏳&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prog</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">timing</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+
     <span class="n">n_ids</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pdb_ids</span><span class="p">)</span>
     <span class="n">downloaded_size</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">n_downloaded</span> <span class="o">=</span> <span class="mi">0</span>
@@ -348,19 +484,20 @@
 
     <span class="n">chunk_len</span> <span class="o">=</span> <span class="n">CHUNK_LEN_PER_PROCESS</span> <span class="o">*</span> <span class="n">n_jobs</span>
     <span class="c1"># Subdivide the list of PDB IDs into chunks and download each chunk in parallel.</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">_chunks</span><span class="p">(</span><span class="n">pdb_ids</span><span class="p">,</span> <span class="n">chunk_len</span><span class="p">)):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Downloading chunk </span><span class="si">{</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">n_ids</span> <span class="o">//</span> <span class="n">chunk_len</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span><span class="si">}</span><span class="s1"> PDBs each with </span><span class="si">{</span><span class="n">n_jobs</span><span class="si">}</span><span class="s1"> processes&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">_chunks</span><span class="p">(</span><span class="n">pdb_ids</span><span class="p">,</span> <span class="n">chunk_len</span><span class="p">):</span>
+        <span class="c1"># print(</span>
+        <span class="c1">#     f&quot;Downloading chunk {i + 1}/{n_ids // chunk_len}: {len(chunk)} PDBs each with {n_jobs} processes&quot;</span>
+        <span class="c1"># )</span>
         <span class="c1"># Download the chunk of PDB IDs.</span>
         <span class="n">downloaded_chunk</span> <span class="o">=</span> <span class="n">parallel_download</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">compressed</span><span class="p">,</span> <span class="n">n_jobs</span><span class="p">)</span>
 
-        <span class="n">downloaded_size</span> <span class="o">+=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span> <span class="k">for</span> <span class="n">file_path</span> <span class="ow">in</span> <span class="n">downloaded_chunk</span><span class="p">)</span>
+        <span class="n">downloaded_size</span> <span class="o">+=</span> <span class="nb">sum</span><span class="p">(</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span> <span class="k">for</span> <span class="n">file_path</span> <span class="ow">in</span> <span class="n">downloaded_chunk</span>
+        <span class="p">)</span>
         <span class="n">n_downloaded</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
-        <span class="n">progress</span> <span class="o">=</span> <span class="n">n_downloaded</span> <span class="o">/</span> <span class="n">n_ids</span>
 
         <span class="c1"># Report the global progress and the expected time to complete.</span>
-        <span class="n">eta_sec</span> <span class="o">=</span> <span class="p">((</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_downloaded</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">n_ids</span> <span class="o">-</span> <span class="n">n_downloaded</span><span class="p">)</span>
-        <span class="n">eta</span> <span class="o">=</span> <span class="n">_human_readable_time</span><span class="p">(</span><span class="n">eta_sec</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Downloaded </span><span class="si">{</span><span class="n">n_downloaded</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">n_ids</span><span class="si">}</span><span class="s1"> files (</span><span class="si">{</span><span class="n">progress</span><span class="si">:</span><span class="s1">.2%</span><span class="si">}</span><span class="s1">) - ETA: </span><span class="si">{</span><span class="n">eta</span><span class="si">}</span><span class="s1"> ⏳&#39;</span><span class="p">)</span></div>
+        <span class="n">print_progress</span><span class="p">(</span><span class="n">n_downloaded</span><span class="p">,</span> <span class="n">n_ids</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">downloaded_size</span><span class="p">,</span> <span class="n">n_jobs</span><span class="p">)</span></div>
 </pre></div>
 
           </div>
@@ -371,8 +508,8 @@
   <div id="footer-row" class="row">
 
     <div class="col-md-12">
-        <span title="Built on 2022-10-15" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
-        Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3 and the
+        <span title="Built on 2022-11-14" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
+        Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0 and the
         <a href="https://pypi.org/project/sphinx-sizzle-theme/"
 
            title="0.1.1/6a5828d9 [2022-05-03T16:20:16]"

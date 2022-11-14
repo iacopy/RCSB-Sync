@@ -27,7 +27,7 @@
     <script>
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.1',
+        VERSION:     '0.2.0b',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         LINK_SUFFIX: '.html',
@@ -57,7 +57,7 @@
       <div id="hdr-left">
         <i class="fa fa-bars menu-toggle"></i>
         
-<a href="../index.html" class="text-logo">🦜 RCSB Sync 0.1 documentation</a>
+<a href="../index.html" class="text-logo">🦜 RCSB Sync 0.2.0b documentation</a>
 
       </div>
       <div id="hdr-centre" class="text-center stretch">
@@ -133,9 +133,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../modules.html#src">src</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../download.html#module-download">download module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.CHUNK_LEN_PER_PROCESS"><code class="docutils literal notranslate"><span class="pre">CHUNK_LEN_PER_PROCESS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.alphafold_id_to_file"><code class="docutils literal notranslate"><span class="pre">alphafold_id_to_file()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.download_pdb"><code class="docutils literal notranslate"><span class="pre">download_pdb()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.filename_to_pdb_id"><code class="docutils literal notranslate"><span class="pre">filename_to_pdb_id()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.get_download_url"><code class="docutils literal notranslate"><span class="pre">get_download_url()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.is_alphafold_id"><code class="docutils literal notranslate"><span class="pre">is_alphafold_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.parallel_download"><code class="docutils literal notranslate"><span class="pre">parallel_download()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.pdb_id_to_filename"><code class="docutils literal notranslate"><span class="pre">pdb_id_to_filename()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../project.html#module-project">project module</a><ul>
@@ -148,12 +153,13 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.Project"><code class="docutils literal notranslate"><span class="pre">Project</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.fetch_or_cache"><code class="docutils literal notranslate"><span class="pre">Project.fetch_or_cache()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.fetch_remote_ids"><code class="docutils literal notranslate"><span class="pre">Project.fetch_remote_ids()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_local_ids"><code class="docutils literal notranslate"><span class="pre">Project.get_local_ids()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.handle_removed"><code class="docutils literal notranslate"><span class="pre">Project.handle_removed()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.sync"><code class="docutils literal notranslate"><span class="pre">Project.sync()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.updiff"><code class="docutils literal notranslate"><span class="pre">Project.updiff()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.do_sync"><code class="docutils literal notranslate"><span class="pre">Project.do_sync()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.fetch_or_cache_query"><code class="docutils literal notranslate"><span class="pre">Project.fetch_or_cache_query()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_data_files_for_query"><code class="docutils literal notranslate"><span class="pre">Project.get_data_files_for_query()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_local_query_ids"><code class="docutils literal notranslate"><span class="pre">Project.get_local_query_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_status"><code class="docutils literal notranslate"><span class="pre">Project.get_status()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_status_query"><code class="docutils literal notranslate"><span class="pre">Project.get_status_query()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.mark_removed"><code class="docutils literal notranslate"><span class="pre">Project.mark_removed()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
@@ -186,9 +192,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../modules.html#src">src</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../download.html#module-download">download module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.CHUNK_LEN_PER_PROCESS"><code class="docutils literal notranslate"><span class="pre">CHUNK_LEN_PER_PROCESS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.alphafold_id_to_file"><code class="docutils literal notranslate"><span class="pre">alphafold_id_to_file()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.download_pdb"><code class="docutils literal notranslate"><span class="pre">download_pdb()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.filename_to_pdb_id"><code class="docutils literal notranslate"><span class="pre">filename_to_pdb_id()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.get_download_url"><code class="docutils literal notranslate"><span class="pre">get_download_url()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.is_alphafold_id"><code class="docutils literal notranslate"><span class="pre">is_alphafold_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.parallel_download"><code class="docutils literal notranslate"><span class="pre">parallel_download()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.pdb_id_to_filename"><code class="docutils literal notranslate"><span class="pre">pdb_id_to_filename()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../project.html#module-project">project module</a><ul>
@@ -201,12 +212,13 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.Project"><code class="docutils literal notranslate"><span class="pre">Project</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.fetch_or_cache"><code class="docutils literal notranslate"><span class="pre">Project.fetch_or_cache()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.fetch_remote_ids"><code class="docutils literal notranslate"><span class="pre">Project.fetch_remote_ids()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_local_ids"><code class="docutils literal notranslate"><span class="pre">Project.get_local_ids()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.handle_removed"><code class="docutils literal notranslate"><span class="pre">Project.handle_removed()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.sync"><code class="docutils literal notranslate"><span class="pre">Project.sync()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.updiff"><code class="docutils literal notranslate"><span class="pre">Project.updiff()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.do_sync"><code class="docutils literal notranslate"><span class="pre">Project.do_sync()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.fetch_or_cache_query"><code class="docutils literal notranslate"><span class="pre">Project.fetch_or_cache_query()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_data_files_for_query"><code class="docutils literal notranslate"><span class="pre">Project.get_data_files_for_query()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_local_query_ids"><code class="docutils literal notranslate"><span class="pre">Project.get_local_query_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_status"><code class="docutils literal notranslate"><span class="pre">Project.get_status()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_status_query"><code class="docutils literal notranslate"><span class="pre">Project.get_status_query()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.mark_removed"><code class="docutils literal notranslate"><span class="pre">Project.mark_removed()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
@@ -250,9 +262,9 @@
 <span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">_load_query</span>
 
 <span class="c1"># Constants</span>
-<span class="n">IDS_SEPARATOR</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+<span class="n">IDS_SEPARATOR</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 <span class="c1"># Documentation URL: https://search.rcsb.org/#search-api</span>
-<span class="n">SEARCH_ENDPOINT_URI</span> <span class="o">=</span> <span class="s1">&#39;https://search.rcsb.org/rcsbsearch/v2/query&#39;</span>
+<span class="n">SEARCH_ENDPOINT_URI</span> <span class="o">=</span> <span class="s2">&quot;https://search.rcsb.org/rcsbsearch/v2/query&quot;</span>
 
 
 <div class="viewcode-block" id="retrieve_pdb_ids"><a class="viewcode-back" href="../rcsbids.html#rcsbids.retrieve_pdb_ids">[docs]</a><span class="k">def</span> <span class="nf">retrieve_pdb_ids</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
@@ -263,7 +275,7 @@
 <span class="sd">    :return: list of PDB IDs.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">json_response</span> <span class="o">=</span> <span class="n">_send_request</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">hit</span><span class="p">[</span><span class="s1">&#39;identifier&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">json_response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;result_set&#39;</span><span class="p">,</span> <span class="p">[])]</span></div>
+    <span class="k">return</span> <span class="p">[</span><span class="n">hit</span><span class="p">[</span><span class="s2">&quot;identifier&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">json_response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;result_set&quot;</span><span class="p">,</span> <span class="p">[])]</span></div>
 
 
 <span class="k">def</span> <span class="nf">_send_request</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
@@ -272,7 +284,7 @@
 
 <span class="sd">    :param query: advanced query in json format.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">url_get</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">SEARCH_ENDPOINT_URI</span><span class="si">}</span><span class="s1">?json=</span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="n">url_get</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">SEARCH_ENDPOINT_URI</span><span class="si">}</span><span class="s2">?json=</span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url_get</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
     <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
     <span class="c1"># Handle 204 No Content response</span>
@@ -285,7 +297,7 @@
 <span class="sd">    :param ids: list of PDB IDs.</span>
 <span class="sd">    :param dest: path to the output file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_pointer</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_pointer</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">id_</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
             <span class="n">file_pointer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">id_</span> <span class="o">+</span> <span class="n">IDS_SEPARATOR</span><span class="p">)</span></div>
 
@@ -297,7 +309,7 @@
 <span class="sd">    :param pdb_ids_file: path to the file containing the list of PDB IDs.</span>
 <span class="sd">    :return: list of PDB IDs.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">pdb_ids_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;ascii&#39;</span><span class="p">)]</span></div>
+    <span class="k">return</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">pdb_ids_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;ascii&quot;</span><span class="p">)]</span></div>
 
 
 <div class="viewcode-block" id="search_and_download_ids"><a class="viewcode-back" href="../rcsbids.html#rcsbids.search_and_download_ids">[docs]</a><span class="k">def</span> <span class="nf">search_and_download_ids</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
@@ -307,25 +319,27 @@
 <span class="sd">    :return: list of PDB IDs.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Check if the query is a file or a string.</span>
-    <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.json&#39;</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Loading query from file:&#39;</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.json&quot;</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Loading query from file:&quot;</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
         <span class="n">query</span> <span class="o">=</span> <span class="n">_load_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 
     <span class="c1"># Retrieve the list of PDB IDs from the RCSB website, given an advanced query in json format.</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Retrieving PDB IDs from RCSB website...&#39;</span><span class="p">)</span>
-    <span class="n">ids</span> <span class="o">=</span> <span class="n">retrieve_pdb_ids</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Found </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span><span class="si">}</span><span class="s1"> PDB IDs.&#39;</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">ids</span></div>
+    <span class="k">return</span> <span class="n">retrieve_pdb_ids</span><span class="p">(</span><span class="n">query</span><span class="p">)</span></div>
 
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="c1"># Parse the command line arguments.</span>
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Script to download RCSB PDB IDs.&#39;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-q&#39;</span><span class="p">,</span> <span class="s1">&#39;--query&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;String or file path of json query&#39;</span><span class="p">)</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Script to download RCSB PDB IDs.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-q&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--query&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;tests/test-project-nodata/queries/Rabbitpox virus.json&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;String or file path of json query&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 
-    <span class="n">search_and_download_ids</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">query</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">pdb_id</span> <span class="ow">in</span> <span class="n">search_and_download_ids</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">query</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">)</span>
 </pre></div>
 
           </div>
@@ -336,8 +350,8 @@
   <div id="footer-row" class="row">
 
     <div class="col-md-12">
-        <span title="Built on 2022-10-15" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
-        Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.2.3 and the
+        <span title="Built on 2022-11-14" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
+        Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0 and the
         <a href="https://pypi.org/project/sphinx-sizzle-theme/"
 
            title="0.1.1/6a5828d9 [2022-05-03T16:20:16]"
