@@ -48,10 +48,14 @@ The directory structures of a project is as follows::
 """
 # Standard Library
 import argparse
+import datetime
 import os
 from collections import namedtuple
 from typing import Dict
 from typing import List
+
+# 3rd party
+from tabulate import tabulate
 
 # My stuff
 import download
@@ -68,8 +72,44 @@ MAX_JOBS = os.cpu_count()
 
 
 # Named tuple to store the fetch results.
-DirStatus = namedtuple("DirStatus", ["tbd_ids", "removed_ids"])
+DirStatus = namedtuple("DirStatus", ["n_local", "n_remote", "tbd_ids", "removed_ids"])
 ProjectStatus = Dict[str, DirStatus]
+
+
+def pformat_status(project_status: ProjectStatus) -> str:
+    """
+    Create a nice string table with the status of the project.
+
+    :param project_status: dictionary with the status of the project.
+    :return: a string with the table.
+    """
+    table = []
+    for query_name, dir_status in project_status.items():
+        table.append(
+            [
+                query_name,
+                dir_status.n_local,
+                dir_status.n_remote,
+                len(dir_status.tbd_ids),
+                len(dir_status.removed_ids),
+            ]
+        )
+    # Add a total row.
+    table.append(
+        [
+            "Total",
+            sum(row[1] for row in table),
+            sum(row[2] for row in table),
+            sum(row[3] for row in table),
+            sum(row[4] for row in table),
+        ]
+    )
+
+    return tabulate(
+        table,
+        headers=["Query", "Local", "Remote", "To download", "Removed"],
+        intfmt=",",
+    ).replace(",", " ")
 
 
 class Project:
@@ -142,8 +182,8 @@ class Project:
         remote_ids = self.fetch_or_cache_query(query_path)
         # Check which PDB files are already in the local project directory, and skip those to save time.
         local_ids = self.get_local_query_ids(query_name)
-        print("Local IDs:", len(local_ids))
-        print("Remote IDs:", len(remote_ids))
+        n_local = len(local_ids)
+        n_remote = len(remote_ids)
 
         # Remote structures to be downloaded.
         tbd_ids = [id_ for id_ in remote_ids if id_ not in local_ids]
@@ -151,7 +191,7 @@ class Project:
         # so we mark them with the SUFFIX_REMOVED suffix).
         removed_ids = [id_ for id_ in local_ids if id_ not in remote_ids]
 
-        return DirStatus(tbd_ids, removed_ids)
+        return DirStatus(n_local, n_remote, tbd_ids, removed_ids)
 
     def get_status(self) -> ProjectStatus:
         """
@@ -222,11 +262,11 @@ def main(
     # Fetch the remote RCSB IDs.
     project_status = project.get_status()
 
-    # Report the differences.
-    for query_name, dir_status in project_status.items():
-        print(f"Query: {query_name}")
-        print(f"New files (remote but not local): {len(dir_status.tbd_ids):,}")
-        print(f"Obsolete files (local but not remote): {len(dir_status.removed_ids):,}")
+    # Print the status of the project.
+    print(project_dir)
+    print(f"Date: {str(datetime.date.today())}")
+    print(pformat_status(project_status))
+    print()
 
     # Count the total number of files to be downloaded.
     total_tbd_ids = sum(

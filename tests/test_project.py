@@ -15,8 +15,12 @@ def test_get_status_the_first_time(new_project_dir, remote_server):
     new_project = project.Project(new_project_dir)
     status = new_project.get_status()
 
+    assert status["Homo_sapiens"].n_local == 0
+    assert status["Homo_sapiens"].n_remote == 3
     assert status["Homo_sapiens"].tbd_ids == ["hs01", "hs02", "hs03"]
     assert status["Homo_sapiens"].removed_ids == []
+    assert status["Rattus_norvegicus"].n_local == 0
+    assert status["Rattus_norvegicus"].n_remote == 2
     assert status["Rattus_norvegicus"].tbd_ids == ["rn01", "rn02"]
     assert status["Rattus_norvegicus"].removed_ids == []
 
@@ -26,8 +30,13 @@ def test_get_status_resume_rn(project_with_hs_files_gz, remote_server):
     Test that resuming a download works properly (Homo sapiens is already downloaded).
     """
     status = project_with_hs_files_gz.get_status()
+
+    assert status["Homo_sapiens"].n_local == 3
+    assert status["Homo_sapiens"].n_remote == 3
     assert status["Homo_sapiens"].tbd_ids == []
     assert status["Homo_sapiens"].removed_ids == []
+    assert status["Rattus_norvegicus"].n_local == 0
+    assert status["Rattus_norvegicus"].n_remote == 2
     assert status["Rattus_norvegicus"].tbd_ids == ["rn01", "rn02"]
     assert status["Rattus_norvegicus"].removed_ids == []
 
@@ -37,8 +46,13 @@ def test_get_status_resume_hs(project_with_rn_files, remote_server):
     Test that resuming a download works properly (Rattus norvegicus is already downloaded).
     """
     status = project_with_rn_files.get_status()
+
+    assert status["Homo_sapiens"].n_local == 0
+    assert status["Homo_sapiens"].n_remote == 3
     assert status["Homo_sapiens"].tbd_ids == ["hs01", "hs02", "hs03"]
     assert status["Homo_sapiens"].removed_ids == []
+    assert status["Rattus_norvegicus"].n_local == 2
+    assert status["Rattus_norvegicus"].n_remote == 2
     assert status["Rattus_norvegicus"].tbd_ids == []
     assert status["Rattus_norvegicus"].removed_ids == []
 
@@ -49,8 +63,13 @@ def test_get_status_uptodate(project_with_files, remote_server):
     """
     # Check for updates.
     status = project_with_files.get_status()
+
+    assert status["Homo_sapiens"].n_local == 3
+    assert status["Homo_sapiens"].n_remote == 3
     assert status["Homo_sapiens"].tbd_ids == []
     assert status["Homo_sapiens"].removed_ids == []
+    assert status["Rattus_norvegicus"].n_local == 2
+    assert status["Rattus_norvegicus"].n_remote == 2
     assert status["Rattus_norvegicus"].tbd_ids == []
     assert status["Rattus_norvegicus"].removed_ids == []
 
@@ -61,6 +80,15 @@ def test_mark_removed(project_with_files, remote_server_changed):
     """
     # Check for updates.
     status = project_with_files.get_status()
+
+    assert status["Homo_sapiens"].n_local == 3
+    assert status["Homo_sapiens"].n_remote == 2
+    assert status["Homo_sapiens"].tbd_ids == []
+    assert status["Homo_sapiens"].removed_ids == ["hs02"]
+    assert status["Rattus_norvegicus"].n_local == 2
+    assert status["Rattus_norvegicus"].n_remote == 1
+    assert status["Rattus_norvegicus"].tbd_ids == []
+    assert status["Rattus_norvegicus"].removed_ids == ["rn02"]
 
     # The sync should mark the files removed from the server as obsolete.
     project_with_files.do_sync(status, n_jobs=1)
@@ -91,6 +119,11 @@ def test_mark_removed_af2(
     """
     # Check for updates.
     status = project_with_af2_volvox_files.get_status()
+
+    assert status["Volvox"].n_local == 32
+    assert status["Volvox"].n_remote == 30
+    assert status["Volvox"].tbd_ids == []
+    assert set(status["Volvox"].removed_ids) == {"AF_AFP08436F1", "AF_AFP08471F1"}
 
     # The sync should mark the files removed from the server as obsolete.
     project_with_af2_volvox_files.do_sync(status, n_jobs=1)

@@ -1,5 +1,6 @@
 # base libraries without versions, useful for updating
 requests
+tabulate
 
 # linting
 black
@@ -15,6 +16,7 @@ pytest
 pytest-cov
 responses
 types-requests
+types-tabulate
 
 # documentation
 Sphinx
