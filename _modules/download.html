@@ -298,24 +298,17 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert an AlphaFold ID to the corresponding PDB file name.</span>
 
+<span class="sd">    NB: there are gigantic protein like https://www.rcsb.org/uniprot/Q8WZ42</span>
+
 <span class="sd">    &gt;&gt;&gt; alphafold_id_to_file(&quot;AF_AFP08437F1&quot;)</span>
 <span class="sd">    &#39;AF-P08437-F1-model_v4.pdb&#39;</span>
 <span class="sd">    &gt;&gt;&gt; alphafold_id_to_file(&quot;AF_AFP01308F2&quot;)</span>
 <span class="sd">    &#39;AF-P01308-F2-model_v4.pdb&#39;</span>
+<span class="sd">    &gt;&gt;&gt; alphafold_id_to_file(&quot;AF_AFQ8WZ42F166&quot;)</span>
+<span class="sd">    &#39;AF-Q8WZ42-F166-model_v4.pdb&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">f_n</span> <span class="o">=</span> <span class="n">pdb_id</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span>  <span class="c1"># e.g. &quot;F1&quot;</span>
-    <span class="k">assert</span> <span class="n">f_n</span> <span class="ow">in</span> <span class="p">(</span>
-        <span class="s2">&quot;F1&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;F2&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;F3&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;F4&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;F5&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;F6&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;F7&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;F8&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;F9&quot;</span><span class="p">,</span>
-    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unknown AlphaFold ID: </span><span class="si">{</span><span class="n">pdb_id</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;AF-</span><span class="si">{</span><span class="n">pdb_id</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">f_n</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">ALPHAFOLD_SUFFIX</span><span class="si">}</span><span class="s2">.pdb&quot;</span></div>
+    <span class="n">last_f</span> <span class="o">=</span> <span class="n">pdb_id</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s2">&quot;F&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;AF-</span><span class="si">{</span><span class="n">pdb_id</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="n">last_f</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">pdb_id</span><span class="p">[</span><span class="n">last_f</span><span class="p">:]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">ALPHAFOLD_SUFFIX</span><span class="si">}</span><span class="s2">.pdb&quot;</span></div>
 
 
 <div class="viewcode-block" id="pdb_id_to_filename"><a class="viewcode-back" href="../download.html#download.pdb_id_to_filename">[docs]</a><span class="k">def</span> <span class="nf">pdb_id_to_filename</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -328,6 +321,8 @@
 <span class="sd">    &#39;1abc.pdb&#39;</span>
 <span class="sd">    &gt;&gt;&gt; pdb_id_to_filename(&quot;AF_AFP01308F1&quot;)</span>
 <span class="sd">    &#39;AF-P01308-F1-model_v4.pdb&#39;</span>
+<span class="sd">    &gt;&gt;&gt; pdb_id_to_filename(&quot;AF_AFQ8WZ42F166&quot;)</span>
+<span class="sd">    &#39;AF-Q8WZ42-F166-model_v4.pdb&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">is_alphafold_id</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">alphafold_id_to_file</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">)</span>
@@ -344,6 +339,8 @@
 <span class="sd">    &#39;1abc&#39;</span>
 <span class="sd">    &gt;&gt;&gt; filename_to_pdb_id(&quot;AF-P01308-F1-model_v4.pdb&quot;)</span>
 <span class="sd">    &#39;AF_AFP01308F1&#39;</span>
+<span class="sd">    &gt;&gt;&gt; filename_to_pdb_id(&quot;AF-Q8WZ42-F166-model_v4.pdb&quot;)</span>
+<span class="sd">    &#39;AF_AFQ8WZ42F166&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;AF-&quot;</span><span class="p">):</span>
         <span class="c1"># e.g. AF-P01308-F1-model_v4.pdb</span>
