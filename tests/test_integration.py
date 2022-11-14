@@ -68,6 +68,7 @@ def project_w_data_cleanup():
     testutils.clean_cache_files(project_dir)
 
 
+@pytest.mark.webtest
 def test_project_download(project_nodata_cleanup):
     """
     Start from an existing directory with real queries.
@@ -97,6 +98,7 @@ def test_project_download(project_nodata_cleanup):
     # cleanup of downloaded files and cache (done by the fixture)
 
 
+@pytest.mark.webtest
 def test_project_download_uncompressed(project_rabbitpox_nodata_cleanup):
     """
     Start from an existing directory with real queries.
@@ -119,6 +121,7 @@ def test_project_download_uncompressed(project_rabbitpox_nodata_cleanup):
     # cleanup of downloaded files and cache (done by the fixture)
 
 
+@pytest.mark.webtest
 def test_project_no_updates(project_w_data_cleanup):
     """
     The database is already synced, no need to update.
