@@ -15,6 +15,7 @@ import argparse
 import requests
 
 # My stuff
+import rcsbquery
 from utils import _load_query
 
 # Constants
@@ -89,10 +90,11 @@ if __name__ == "__main__":
     parser.add_argument(
         "-q",
         "--query",
-        default="tests/test-project-nodata/queries/Rabbitpox virus.json",
         help="String or file path of json query",
     )
+
+    parser = rcsbquery.extend_parser(parser)
     args = parser.parse_args()
 
-    for pdb_id in search_and_download_ids(args.query):
+    for pdb_id in search_and_download_ids(args.query or rcsbquery.args_to_query(args)):
         print(pdb_id)
