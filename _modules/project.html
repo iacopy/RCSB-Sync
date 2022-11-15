@@ -152,16 +152,16 @@
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.DirStatus.n_remote"><code class="docutils literal notranslate"><span class="pre">DirStatus.n_remote</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.DirStatus.removed_ids"><code class="docutils literal notranslate"><span class="pre">DirStatus.removed_ids</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.DirStatus.tbd_ids"><code class="docutils literal notranslate"><span class="pre">DirStatus.tbd_ids</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.DirStatus.zero_ids"><code class="docutils literal notranslate"><span class="pre">DirStatus.zero_ids</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.Project"><code class="docutils literal notranslate"><span class="pre">Project</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.do_sync"><code class="docutils literal notranslate"><span class="pre">Project.do_sync()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.fetch_or_cache_query"><code class="docutils literal notranslate"><span class="pre">Project.fetch_or_cache_query()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_data_files_for_query"><code class="docutils literal notranslate"><span class="pre">Project.get_data_files_for_query()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_local_query_ids"><code class="docutils literal notranslate"><span class="pre">Project.get_local_query_ids()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_status"><code class="docutils literal notranslate"><span class="pre">Project.get_status()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_status_query"><code class="docutils literal notranslate"><span class="pre">Project.get_status_query()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.mark_removed"><code class="docutils literal notranslate"><span class="pre">Project.mark_removed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.scan_query_data"><code class="docutils literal notranslate"><span class="pre">Project.scan_query_data()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
@@ -214,16 +214,16 @@
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.DirStatus.n_remote"><code class="docutils literal notranslate"><span class="pre">DirStatus.n_remote</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.DirStatus.removed_ids"><code class="docutils literal notranslate"><span class="pre">DirStatus.removed_ids</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.DirStatus.tbd_ids"><code class="docutils literal notranslate"><span class="pre">DirStatus.tbd_ids</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.DirStatus.zero_ids"><code class="docutils literal notranslate"><span class="pre">DirStatus.zero_ids</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.Project"><code class="docutils literal notranslate"><span class="pre">Project</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.do_sync"><code class="docutils literal notranslate"><span class="pre">Project.do_sync()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.fetch_or_cache_query"><code class="docutils literal notranslate"><span class="pre">Project.fetch_or_cache_query()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_data_files_for_query"><code class="docutils literal notranslate"><span class="pre">Project.get_data_files_for_query()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_local_query_ids"><code class="docutils literal notranslate"><span class="pre">Project.get_local_query_ids()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_status"><code class="docutils literal notranslate"><span class="pre">Project.get_status()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.get_status_query"><code class="docutils literal notranslate"><span class="pre">Project.get_status_query()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.mark_removed"><code class="docutils literal notranslate"><span class="pre">Project.mark_removed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.scan_query_data"><code class="docutils literal notranslate"><span class="pre">Project.scan_query_data()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
@@ -300,6 +300,7 @@
 <span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
@@ -322,7 +323,9 @@
 
 
 <span class="c1"># Named tuple to store the fetch results.</span>
-<span class="n">DirStatus</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;DirStatus&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;n_local&quot;</span><span class="p">,</span> <span class="s2">&quot;n_remote&quot;</span><span class="p">,</span> <span class="s2">&quot;tbd_ids&quot;</span><span class="p">,</span> <span class="s2">&quot;removed_ids&quot;</span><span class="p">])</span>
+<span class="n">DirStatus</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span>
+    <span class="s2">&quot;DirStatus&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;n_local&quot;</span><span class="p">,</span> <span class="s2">&quot;n_remote&quot;</span><span class="p">,</span> <span class="s2">&quot;tbd_ids&quot;</span><span class="p">,</span> <span class="s2">&quot;removed_ids&quot;</span><span class="p">,</span> <span class="s2">&quot;zero_ids&quot;</span><span class="p">]</span>
+<span class="p">)</span>
 <span class="n">ProjectStatus</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DirStatus</span><span class="p">]</span>
 
 
@@ -339,6 +342,8 @@
             <span class="p">[</span>
                 <span class="n">query_name</span><span class="p">,</span>
                 <span class="n">dir_status</span><span class="o">.</span><span class="n">n_local</span><span class="p">,</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">dir_status</span><span class="o">.</span><span class="n">zero_ids</span><span class="p">),</span>
+                <span class="n">dir_status</span><span class="o">.</span><span class="n">n_local</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dir_status</span><span class="o">.</span><span class="n">zero_ids</span><span class="p">),</span>
                 <span class="n">dir_status</span><span class="o">.</span><span class="n">n_remote</span><span class="p">,</span>
                 <span class="nb">len</span><span class="p">(</span><span class="n">dir_status</span><span class="o">.</span><span class="n">tbd_ids</span><span class="p">),</span>
                 <span class="nb">len</span><span class="p">(</span><span class="n">dir_status</span><span class="o">.</span><span class="n">removed_ids</span><span class="p">),</span>
@@ -347,17 +352,27 @@
     <span class="c1"># Add a total row.</span>
     <span class="n">table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
         <span class="p">[</span>
-            <span class="s2">&quot;Total&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;TOTAL&quot;</span><span class="p">,</span>
             <span class="nb">sum</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="p">),</span>
             <span class="nb">sum</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="p">),</span>
             <span class="nb">sum</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="p">),</span>
             <span class="nb">sum</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="p">),</span>
+            <span class="nb">sum</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="p">),</span>
+            <span class="nb">sum</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="p">),</span>
         <span class="p">]</span>
     <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">tabulate</span><span class="p">(</span>
         <span class="n">table</span><span class="p">,</span>
-        <span class="n">headers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Query&quot;</span><span class="p">,</span> <span class="s2">&quot;Local&quot;</span><span class="p">,</span> <span class="s2">&quot;Remote&quot;</span><span class="p">,</span> <span class="s2">&quot;To download&quot;</span><span class="p">,</span> <span class="s2">&quot;Removed&quot;</span><span class="p">],</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">[</span>
+            <span class="s2">&quot;Query&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Local&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Zero size&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Non-zero&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Remote&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;To download&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Removed&quot;</span><span class="p">,</span>
+        <span class="p">],</span>
         <span class="n">intfmt</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span>
     <span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span></div>
 
@@ -387,29 +402,25 @@
             <span class="n">query_data_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
             <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">query_data_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Project.get_data_files_for_query"><a class="viewcode-back" href="../project.html#project.Project.get_data_files_for_query">[docs]</a>    <span class="k">def</span> <span class="nf">get_data_files_for_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<div class="viewcode-block" id="Project.scan_query_data"><a class="viewcode-back" href="../project.html#project.Project.scan_query_data">[docs]</a>    <span class="k">def</span> <span class="nf">scan_query_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the list of local PDB files in the data directory for a given query.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">query_data_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">query_name</span><span class="p">)</span>
-        <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">query_data_dir</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">t_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">query_data_dir</span><span class="p">)):</span>
             <span class="c1"># Report hidden files if found, suggesting the command to remove them.</span>
+            <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">query_data_dir</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">):</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;rm </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">query_data_dir</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="k">continue</span>
             <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">PDB_EXT</span><span class="p">)</span> <span class="ow">or</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">COMPRESSED_EXT</span><span class="p">):</span>
-                <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+                <span class="n">ret</span><span class="p">[</span><span class="n">download</span><span class="o">.</span><span class="n">filename_to_pdb_id</span><span class="p">(</span><span class="n">filename</span><span class="p">)]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">query_name</span><span class="si">:</span><span class="s2">&lt;30</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;7,</span><span class="si">}</span><span class="s2"> files in </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t_start</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds.&quot;</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">ret</span></div>
-
-<div class="viewcode-block" id="Project.get_local_query_ids"><a class="viewcode-back" href="../project.html#project.Project.get_local_query_ids">[docs]</a>    <span class="k">def</span> <span class="nf">get_local_query_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get the PDB IDs that are already in the project directory.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="n">download</span><span class="o">.</span><span class="n">filename_to_pdb_id</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data_files_for_query</span><span class="p">(</span><span class="n">query_name</span><span class="p">)</span>
-        <span class="p">}</span></div>
 
 <div class="viewcode-block" id="Project.fetch_or_cache_query"><a class="viewcode-back" href="../project.html#project.Project.fetch_or_cache_query">[docs]</a>    <span class="k">def</span> <span class="nf">fetch_or_cache_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -426,6 +437,7 @@
 
 <span class="sd">            - fetch the RCSB IDs from the RCSB website;</span>
 <span class="sd">            - check which PDB files are already in the local project directory;</span>
+<span class="sd">            - check which downloaded PDB files have zero size (i.e. they were not found on the server);</span>
 <span class="sd">            - check which PDB files are obsolete;</span>
 
 <span class="sd">        :param query_path: path to the query file.</span>
@@ -435,8 +447,10 @@
         <span class="c1"># Get the list of PDB IDs from the RCSB website.</span>
         <span class="n">remote_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_or_cache_query</span><span class="p">(</span><span class="n">query_path</span><span class="p">)</span>
         <span class="c1"># Check which PDB files are already in the local project directory, and skip those to save time.</span>
-        <span class="n">local_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_local_query_ids</span><span class="p">(</span><span class="n">query_name</span><span class="p">)</span>
+        <span class="n">local_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan_query_data</span><span class="p">(</span><span class="n">query_name</span><span class="p">)</span>
         <span class="n">n_local</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">local_ids</span><span class="p">)</span>
+        <span class="c1"># Zero size files</span>
+        <span class="n">zero_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">local_id</span> <span class="k">for</span> <span class="n">local_id</span><span class="p">,</span> <span class="n">size</span> <span class="ow">in</span> <span class="n">local_ids</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
         <span class="n">n_remote</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">remote_ids</span><span class="p">)</span>
 
         <span class="c1"># Remote structures to be downloaded.</span>
@@ -451,7 +465,7 @@
             <span class="k">for</span> <span class="n">id_</span> <span class="ow">in</span> <span class="n">removed_ids</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">id_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">DirStatus</span><span class="p">(</span><span class="n">n_local</span><span class="p">,</span> <span class="n">n_remote</span><span class="p">,</span> <span class="n">tbd_ids</span><span class="p">,</span> <span class="n">removed_ids</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">DirStatus</span><span class="p">(</span><span class="n">n_local</span><span class="p">,</span> <span class="n">n_remote</span><span class="p">,</span> <span class="n">tbd_ids</span><span class="p">,</span> <span class="n">removed_ids</span><span class="p">,</span> <span class="n">zero_ids</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Project.get_status"><a class="viewcode-back" href="../project.html#project.Project.get_status">[docs]</a>    <span class="k">def</span> <span class="nf">get_status</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProjectStatus</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -581,7 +595,7 @@
   <div id="footer-row" class="row">
 
     <div class="col-md-12">
-        <span title="Built on 2022-11-14" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
+        <span title="Built on 2022-11-15" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
         Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0 and the
         <a href="https://pypi.org/project/sphinx-sizzle-theme/"
 

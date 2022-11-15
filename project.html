@@ -173,16 +173,16 @@
 <li class="toctree-l4"><a class="reference internal" href="#project.DirStatus.n_remote"><code class="docutils literal notranslate"><span class="pre">DirStatus.n_remote</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#project.DirStatus.removed_ids"><code class="docutils literal notranslate"><span class="pre">DirStatus.removed_ids</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#project.DirStatus.tbd_ids"><code class="docutils literal notranslate"><span class="pre">DirStatus.tbd_ids</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#project.DirStatus.zero_ids"><code class="docutils literal notranslate"><span class="pre">DirStatus.zero_ids</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#project.Project"><code class="docutils literal notranslate"><span class="pre">Project</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#project.Project.do_sync"><code class="docutils literal notranslate"><span class="pre">Project.do_sync()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#project.Project.fetch_or_cache_query"><code class="docutils literal notranslate"><span class="pre">Project.fetch_or_cache_query()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#project.Project.get_data_files_for_query"><code class="docutils literal notranslate"><span class="pre">Project.get_data_files_for_query()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#project.Project.get_local_query_ids"><code class="docutils literal notranslate"><span class="pre">Project.get_local_query_ids()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#project.Project.get_status"><code class="docutils literal notranslate"><span class="pre">Project.get_status()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#project.Project.get_status_query"><code class="docutils literal notranslate"><span class="pre">Project.get_status_query()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#project.Project.mark_removed"><code class="docutils literal notranslate"><span class="pre">Project.mark_removed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#project.Project.scan_query_data"><code class="docutils literal notranslate"><span class="pre">Project.scan_query_data()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
@@ -235,16 +235,16 @@
 <li class="toctree-l4"><a class="reference internal" href="#project.DirStatus.n_remote"><code class="docutils literal notranslate"><span class="pre">DirStatus.n_remote</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#project.DirStatus.removed_ids"><code class="docutils literal notranslate"><span class="pre">DirStatus.removed_ids</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#project.DirStatus.tbd_ids"><code class="docutils literal notranslate"><span class="pre">DirStatus.tbd_ids</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#project.DirStatus.zero_ids"><code class="docutils literal notranslate"><span class="pre">DirStatus.zero_ids</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#project.Project"><code class="docutils literal notranslate"><span class="pre">Project</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#project.Project.do_sync"><code class="docutils literal notranslate"><span class="pre">Project.do_sync()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#project.Project.fetch_or_cache_query"><code class="docutils literal notranslate"><span class="pre">Project.fetch_or_cache_query()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#project.Project.get_data_files_for_query"><code class="docutils literal notranslate"><span class="pre">Project.get_data_files_for_query()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#project.Project.get_local_query_ids"><code class="docutils literal notranslate"><span class="pre">Project.get_local_query_ids()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#project.Project.get_status"><code class="docutils literal notranslate"><span class="pre">Project.get_status()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#project.Project.get_status_query"><code class="docutils literal notranslate"><span class="pre">Project.get_status_query()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#project.Project.mark_removed"><code class="docutils literal notranslate"><span class="pre">Project.mark_removed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#project.Project.scan_query_data"><code class="docutils literal notranslate"><span class="pre">Project.scan_query_data()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
@@ -318,7 +318,7 @@ and skip them.</li>
 </div>
 <dl class="py class">
 <dt class="sig sig-object py" id="project.DirStatus">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><code class="sig-prename descclassname"><span class="pre">project.</span></code><code class="sig-name descname"><span class="pre">DirStatus</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">n_local</span></span></em>, <em><span class="n"><span class="pre">n_remote</span></span></em>, <em><span class="n"><span class="pre">tbd_ids</span></span></em>, <em><span class="n"><span class="pre">removed_ids</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#project.DirStatus" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><code class="sig-prename descclassname"><span class="pre">project.</span></code><code class="sig-name descname"><span class="pre">DirStatus</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">n_local</span></span></em>, <em><span class="n"><span class="pre">n_remote</span></span></em>, <em><span class="n"><span class="pre">tbd_ids</span></span></em>, <em><span class="n"><span class="pre">removed_ids</span></span></em>, <em><span class="n"><span class="pre">zero_ids</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#project.DirStatus" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="project.DirStatus.n_local">
@@ -342,6 +342,12 @@ and skip them.</li>
 <dt class="sig sig-object py" id="project.DirStatus.tbd_ids">
 <code class="sig-name descname"><span class="pre">tbd_ids</span></code><a class="headerlink" href="#project.DirStatus.tbd_ids" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="project.DirStatus.zero_ids">
+<code class="sig-name descname"><span class="pre">zero_ids</span></code><a class="headerlink" href="#project.DirStatus.zero_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 4</p>
 </dd></dl>
 
 </dd></dl>
@@ -384,18 +390,6 @@ and skip them.</li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="project.Project.get_data_files_for_query">
-<code class="sig-name descname"><span class="pre">get_data_files_for_query</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">query_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/project.html#Project.get_data_files_for_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.Project.get_data_files_for_query" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the list of local PDB files in the data directory for a given query.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="project.Project.get_local_query_ids">
-<code class="sig-name descname"><span class="pre">get_local_query_ids</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">query_name</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">set</span></span></span><a class="reference internal" href="_modules/project.html#Project.get_local_query_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.Project.get_local_query_ids" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the PDB IDs that are already in the project directory.</p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="project.Project.get_status">
 <code class="sig-name descname"><span class="pre">get_status</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#project.DirStatus" title="project.DirStatus"><span class="pre">DirStatus</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/project.html#Project.get_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.Project.get_status" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetch ids for each query and report the sync status of the project.</p>
@@ -417,6 +411,7 @@ and skip them.</li>
 <div><ul class="simple">
 <li>fetch the RCSB IDs from the RCSB website;</li>
 <li>check which PDB files are already in the local project directory;</li>
+<li>check which downloaded PDB files have zero size (i.e. they were not found on the server);</li>
 <li>check which PDB files are obsolete;</li>
 </ul>
 </div></blockquote>
@@ -448,6 +443,12 @@ and skip them.</li>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="project.Project.scan_query_data">
+<code class="sig-name descname"><span class="pre">scan_query_data</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">query_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/project.html#Project.scan_query_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.Project.scan_query_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the list of local PDB files in the data directory for a given query.</p>
 </dd></dl>
 
 </dd></dl>
@@ -498,7 +499,7 @@ and skip them.</li>
   <div id="footer-row" class="row">
 
     <div class="col-md-12">
-        <span title="Built on 2022-11-14" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
+        <span title="Built on 2022-11-15" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
         Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0 and the
         <a href="https://pypi.org/project/sphinx-sizzle-theme/"
 
