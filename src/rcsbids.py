@@ -76,7 +76,7 @@ def search_and_download_ids(query: str) -> list:  # pragma: no cover
     """
     # Check if the query is a file or a string.
     if query.endswith(".json"):
-        print("Loading query from file:", query)
+        # print("Loading query from file:", query) # DEBUG
         query = _load_query(query)
 
     # Retrieve the list of PDB IDs from the RCSB website, given an advanced query in json format.
