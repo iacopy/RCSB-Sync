@@ -74,7 +74,7 @@ MAX_JOBS = os.cpu_count()
 
 # Named tuple to store the fetch results.
 DirStatus = namedtuple(
-    "DirStatus", ["n_local", "n_remote", "tbd_ids", "removed_ids", "n_zero"]
+    "DirStatus", ["n_local", "n_remote", "tbd_ids", "removed_ids", "zero_ids"]
 )
 ProjectStatus = Dict[str, DirStatus]
 
@@ -92,8 +92,8 @@ def pformat_status(project_status: ProjectStatus) -> str:
             [
                 query_name,
                 dir_status.n_local,
-                dir_status.n_zero,
-                dir_status.n_local - dir_status.n_zero,
+                len(dir_status.zero_ids),
+                dir_status.n_local - len(dir_status.zero_ids),
                 dir_status.n_remote,
                 len(dir_status.tbd_ids),
                 len(dir_status.removed_ids),
@@ -114,7 +114,15 @@ def pformat_status(project_status: ProjectStatus) -> str:
 
     return tabulate(
         table,
-        headers=["Query", "Local", "Zero size", "Non-zero", "Remote", "To download", "Removed"],
+        headers=[
+            "Query",
+            "Local",
+            "Zero size",
+            "Non-zero",
+            "Remote",
+            "To download",
+            "Removed",
+        ],
         intfmt=",",
     ).replace(",", " ")
 
@@ -159,7 +167,9 @@ class Project:
                 continue
             if filename.endswith(PDB_EXT) or filename.endswith(COMPRESSED_EXT):
                 ret[download.filename_to_pdb_id(filename)] = os.path.getsize(filepath)
-        print(f"{query_name:<30}: {len(ret):>7,} files in {time.time() - t_start:.2f} seconds.")
+        print(
+            f"{query_name:<30}: {len(ret):>7,} files in {time.time() - t_start:.2f} seconds."
+        )
         return ret
 
     def fetch_or_cache_query(self, query_path: str) -> List[str]:
@@ -177,6 +187,7 @@ class Project:
 
             - fetch the RCSB IDs from the RCSB website;
             - check which PDB files are already in the local project directory;
+            - check which downloaded PDB files have zero size (i.e. they were not found on the server);
             - check which PDB files are obsolete;
 
         :param query_path: path to the query file.
@@ -188,8 +199,8 @@ class Project:
         # Check which PDB files are already in the local project directory, and skip those to save time.
         local_ids = self.scan_query_data(query_name)
         n_local = len(local_ids)
-        # Zero size files (are not downloaded again).
-        n_zero = len([local_id for local_id, size in local_ids.items() if size == 0])
+        # Zero size files
+        zero_ids = [local_id for local_id, size in local_ids.items() if size == 0]
         n_remote = len(remote_ids)
 
         # Remote structures to be downloaded.
@@ -204,7 +215,7 @@ class Project:
             for id_ in removed_ids:
                 print(f"  {id_}")
 
-        return DirStatus(n_local, n_remote, tbd_ids, removed_ids, n_zero)
+        return DirStatus(n_local, n_remote, tbd_ids, removed_ids, zero_ids)
 
     def get_status(self) -> ProjectStatus:
         """

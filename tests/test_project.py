@@ -17,10 +17,14 @@ def test_get_status_the_first_time(new_project_dir, remote_server):
 
     assert status == {
         "Homo_sapiens": project.DirStatus(
-            n_local=0, n_remote=3, tbd_ids=["hs01", "hs02", "hs03"], removed_ids=[], n_zero=0
+            n_local=0,
+            n_remote=3,
+            tbd_ids=["hs01", "hs02", "hs03"],
+            removed_ids=[],
+            zero_ids=[],
         ),
         "Rattus_norvegicus": project.DirStatus(
-            n_local=0, n_remote=2, tbd_ids=["rn01", "rn02"], removed_ids=[], n_zero=0
+            n_local=0, n_remote=2, tbd_ids=["rn01", "rn02"], removed_ids=[], zero_ids=[]
         ),
     }
 
@@ -33,10 +37,10 @@ def test_get_status_resume_rn(project_with_hs_files_gz, remote_server):
 
     assert status == {
         "Homo_sapiens": project.DirStatus(
-            n_local=3, n_remote=3, tbd_ids=[], removed_ids=[], n_zero=0
+            n_local=3, n_remote=3, tbd_ids=[], removed_ids=[], zero_ids=[]
         ),
         "Rattus_norvegicus": project.DirStatus(
-            n_local=0, n_remote=2, tbd_ids=["rn01", "rn02"], removed_ids=[], n_zero=0
+            n_local=0, n_remote=2, tbd_ids=["rn01", "rn02"], removed_ids=[], zero_ids=[]
         ),
     }
 
@@ -49,10 +53,14 @@ def test_get_status_resume_hs(project_with_rn_files, remote_server):
 
     assert status == {
         "Homo_sapiens": project.DirStatus(
-            n_local=0, n_remote=3, tbd_ids=["hs01", "hs02", "hs03"], removed_ids=[], n_zero=0
+            n_local=0,
+            n_remote=3,
+            tbd_ids=["hs01", "hs02", "hs03"],
+            removed_ids=[],
+            zero_ids=[],
         ),
         "Rattus_norvegicus": project.DirStatus(
-            n_local=2, n_remote=2, tbd_ids=[], removed_ids=[], n_zero=0
+            n_local=2, n_remote=2, tbd_ids=[], removed_ids=[], zero_ids=[]
         ),
     }
 
@@ -66,10 +74,10 @@ def test_get_status_uptodate(project_with_files, remote_server):
 
     assert status == {
         "Homo_sapiens": project.DirStatus(
-            n_local=3, n_remote=3, tbd_ids=[], removed_ids=[], n_zero=0
+            n_local=3, n_remote=3, tbd_ids=[], removed_ids=[], zero_ids=[]
         ),
         "Rattus_norvegicus": project.DirStatus(
-            n_local=2, n_remote=2, tbd_ids=[], removed_ids=[], n_zero=0
+            n_local=2, n_remote=2, tbd_ids=[], removed_ids=[], zero_ids=[]
         ),
     }
 
@@ -83,10 +91,10 @@ def test_mark_removed(project_with_files, remote_server_changed):
 
     assert status == {
         "Homo_sapiens": project.DirStatus(
-            n_local=3, n_remote=2, tbd_ids=[], removed_ids=["hs02"], n_zero=1
+            n_local=3, n_remote=2, tbd_ids=[], removed_ids=["hs02"], zero_ids=[]
         ),
         "Rattus_norvegicus": project.DirStatus(
-            n_local=2, n_remote=1, tbd_ids=[], removed_ids=["rn02"], n_zero=0
+            n_local=2, n_remote=1, tbd_ids=[], removed_ids=["rn02"], zero_ids=[]
         ),
     }
 
@@ -121,7 +129,16 @@ def test_mark_removed_af2(
     assert status["Volvox"].n_local == 32
     assert status["Volvox"].n_remote == 30
     assert status["Volvox"].tbd_ids == []
-    assert set(status["Volvox"].removed_ids) == {"AF_AFP08436F1", "AF_AFP08471F1"}
+
+    assert status == {
+        "Volvox": project.DirStatus(
+            n_local=32,
+            n_remote=30,
+            tbd_ids=[],
+            removed_ids=["AF_AFP08436F1", "AF_AFP08471F1"],
+            zero_ids=[],
+        )
+    }
 
     # The sync should mark the files removed from the server as obsolete.
     project_with_af2_volvox_files.do_sync(status, n_jobs=1)
