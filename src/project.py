@@ -159,7 +159,7 @@ class Project:
         query_data_dir = os.path.join(self.data_dir, query_name)
         ret = {}
         t_start = time.time()
-        for filename in os.listdir(query_data_dir):
+        for filename in sorted(os.listdir(query_data_dir)):
             # Report hidden files if found, suggesting the command to remove them.
             filepath = os.path.join(query_data_dir, filename)
             if filename.startswith("."):
