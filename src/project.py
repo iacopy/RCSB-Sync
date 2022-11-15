@@ -50,6 +50,7 @@ The directory structures of a project is as follows::
 import argparse
 import datetime
 import os
+import time
 from collections import namedtuple
 from typing import Dict
 from typing import List
@@ -72,7 +73,9 @@ MAX_JOBS = os.cpu_count()
 
 
 # Named tuple to store the fetch results.
-DirStatus = namedtuple("DirStatus", ["n_local", "n_remote", "tbd_ids", "removed_ids"])
+DirStatus = namedtuple(
+    "DirStatus", ["n_local", "n_remote", "tbd_ids", "removed_ids", "n_zero"]
+)
 ProjectStatus = Dict[str, DirStatus]
 
 
@@ -89,6 +92,8 @@ def pformat_status(project_status: ProjectStatus) -> str:
             [
                 query_name,
                 dir_status.n_local,
+                dir_status.n_zero,
+                dir_status.n_local - dir_status.n_zero,
                 dir_status.n_remote,
                 len(dir_status.tbd_ids),
                 len(dir_status.removed_ids),
@@ -97,17 +102,19 @@ def pformat_status(project_status: ProjectStatus) -> str:
     # Add a total row.
     table.append(
         [
-            "Total",
+            "TOTAL",
             sum(row[1] for row in table),
             sum(row[2] for row in table),
             sum(row[3] for row in table),
             sum(row[4] for row in table),
+            sum(row[5] for row in table),
+            sum(row[6] for row in table),
         ]
     )
 
     return tabulate(
         table,
-        headers=["Query", "Local", "Remote", "To download", "Removed"],
+        headers=["Query", "Local", "Zero size", "Non-zero", "Remote", "To download", "Removed"],
         intfmt=",",
     ).replace(",", " ")
 
@@ -137,29 +144,23 @@ class Project:
             query_data_dir = os.path.join(self.data_dir, name)
             os.makedirs(query_data_dir, exist_ok=True)
 
-    def get_data_files_for_query(self, query_name: str) -> List[str]:
+    def scan_query_data(self, query_name: str) -> Dict[str, int]:
         """
         Get the list of local PDB files in the data directory for a given query.
         """
         query_data_dir = os.path.join(self.data_dir, query_name)
-        ret = []
+        ret = {}
+        t_start = time.time()
         for filename in os.listdir(query_data_dir):
             # Report hidden files if found, suggesting the command to remove them.
+            filepath = os.path.join(query_data_dir, filename)
             if filename.startswith("."):
                 print(f"rm {os.path.join(query_data_dir, filename)}")
                 continue
             if filename.endswith(PDB_EXT) or filename.endswith(COMPRESSED_EXT):
-                ret.append(filename)
+                ret[download.filename_to_pdb_id(filename)] = os.path.getsize(filepath)
+        print(f"{query_name:<30}: {len(ret):>7,} files in {time.time() - t_start:.2f} seconds.")
         return ret
-
-    def get_local_query_ids(self, query_name) -> set:
-        """
-        Get the PDB IDs that are already in the project directory.
-        """
-        return {
-            download.filename_to_pdb_id(filename)
-            for filename in self.get_data_files_for_query(query_name)
-        }
 
     def fetch_or_cache_query(self, query_path: str) -> List[str]:
         """
@@ -185,8 +186,10 @@ class Project:
         # Get the list of PDB IDs from the RCSB website.
         remote_ids = self.fetch_or_cache_query(query_path)
         # Check which PDB files are already in the local project directory, and skip those to save time.
-        local_ids = self.get_local_query_ids(query_name)
+        local_ids = self.scan_query_data(query_name)
         n_local = len(local_ids)
+        # Zero size files (are not downloaded again).
+        n_zero = len([local_id for local_id, size in local_ids.items() if size == 0])
         n_remote = len(remote_ids)
 
         # Remote structures to be downloaded.
@@ -201,7 +204,7 @@ class Project:
             for id_ in removed_ids:
                 print(f"  {id_}")
 
-        return DirStatus(n_local, n_remote, tbd_ids, removed_ids)
+        return DirStatus(n_local, n_remote, tbd_ids, removed_ids, n_zero)
 
     def get_status(self) -> ProjectStatus:
         """
