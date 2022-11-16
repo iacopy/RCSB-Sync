@@ -6,6 +6,7 @@ higher-level modules (e.g. the ``project`` module which downloads PDB files
 of a given project, to keep the local working directory up-to-date).
 """
 # Standard Library
+import logging
 import os
 import time
 from functools import partial
@@ -123,6 +124,8 @@ def download_pdb(pdb_id: str, directory: str, compressed: bool = True) -> str:
     :param compressed: whether to download compressed files.
     :return: path to the downloaded file.
     """
+    # No logging here, because this function is called in parallel.
+
     # Documentation URL: https://www.rcsb.org/pdb/files/
     file_name = pdb_id_to_filename(pdb_id)
 
@@ -134,10 +137,13 @@ def download_pdb(pdb_id: str, directory: str, compressed: bool = True) -> str:
         pdb_url += ".gz"
         dest += ".gz"
 
-    # Download the PDB file.
     response = requests.get(pdb_url, timeout=60)
     if response.status_code == 404:
-        print(f"PDB file not found for id '{pdb_id}'")
+        # logging.info(f"PDB file not found, error=404, id='{pdb_id}', url='{pdb_url}'")
+        # Log the same but using %s to avoid formatting if the log level is not INFO.
+        logging.info(
+            "PDB file not found, error=404, id='%s', url='%s'", pdb_id, pdb_url
+        )
         # Write an empty file to indicate that the PDB file was not found.
         content = b""
         # And append the PDB ID to the list of 404 PDB files, inside the directory.
@@ -237,12 +243,29 @@ def download(
 
     chunk_len = CHUNK_LEN_PER_PROCESS * n_jobs
     # Subdivide the list of PDB IDs into chunks and download each chunk in parallel.
+    # logging.info(f"Downloading {n_ids} PDB files")
+    # logging.info(f"Number of processes: {n_jobs}")
+    # logging.info(f"Chunk size: {chunk_len} PDB files")
+    # logging.info(f"Compressed: {compressed}")
+    # logging.info(f"Directory: {directory}")
+    # Log the same but using %s instead of f-strings, so that it can be parsed by the logger.
+    logging.info(
+        "Downloading %s PDB files ; Number of processes: %s ; Chunk size: %s ; Compressed: %s ; Directory: %s",
+        n_ids,
+        n_jobs,
+        chunk_len,
+        compressed,
+        directory,
+    )
     for chunk in _chunks(pdb_ids, chunk_len):
-        # print(
-        #     f"Downloading chunk {i + 1}/{n_ids // chunk_len}: {len(chunk)} PDBs each with {n_jobs} processes"
-        # )
-        # Download the chunk of PDB IDs.
         downloaded_chunk = parallel_download(chunk, directory, compressed, n_jobs)
+
+        # Log the downloaded PDB files
+        for pdb_file in downloaded_chunk:
+            if os.path.getsize(pdb_file) > 0:
+                logging.info("Downloaded: %s", pdb_file)
+            else:  # pragma: no cover (difficult to test with real queries, we need to mock the response)
+                logging.info("Empty size: %s", pdb_file)
 
         downloaded_size += sum(
             os.path.getsize(file_path) for file_path in downloaded_chunk
@@ -251,3 +274,13 @@ def download(
 
         # Report the global progress and the expected time to complete.
         print_progress(n_downloaded, n_ids, start_time, downloaded_size, n_jobs)
+
+    # Log the number of downloaded PDB files, the total time and the average speed.
+    t_sec = time.time() - start_time
+    speed = n_downloaded / t_sec
+    logging.info(
+        "Downloaded %s PDB files in %s (%.2f/s)",
+        n_downloaded,
+        _human_readable_time(t_sec),
+        speed,
+    )
