@@ -69,12 +69,28 @@ altrimenti il tasto copia la comprime in una sola riga).
 Creare un file .json che contenga tale stringa e posizionarlo dentro la cartella `queries`.
 
 **Attenzione**: modificare il valore `rows` che di default è 25, e impostarlo ad un valore superiore al numero totale di strutture restituite da quella query.
-Per esempio, per l'uomo si può mettere anche 99999, in questo modo scarica tutti gli ID delle 55k strutture in un colpo solo,
+Per esempio, per l'uomo si può mettere anche 999999, in questo modo scarica tutti gli ID delle 55k strutture in un colpo solo,
 senza bisogno di fare 3 query con 3 range di data. Non so quale sia il valore massimo accettato, ma per ora funziona.
 
-## Esempi di query
+### Modulo `rcsbquery`
 
-### Minimale (solo organismo)
+Per generare alcuni tipi di query, in formato JSON, si può utilizzare anche lo script `rcsbquery.py`.
+
+Ottenere strutture proteiche sperimentali per l'uomo:
+
+    python rcsbquery.py -p Protein -o "Homo sapiens" -m "X-RAY DIFFRACTION" "SOLUTION NMR" "ELECTRON MICROSCOPY"
+
+Ottenere solo strutture dal DB AlphaFold per Volvox:
+
+    python rcsbquery.py -o "Volvox" -m AlphaFoldDB --csm
+
+Ottenere solo DNA:
+
+    python rcsbquery.py -p "Nucleic acid (only)" DNA
+
+## Esempi di query JSON
+
+### Minimale (solo organism)
 
 JSON:
 
@@ -85,7 +101,7 @@ JSON:
             "service": "text",
             "parameters": {
             "attribute": "rcsb_entity_source_organism.taxonomy_lineage.name",
-            "operator": "exact_match",
+            "operator": "contains_phrase",
             "negation": false,
             "value": "Homo sapiens"
             }
@@ -133,7 +149,7 @@ JSON:
                 "service": "text",
                 "parameters": {
                 "attribute": "rcsb_entity_source_organism.taxonomy_lineage.name",
-                "operator": "exact_match",
+                "operator": "contains_phrase",
                 "negation": false,
                 "value": "Homo sapiens"
                 }
@@ -220,7 +236,7 @@ JSON:
                 "service": "text",
                 "parameters": {
                 "attribute": "rcsb_entity_source_organism.taxonomy_lineage.name",
-                "operator": "exact_match",
+                "operator": "contains_phrase",
                 "negation": false,
                 "value": "Homo sapiens"
                 }
