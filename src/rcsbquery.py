@@ -91,10 +91,14 @@ def generate_methods(methods: List[str]) -> dict:
 
 def generate_polymer_type(polymer_type: str, negation: bool = False) -> dict:
     """
-    Generate a query for the polymer type.
+    Generate a query about the polymer type.
     """
+    if polymer_type in {"Nucleic acid (only)", "Protein (only)"}:
+        attribute_str = "rcsb_entry_info.selected_polymer_entity_types"
+    else:
+        attribute_str = "entity_poly.rcsb_entity_polymer_type"
     return generate_terminal(
-        "entity_poly.rcsb_entity_polymer_type", polymer_type, "exact_match", negation
+        attribute_str, polymer_type, "exact_match", negation
     )
 
 

@@ -1,0 +1,30 @@
+{
+    "query": {
+      "type": "terminal",
+      "label": "text",
+      "service": "text",
+      "parameters": {
+        "attribute": "rcsb_entry_info.selected_polymer_entity_types",
+        "operator": "exact_match",
+        "negation": false,
+        "value": "Nucleic acid (only)"
+      }
+    },
+    "return_type": "entry",
+    "request_options": {
+      "results_content_type": [
+        "experimental"
+      ],
+      "paginate": {
+        "start": 0,
+        "rows": 999999
+      },
+      "sort": [
+        {
+          "sort_by": "score",
+          "direction": "desc"
+        }
+      ],
+      "scoring_strategy": "combined"
+    }
+  }
