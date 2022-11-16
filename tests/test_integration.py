@@ -149,6 +149,7 @@ def test_project_no_updates(project_w_data_cleanup):
 
 # User input
 
+
 @pytest.mark.webtest
 @patch("builtins.input", lambda *args: "n")
 def test_main2_outdated__but_user_dont_sync(project_nodata_cleanup):

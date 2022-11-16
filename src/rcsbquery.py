@@ -97,9 +97,7 @@ def generate_polymer_type(polymer_type: str, negation: bool = False) -> dict:
         attribute_str = "rcsb_entry_info.selected_polymer_entity_types"
     else:
         attribute_str = "entity_poly.rcsb_entity_polymer_type"
-    return generate_terminal(
-        attribute_str, polymer_type, "exact_match", negation
-    )
+    return generate_terminal(attribute_str, polymer_type, "exact_match", negation)
 
 
 def generate_group(

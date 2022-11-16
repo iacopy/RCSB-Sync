@@ -84,7 +84,5 @@ def test_query_volvox_alphafolddb():
 
 def test_query_nucleid_acid_only():
     """Test a query for nucleic acids only."""
-    query = rcsbquery.generate_advanced_query(
-        polymer_type="Nucleic acid (only)"
-    )
+    query = rcsbquery.generate_advanced_query(polymer_type="Nucleic acid (only)")
     assert json.loads(query) == load_test_query_as_dict("query_nucleic_acid_only.json")
