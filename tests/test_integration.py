@@ -147,7 +147,9 @@ def test_project_no_updates(project_w_data_cleanup):
     check_data(project_dir)
 
 
-# user input
+# User input
+
+@pytest.mark.webtest
 @patch("builtins.input", lambda *args: "n")
 def test_main2_outdated__but_user_dont_sync(project_nodata_cleanup):
     """
@@ -164,6 +166,7 @@ def test_main2_outdated__but_user_dont_sync(project_nodata_cleanup):
     mock_sync.assert_not_called()
 
 
+@pytest.mark.webtest
 @patch("builtins.input", lambda *args: "y")
 def test_main2_outdated__and_user_sync(project_nodata_cleanup):
     """

@@ -11,6 +11,9 @@ which are used to retrieve the PDB IDs from the RCSB database.
 import json
 import os
 
+# 3rd Party
+import pytest
+
 # My stuff
 from rcsbids import _load_query
 from rcsbids import load_pdb_ids
@@ -104,6 +107,7 @@ EXPECTED_COMBO = """{
 EXPECTED_IDS_AF = ["AF_AFB9XEI9F1", "AF_AFB9XEK4F1"]
 
 
+@pytest.mark.webtest
 def test_retrieve_pdb_ids_zero():
     """
     Perform a known JSON test query and check that the expected PDB IDs are returned.
@@ -118,6 +122,7 @@ def test_retrieve_pdb_ids_zero():
     assert ids == []
 
 
+@pytest.mark.webtest
 def test_retrieve_pdb_ids_computational():
     """
     Perform a known JSON test query and check that the expected PDB IDs are returned.
