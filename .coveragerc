@@ -1,12 +1,8 @@
 [run]
 branch = True
 relative_files = true
-# avoid to report non-own files
+# avoid to report test modules
 source = src
-omit =
-    # avoid to report files from Cleanpython
-    src/git_status.py
-    src/test_git_status.py
 
 [report]
 # Regexes for lines to exclude from consideration
