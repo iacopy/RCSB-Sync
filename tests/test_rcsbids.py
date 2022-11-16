@@ -11,7 +11,7 @@ which are used to retrieve the PDB IDs from the RCSB database.
 import json
 import os
 
-# 3rd Party
+# 3rd party
 import pytest
 
 # My stuff
