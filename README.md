@@ -101,7 +101,7 @@ JSON:
             "service": "text",
             "parameters": {
             "attribute": "rcsb_entity_source_organism.taxonomy_lineage.name",
-            "operator": "exact_match",
+            "operator": "contains_phrase",
             "negation": false,
             "value": "Homo sapiens"
             }
@@ -149,7 +149,7 @@ JSON:
                 "service": "text",
                 "parameters": {
                 "attribute": "rcsb_entity_source_organism.taxonomy_lineage.name",
-                "operator": "exact_match",
+                "operator": "contains_phrase",
                 "negation": false,
                 "value": "Homo sapiens"
                 }
@@ -236,7 +236,7 @@ JSON:
                 "service": "text",
                 "parameters": {
                 "attribute": "rcsb_entity_source_organism.taxonomy_lineage.name",
-                "operator": "exact_match",
+                "operator": "contains_phrase",
                 "negation": false,
                 "value": "Homo sapiens"
                 }
