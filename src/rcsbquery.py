@@ -196,11 +196,12 @@ def args_to_query(args):  # pragma: no cover
     results_content_type = tuple(results_content_type)
 
     return generate_advanced_query(
-        args.polymer_type,
-        args.organism,
-        args.methods,
-        results_content_type,
-        args.indent,
+        polymer_type=args.polymer_type,
+        organism=args.organism,
+        methods=args.methods,
+        results_content_type=results_content_type,
+        rows=args.rows,
+        indent=args.indent,
     )
 
 
