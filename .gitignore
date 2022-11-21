@@ -48,3 +48,12 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# My Stuff to ignore
+backing/
+draft/
+foo/
+sandbox/
+spam/
+tmp/
+trash/
