@@ -256,6 +256,7 @@
 <span class="sd">of a given project, to keep the local working directory up-to-date).</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="c1"># Standard Library</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
@@ -373,6 +374,8 @@
 <span class="sd">    :param compressed: whether to download compressed files.</span>
 <span class="sd">    :return: path to the downloaded file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># No logging here, because this function is called in parallel.</span>
+
     <span class="c1"># Documentation URL: https://www.rcsb.org/pdb/files/</span>
     <span class="n">file_name</span> <span class="o">=</span> <span class="n">pdb_id_to_filename</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">)</span>
 
@@ -384,10 +387,13 @@
         <span class="n">pdb_url</span> <span class="o">+=</span> <span class="s2">&quot;.gz&quot;</span>
         <span class="n">dest</span> <span class="o">+=</span> <span class="s2">&quot;.gz&quot;</span>
 
-    <span class="c1"># Download the PDB file.</span>
     <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pdb_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PDB file not found for id &#39;</span><span class="si">{</span><span class="n">pdb_id</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+        <span class="c1"># logging.info(f&quot;PDB file not found, error=404, id=&#39;{pdb_id}&#39;, url=&#39;{pdb_url}&#39;&quot;)</span>
+        <span class="c1"># Log the same but using %s to avoid formatting if the log level is not INFO.</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">&quot;PDB file not found, error=404, id=&#39;</span><span class="si">%s</span><span class="s2">&#39;, url=&#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">pdb_id</span><span class="p">,</span> <span class="n">pdb_url</span>
+        <span class="p">)</span>
         <span class="c1"># Write an empty file to indicate that the PDB file was not found.</span>
         <span class="n">content</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span>
         <span class="c1"># And append the PDB ID to the list of 404 PDB files, inside the directory.</span>
@@ -487,12 +493,29 @@
 
     <span class="n">chunk_len</span> <span class="o">=</span> <span class="n">CHUNK_LEN_PER_PROCESS</span> <span class="o">*</span> <span class="n">n_jobs</span>
     <span class="c1"># Subdivide the list of PDB IDs into chunks and download each chunk in parallel.</span>
+    <span class="c1"># logging.info(f&quot;Downloading {n_ids} PDB files&quot;)</span>
+    <span class="c1"># logging.info(f&quot;Number of processes: {n_jobs}&quot;)</span>
+    <span class="c1"># logging.info(f&quot;Chunk size: {chunk_len} PDB files&quot;)</span>
+    <span class="c1"># logging.info(f&quot;Compressed: {compressed}&quot;)</span>
+    <span class="c1"># logging.info(f&quot;Directory: {directory}&quot;)</span>
+    <span class="c1"># Log the same but using %s instead of f-strings, so that it can be parsed by the logger.</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+        <span class="s2">&quot;Downloading </span><span class="si">%s</span><span class="s2"> PDB files ; Number of processes: </span><span class="si">%s</span><span class="s2"> ; Chunk size: </span><span class="si">%s</span><span class="s2"> ; Compressed: </span><span class="si">%s</span><span class="s2"> ; Directory: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">n_ids</span><span class="p">,</span>
+        <span class="n">n_jobs</span><span class="p">,</span>
+        <span class="n">chunk_len</span><span class="p">,</span>
+        <span class="n">compressed</span><span class="p">,</span>
+        <span class="n">directory</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">_chunks</span><span class="p">(</span><span class="n">pdb_ids</span><span class="p">,</span> <span class="n">chunk_len</span><span class="p">):</span>
-        <span class="c1"># print(</span>
-        <span class="c1">#     f&quot;Downloading chunk {i + 1}/{n_ids // chunk_len}: {len(chunk)} PDBs each with {n_jobs} processes&quot;</span>
-        <span class="c1"># )</span>
-        <span class="c1"># Download the chunk of PDB IDs.</span>
         <span class="n">downloaded_chunk</span> <span class="o">=</span> <span class="n">parallel_download</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">compressed</span><span class="p">,</span> <span class="n">n_jobs</span><span class="p">)</span>
+
+        <span class="c1"># Log the downloaded PDB files</span>
+        <span class="k">for</span> <span class="n">pdb_file</span> <span class="ow">in</span> <span class="n">downloaded_chunk</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">pdb_file</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Downloaded: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">pdb_file</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c1"># pragma: no cover (difficult to test with real queries, we need to mock the response)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Empty size: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">pdb_file</span><span class="p">)</span>
 
         <span class="n">downloaded_size</span> <span class="o">+=</span> <span class="nb">sum</span><span class="p">(</span>
             <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span> <span class="k">for</span> <span class="n">file_path</span> <span class="ow">in</span> <span class="n">downloaded_chunk</span>
@@ -500,7 +523,17 @@
         <span class="n">n_downloaded</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
 
         <span class="c1"># Report the global progress and the expected time to complete.</span>
-        <span class="n">print_progress</span><span class="p">(</span><span class="n">n_downloaded</span><span class="p">,</span> <span class="n">n_ids</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">downloaded_size</span><span class="p">,</span> <span class="n">n_jobs</span><span class="p">)</span></div>
+        <span class="n">print_progress</span><span class="p">(</span><span class="n">n_downloaded</span><span class="p">,</span> <span class="n">n_ids</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">downloaded_size</span><span class="p">,</span> <span class="n">n_jobs</span><span class="p">)</span>
+
+    <span class="c1"># Log the number of downloaded PDB files, the total time and the average speed.</span>
+    <span class="n">t_sec</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+    <span class="n">speed</span> <span class="o">=</span> <span class="n">n_downloaded</span> <span class="o">/</span> <span class="n">t_sec</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+        <span class="s2">&quot;Downloaded </span><span class="si">%s</span><span class="s2"> PDB files in </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%.2f</span><span class="s2">/s)&quot;</span><span class="p">,</span>
+        <span class="n">n_downloaded</span><span class="p">,</span>
+        <span class="n">_human_readable_time</span><span class="p">(</span><span class="n">t_sec</span><span class="p">),</span>
+        <span class="n">speed</span><span class="p">,</span>
+    <span class="p">)</span></div>
 </pre></div>
 
           </div>
@@ -511,7 +544,7 @@
   <div id="footer-row" class="row">
 
     <div class="col-md-12">
-        <span title="Built on 2022-11-16" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
+        <span title="Built on 2022-11-21" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
         Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0 and the
         <a href="https://pypi.org/project/sphinx-sizzle-theme/"
 
