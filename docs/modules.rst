@@ -7,4 +7,5 @@ src
    download
    project
    rcsbids
+   rcsbquery
    utils

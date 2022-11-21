@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-<title>🦜 RCSB Sync - download</title>
+<title>🦜 RCSB Sync - rcsbquery</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
@@ -61,8 +61,8 @@
 
       </div>
       <div id="hdr-centre" class="text-center stretch">
-        <h3 title="download">download</h3>
-        <h6>download</h6>
+        <h3 title="rcsbquery">rcsbquery</h3>
+        <h6>rcsbquery</h6>
       </div>
       <div id="hdr-search">
         
@@ -277,293 +277,225 @@
           </div>
           <div class="body">
             
-  <h1>Source code for download</h1><div class="highlight"><pre>
+  <h1>Source code for rcsbquery</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Download PDB files from the RCSB website.</span>
+<span class="sd">RCSB query generator.</span>
 
-<span class="sd">While you can use this module directly, it is intended to be used by the</span>
-<span class="sd">higher-level modules (e.g. the ``project`` module which downloads PDB files</span>
-<span class="sd">of a given project, to keep the local working directory up-to-date).</span>
+<span class="sd">This module contains the functions to generate the advanced queries to be sent to the RCSB website.</span>
+
+<span class="sd">The advanced query is a json string containing the search criteria.</span>
+<span class="sd">The json string can be generated manually or using the functions in this module.</span>
+<span class="sd">The advanced query can be used to retrieve the list of PDB IDs from the RCSB website.</span>
+
+<span class="sd">Usage example:</span>
+<span class="sd">    python rcsbquery.py -p Protein -o &quot;Rattus norvegicus&quot; -m &quot;X-RAY DIFFRACTION&quot; &quot;SOLUTION NMR&quot; --csm</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="c1"># Standard Library</span>
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
-<span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Pool</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
-
-<span class="c1"># 3rd party</span>
-<span class="kn">import</span> <span class="nn">requests</span>
-
-<span class="c1"># My stuff</span>
-<span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">_human_readable_time</span>
-
-<span class="n">DOWNLOAD_URL_RCSB</span> <span class="o">=</span> <span class="s2">&quot;https://files.rcsb.org/download/&quot;</span>
-<span class="n">DOWNLOAD_URL_ALPHAFOLD</span> <span class="o">=</span> <span class="s2">&quot;https://alphafold.ebi.ac.uk/files/&quot;</span>
-<span class="n">ALPHAFOLD_SUFFIX</span> <span class="o">=</span> <span class="s2">&quot;model_v4&quot;</span>
-<span class="c1"># e.g. https://alphafold.ebi.ac.uk/files/AF-P01308-F1-model_v4.pdb</span>
-
-<span class="n">MAX_PROCESSES</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span>
-<span class="n">DEFAULT_PROCESSES</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="c1">#: This number impact the frequency of progress updates.</span>
-<span class="c1">#: It is the number of PDB files to download before a progress update is printed if a single process is used.</span>
-<span class="c1">#: This is scaled automatically to the number of processes used to keep the progress updates constant.</span>
-<span class="n">CHUNK_LEN_PER_PROCESS</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 
 
-<span class="k">def</span> <span class="nf">_chunks</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">num</span><span class="p">):</span>
+<div class="viewcode-block" id="generate_request_options"><a class="viewcode-back" href="../rcsbquery.html#rcsbquery.generate_request_options">[docs]</a><span class="k">def</span> <span class="nf">generate_request_options</span><span class="p">(</span>
+    <span class="n">results_content_type</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;experimental&quot;</span><span class="p">,),</span> <span class="n">rows</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">25</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Yield successive n-sized chunks from lst.</span>
+<span class="sd">    Generate the request options.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">),</span> <span class="n">num</span><span class="p">):</span>
-        <span class="k">yield</span> <span class="n">lst</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">num</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;paginate&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;rows&quot;</span><span class="p">:</span> <span class="n">rows</span><span class="p">},</span>
+        <span class="s2">&quot;results_content_type&quot;</span><span class="p">:</span> <span class="n">results_content_type</span><span class="p">,</span>
+        <span class="s2">&quot;sort&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;sort_by&quot;</span><span class="p">:</span> <span class="s2">&quot;score&quot;</span><span class="p">,</span> <span class="s2">&quot;direction&quot;</span><span class="p">:</span> <span class="s2">&quot;desc&quot;</span><span class="p">}],</span>
+        <span class="s2">&quot;scoring_strategy&quot;</span><span class="p">:</span> <span class="s2">&quot;combined&quot;</span><span class="p">,</span>
+    <span class="p">}</span></div>
 
 
-<div class="viewcode-block" id="is_alphafold_id"><a class="viewcode-back" href="../download.html#download.is_alphafold_id">[docs]</a><span class="k">def</span> <span class="nf">is_alphafold_id</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="generate_terminal"><a class="viewcode-back" href="../rcsbquery.html#rcsbquery.generate_terminal">[docs]</a><span class="k">def</span> <span class="nf">generate_terminal</span><span class="p">(</span>
+    <span class="n">attribute_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">operator</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;exact_match&quot;</span><span class="p">,</span>
+    <span class="n">negation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check whether the PDB ID is an AlphaFold ID.</span>
+<span class="sd">    Generate a terminal query.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">pdb_id</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;AF&quot;</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="n">pdb_id</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span>
-            <span class="s2">&quot;AF_AF&quot;</span>
-        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected AlphaFold ID (should start with &#39;AF_AF&#39;): </span><span class="si">{</span><span class="n">pdb_id</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">return</span> <span class="n">pdb_id</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;AF_&quot;</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;terminal&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;service&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;attribute&quot;</span><span class="p">:</span> <span class="n">attribute_str</span><span class="p">,</span>
+            <span class="s2">&quot;operator&quot;</span><span class="p">:</span> <span class="n">operator</span><span class="p">,</span>
+            <span class="s2">&quot;negation&quot;</span><span class="p">:</span> <span class="n">negation</span><span class="p">,</span>
+            <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">}</span></div>
 
 
-<div class="viewcode-block" id="alphafold_id_to_file"><a class="viewcode-back" href="../download.html#download.alphafold_id_to_file">[docs]</a><span class="k">def</span> <span class="nf">alphafold_id_to_file</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="generate_organism"><a class="viewcode-back" href="../rcsbquery.html#rcsbquery.generate_organism">[docs]</a><span class="k">def</span> <span class="nf">generate_organism</span><span class="p">(</span><span class="n">organism</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">negation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Convert an AlphaFold ID to the corresponding PDB file name.</span>
-
-<span class="sd">    NB: there are gigantic protein like https://www.rcsb.org/uniprot/Q8WZ42</span>
-
-<span class="sd">    &gt;&gt;&gt; alphafold_id_to_file(&quot;AF_AFP08437F1&quot;)</span>
-<span class="sd">    &#39;AF-P08437-F1-model_v4.pdb&#39;</span>
-<span class="sd">    &gt;&gt;&gt; alphafold_id_to_file(&quot;AF_AFP01308F2&quot;)</span>
-<span class="sd">    &#39;AF-P01308-F2-model_v4.pdb&#39;</span>
-<span class="sd">    &gt;&gt;&gt; alphafold_id_to_file(&quot;AF_AFQ8WZ42F166&quot;)</span>
-<span class="sd">    &#39;AF-Q8WZ42-F166-model_v4.pdb&#39;</span>
+<span class="sd">    Generate a query for the organism (taxon name).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">last_f</span> <span class="o">=</span> <span class="n">pdb_id</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s2">&quot;F&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;AF-</span><span class="si">{</span><span class="n">pdb_id</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="n">last_f</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">pdb_id</span><span class="p">[</span><span class="n">last_f</span><span class="p">:]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">ALPHAFOLD_SUFFIX</span><span class="si">}</span><span class="s2">.pdb&quot;</span></div>
-
-
-<div class="viewcode-block" id="pdb_id_to_filename"><a class="viewcode-back" href="../download.html#download.pdb_id_to_filename">[docs]</a><span class="k">def</span> <span class="nf">pdb_id_to_filename</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Convert a PDB ID to the corresponding PDB file name.</span>
-
-<span class="sd">    &gt;&gt;&gt; pdb_id_to_filename(&quot;1abc&quot;)</span>
-<span class="sd">    &#39;1abc.pdb&#39;</span>
-<span class="sd">    &gt;&gt;&gt; pdb_id_to_filename(&quot;1abc&quot;)</span>
-<span class="sd">    &#39;1abc.pdb&#39;</span>
-<span class="sd">    &gt;&gt;&gt; pdb_id_to_filename(&quot;AF_AFP01308F1&quot;)</span>
-<span class="sd">    &#39;AF-P01308-F1-model_v4.pdb&#39;</span>
-<span class="sd">    &gt;&gt;&gt; pdb_id_to_filename(&quot;AF_AFQ8WZ42F166&quot;)</span>
-<span class="sd">    &#39;AF-Q8WZ42-F166-model_v4.pdb&#39;</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">is_alphafold_id</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">alphafold_id_to_file</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">)</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pdb_id</span><span class="si">}</span><span class="s2">.pdb&quot;</span></div>
-
-
-<div class="viewcode-block" id="filename_to_pdb_id"><a class="viewcode-back" href="../download.html#download.filename_to_pdb_id">[docs]</a><span class="k">def</span> <span class="nf">filename_to_pdb_id</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Convert a PDB file name to the corresponding PDB ID.</span>
-
-<span class="sd">    &gt;&gt;&gt; filename_to_pdb_id(&quot;1abc.pdb&quot;)</span>
-<span class="sd">    &#39;1abc&#39;</span>
-<span class="sd">    &gt;&gt;&gt; filename_to_pdb_id(&quot;1abc.pdb.gz&quot;)</span>
-<span class="sd">    &#39;1abc&#39;</span>
-<span class="sd">    &gt;&gt;&gt; filename_to_pdb_id(&quot;AF-P01308-F1-model_v4.pdb&quot;)</span>
-<span class="sd">    &#39;AF_AFP01308F1&#39;</span>
-<span class="sd">    &gt;&gt;&gt; filename_to_pdb_id(&quot;AF-Q8WZ42-F166-model_v4.pdb&quot;)</span>
-<span class="sd">    &#39;AF_AFQ8WZ42F166&#39;</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;AF-&quot;</span><span class="p">):</span>
-        <span class="c1"># e.g. AF-P01308-F1-model_v4.pdb</span>
-        <span class="k">return</span> <span class="s2">&quot;AF_AF&quot;</span> <span class="o">+</span> <span class="n">filename</span><span class="p">[</span><span class="mi">3</span> <span class="p">:</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;-</span><span class="si">{</span><span class="n">ALPHAFOLD_SUFFIX</span><span class="si">}</span><span class="s2">.pdb&quot;</span><span class="p">)]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-    <span class="c1"># e.g. 1abc.pdb</span>
-    <span class="k">return</span> <span class="n">filename</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
-
-
-<div class="viewcode-block" id="get_download_url"><a class="viewcode-back" href="../download.html#download.get_download_url">[docs]</a><span class="k">def</span> <span class="nf">get_download_url</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Based on the PDB ID, return the right URL to download the PDB file.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">is_alphafold_id</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">DOWNLOAD_URL_ALPHAFOLD</span> <span class="o">+</span> <span class="n">alphafold_id_to_file</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">)</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">DOWNLOAD_URL_RCSB</span><span class="si">}{</span><span class="n">pdb_id</span><span class="si">}</span><span class="s2">.pdb&quot;</span></div>
-
-
-<div class="viewcode-block" id="download_pdb"><a class="viewcode-back" href="../download.html#download.download_pdb">[docs]</a><span class="k">def</span> <span class="nf">download_pdb</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">compressed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Download a PDB file from the RCSB website.</span>
-
-<span class="sd">    :param pdb_id: PDB ID.</span>
-<span class="sd">    :param directory: directory to store the downloaded file.</span>
-<span class="sd">    :param compressed: whether to download compressed files.</span>
-<span class="sd">    :return: path to the downloaded file.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># No logging here, because this function is called in parallel.</span>
-
-    <span class="c1"># Documentation URL: https://www.rcsb.org/pdb/files/</span>
-    <span class="n">file_name</span> <span class="o">=</span> <span class="n">pdb_id_to_filename</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">)</span>
-
-    <span class="n">pdb_url</span> <span class="o">=</span> <span class="n">get_download_url</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">)</span>
-    <span class="n">dest</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
-
-    <span class="c1"># RCSB makes available compressed files, which are smaller and faster to download.</span>
-    <span class="k">if</span> <span class="n">compressed</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_alphafold_id</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">):</span>
-        <span class="n">pdb_url</span> <span class="o">+=</span> <span class="s2">&quot;.gz&quot;</span>
-        <span class="n">dest</span> <span class="o">+=</span> <span class="s2">&quot;.gz&quot;</span>
-
-    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pdb_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span><span class="p">:</span>
-        <span class="c1"># logging.info(f&quot;PDB file not found, error=404, id=&#39;{pdb_id}&#39;, url=&#39;{pdb_url}&#39;&quot;)</span>
-        <span class="c1"># Log the same but using %s to avoid formatting if the log level is not INFO.</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="s2">&quot;PDB file not found, error=404, id=&#39;</span><span class="si">%s</span><span class="s2">&#39;, url=&#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">pdb_id</span><span class="p">,</span> <span class="n">pdb_url</span>
-        <span class="p">)</span>
-        <span class="c1"># Write an empty file to indicate that the PDB file was not found.</span>
-        <span class="n">content</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span>
-        <span class="c1"># And append the PDB ID to the list of 404 PDB files, inside the directory.</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="s2">&quot;404.txt&quot;</span><span class="p">),</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;ascii&quot;</span>
-        <span class="p">)</span> <span class="k">as</span> <span class="n">file_404</span><span class="p">:</span>
-            <span class="n">file_404</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pdb_id</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
-        <span class="n">content</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
-
-    <span class="c1"># Save the PDB file.</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_pointer</span><span class="p">:</span>
-        <span class="n">file_pointer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">dest</span></div>
-
-
-<span class="c1"># Use multiprocessing to download (typically thousands of) PDB files in parallel.</span>
-<div class="viewcode-block" id="parallel_download"><a class="viewcode-back" href="../download.html#download.parallel_download">[docs]</a><span class="k">def</span> <span class="nf">parallel_download</span><span class="p">(</span>
-    <span class="n">pdb_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">compressed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_PROCESSES</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Download PDB files from the RCSB website in parallel.</span>
-
-<span class="sd">    :param pdb_ids: list of PDB IDs.</span>
-<span class="sd">    :param directory: directory to store the downloaded files.</span>
-<span class="sd">    :param compressed: whether to download compressed files.</span>
-<span class="sd">    :param n_jobs: number of processes to use (default: 1).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Download the PDB files in parallel.</span>
-    <span class="k">with</span> <span class="n">Pool</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
-        <span class="n">ret</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
-            <span class="n">partial</span><span class="p">(</span><span class="n">download_pdb</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="n">directory</span><span class="p">,</span> <span class="n">compressed</span><span class="o">=</span><span class="n">compressed</span><span class="p">),</span> <span class="n">pdb_ids</span>
-        <span class="p">)</span>
-        <span class="c1"># remove null values</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ret</span> <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">]</span></div>
-
-
-<div class="viewcode-block" id="download"><a class="viewcode-back" href="../download.html#download.download">[docs]</a><span class="k">def</span> <span class="nf">download</span><span class="p">(</span>
-    <span class="n">pdb_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">compressed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="n">n_jobs</span><span class="o">=</span><span class="n">DEFAULT_PROCESSES</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Download PDB files from the RCSB website in parallel, reporting the progress.</span>
-
-<span class="sd">    (actually, this is a wrapper around ``parallel_download``)</span>
-
-<span class="sd">    Since we want to periodically notify the user about the progress and the ETA,</span>
-<span class="sd">    this function just calls the parallel_download function several times with different chunks of PDB IDs,</span>
-<span class="sd">    and when each chunk is finished, it prints the progress and the ETA.</span>
-<span class="sd">    Since each chunk is downloaded in parallel, to have a constant rate of progress updates,</span>
-<span class="sd">    we need to make sure that the number of chunks is a multiple of the number of processes, so that</span>
-<span class="sd">    each process gets the same number of PDB IDs to download.</span>
-
-<span class="sd">    :param pdb_ids: list of PDB IDs.</span>
-<span class="sd">    :param directory: directory to store the downloaded files.</span>
-<span class="sd">    :param compressed: whether to download compressed files.</span>
-<span class="sd">    :param n_jobs: number of processes to use (default: 2).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">print_progress</span><span class="p">(</span>
-        <span class="n">n_downloaded</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">n_ids</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">start_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">downloaded_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Print the progress of the download.</span>
-
-<span class="sd">        :param n_downloaded: number of PDB files already downloaded.</span>
-<span class="sd">        :param n_ids: total number of PDB files to download.</span>
-<span class="sd">        :param start_time: time when the download started.</span>
-<span class="sd">        :param downloaded_size: size of the downloaded files.</span>
-<span class="sd">        :param n_jobs: number of processes used.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">progress</span> <span class="o">=</span> <span class="n">n_downloaded</span> <span class="o">/</span> <span class="n">n_ids</span>
-        <span class="c1"># Report the global progress and the expected time to complete.</span>
-        <span class="n">t_sec</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
-        <span class="n">t_hs</span> <span class="o">=</span> <span class="n">_human_readable_time</span><span class="p">(</span><span class="n">t_sec</span><span class="p">)</span>
-        <span class="n">speed</span> <span class="o">=</span> <span class="n">n_downloaded</span> <span class="o">/</span> <span class="n">t_sec</span>
-        <span class="n">eta_sec</span> <span class="o">=</span> <span class="p">(</span><span class="n">t_sec</span> <span class="o">/</span> <span class="n">n_downloaded</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">n_ids</span> <span class="o">-</span> <span class="n">n_downloaded</span><span class="p">)</span>
-        <span class="n">eta</span> <span class="o">=</span> <span class="n">_human_readable_time</span><span class="p">(</span><span class="n">eta_sec</span><span class="p">)</span>
-        <span class="n">prog</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">t_hs</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">n_downloaded</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">n_ids</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">progress</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">) files (</span><span class="si">{</span><span class="n">downloaded_size</span> <span class="o">/</span> <span class="mf">1e6</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> MB)&quot;</span>
-        <span class="n">timing</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">speed</span><span class="si">:</span><span class="s2">,.1f</span><span class="si">}</span><span class="s2">/s | </span><span class="si">{</span><span class="n">n_jobs</span><span class="si">}</span><span class="s2">j; ETA: </span><span class="si">{</span><span class="n">eta</span><span class="si">}</span><span class="s2"> ⏳&quot;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prog</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">timing</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
-
-    <span class="n">n_ids</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pdb_ids</span><span class="p">)</span>
-    <span class="n">downloaded_size</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">n_downloaded</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-
-    <span class="n">chunk_len</span> <span class="o">=</span> <span class="n">CHUNK_LEN_PER_PROCESS</span> <span class="o">*</span> <span class="n">n_jobs</span>
-    <span class="c1"># Subdivide the list of PDB IDs into chunks and download each chunk in parallel.</span>
-    <span class="c1"># logging.info(f&quot;Downloading {n_ids} PDB files&quot;)</span>
-    <span class="c1"># logging.info(f&quot;Number of processes: {n_jobs}&quot;)</span>
-    <span class="c1"># logging.info(f&quot;Chunk size: {chunk_len} PDB files&quot;)</span>
-    <span class="c1"># logging.info(f&quot;Compressed: {compressed}&quot;)</span>
-    <span class="c1"># logging.info(f&quot;Directory: {directory}&quot;)</span>
-    <span class="c1"># Log the same but using %s instead of f-strings, so that it can be parsed by the logger.</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-        <span class="s2">&quot;Downloading </span><span class="si">%s</span><span class="s2"> PDB files ; Number of processes: </span><span class="si">%s</span><span class="s2"> ; Chunk size: </span><span class="si">%s</span><span class="s2"> ; Compressed: </span><span class="si">%s</span><span class="s2"> ; Directory: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
-        <span class="n">n_ids</span><span class="p">,</span>
-        <span class="n">n_jobs</span><span class="p">,</span>
-        <span class="n">chunk_len</span><span class="p">,</span>
-        <span class="n">compressed</span><span class="p">,</span>
-        <span class="n">directory</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">_chunks</span><span class="p">(</span><span class="n">pdb_ids</span><span class="p">,</span> <span class="n">chunk_len</span><span class="p">):</span>
-        <span class="n">downloaded_chunk</span> <span class="o">=</span> <span class="n">parallel_download</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">compressed</span><span class="p">,</span> <span class="n">n_jobs</span><span class="p">)</span>
-
-        <span class="c1"># Log the downloaded PDB files</span>
-        <span class="k">for</span> <span class="n">pdb_file</span> <span class="ow">in</span> <span class="n">downloaded_chunk</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">pdb_file</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Downloaded: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">pdb_file</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>  <span class="c1"># pragma: no cover (difficult to test with real queries, we need to mock the response)</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Empty size: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">pdb_file</span><span class="p">)</span>
-
-        <span class="n">downloaded_size</span> <span class="o">+=</span> <span class="nb">sum</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span> <span class="k">for</span> <span class="n">file_path</span> <span class="ow">in</span> <span class="n">downloaded_chunk</span>
-        <span class="p">)</span>
-        <span class="n">n_downloaded</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
-
-        <span class="c1"># Report the global progress and the expected time to complete.</span>
-        <span class="n">print_progress</span><span class="p">(</span><span class="n">n_downloaded</span><span class="p">,</span> <span class="n">n_ids</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">downloaded_size</span><span class="p">,</span> <span class="n">n_jobs</span><span class="p">)</span>
-
-    <span class="c1"># Log the number of downloaded PDB files, the total time and the average speed.</span>
-    <span class="n">t_sec</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
-    <span class="n">speed</span> <span class="o">=</span> <span class="n">n_downloaded</span> <span class="o">/</span> <span class="n">t_sec</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-        <span class="s2">&quot;Downloaded </span><span class="si">%s</span><span class="s2"> PDB files in </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%.2f</span><span class="s2">/s)&quot;</span><span class="p">,</span>
-        <span class="n">n_downloaded</span><span class="p">,</span>
-        <span class="n">_human_readable_time</span><span class="p">(</span><span class="n">t_sec</span><span class="p">),</span>
-        <span class="n">speed</span><span class="p">,</span>
+    <span class="k">return</span> <span class="n">generate_terminal</span><span class="p">(</span>
+        <span class="s2">&quot;rcsb_entity_source_organism.taxonomy_lineage.name&quot;</span><span class="p">,</span>
+        <span class="n">organism</span><span class="p">,</span>
+        <span class="s2">&quot;contains_phrase&quot;</span><span class="p">,</span>
+        <span class="n">negation</span><span class="p">,</span>
     <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="generate_method_extendend"><a class="viewcode-back" href="../rcsbquery.html#rcsbquery.generate_method_extendend">[docs]</a><span class="k">def</span> <span class="nf">generate_method_extendend</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">negation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate the terminal query for the method, including the CSMs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;AlphaFoldDB&quot;</span><span class="p">:</span>
+        <span class="n">attribute_str</span> <span class="o">=</span> <span class="s2">&quot;rcsb_comp_model_provenance.source_db&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">attribute_str</span> <span class="o">=</span> <span class="s2">&quot;exptl.method&quot;</span>
+    <span class="k">return</span> <span class="n">generate_terminal</span><span class="p">(</span><span class="n">attribute_str</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="s2">&quot;exact_match&quot;</span><span class="p">,</span> <span class="n">negation</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="generate_methods"><a class="viewcode-back" href="../rcsbquery.html#rcsbquery.generate_methods">[docs]</a><span class="k">def</span> <span class="nf">generate_methods</span><span class="p">(</span><span class="n">methods</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a query for the experimental methods.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">methods</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">generate_method_extendend</span><span class="p">(</span><span class="n">methods</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">generate_group</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">generate_method_extendend</span><span class="p">(</span><span class="n">method</span><span class="p">)</span> <span class="k">for</span> <span class="n">method</span> <span class="ow">in</span> <span class="n">methods</span><span class="p">],</span>
+        <span class="s2">&quot;or&quot;</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="generate_polymer_type"><a class="viewcode-back" href="../rcsbquery.html#rcsbquery.generate_polymer_type">[docs]</a><span class="k">def</span> <span class="nf">generate_polymer_type</span><span class="p">(</span><span class="n">polymer_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">negation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a query about the polymer type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">polymer_type</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;Nucleic acid (only)&quot;</span><span class="p">,</span> <span class="s2">&quot;Protein (only)&quot;</span><span class="p">}:</span>
+        <span class="n">attribute_str</span> <span class="o">=</span> <span class="s2">&quot;rcsb_entry_info.selected_polymer_entity_types&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">attribute_str</span> <span class="o">=</span> <span class="s2">&quot;entity_poly.rcsb_entity_polymer_type&quot;</span>
+    <span class="k">return</span> <span class="n">generate_terminal</span><span class="p">(</span><span class="n">attribute_str</span><span class="p">,</span> <span class="n">polymer_type</span><span class="p">,</span> <span class="s2">&quot;exact_match&quot;</span><span class="p">,</span> <span class="n">negation</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="generate_group"><a class="viewcode-back" href="../rcsbquery.html#rcsbquery.generate_group">[docs]</a><span class="k">def</span> <span class="nf">generate_group</span><span class="p">(</span>
+    <span class="n">queries</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+    <span class="n">logical_operator</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;and&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a group query.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;group&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;logical_operator&quot;</span><span class="p">:</span> <span class="n">logical_operator</span><span class="p">,</span>
+        <span class="c1"># no negation for groups</span>
+        <span class="s2">&quot;nodes&quot;</span><span class="p">:</span> <span class="n">queries</span><span class="p">,</span>
+    <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="generate_queries"><a class="viewcode-back" href="../rcsbquery.html#rcsbquery.generate_queries">[docs]</a><span class="k">def</span> <span class="nf">generate_queries</span><span class="p">(</span>
+    <span class="n">polymer_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">organism</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">methods</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate the advanced query string for the organism, methods and polymer type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">queries</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># NB: this is the order of the queries in the RCSB website</span>
+    <span class="k">if</span> <span class="n">polymer_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">queries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">generate_polymer_type</span><span class="p">(</span><span class="n">polymer_type</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">methods</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">queries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">generate_methods</span><span class="p">(</span><span class="n">methods</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">organism</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">queries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">generate_organism</span><span class="p">(</span><span class="n">organism</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">queries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">queries</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">generate_group</span><span class="p">(</span><span class="n">queries</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="generate_advanced_query"><a class="viewcode-back" href="../rcsbquery.html#rcsbquery.generate_advanced_query">[docs]</a><span class="k">def</span> <span class="nf">generate_advanced_query</span><span class="p">(</span>  <span class="c1"># pylint: disable=too-many-arguments</span>
+    <span class="n">polymer_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">organism</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">methods</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">results_content_type</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;experimental&quot;</span><span class="p">,),</span>
+    <span class="n">rows</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">999999</span><span class="p">,</span>
+    <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate the advanced query string for the organism, methods and polymer type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">generate_queries</span><span class="p">(</span><span class="n">polymer_type</span><span class="p">,</span> <span class="n">organism</span><span class="p">,</span> <span class="n">methods</span><span class="p">)</span>
+    <span class="n">query</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;text&quot;</span>
+    <span class="n">request</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span>
+        <span class="s2">&quot;return_type&quot;</span><span class="p">:</span> <span class="s2">&quot;entry&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;request_options&quot;</span><span class="p">:</span> <span class="n">generate_request_options</span><span class="p">(</span><span class="n">results_content_type</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="n">rows</span><span class="p">),</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="n">indent</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="extend_parser"><a class="viewcode-back" href="../rcsbquery.html#rcsbquery.extend_parser">[docs]</a><span class="k">def</span> <span class="nf">extend_parser</span><span class="p">(</span><span class="n">parser</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extend the parser with the arguments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="s2">&quot;--organism&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;organism (taxon name)&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;--methods&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;experimental methods&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-p&quot;</span><span class="p">,</span> <span class="s2">&quot;--polymer-type&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;polymer type&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--csm&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;include Computed Structure Models (CSMs) in the search results&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--no-experimental&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;exclude experimental structures&quot;</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--rows&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">999999</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;maximum number of structures to retrieve&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="s2">&quot;--indent&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;indentation for the json string&quot;</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">parser</span></div>
+
+
+<div class="viewcode-block" id="args_to_query"><a class="viewcode-back" href="../rcsbquery.html#rcsbquery.args_to_query">[docs]</a><span class="k">def</span> <span class="nf">args_to_query</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate the advanced query string from the arguments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># prepare the results_content_type</span>
+    <span class="n">results_content_type</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;experimental&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">csm</span><span class="p">:</span>
+        <span class="n">results_content_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;computational&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">no_experimental</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">args</span><span class="o">.</span><span class="n">csm</span><span class="p">,</span> <span class="s2">&quot;Cannot exclude experimental structures without including CSMs&quot;</span>
+        <span class="n">results_content_type</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;computational&quot;</span><span class="p">]</span>
+    <span class="n">results_content_type</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">results_content_type</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">generate_advanced_query</span><span class="p">(</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">polymer_type</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">organism</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">methods</span><span class="p">,</span>
+        <span class="n">results_content_type</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">indent</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../rcsbquery.html#rcsbquery.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>  <span class="c1"># pragma: no cover</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Main function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;RCSB query generator&quot;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">extend_parser</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">args_to_query</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">query</span><span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
 </pre></div>
 
           </div>

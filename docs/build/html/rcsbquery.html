@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-<title>🦜 RCSB Sync - src</title>
+<title>🦜 RCSB Sync - rcsbquery module</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
@@ -43,8 +43,8 @@
     <script src="app-data.js"></script>
 <link rel="index" title="Index" href="genindex.html" />
 <link rel="search" title="Search" href="search.html" />
-<link rel="next" title="download module" href="download.html" />
-<link rel="prev" title="Welcome to RCSB Sync’s documentation!" href="index.html" />
+<link rel="next" title="utils module" href="utils.html" />
+<link rel="prev" title="rcsbids module" href="rcsbids.html" />
 
 </head>
 <body class="full-height test">
@@ -63,8 +63,8 @@
 
       </div>
       <div id="hdr-centre" class="text-center stretch">
-        <h3 title="src">src</h3>
-        <h6>src</h6>
+        <h3 title="rcsbquery module">rcsbquery module</h3>
+        <h6>rcsbquery module</h6>
       </div>
       <div id="hdr-search">
         
@@ -81,7 +81,7 @@
       </div>
 
       <div id="hdr-source">
-        <a href="_sources/modules.rst.txt" class="btn btn-default" title="See the source for this page"><i class="fa fa-code"></i></a>
+        <a href="_sources/rcsbquery.rst.txt" class="btn btn-default" title="See the source for this page"><i class="fa fa-code"></i></a>
       </div>
 
       <div id="hdr-right">
@@ -90,18 +90,18 @@
   <div class="prev-next">
     
       <div class="pull-left">
-        <a class="btn btn-default prev" href="index.html" title="Previous chapter (Welcome to RCSB Sync’s documentation!)"><i class="fa fa-chevron-left mr-1em" aria-hidden="true"></i><span class="btn-text">Welcome to RCSB Sync’s documentation!</span></a>
+        <a class="btn btn-default prev" href="rcsbids.html" title="Previous chapter (rcsbids module)"><i class="fa fa-chevron-left mr-1em" aria-hidden="true"></i><span class="btn-text">rcsbids module</span></a>
       </div>
     
       <div class="pull-right">
-        <a class="btn btn-default next" href="download.html" title="Next chapter (download module)"><span class="btn-text">download module</span>&nbsp;<i class="fa fa-chevron-right ml-1em" aria-hidden="true"></i></a>
+        <a class="btn btn-default next" href="utils.html" title="Next chapter (utils module)"><span class="btn-text">utils module</span>&nbsp;<i class="fa fa-chevron-right ml-1em" aria-hidden="true"></i></a>
       </div>
     </div>
   
       </div>
       <div id="alt-hdr-right">
 
-        <a href="index.html"><i class="fa fa-chevron-left mr-8"></i></a>
+        <a href="rcsbids.html"><i class="fa fa-chevron-left mr-8"></i></a>
 
 
         <a href="index.html"><i class="fa fa-home mr-8"></i></a>
@@ -113,7 +113,7 @@
         <a href="genindex.html"><i class="fa fa-list mr-8"></i></a>
 
 
-        <a href="download.html"><i class="fa fa-chevron-right"></i></a>
+        <a href="utils.html"><i class="fa fa-chevron-right"></i></a>
 
       </div>
     </div>
@@ -151,7 +151,7 @@
   
     <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#src">src</a><ul>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html#src">src</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="download.html#module-download">download module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.CHUNK_LEN_PER_PROCESS"><code class="docutils literal notranslate"><span class="pre">CHUNK_LEN_PER_PROCESS</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.alphafold_id_to_file"><code class="docutils literal notranslate"><span class="pre">alphafold_id_to_file()</span></code></a></li>
@@ -164,7 +164,7 @@
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.pdb_id_to_filename"><code class="docutils literal notranslate"><span class="pre">pdb_id_to_filename()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="project.html">project module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="project.html#module-project">project module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="project.html#usage">Usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="project.html#algorithm">Algorithm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="project.html#directory-structure">Directory structure</a></li>
@@ -189,7 +189,7 @@
 <li class="toctree-l3"><a class="reference internal" href="project.html#project.pformat_status"><code class="docutils literal notranslate"><span class="pre">pformat_status()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="rcsbids.html">rcsbids module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rcsbids.html#module-rcsbids">rcsbids module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#usage">Usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#rcsbids.load_pdb_ids"><code class="docutils literal notranslate"><span class="pre">load_pdb_ids()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#rcsbids.retrieve_pdb_ids"><code class="docutils literal notranslate"><span class="pre">retrieve_pdb_ids()</span></code></a></li>
@@ -197,19 +197,19 @@
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#rcsbids.store_pdb_ids"><code class="docutils literal notranslate"><span class="pre">store_pdb_ids()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="rcsbquery.html">rcsbquery module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.args_to_query"><code class="docutils literal notranslate"><span class="pre">args_to_query()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.extend_parser"><code class="docutils literal notranslate"><span class="pre">extend_parser()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_advanced_query"><code class="docutils literal notranslate"><span class="pre">generate_advanced_query()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_group"><code class="docutils literal notranslate"><span class="pre">generate_group()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_method_extendend"><code class="docutils literal notranslate"><span class="pre">generate_method_extendend()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_methods"><code class="docutils literal notranslate"><span class="pre">generate_methods()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_organism"><code class="docutils literal notranslate"><span class="pre">generate_organism()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_polymer_type"><code class="docutils literal notranslate"><span class="pre">generate_polymer_type()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_queries"><code class="docutils literal notranslate"><span class="pre">generate_queries()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_request_options"><code class="docutils literal notranslate"><span class="pre">generate_request_options()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_terminal"><code class="docutils literal notranslate"><span class="pre">generate_terminal()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#module-rcsbquery">rcsbquery module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rcsbquery.args_to_query"><code class="docutils literal notranslate"><span class="pre">args_to_query()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsbquery.extend_parser"><code class="docutils literal notranslate"><span class="pre">extend_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsbquery.generate_advanced_query"><code class="docutils literal notranslate"><span class="pre">generate_advanced_query()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsbquery.generate_group"><code class="docutils literal notranslate"><span class="pre">generate_group()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsbquery.generate_method_extendend"><code class="docutils literal notranslate"><span class="pre">generate_method_extendend()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsbquery.generate_methods"><code class="docutils literal notranslate"><span class="pre">generate_methods()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsbquery.generate_organism"><code class="docutils literal notranslate"><span class="pre">generate_organism()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsbquery.generate_polymer_type"><code class="docutils literal notranslate"><span class="pre">generate_polymer_type()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsbquery.generate_queries"><code class="docutils literal notranslate"><span class="pre">generate_queries()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsbquery.generate_request_options"><code class="docutils literal notranslate"><span class="pre">generate_request_options()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsbquery.generate_terminal"><code class="docutils literal notranslate"><span class="pre">generate_terminal()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsbquery.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html">utils module</a></li>
@@ -228,7 +228,7 @@
   
     <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#src">src</a><ul>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html#src">src</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="download.html#module-download">download module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.CHUNK_LEN_PER_PROCESS"><code class="docutils literal notranslate"><span class="pre">CHUNK_LEN_PER_PROCESS</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.alphafold_id_to_file"><code class="docutils literal notranslate"><span class="pre">alphafold_id_to_file()</span></code></a></li>
@@ -241,7 +241,7 @@
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.pdb_id_to_filename"><code class="docutils literal notranslate"><span class="pre">pdb_id_to_filename()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="project.html">project module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="project.html#module-project">project module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="project.html#usage">Usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="project.html#algorithm">Algorithm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="project.html#directory-structure">Directory structure</a></li>
@@ -266,7 +266,7 @@
 <li class="toctree-l3"><a class="reference internal" href="project.html#project.pformat_status"><code class="docutils literal notranslate"><span class="pre">pformat_status()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="rcsbids.html">rcsbids module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rcsbids.html#module-rcsbids">rcsbids module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#usage">Usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#rcsbids.load_pdb_ids"><code class="docutils literal notranslate"><span class="pre">load_pdb_ids()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#rcsbids.retrieve_pdb_ids"><code class="docutils literal notranslate"><span class="pre">retrieve_pdb_ids()</span></code></a></li>
@@ -274,19 +274,19 @@
 <li class="toctree-l3"><a class="reference internal" href="rcsbids.html#rcsbids.store_pdb_ids"><code class="docutils literal notranslate"><span class="pre">store_pdb_ids()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="rcsbquery.html">rcsbquery module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.args_to_query"><code class="docutils literal notranslate"><span class="pre">args_to_query()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.extend_parser"><code class="docutils literal notranslate"><span class="pre">extend_parser()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_advanced_query"><code class="docutils literal notranslate"><span class="pre">generate_advanced_query()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_group"><code class="docutils literal notranslate"><span class="pre">generate_group()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_method_extendend"><code class="docutils literal notranslate"><span class="pre">generate_method_extendend()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_methods"><code class="docutils literal notranslate"><span class="pre">generate_methods()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_organism"><code class="docutils literal notranslate"><span class="pre">generate_organism()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_polymer_type"><code class="docutils literal notranslate"><span class="pre">generate_polymer_type()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_queries"><code class="docutils literal notranslate"><span class="pre">generate_queries()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_request_options"><code class="docutils literal notranslate"><span class="pre">generate_request_options()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_terminal"><code class="docutils literal notranslate"><span class="pre">generate_terminal()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#module-rcsbquery">rcsbquery module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rcsbquery.args_to_query"><code class="docutils literal notranslate"><span class="pre">args_to_query()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsbquery.extend_parser"><code class="docutils literal notranslate"><span class="pre">extend_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsbquery.generate_advanced_query"><code class="docutils literal notranslate"><span class="pre">generate_advanced_query()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsbquery.generate_group"><code class="docutils literal notranslate"><span class="pre">generate_group()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsbquery.generate_method_extendend"><code class="docutils literal notranslate"><span class="pre">generate_method_extendend()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsbquery.generate_methods"><code class="docutils literal notranslate"><span class="pre">generate_methods()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsbquery.generate_organism"><code class="docutils literal notranslate"><span class="pre">generate_organism()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsbquery.generate_polymer_type"><code class="docutils literal notranslate"><span class="pre">generate_polymer_type()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsbquery.generate_queries"><code class="docutils literal notranslate"><span class="pre">generate_queries()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsbquery.generate_request_options"><code class="docutils literal notranslate"><span class="pre">generate_request_options()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsbquery.generate_terminal"><code class="docutils literal notranslate"><span class="pre">generate_terminal()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsbquery.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html">utils module</a></li>
@@ -298,73 +298,88 @@
           </div>
           <div class="body">
             
-  <div class="section" id="src">
-<h1>src<a class="headerlink" href="#src" title="Permalink to this heading">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="download.html">download module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="download.html#download.CHUNK_LEN_PER_PROCESS"><code class="docutils literal notranslate"><span class="pre">CHUNK_LEN_PER_PROCESS</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="download.html#download.alphafold_id_to_file"><code class="docutils literal notranslate"><span class="pre">alphafold_id_to_file()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="download.html#download.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="download.html#download.download_pdb"><code class="docutils literal notranslate"><span class="pre">download_pdb()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="download.html#download.filename_to_pdb_id"><code class="docutils literal notranslate"><span class="pre">filename_to_pdb_id()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="download.html#download.get_download_url"><code class="docutils literal notranslate"><span class="pre">get_download_url()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="download.html#download.is_alphafold_id"><code class="docutils literal notranslate"><span class="pre">is_alphafold_id()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="download.html#download.parallel_download"><code class="docutils literal notranslate"><span class="pre">parallel_download()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="download.html#download.pdb_id_to_filename"><code class="docutils literal notranslate"><span class="pre">pdb_id_to_filename()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="project.html">project module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="project.html#usage">Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="project.html#algorithm">Algorithm</a></li>
-<li class="toctree-l2"><a class="reference internal" href="project.html#directory-structure">Directory structure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="project.html#project.DirStatus"><code class="docutils literal notranslate"><span class="pre">DirStatus</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="project.html#project.DirStatus.n_local"><code class="docutils literal notranslate"><span class="pre">DirStatus.n_local</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="project.html#project.DirStatus.n_remote"><code class="docutils literal notranslate"><span class="pre">DirStatus.n_remote</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="project.html#project.DirStatus.removed_ids"><code class="docutils literal notranslate"><span class="pre">DirStatus.removed_ids</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="project.html#project.DirStatus.tbd_ids"><code class="docutils literal notranslate"><span class="pre">DirStatus.tbd_ids</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="project.html#project.DirStatus.zero_ids"><code class="docutils literal notranslate"><span class="pre">DirStatus.zero_ids</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="project.html#project.Project"><code class="docutils literal notranslate"><span class="pre">Project</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="project.html#project.Project.do_sync"><code class="docutils literal notranslate"><span class="pre">Project.do_sync()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="project.html#project.Project.fetch_or_cache_query"><code class="docutils literal notranslate"><span class="pre">Project.fetch_or_cache_query()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="project.html#project.Project.get_status"><code class="docutils literal notranslate"><span class="pre">Project.get_status()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="project.html#project.Project.get_status_query"><code class="docutils literal notranslate"><span class="pre">Project.get_status_query()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="project.html#project.Project.mark_removed"><code class="docutils literal notranslate"><span class="pre">Project.mark_removed()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="project.html#project.Project.scan_query_data"><code class="docutils literal notranslate"><span class="pre">Project.scan_query_data()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="project.html#project.pformat_status"><code class="docutils literal notranslate"><span class="pre">pformat_status()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="rcsbids.html">rcsbids module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="rcsbids.html#usage">Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rcsbids.html#rcsbids.load_pdb_ids"><code class="docutils literal notranslate"><span class="pre">load_pdb_ids()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="rcsbids.html#rcsbids.retrieve_pdb_ids"><code class="docutils literal notranslate"><span class="pre">retrieve_pdb_ids()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="rcsbids.html#rcsbids.search_and_download_ids"><code class="docutils literal notranslate"><span class="pre">search_and_download_ids()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="rcsbids.html#rcsbids.store_pdb_ids"><code class="docutils literal notranslate"><span class="pre">store_pdb_ids()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="rcsbquery.html">rcsbquery module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="rcsbquery.html#rcsbquery.args_to_query"><code class="docutils literal notranslate"><span class="pre">args_to_query()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="rcsbquery.html#rcsbquery.extend_parser"><code class="docutils literal notranslate"><span class="pre">extend_parser()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_advanced_query"><code class="docutils literal notranslate"><span class="pre">generate_advanced_query()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_group"><code class="docutils literal notranslate"><span class="pre">generate_group()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_method_extendend"><code class="docutils literal notranslate"><span class="pre">generate_method_extendend()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_methods"><code class="docutils literal notranslate"><span class="pre">generate_methods()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_organism"><code class="docutils literal notranslate"><span class="pre">generate_organism()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_polymer_type"><code class="docutils literal notranslate"><span class="pre">generate_polymer_type()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_queries"><code class="docutils literal notranslate"><span class="pre">generate_queries()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_request_options"><code class="docutils literal notranslate"><span class="pre">generate_request_options()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_terminal"><code class="docutils literal notranslate"><span class="pre">generate_terminal()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="rcsbquery.html#rcsbquery.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="utils.html">utils module</a></li>
-</ul>
-</div>
+  <div class="section" id="module-rcsbquery">
+<span id="rcsbquery-module"></span><h1>rcsbquery module<a class="headerlink" href="#module-rcsbquery" title="Permalink to this heading">¶</a></h1>
+<p>RCSB query generator.</p>
+<p>This module contains the functions to generate the advanced queries to be sent to the RCSB website.</p>
+<p>The advanced query is a json string containing the search criteria.
+The json string can be generated manually or using the functions in this module.
+The advanced query can be used to retrieve the list of PDB IDs from the RCSB website.</p>
+<dl class="docutils">
+<dt>Usage example:</dt><dd>python rcsbquery.py -p Protein -o “Rattus norvegicus” -m “X-RAY DIFFRACTION” “SOLUTION NMR” –csm</dd>
+</dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="rcsbquery.args_to_query">
+<code class="sig-prename descclassname"><span class="pre">rcsbquery.</span></code><code class="sig-name descname"><span class="pre">args_to_query</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rcsbquery.html#args_to_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rcsbquery.args_to_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the advanced query string from the arguments.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rcsbquery.extend_parser">
+<code class="sig-prename descclassname"><span class="pre">rcsbquery.</span></code><code class="sig-name descname"><span class="pre">extend_parser</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">parser</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rcsbquery.html#extend_parser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rcsbquery.extend_parser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extend the parser with the arguments.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rcsbquery.generate_advanced_query">
+<code class="sig-prename descclassname"><span class="pre">rcsbquery.</span></code><code class="sig-name descname"><span class="pre">generate_advanced_query</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">polymer_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em><span class="n"><span class="pre">organism</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em><span class="n"><span class="pre">methods</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em><span class="n"><span class="pre">results_content_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">('experimental',)</span></span></em>, <em><span class="n"><span class="pre">rows</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">999999</span></span></em>, <em><span class="n"><span class="pre">indent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/rcsbquery.html#generate_advanced_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rcsbquery.generate_advanced_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the advanced query string for the organism, methods and polymer type.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rcsbquery.generate_group">
+<code class="sig-prename descclassname"><span class="pre">rcsbquery.</span></code><code class="sig-name descname"><span class="pre">generate_group</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">queries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em><span class="n"><span class="pre">logical_operator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'and'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/rcsbquery.html#generate_group"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rcsbquery.generate_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a group query.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rcsbquery.generate_method_extendend">
+<code class="sig-prename descclassname"><span class="pre">rcsbquery.</span></code><code class="sig-name descname"><span class="pre">generate_method_extendend</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em><span class="n"><span class="pre">negation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/rcsbquery.html#generate_method_extendend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rcsbquery.generate_method_extendend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the terminal query for the method, including the CSMs.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rcsbquery.generate_methods">
+<code class="sig-prename descclassname"><span class="pre">rcsbquery.</span></code><code class="sig-name descname"><span class="pre">generate_methods</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">methods</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/rcsbquery.html#generate_methods"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rcsbquery.generate_methods" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a query for the experimental methods.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rcsbquery.generate_organism">
+<code class="sig-prename descclassname"><span class="pre">rcsbquery.</span></code><code class="sig-name descname"><span class="pre">generate_organism</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">organism</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em><span class="n"><span class="pre">negation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/rcsbquery.html#generate_organism"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rcsbquery.generate_organism" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a query for the organism (taxon name).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rcsbquery.generate_polymer_type">
+<code class="sig-prename descclassname"><span class="pre">rcsbquery.</span></code><code class="sig-name descname"><span class="pre">generate_polymer_type</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">polymer_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em><span class="n"><span class="pre">negation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/rcsbquery.html#generate_polymer_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rcsbquery.generate_polymer_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a query about the polymer type.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rcsbquery.generate_queries">
+<code class="sig-prename descclassname"><span class="pre">rcsbquery.</span></code><code class="sig-name descname"><span class="pre">generate_queries</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">polymer_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em><span class="n"><span class="pre">organism</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em><span class="n"><span class="pre">methods</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/rcsbquery.html#generate_queries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rcsbquery.generate_queries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the advanced query string for the organism, methods and polymer type.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rcsbquery.generate_request_options">
+<code class="sig-prename descclassname"><span class="pre">rcsbquery.</span></code><code class="sig-name descname"><span class="pre">generate_request_options</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">results_content_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">('experimental',)</span></span></em>, <em><span class="n"><span class="pre">rows</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">25</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/rcsbquery.html#generate_request_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rcsbquery.generate_request_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the request options.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rcsbquery.generate_terminal">
+<code class="sig-prename descclassname"><span class="pre">rcsbquery.</span></code><code class="sig-name descname"><span class="pre">generate_terminal</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">attribute_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em><span class="n"><span class="pre">operator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'exact_match'</span></span></em>, <em><span class="n"><span class="pre">negation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/rcsbquery.html#generate_terminal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rcsbquery.generate_terminal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a terminal query.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rcsbquery.main">
+<code class="sig-prename descclassname"><span class="pre">rcsbquery.</span></code><code class="sig-name descname"><span class="pre">main</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rcsbquery.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rcsbquery.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main function.</p>
+</dd></dl>
+
 </div>
 
 
