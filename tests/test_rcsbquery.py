@@ -35,7 +35,7 @@ def test_minimal():
     """
     Test a minimal query (only the organism).
     """
-    query = rcsbquery.generate_advanced_query(organism="Homo sapiens", rows=25)
+    query = rcsbquery.generate_advanced_query(organism="Homo sapiens")
     assert json.loads(query) == load_test_query_as_dict("query_homo_sapiens.json")
 
 
