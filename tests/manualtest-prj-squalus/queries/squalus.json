@@ -6,7 +6,7 @@
       "attribute": "rcsb_entity_source_organism.taxonomy_lineage.name",
       "operator": "contains_phrase",
       "negation": false,
-      "value": "Squalus acanthias"
+      "value": "Squalus"
     },
     "label": "text"
   },
@@ -14,7 +14,7 @@
   "request_options": {
     "paginate": {
       "start": 0,
-      "rows": 2
+      "rows": 999999
     },
     "results_content_type": [
       "experimental"
