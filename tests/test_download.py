@@ -21,6 +21,13 @@ HUMAN_INSULIN_ALPHAFOLD = "AF_AFP01308F1"
 HUMAN_INSULIN_ALPHAFOLD_SIZE = 72575
 
 
+def datafile(filename: str) -> str:
+    """
+    Get the path to a test file.
+    """
+    return os.path.join(os.path.dirname(__file__), "data", filename)
+
+
 @pytest.mark.webtest
 def test_download_404(tmp_path):
     """Test that if a pdb is not found, no exception is raised, but
@@ -68,9 +75,7 @@ def test_download_real_alphafold_pdb():
         os.path.getsize(dest) == HUMAN_INSULIN_ALPHAFOLD_SIZE
     ), "Wrong size for the downloaded file (?!)"
 
-    reference_file = os.path.join(
-        os.path.dirname(__file__), "test_AF-P01308-F1-model_v4.pdb"
-    )
+    reference_file = datafile("test_AF-P01308-F1-model_v4.pdb")
     with open(dest, "r", encoding="ascii") as file_pointer:
         content = file_pointer.read()
     with open(reference_file, "r", encoding="ascii") as file_pointer:
