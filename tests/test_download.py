@@ -45,6 +45,7 @@ def test_download_pdb_404(tmp_path):
     assert res == download.PDBDownloadResult(
         pdb_id="0000",
         pdb_url="https://files.rcsb.org/download/0000.pdb.gz",
+        pdb_title="",
         local_path=str(datadir / "0000.pdb.gz"),
         status_code=404,
     )
@@ -65,6 +66,7 @@ def test_download_real_pdb():
     assert res == download.PDBDownloadResult(
         pdb_id=pdb_id,
         pdb_url=f"https://files.rcsb.org/download/{pdb_id}.pdb",
+        pdb_title="HUMAN INSULIN",
         local_path=f"./{pdb_id}.pdb",
         status_code=200,
     )
@@ -85,6 +87,7 @@ def test_download_real_alphafold_pdb():
     assert res == download.PDBDownloadResult(
         pdb_id=pdb_id,
         pdb_url="https://alphafold.ebi.ac.uk/files/AF-P01308-F1-model_v4.pdb",
+        pdb_title="ALPHAFOLD MONOMER V2.0 PREDICTION FOR INSULIN (P01308)",
         local_path="./AF-P01308-F1-model_v4.pdb",
         status_code=200,
     )
@@ -115,6 +118,7 @@ def test_download_real_pdb_compressed():
     assert res == download.PDBDownloadResult(
         pdb_id=pdb_id,
         pdb_url=f"https://files.rcsb.org/download/{pdb_id}.pdb.gz",
+        pdb_title="",
         local_path=f"./{pdb_id}.pdb.gz",
         status_code=200,
     )

@@ -18,6 +18,7 @@ from typing import List
 import requests
 
 # My stuff
+import pdbparser
 from utils import _human_readable_time
 
 DOWNLOAD_URL_RCSB = "https://files.rcsb.org/download/"
@@ -33,7 +34,7 @@ DEFAULT_PROCESSES = 1
 CHUNK_LEN_PER_PROCESS = 20
 
 PDBDownloadResult = namedtuple(
-    "PDBDownloadResult", ["pdb_id", "pdb_url", "local_path", "status_code"]
+    "PDBDownloadResult", ["pdb_id", "pdb_url", "pdb_title", "local_path", "status_code"]
 )
 
 
@@ -165,9 +166,17 @@ def download_pdb(
     # Save the PDB file.
     with open(dest, "wb") as file_pointer:
         file_pointer.write(content)
+
+    title = (
+        ""
+        if dest.endswith(".gz")
+        else pdbparser.parse_title(content[:320].decode("utf-8").splitlines())
+    )
+
     return PDBDownloadResult(
         pdb_id=pdb_id,
         pdb_url=pdb_url,
+        pdb_title=title,
         local_path=dest,
         status_code=response.status_code,
     )
@@ -280,20 +289,25 @@ def download(
             # if the log level is higher than INFO.
             if pdb_res.status_code == 200:
                 logging.debug(
-                    "PDB file downloaded: id='%s', url='%s'",
+                    "PDB file downloaded: id='%s', url='%s', title='%s'",
                     pdb_res.pdb_id,
                     pdb_res.pdb_url,
+                    pdb_res.pdb_title,
                 )
             else:
                 logging.debug(
-                    "PDB file NOT FOUND : id='%s', url='%s'",
+                    "PDB file NOT FOUND : id='%s', url='%s', status_code=%d",
                     pdb_res.pdb_id,
                     pdb_res.pdb_url,
+                    pdb_res.status_code,
                 )
+                assert (
+                    pdb_res.status_code == 404
+                ), f"Unexpected status code: {pdb_res.status_code}"
                 n_not_found += 1
 
         downloaded_size += sum(
-            os.path.getsize(file_path) for _, _, file_path, _ in downloaded_chunk
+            os.path.getsize(file_path) for _, _, _, file_path, _ in downloaded_chunk
         )
         n_downloaded += len(chunk)
 
