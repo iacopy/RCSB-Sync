@@ -80,7 +80,7 @@ DirStatus = namedtuple(
 ProjectStatus = Dict[str, DirStatus]
 
 
-def pformat_status(project_status: ProjectStatus) -> str:
+def pformat_status(project_status: ProjectStatus) -> str:  # pragma: no cover
     """
     Create a nice string table with the status of the project.
 
@@ -313,7 +313,8 @@ def main(
     yes: bool = False,
     noop: bool = False,
     compressed: bool = False,
-):
+    summary: bool = False,
+):  # pylint: disable=too-many-arguments
     """
     Fetch the RCSB IDs from the RCSB website, and download the corresponding PDB files.
 
@@ -330,9 +331,10 @@ def main(
     project_status = project.get_status()
 
     # Print the status of the project.
-    print(project_dir)
-    print(f"Date: {str(datetime.date.today())}")
-    print(pformat_status(project_status))
+    if summary:  # pragma: no cover
+        print(project_dir)
+        print(f"Date: {str(datetime.date.today())}")
+        print(pformat_status(project_status))
 
     # Count the total number of files to be downloaded.
     total_tbd_ids = sum(
@@ -392,6 +394,11 @@ if __name__ == "__main__":
         action="store_true",
         help="download compressed PDB files (not available for AlphaFold DB)",
     )
+    # Add an option to print the database summary table
+    parser.add_argument(
+        "-s", "--summary", action="store_true", help="print the database summary table"
+    )
+
     parser.add_argument("-v", "--verbose", action="store_true", help="verbose mode")
     args = parser.parse_args()
 
@@ -419,4 +426,11 @@ if __name__ == "__main__":
     logging.debug("Starting script: %s", __file__)
     # Log the command line arguments.
     logging.debug("Command line arguments: %s", args)
-    main(args.project_dir, args.n_jobs, args.yes, args.noop, args.compressed)
+    main(
+        args.project_dir,
+        args.n_jobs,
+        args.yes,
+        args.noop,
+        args.compressed,
+        args.summary,
+    )
