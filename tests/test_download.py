@@ -84,8 +84,8 @@ def test_download_real_alphafold_pdb():
     res = download.download_pdb(pdb_id, directory=".", compressed=False)
     assert res == download.PDBDownloadResult(
         pdb_id=pdb_id,
-        pdb_url=f"https://alphafold.ebi.ac.uk/files/AF-P01308-F1-model_v4.pdb",
-        local_path=f"./AF-P01308-F1-model_v4.pdb",
+        pdb_url="https://alphafold.ebi.ac.uk/files/AF-P01308-F1-model_v4.pdb",
+        local_path="./AF-P01308-F1-model_v4.pdb",
         status_code=200,
     )
     dest = res.local_path
