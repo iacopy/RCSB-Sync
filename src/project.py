@@ -145,7 +145,9 @@ def log_dir_status(dir_status: DirStatus, query_name: str):
     )
     if dir_status.tbd_ids:
         logging.info(
-            "📥 %7d new files to be downloaded for query %s", len(dir_status.tbd_ids), query_name
+            "📥 %7d new files to be downloaded for query %s",
+            len(dir_status.tbd_ids),
+            query_name,
         )
     if dir_status.removed_ids:
         logging.info(
@@ -306,7 +308,11 @@ class Project:
 
 
 def main(
-    project_dir: str, n_jobs: int = 1, yes: bool = False, compressed: bool = False
+    project_dir: str,
+    n_jobs: int = 1,
+    yes: bool = False,
+    noop: bool = False,
+    compressed: bool = False,
 ):
     """
     Fetch the RCSB IDs from the RCSB website, and download the corresponding PDB files.
@@ -314,6 +320,8 @@ def main(
     :param project_dir: path to the project directory.
     :param n_jobs: number of parallel jobs to use.
     :param yes: if True, do not ask for confirmation before downloading the PDB files.
+    :param noop: if True, do not download the PDB files.
+    :param compressed: if True, download the compressed PDB files (.gz). Don't work with AlphaFold.
     """
     project = Project(project_dir)
     logging.debug("Project directory: %s", project_dir)
@@ -336,15 +344,21 @@ def main(
 
     logging.info("📥 Total new files to be downloaded: %d", total_tbd_ids)
 
-    # Download the PDB files corresponding to the RCSB PDB IDs which are not already in the project directory.
-    if total_tbd_ids:
-        if not yes:
-            answer = input(f"\nDo you want to download the {total_tbd_ids} PDB files? [y/N] ")
-            if answer.lower() != "y":
-                logging.info("User chose not to download the PDB files.")
-                return
+    # If "--noop" argument is given, exit.
+    if noop:
+        logging.debug("Exiting because of --noop argument.")
+        return
 
-        project.do_sync(project_status, n_jobs=n_jobs, compressed=compressed)
+    # Download the PDB files corresponding to the RCSB PDB IDs which are not already in the project directory.
+    if not yes:
+        answer = input(
+            f"\nDo you want to download the {total_tbd_ids} PDB files? [y/N] "
+        )
+        if answer.lower() != "y":
+            logging.info("User chose not to download the PDB files.")
+            return
+
+    project.do_sync(project_status, n_jobs=n_jobs, compressed=compressed)
 
 
 if __name__ == "__main__":
@@ -360,11 +374,18 @@ if __name__ == "__main__":
         default=DEFAULT_JOBS,
         help=f"the number of parallel jobs for downloading (default: {DEFAULT_JOBS}, max: {MAX_JOBS})",
     )
-    parser.add_argument(
+    yes_or_no = parser.add_mutually_exclusive_group()
+    yes_or_no.add_argument(
         "-y",
         "--yes",
         action="store_true",
         help="do not ask for confirmation before downloading",
+    )
+    yes_or_no.add_argument(
+        "-n",
+        "--noop",
+        action="store_true",
+        help="do not download new files if available",
     )
     parser.add_argument(
         "--compressed",
@@ -398,4 +419,4 @@ if __name__ == "__main__":
     logging.debug("Starting script: %s", __file__)
     # Log the command line arguments.
     logging.debug("Command line arguments: %s", args)
-    main(args.project_dir, args.n_jobs, args.yes, args.compressed)
+    main(args.project_dir, args.n_jobs, args.yes, args.noop, args.compressed)

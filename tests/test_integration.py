@@ -147,6 +147,31 @@ def test_project_no_updates(project_w_data_cleanup):
     check_data(project_dir)
 
 
+def test_project_noop(project_nodata_cleanup):
+    """
+    Test the option --noop.
+
+    There are files to download (not tested here),
+    but the --noop option should prevent the download.
+    """
+    project_dir = project_nodata_cleanup
+
+    # launch main with --noop
+    with patch("project.Project.do_sync") as mock_sync:
+        project.main(project_dir, noop=True)
+
+    # check that the sync function was *not* called (no download)
+    mock_sync.assert_not_called()
+
+    # Check that the data subdirectories are empty
+    data_dir = os.path.join(project_dir, "data")
+    assert sorted(os.listdir(data_dir)) == ["Rabbitpox_virus", "Radianthus_crispus"]
+    assert sorted(os.listdir(os.path.join(data_dir, "Rabbitpox_virus"))) == []
+    assert sorted(os.listdir(os.path.join(data_dir, "Radianthus_crispus"))) == []
+
+    # cleanup of downloaded files and cache (done by the fixture)
+
+
 # User input
 
 
