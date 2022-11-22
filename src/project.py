@@ -342,7 +342,7 @@ def main(
         logging.debug("Nothing to do.")
         return
 
-    logging.info("📥 Total new files to be downloaded: %d", total_tbd_ids)
+    logging.info("📥 Number of new pdb files to download overall: %7d", total_tbd_ids)
 
     # If "--noop" argument is given, exit.
     if noop:
