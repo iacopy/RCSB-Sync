@@ -289,14 +289,16 @@ def download(
             # if the log level is higher than INFO.
             if pdb_res.status_code == 200:
                 logging.debug(
-                    "PDB file downloaded: id='%s', url='%s', title='%s'",
+                    "event='PDB file downloaded', dir='%s', id='%s', url='%s', title='%s'",
+                    os.path.basename(directory),
                     pdb_res.pdb_id,
                     pdb_res.pdb_url,
                     pdb_res.pdb_title,
                 )
             else:
                 logging.debug(
-                    "PDB file NOT FOUND : id='%s', url='%s', status_code=%d",
+                    "event='PDB file NOT FOUND', dir='%s', id='%s', url='%s', status_code=%d",
+                    os.path.basename(directory),
                     pdb_res.pdb_id,
                     pdb_res.pdb_url,
                     pdb_res.status_code,
