@@ -136,6 +136,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.PDBDownloadResult"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../download.html#download.PDBDownloadResult.local_path"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.local_path</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../download.html#download.PDBDownloadResult.pdb_id"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../download.html#download.PDBDownloadResult.pdb_title"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_title</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../download.html#download.PDBDownloadResult.pdb_url"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_url</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../download.html#download.PDBDownloadResult.status_code"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.status_code</span></code></a></li>
 </ul>
@@ -221,6 +222,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.PDBDownloadResult"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../download.html#download.PDBDownloadResult.local_path"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.local_path</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../download.html#download.PDBDownloadResult.pdb_id"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../download.html#download.PDBDownloadResult.pdb_title"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_title</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../download.html#download.PDBDownloadResult.pdb_url"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_url</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../download.html#download.PDBDownloadResult.status_code"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.status_code</span></code></a></li>
 </ul>
@@ -314,6 +316,7 @@
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="c1"># My stuff</span>
+<span class="kn">import</span> <span class="nn">pdbparser</span>
 <span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">_human_readable_time</span>
 
 <span class="n">DOWNLOAD_URL_RCSB</span> <span class="o">=</span> <span class="s2">&quot;https://files.rcsb.org/download/&quot;</span>
@@ -329,7 +332,7 @@
 <span class="n">CHUNK_LEN_PER_PROCESS</span> <span class="o">=</span> <span class="mi">20</span>
 
 <span class="n">PDBDownloadResult</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span>
-    <span class="s2">&quot;PDBDownloadResult&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;pdb_id&quot;</span><span class="p">,</span> <span class="s2">&quot;pdb_url&quot;</span><span class="p">,</span> <span class="s2">&quot;local_path&quot;</span><span class="p">,</span> <span class="s2">&quot;status_code&quot;</span><span class="p">]</span>
+    <span class="s2">&quot;PDBDownloadResult&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;pdb_id&quot;</span><span class="p">,</span> <span class="s2">&quot;pdb_url&quot;</span><span class="p">,</span> <span class="s2">&quot;pdb_title&quot;</span><span class="p">,</span> <span class="s2">&quot;local_path&quot;</span><span class="p">,</span> <span class="s2">&quot;status_code&quot;</span><span class="p">]</span>
 <span class="p">)</span>
 
 
@@ -461,9 +464,17 @@
     <span class="c1"># Save the PDB file.</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_pointer</span><span class="p">:</span>
         <span class="n">file_pointer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+
+    <span class="n">title</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">dest</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.gz&quot;</span><span class="p">)</span>
+        <span class="k">else</span> <span class="n">pdbparser</span><span class="o">.</span><span class="n">parse_title</span><span class="p">(</span><span class="n">content</span><span class="p">[:</span><span class="mi">320</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span>
+    <span class="p">)</span>
+
     <span class="k">return</span> <span class="n">PDBDownloadResult</span><span class="p">(</span>
         <span class="n">pdb_id</span><span class="o">=</span><span class="n">pdb_id</span><span class="p">,</span>
         <span class="n">pdb_url</span><span class="o">=</span><span class="n">pdb_url</span><span class="p">,</span>
+        <span class="n">pdb_title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
         <span class="n">local_path</span><span class="o">=</span><span class="n">dest</span><span class="p">,</span>
         <span class="n">status_code</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span>
     <span class="p">)</span></div>
@@ -576,20 +587,25 @@
             <span class="c1"># if the log level is higher than INFO.</span>
             <span class="k">if</span> <span class="n">pdb_res</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-                    <span class="s2">&quot;PDB file downloaded: id=&#39;</span><span class="si">%s</span><span class="s2">&#39;, url=&#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;PDB file downloaded: id=&#39;</span><span class="si">%s</span><span class="s2">&#39;, url=&#39;</span><span class="si">%s</span><span class="s2">&#39;, title=&#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
                     <span class="n">pdb_res</span><span class="o">.</span><span class="n">pdb_id</span><span class="p">,</span>
                     <span class="n">pdb_res</span><span class="o">.</span><span class="n">pdb_url</span><span class="p">,</span>
+                    <span class="n">pdb_res</span><span class="o">.</span><span class="n">pdb_title</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-                    <span class="s2">&quot;PDB file NOT FOUND : id=&#39;</span><span class="si">%s</span><span class="s2">&#39;, url=&#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;PDB file NOT FOUND : id=&#39;</span><span class="si">%s</span><span class="s2">&#39;, url=&#39;</span><span class="si">%s</span><span class="s2">&#39;, status_code=</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span>
                     <span class="n">pdb_res</span><span class="o">.</span><span class="n">pdb_id</span><span class="p">,</span>
                     <span class="n">pdb_res</span><span class="o">.</span><span class="n">pdb_url</span><span class="p">,</span>
+                    <span class="n">pdb_res</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span>
                 <span class="p">)</span>
+                <span class="k">assert</span> <span class="p">(</span>
+                    <span class="n">pdb_res</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span>
+                <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected status code: </span><span class="si">{</span><span class="n">pdb_res</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="n">n_not_found</span> <span class="o">+=</span> <span class="mi">1</span>
 
         <span class="n">downloaded_size</span> <span class="o">+=</span> <span class="nb">sum</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">downloaded_chunk</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">downloaded_chunk</span>
         <span class="p">)</span>
         <span class="n">n_downloaded</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
 

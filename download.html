@@ -157,6 +157,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#download.PDBDownloadResult"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#download.PDBDownloadResult.local_path"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.local_path</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#download.PDBDownloadResult.pdb_id"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#download.PDBDownloadResult.pdb_title"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_title</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#download.PDBDownloadResult.pdb_url"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_url</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#download.PDBDownloadResult.status_code"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.status_code</span></code></a></li>
 </ul>
@@ -242,6 +243,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#download.PDBDownloadResult"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#download.PDBDownloadResult.local_path"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.local_path</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#download.PDBDownloadResult.pdb_id"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#download.PDBDownloadResult.pdb_title"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_title</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#download.PDBDownloadResult.pdb_url"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_url</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#download.PDBDownloadResult.status_code"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.status_code</span></code></a></li>
 </ul>
@@ -330,18 +332,24 @@ This is scaled automatically to the number of processes used to keep the progres
 
 <dl class="py class">
 <dt class="sig sig-object py" id="download.PDBDownloadResult">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><code class="sig-prename descclassname"><span class="pre">download.</span></code><code class="sig-name descname"><span class="pre">PDBDownloadResult</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">pdb_id</span></span></em>, <em><span class="n"><span class="pre">pdb_url</span></span></em>, <em><span class="n"><span class="pre">local_path</span></span></em>, <em><span class="n"><span class="pre">status_code</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#download.PDBDownloadResult" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><code class="sig-prename descclassname"><span class="pre">download.</span></code><code class="sig-name descname"><span class="pre">PDBDownloadResult</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">pdb_id</span></span></em>, <em><span class="n"><span class="pre">pdb_url</span></span></em>, <em><span class="n"><span class="pre">pdb_title</span></span></em>, <em><span class="n"><span class="pre">local_path</span></span></em>, <em><span class="n"><span class="pre">status_code</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#download.PDBDownloadResult" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="download.PDBDownloadResult.local_path">
 <code class="sig-name descname"><span class="pre">local_path</span></code><a class="headerlink" href="#download.PDBDownloadResult.local_path" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 2</p>
+<dd><p>Alias for field number 3</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="download.PDBDownloadResult.pdb_id">
 <code class="sig-name descname"><span class="pre">pdb_id</span></code><a class="headerlink" href="#download.PDBDownloadResult.pdb_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="download.PDBDownloadResult.pdb_title">
+<code class="sig-name descname"><span class="pre">pdb_title</span></code><a class="headerlink" href="#download.PDBDownloadResult.pdb_title" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -353,7 +361,7 @@ This is scaled automatically to the number of processes used to keep the progres
 <dl class="py attribute">
 <dt class="sig sig-object py" id="download.PDBDownloadResult.status_code">
 <code class="sig-name descname"><span class="pre">status_code</span></code><a class="headerlink" href="#download.PDBDownloadResult.status_code" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 3</p>
+<dd><p>Alias for field number 4</p>
 </dd></dl>
 
 </dd></dl>
