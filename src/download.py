@@ -242,6 +242,7 @@ def download(
     n_ids = len(pdb_ids)
     downloaded_size = 0
     n_downloaded = 0
+    n_not_found = 0
     start_time = time.time()
 
     chunk_len = CHUNK_LEN_PER_PROCESS * n_jobs
@@ -276,6 +277,7 @@ def download(
                     pdb_res.pdb_id,
                     pdb_res.pdb_url,
                 )
+                n_not_found += 1
 
         downloaded_size += sum(
             os.path.getsize(file_path) for _, _, file_path, _ in downloaded_chunk
@@ -289,8 +291,10 @@ def download(
     t_sec = time.time() - start_time
     speed = n_downloaded / t_sec
     logging.info(
-        "Downloaded %s PDB files in %s (%.2f/s)",
-        n_downloaded,
+        "Downloaded %s PDB files (%.3f GB), %d not found, in %s (%.2f/s) in this session",
+        n_downloaded - n_not_found,
+        downloaded_size / 1e9,
+        n_not_found,
         _human_readable_time(t_sec),
         speed,
     )
