@@ -145,15 +145,15 @@ def log_dir_status(dir_status: DirStatus, query_name: str):
     )
     if dir_status.tbd_ids:
         logging.info(
-            "📥 %7d new files to be downloaded for query %s",
-            len(dir_status.tbd_ids),
+            "📥 %-30s:   new files: %7d",
             query_name,
+            len(dir_status.tbd_ids),
         )
     if dir_status.removed_ids:
         logging.info(
-            "🗑️ %d local PDB not returned by RCSB for query %s",
-            len(dir_status.removed_ids),
+            "🗑️ %-30s: local PDB not returned by RCSB: %7d",
             query_name,
+            len(dir_status.removed_ids),
         )
         for id_ in dir_status.removed_ids:
             logging.info("old_id='%s', query='%s'", id_, query_name)
