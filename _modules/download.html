@@ -587,14 +587,16 @@
             <span class="c1"># if the log level is higher than INFO.</span>
             <span class="k">if</span> <span class="n">pdb_res</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-                    <span class="s2">&quot;PDB file downloaded: id=&#39;</span><span class="si">%s</span><span class="s2">&#39;, url=&#39;</span><span class="si">%s</span><span class="s2">&#39;, title=&#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;event=&#39;PDB file downloaded&#39;, dir=&#39;</span><span class="si">%s</span><span class="s2">&#39;, id=&#39;</span><span class="si">%s</span><span class="s2">&#39;, url=&#39;</span><span class="si">%s</span><span class="s2">&#39;, title=&#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">directory</span><span class="p">),</span>
                     <span class="n">pdb_res</span><span class="o">.</span><span class="n">pdb_id</span><span class="p">,</span>
                     <span class="n">pdb_res</span><span class="o">.</span><span class="n">pdb_url</span><span class="p">,</span>
                     <span class="n">pdb_res</span><span class="o">.</span><span class="n">pdb_title</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-                    <span class="s2">&quot;PDB file NOT FOUND : id=&#39;</span><span class="si">%s</span><span class="s2">&#39;, url=&#39;</span><span class="si">%s</span><span class="s2">&#39;, status_code=</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;event=&#39;PDB file NOT FOUND&#39;, dir=&#39;</span><span class="si">%s</span><span class="s2">&#39;, id=&#39;</span><span class="si">%s</span><span class="s2">&#39;, url=&#39;</span><span class="si">%s</span><span class="s2">&#39;, status_code=</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">directory</span><span class="p">),</span>
                     <span class="n">pdb_res</span><span class="o">.</span><span class="n">pdb_id</span><span class="p">,</span>
                     <span class="n">pdb_res</span><span class="o">.</span><span class="n">pdb_url</span><span class="p">,</span>
                     <span class="n">pdb_res</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span>
