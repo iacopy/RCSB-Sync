@@ -32,7 +32,9 @@ DEFAULT_PROCESSES = 1
 #: This is scaled automatically to the number of processes used to keep the progress updates constant.
 CHUNK_LEN_PER_PROCESS = 20
 
-PDBDownloadResult = namedtuple("PDBDownloadResult", ["pdb_id", "pdb_url", "local_path", "status_code"])
+PDBDownloadResult = namedtuple(
+    "PDBDownloadResult", ["pdb_id", "pdb_url", "local_path", "status_code"]
+)
 
 
 def _chunks(lst, num):
@@ -118,7 +120,9 @@ def get_download_url(pdb_id: str) -> str:
     return f"{DOWNLOAD_URL_RCSB}{pdb_id}.pdb"
 
 
-def download_pdb(pdb_id: str, directory: str, compressed: bool = True) -> PDBDownloadResult:
+def download_pdb(
+    pdb_id: str, directory: str, compressed: bool = True
+) -> PDBDownloadResult:
     """
     Download a PDB file from the RCSB website.
 
@@ -161,7 +165,12 @@ def download_pdb(pdb_id: str, directory: str, compressed: bool = True) -> PDBDow
     # Save the PDB file.
     with open(dest, "wb") as file_pointer:
         file_pointer.write(content)
-    return PDBDownloadResult(pdb_id=pdb_id, pdb_url=pdb_url, local_path=dest, status_code=response.status_code)
+    return PDBDownloadResult(
+        pdb_id=pdb_id,
+        pdb_url=pdb_url,
+        local_path=dest,
+        status_code=response.status_code,
+    )
 
 
 # Use multiprocessing to download (typically thousands of) PDB files in parallel.
@@ -270,7 +279,11 @@ def download(
             # Log the same but using %s instead of f-strings, to avoid formatting the string
             # if the log level is higher than INFO.
             if pdb_res.status_code == 200:
-                logging.debug("PDB file downloaded: id='%s', url='%s'", pdb_res.pdb_id, pdb_res.pdb_url)
+                logging.debug(
+                    "PDB file downloaded: id='%s', url='%s'",
+                    pdb_res.pdb_id,
+                    pdb_res.pdb_url,
+                )
             else:
                 logging.debug(
                     "PDB file NOT FOUND : id='%s', url='%s'",
@@ -289,12 +302,11 @@ def download(
 
     # Log the number of downloaded PDB files, the total time and the average speed.
     t_sec = time.time() - start_time
-    speed = n_downloaded / t_sec
     logging.info(
         "Downloaded %s PDB files (%.3f GB), %d not found, in %s (%.2f/s) in this session",
         n_downloaded - n_not_found,
         downloaded_size / 1e9,
         n_not_found,
         _human_readable_time(t_sec),
-        speed,
+        n_downloaded / t_sec,
     )
