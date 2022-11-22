@@ -9,6 +9,7 @@ of a given project, to keep the local working directory up-to-date).
 import logging
 import os
 import time
+from collections import namedtuple
 from functools import partial
 from multiprocessing import Pool
 from typing import List
@@ -30,6 +31,10 @@ DEFAULT_PROCESSES = 1
 #: It is the number of PDB files to download before a progress update is printed if a single process is used.
 #: This is scaled automatically to the number of processes used to keep the progress updates constant.
 CHUNK_LEN_PER_PROCESS = 20
+
+PDBDownloadResult = namedtuple(
+    "PDBDownloadResult", ["pdb_id", "pdb_url", "local_path", "status_code"]
+)
 
 
 def _chunks(lst, num):
@@ -115,7 +120,9 @@ def get_download_url(pdb_id: str) -> str:
     return f"{DOWNLOAD_URL_RCSB}{pdb_id}.pdb"
 
 
-def download_pdb(pdb_id: str, directory: str, compressed: bool = True) -> str:
+def download_pdb(
+    pdb_id: str, directory: str, compressed: bool = True
+) -> PDBDownloadResult:
     """
     Download a PDB file from the RCSB website.
 
@@ -158,7 +165,12 @@ def download_pdb(pdb_id: str, directory: str, compressed: bool = True) -> str:
     # Save the PDB file.
     with open(dest, "wb") as file_pointer:
         file_pointer.write(content)
-    return dest
+    return PDBDownloadResult(
+        pdb_id=pdb_id,
+        pdb_url=pdb_url,
+        local_path=dest,
+        status_code=response.status_code,
+    )
 
 
 # Use multiprocessing to download (typically thousands of) PDB files in parallel.
@@ -167,7 +179,7 @@ def parallel_download(
     directory: str,
     compressed: bool = True,
     n_jobs: int = DEFAULT_PROCESSES,
-) -> List[str]:
+) -> List[PDBDownloadResult]:
     """
     Download PDB files from the RCSB website in parallel.
 
@@ -182,7 +194,7 @@ def parallel_download(
             partial(download_pdb, directory=directory, compressed=compressed), pdb_ids
         )
         # remove null values
-        return [x for x in ret if x != ""]
+        return [pdb_res for pdb_res in ret if pdb_res.local_path != ""]
 
 
 def download(
@@ -239,6 +251,7 @@ def download(
     n_ids = len(pdb_ids)
     downloaded_size = 0
     n_downloaded = 0
+    n_not_found = 0
     start_time = time.time()
 
     chunk_len = CHUNK_LEN_PER_PROCESS * n_jobs
@@ -260,15 +273,27 @@ def download(
     for chunk in _chunks(pdb_ids, chunk_len):
         downloaded_chunk = parallel_download(chunk, directory, compressed, n_jobs)
 
-        # Log the downloaded PDB files
-        for pdb_file in downloaded_chunk:
-            if os.path.getsize(pdb_file) > 0:
-                logging.info("Downloaded: %s", pdb_file)
-            else:  # pragma: no cover (difficult to test with real queries, we need to mock the response)
-                logging.info("Empty size: %s", pdb_file)
+        # Log the downloaded PDB files.
+        for pdb_res in downloaded_chunk:
+            # logging.info(f"PDB file downloaded, id='{pdb_id}', url='{pdb_url}'")
+            # Log the same but using %s instead of f-strings, to avoid formatting the string
+            # if the log level is higher than INFO.
+            if pdb_res.status_code == 200:
+                logging.debug(
+                    "PDB file downloaded: id='%s', url='%s'",
+                    pdb_res.pdb_id,
+                    pdb_res.pdb_url,
+                )
+            else:
+                logging.debug(
+                    "PDB file NOT FOUND : id='%s', url='%s'",
+                    pdb_res.pdb_id,
+                    pdb_res.pdb_url,
+                )
+                n_not_found += 1
 
         downloaded_size += sum(
-            os.path.getsize(file_path) for file_path in downloaded_chunk
+            os.path.getsize(file_path) for _, _, file_path, _ in downloaded_chunk
         )
         n_downloaded += len(chunk)
 
@@ -277,10 +302,11 @@ def download(
 
     # Log the number of downloaded PDB files, the total time and the average speed.
     t_sec = time.time() - start_time
-    speed = n_downloaded / t_sec
     logging.info(
-        "Downloaded %s PDB files in %s (%.2f/s)",
-        n_downloaded,
+        "Downloaded %s PDB files (%.3f GB), %d not found, in %s (%.2f/s) in this session",
+        n_downloaded - n_not_found,
+        downloaded_size / 1e9,
+        n_not_found,
         _human_readable_time(t_sec),
-        speed,
+        n_downloaded / t_sec,
     )

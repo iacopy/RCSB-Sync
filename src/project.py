@@ -80,7 +80,7 @@ DirStatus = namedtuple(
 ProjectStatus = Dict[str, DirStatus]
 
 
-def pformat_status(project_status: ProjectStatus) -> str:
+def pformat_status(project_status: ProjectStatus) -> str:  # pragma: no cover
     """
     Create a nice string table with the status of the project.
 
@@ -126,6 +126,37 @@ def pformat_status(project_status: ProjectStatus) -> str:
         ],
         intfmt=",",
     ).replace(",", " ")
+
+
+def log_dir_status(dir_status: DirStatus, query_name: str):
+    """
+    Log the status of a directory.
+
+    :param dir_status: the status of the directory.
+    :param query_name: name of the query.
+    """
+    logging.debug(
+        "📁 %s: %d local, %d remote, %d to be downloaded, %d removed",
+        query_name,
+        dir_status.n_local,
+        dir_status.n_remote,
+        len(dir_status.tbd_ids),
+        len(dir_status.removed_ids),
+    )
+    if dir_status.tbd_ids:
+        logging.info(
+            "📥 %-30s:   new files: %7d",
+            query_name,
+            len(dir_status.tbd_ids),
+        )
+    if dir_status.removed_ids:
+        logging.info(
+            "🗑️ %-30s: local PDB not returned by RCSB: %7d",
+            query_name,
+            len(dir_status.removed_ids),
+        )
+        for id_ in dir_status.removed_ids:
+            logging.info("old_id='%s', query='%s'", id_, query_name)
 
 
 class Project:
@@ -206,9 +237,6 @@ class Project:
         query_name = os.path.splitext(os.path.basename(query_path))[0]
         # Get the list of PDB IDs from the RCSB website.
         remote_ids = self.fetch_or_cache_query(query_path)
-        # logging.debug(f"{query_name:<30}: {len(remote_ids):>7,} remote IDs.")
-        # Log the same but using %s to avoid the formatting if the log level is not DEBUG.
-        logging.debug("%s: %7d remote IDs", query_name, len(remote_ids))
         # Check which PDB files are already in the local project directory, and skip those to save time.
         local_ids = self.scan_query_data(query_name)
         n_local = len(local_ids)
@@ -218,31 +246,10 @@ class Project:
 
         # Remote structures to be downloaded.
         tbd_ids = [id_ for id_ in remote_ids if id_ not in local_ids]
-        logging.info(
-            "%s: %7d local, %7d remote, %7d to download",
-            query_name,
-            n_local,
-            n_remote,
-            len(tbd_ids),
-        )
+
         # Local files to be removed (some local PDB files are not in the RCSB database anymore,
         # so we mark them with the SUFFIX_REMOVED suffix).
         removed_ids = [id_ for id_ in local_ids if id_ not in remote_ids]
-
-        # Report the removed files.
-        if removed_ids:
-            # logging.info(
-            #     f"Locally found {len(removed_ids):,} files not returned by RCSB for {query_name}.")
-            logging.info(
-                "Locally found %d files not returned by RCSB for %s",
-                len(removed_ids),
-                query_name,
-            )
-            for id_ in removed_ids:
-                # logging.info(f"old_id='{id_}', query='{query_name}'")
-                # log the same but using %s to avoid the formatting if the log level is not INFO.
-                logging.info("old_id='%s', query='%s'", id_, query_name)
-
         return DirStatus(n_local, n_remote, tbd_ids, removed_ids, zero_ids)
 
     def get_status(self) -> ProjectStatus:
@@ -255,11 +262,12 @@ class Project:
         for query_file in (
             filename
             for filename in sorted(os.listdir(self.queries_dir))
-            if filename.endswith(".json")
+            if filename.endswith(".json") and not filename.startswith(".")
         ):
             name = os.path.splitext(query_file)[0]
             query_path = os.path.join(self.queries_dir, query_file)
             ret[name] = self.get_status_query(query_path)
+            log_dir_status(ret[name], name)
         return ret
 
     def mark_removed(self, query_name: str, to_remove: List[str]) -> None:
@@ -290,7 +298,7 @@ class Project:
         :param project_status: a dictionary mapping query names to DirStatus objects.
         :param n_jobs: number of parallel jobs to download the PDB files.
         """
-        logging.info("Starting synchronization.")
+        logging.debug("Starting synchronization.")
         for query_name, dir_status in project_status.items():
             self.mark_removed(query_name, dir_status.removed_ids)
             query_data_dir = os.path.join(self.data_dir, query_name)
@@ -300,42 +308,59 @@ class Project:
 
 
 def main(
-    project_dir: str, n_jobs: int = 1, yes: bool = False, compressed: bool = False
-):
+    project_dir: str,
+    n_jobs: int = 1,
+    yes: bool = False,
+    noop: bool = False,
+    compressed: bool = False,
+    summary: bool = False,
+):  # pylint: disable=too-many-arguments
     """
     Fetch the RCSB IDs from the RCSB website, and download the corresponding PDB files.
 
     :param project_dir: path to the project directory.
     :param n_jobs: number of parallel jobs to use.
     :param yes: if True, do not ask for confirmation before downloading the PDB files.
+    :param noop: if True, do not download the PDB files.
+    :param compressed: if True, download the compressed PDB files (.gz). Don't work with AlphaFold.
     """
     project = Project(project_dir)
-    logging.info("Project directory: %s", project_dir)
+    logging.debug("Project directory: %s", project_dir)
 
     # Fetch the remote RCSB IDs.
     project_status = project.get_status()
 
     # Print the status of the project.
-    print(project_dir)
-    print(f"Date: {str(datetime.date.today())}")
-    print(pformat_status(project_status))
-    print()
+    if summary:  # pragma: no cover
+        print(project_dir)
+        print(f"Date: {str(datetime.date.today())}")
+        print(pformat_status(project_status))
 
     # Count the total number of files to be downloaded.
     total_tbd_ids = sum(
         len(dir_status.tbd_ids) for dir_status in project_status.values()
     )
-    logging.info("📥 Total new files to be downloaded: %d", total_tbd_ids)
+    if total_tbd_ids == 0:
+        logging.debug("Nothing to do.")
+        return
+
+    logging.info("📥 Number of new pdb files to download overall: %7d", total_tbd_ids)
+
+    # If "--noop" argument is given, exit.
+    if noop:
+        logging.debug("Exiting because of --noop argument.")
+        return
 
     # Download the PDB files corresponding to the RCSB PDB IDs which are not already in the project directory.
-    if total_tbd_ids:
-        if not yes:
-            answer = input("Do you want to download the PDB files? [y/N] ")
-            if answer.lower() != "y":
-                logging.info("User chose not to download the PDB files.")
-                return
+    if not yes:
+        answer = input(
+            f"\nDo you want to download the {total_tbd_ids} PDB files? [y/N] "
+        )
+        if answer.lower() != "y":
+            logging.info("User chose not to download the PDB files.")
+            return
 
-        project.do_sync(project_status, n_jobs=n_jobs, compressed=compressed)
+    project.do_sync(project_status, n_jobs=n_jobs, compressed=compressed)
 
 
 if __name__ == "__main__":
@@ -351,17 +376,29 @@ if __name__ == "__main__":
         default=DEFAULT_JOBS,
         help=f"the number of parallel jobs for downloading (default: {DEFAULT_JOBS}, max: {MAX_JOBS})",
     )
-    parser.add_argument(
+    yes_or_no = parser.add_mutually_exclusive_group()
+    yes_or_no.add_argument(
         "-y",
         "--yes",
         action="store_true",
         help="do not ask for confirmation before downloading",
+    )
+    yes_or_no.add_argument(
+        "-n",
+        "--noop",
+        action="store_true",
+        help="do not download new files if available",
     )
     parser.add_argument(
         "--compressed",
         action="store_true",
         help="download compressed PDB files (not available for AlphaFold DB)",
     )
+    # Add an option to print the database summary table
+    parser.add_argument(
+        "-s", "--summary", action="store_true", help="print the database summary table"
+    )
+
     parser.add_argument("-v", "--verbose", action="store_true", help="verbose mode")
     args = parser.parse_args()
 
@@ -386,7 +423,14 @@ if __name__ == "__main__":
     # Verbosity level for the logger (0: INFO, 1: DEBUG).
     console.setLevel(logging.DEBUG if args.verbose else logging.INFO)
 
-    logging.info("Starting script: %s", __file__)
+    logging.debug("Starting script: %s", __file__)
     # Log the command line arguments.
     logging.debug("Command line arguments: %s", args)
-    main(args.project_dir, args.n_jobs, args.yes, args.compressed)
+    main(
+        args.project_dir,
+        args.n_jobs,
+        args.yes,
+        args.noop,
+        args.compressed,
+        args.summary,
+    )
