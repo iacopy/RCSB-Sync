@@ -1,0 +1,29 @@
+{
+    "query": {
+      "type": "terminal",
+      "label": "text",
+      "service": "text",
+      "parameters": {
+        "attribute": "rcsb_uniprot_protein.name.value",
+        "operator": "contains_phrase",
+        "value": "Major vault protein"
+      }
+    },
+    "return_type": "entry",
+    "request_options": {
+      "paginate": {
+        "start": 0,
+        "rows": 999999
+      },
+      "results_content_type": [
+        "experimental"
+      ],
+      "sort": [
+        {
+          "sort_by": "score",
+          "direction": "desc"
+        }
+      ],
+      "scoring_strategy": "combined"
+    }
+  }
