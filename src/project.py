@@ -219,7 +219,7 @@ class Project:
         # Remote structures to be downloaded.
         tbd_ids = [id_ for id_ in remote_ids if id_ not in local_ids]
         logging.info(
-            "%s: %7d local, %7d remote, %7d to download",
+            "%-25s: %7d local, %7d remote, %7d to download",
             query_name,
             n_local,
             n_remote,
