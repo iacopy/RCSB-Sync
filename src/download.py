@@ -269,10 +269,10 @@ def download(
             # Log the same but using %s instead of f-strings, to avoid formatting the string
             # if the log level is higher than INFO.
             if pdb_res.status_code == 200:
-                logging.info("PDB file downloaded: id='%s', url='%s'", pdb_res.pdb_id, pdb_res.pdb_url)
+                logging.debug("PDB file downloaded: id='%s', url='%s'", pdb_res.pdb_id, pdb_res.pdb_url)
             else:
-                logging.info(
-                    "PDB file NOT FOUND: id='%s', url='%s'",
+                logging.debug(
+                    "PDB file NOT FOUND : id='%s', url='%s'",
                     pdb_res.pdb_id,
                     pdb_res.pdb_url,
                 )
