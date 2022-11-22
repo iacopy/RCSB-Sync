@@ -414,7 +414,7 @@ if __name__ == "__main__":
     # define a Handler which writes INFO messages or higher to the sys.stderr
     console = logging.StreamHandler()
     # set a format which is simpler for console use
-    console_formatter = logging.Formatter("%(name)-12s: %(levelname)-8s %(message)s")
+    console_formatter = logging.Formatter("%(levelname)-8s %(message)s")
     # tell the handler to use this format
     console.setFormatter(console_formatter)
     # add the handler to the root logger
