@@ -2,8 +2,13 @@
 Unit tests for the rcsbquery module.
 """
 # Standard Library
+import filecmp
 import json
 import os
+import shutil
+
+# 3rd party
+import pytest
 
 # My stuff
 import rcsbquery
@@ -86,3 +91,43 @@ def test_query_nucleid_acid_only():
     """Test a query for nucleic acids only."""
     query = rcsbquery.generate_advanced_query(polymer_type="Nucleic acid (only)")
     assert json.loads(query) == load_test_query_as_dict("query_nucleic_acid_only.json")
+
+
+# Test the project creation based on yaml configuration files.
+@pytest.mark.parametrize(
+    "project_dirname", ["test-prj-config--exp", "test-prj-config--exp-csm"]
+)
+def test_project_creation(tmp_path, project_dirname):
+    """Test the creation of a project based on a yaml configuration file.
+
+    Each test directory must contain a file named "project.yml" and a "queries" directory
+    containing the expected queries to be generated (in json format) based on the project.yml file.
+
+    :param tmp_path: temporary directory for the test.
+    :param project_dirname: name of the directory containing the project configuration.
+    """
+    test_project_dir = os.path.join("tests", project_dirname)
+    yaml_file = os.path.join(test_project_dir, "project.yml")
+    # Copy the yaml file to the temporary directory.
+    shutil.copy(yaml_file, tmp_path)
+    dest_yml = os.path.join(tmp_path, "project.yml")
+    rcsbquery.prepare_queries(dest_yml)
+
+    # Compare the generated files with the expected ones.
+    common = os.listdir(os.path.join(test_project_dir, "queries"))
+    match, mismatch, errors = filecmp.cmpfiles(
+        os.path.join(test_project_dir, "queries"),
+        os.path.join(tmp_path, "queries"),
+        common,
+        shallow=False,
+    )
+    assert not errors
+    if mismatch:
+        for error in mismatch:
+            wrong_file = tmp_path / "queries" / error
+            assert os.path.exists(wrong_file)
+            # copy the wrong file to the testdata directory for inspection.
+            shutil.copy(wrong_file, test_project_dir)
+            print(f"Copied {wrong_file} to {test_project_dir} for inspection.")
+    assert not mismatch
+    assert match == common
