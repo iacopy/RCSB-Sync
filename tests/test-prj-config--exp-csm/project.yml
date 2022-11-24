@@ -1,0 +1,5 @@
+name: Test project (computational)
+taxa:
+  - Rattus norvegicus
+  - Mus musculus
+csm: true

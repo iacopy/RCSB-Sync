@@ -1,0 +1,5 @@
+name: Experimental project
+taxa:
+  - Homo sapiens
+  - Mus musculus
+csm: false

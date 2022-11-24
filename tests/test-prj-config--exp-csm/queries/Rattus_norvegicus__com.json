@@ -1,0 +1,56 @@
+{
+  "query": {
+    "type": "group",
+    "nodes": [
+      {
+        "type": "terminal",
+        "service": "text",
+        "parameters": {
+          "attribute": "entity_poly.rcsb_entity_polymer_type",
+          "operator": "exact_match",
+          "negation": false,
+          "value": "Protein"
+        }
+      },
+      {
+        "type": "terminal",
+        "service": "text",
+        "parameters": {
+          "attribute": "rcsb_comp_model_provenance.source_db",
+          "operator": "exact_match",
+          "negation": false,
+          "value": "AlphaFoldDB"
+        }
+      },
+      {
+        "type": "terminal",
+        "service": "text",
+        "parameters": {
+          "attribute": "rcsb_entity_source_organism.taxonomy_lineage.name",
+          "operator": "contains_phrase",
+          "negation": false,
+          "value": "Rattus norvegicus"
+        }
+      }
+    ],
+    "logical_operator": "and",
+    "label": "text"
+  },
+  "return_type": "entry",
+  "request_options": {
+    "paginate": {
+      "start": 0,
+      "rows": 999999
+    },
+    "results_content_type": [
+      "computational"
+    ],
+    "sort": [
+      {
+        "sort_by": "score",
+        "direction": "desc"
+      }
+    ],
+    "scoring_strategy": "combined"
+  }
+}

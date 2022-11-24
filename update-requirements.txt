@@ -17,6 +17,7 @@ pytest-cov
 responses
 types-requests
 types-tabulate
+types-PyYAML
 
 # documentation
 Sphinx
