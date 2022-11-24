@@ -33,7 +33,7 @@
               "attribute": "exptl.method",
               "operator": "exact_match",
               "negation": false,
-              "value": "ELECTRON MICROSCOPY"
+              "value": "SOLUTION NMR"
             }
           },
           {
@@ -43,7 +43,7 @@
               "attribute": "exptl.method",
               "operator": "exact_match",
               "negation": false,
-              "value": "SOLUTION NMR"
+              "value": "ELECTRON MICROSCOPY"
             }
           }
         ],
