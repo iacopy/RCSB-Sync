@@ -39,7 +39,9 @@ def check_data(project_dir, allow_cache=False):
     # The data directory should contain 2 directories ("Rabbitpox_virus" and "Radianthus_crispus")
     assert set(os.listdir(os.path.join(project_dir, "data"))) == {
         "Rabbitpox_virus",
+        "Rabbitpox_virus.ids",
         "Radianthus_crispus",
+        "Radianthus_crispus.ids",
     }
     # check the data subdirectories
     assert set(os.listdir(os.path.join(project_dir, "data", "Rabbitpox_virus"))) == {
@@ -81,7 +83,12 @@ def test_project_download(project_nodata_cleanup):
     # post-checks
     # The data directory should contain 2 directories ("Rabbitpox_virus" and "Radianthus_crispus")
     data_dir = os.path.join(project_dir, "data")
-    assert sorted(os.listdir(data_dir)) == ["Rabbitpox_virus", "Radianthus_crispus"]
+    assert sorted(os.listdir(data_dir)) == [
+        "Rabbitpox_virus",
+        "Rabbitpox_virus.ids",
+        "Radianthus_crispus",
+        "Radianthus_crispus.ids",
+    ]
     # The "Rabbitpox_virus" directory should contain 2 files.
     assert sorted(os.listdir(os.path.join(data_dir, "Rabbitpox_virus"))) == [
         "2FFK.pdb.gz",
@@ -94,6 +101,19 @@ def test_project_download(project_nodata_cleanup):
         "6DEJ.pdb.gz",
         "6Y1G.pdb.gz",
     ]
+
+    # Check that ids are stored in .ids files in the data directory
+    assert os.path.isfile(os.path.join(data_dir, "Rabbitpox_virus.ids"))
+    assert os.path.isfile(os.path.join(data_dir, "Radianthus_crispus.ids"))
+    # Check that the ids are correct
+    with open(
+        os.path.join(data_dir, "Rabbitpox_virus.ids"), encoding="ascii"
+    ) as file_pointer:
+        assert file_pointer.read().splitlines() == ["2FFK", "2FIN"]
+    with open(
+        os.path.join(data_dir, "Radianthus_crispus.ids"), encoding="ascii"
+    ) as file_pointer:
+        assert file_pointer.read().splitlines() == ["1YZW", "6DEJ", "6Y1G"]
 
     # cleanup of downloaded files and cache (done by the fixture)
 
@@ -111,12 +131,20 @@ def test_project_download_uncompressed(project_rabbitpox_nodata_cleanup):
     # post-checks
     # The data directory should contain 1 directory ("Rabbitpox_virus")
     data_dir = os.path.join(project_dir, "data")
-    assert sorted(os.listdir(data_dir)) == ["Rabbitpox_virus"]
+    assert sorted(os.listdir(data_dir)) == ["Rabbitpox_virus", "Rabbitpox_virus.ids"]
     # The "Rabbitpox_virus" directory should contain 2 files.
     assert sorted(os.listdir(os.path.join(data_dir, "Rabbitpox_virus"))) == [
         "2FFK.pdb",
         "2FIN.pdb",
     ]
+
+    # Check that ids are stored in txt files in the data directory
+    assert os.path.isfile(os.path.join(data_dir, "Rabbitpox_virus.ids"))
+    # Check that the ids are correct
+    with open(
+        os.path.join(data_dir, "Rabbitpox_virus.ids"), encoding="ascii"
+    ) as file_pointer:
+        assert file_pointer.read().splitlines() == ["2FFK", "2FIN"]
 
     # cleanup of downloaded files and cache (done by the fixture)
 
@@ -165,7 +193,12 @@ def test_project_noop(project_nodata_cleanup):
 
     # Check that the data subdirectories are empty
     data_dir = os.path.join(project_dir, "data")
-    assert sorted(os.listdir(data_dir)) == ["Rabbitpox_virus", "Radianthus_crispus"]
+    assert sorted(os.listdir(data_dir)) == [
+        "Rabbitpox_virus",
+        "Rabbitpox_virus.ids",
+        "Radianthus_crispus",
+        "Radianthus_crispus.ids",
+    ]
     assert sorted(os.listdir(os.path.join(data_dir, "Rabbitpox_virus"))) == []
     assert sorted(os.listdir(os.path.join(data_dir, "Radianthus_crispus"))) == []
 
