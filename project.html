@@ -427,11 +427,14 @@ and skip them.</li>
 <dt class="sig sig-object py" id="project.Project.fetch_or_cache_query">
 <code class="sig-name descname"><span class="pre">fetch_or_cache_query</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">query_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/project.html#Project.fetch_or_cache_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.Project.fetch_or_cache_query" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetch the RCSB IDs from the RCSB website.</p>
+<p>Side effect: create a file with the list of IDs in the data directory.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of RCSB IDs.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>query_path</strong> – path to the query file.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of RCSB IDs.</td>
 </tr>
 </tbody>
 </table>
@@ -567,7 +570,7 @@ and skip them.</li>
   <div id="footer-row" class="row">
 
     <div class="col-md-12">
-        <span title="Built on 2022-11-22" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
+        <span title="Built on 2022-11-28" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
         Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0 and the
         <a href="https://pypi.org/project/sphinx-sizzle-theme/"
 
