@@ -198,7 +198,12 @@ def prepare_queries(yaml_filename: str) -> None:
     """
     Load a yaml file and create the query files for the project directory.
     """
-    project_dir = os.path.dirname(yaml_filename)
+    if os.path.isfile(yaml_filename):
+        project_dir = os.path.dirname(yaml_filename)
+    elif os.path.isdir(yaml_filename):
+        project_dir = yaml_filename
+        yaml_filename = os.path.join(project_dir, "project.yml")
+
     with open(yaml_filename, "r", encoding="utf-8") as file:
         data = yaml.load(file, Loader=SafeLoader)
 
