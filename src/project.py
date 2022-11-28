@@ -217,10 +217,21 @@ class Project:
         """
         Fetch the RCSB IDs from the RCSB website.
 
+        Side effect: create a file with the list of IDs in the data directory.
+
+        :param query_path: path to the query file.
         :return: List of RCSB IDs.
         """
         # Get the list of PDB IDs from the RCSB website, given an advanced query in json format.
-        return rcsbids.search_and_download_ids(query_path)
+        ret = rcsbids.search_and_download_ids(query_path)
+
+        # Side effect: store the list of PDB IDs in a file in the data directory.
+        query_name = os.path.splitext(os.path.basename(query_path))[0]
+        ids_file = os.path.join(self.data_dir, f"{query_name}.ids")
+        with open(ids_file, "w", encoding="ascii") as file:
+            file.write("\n".join(ret))
+
+        return ret
 
     def get_status_query(self, query_path: str) -> DirStatus:
         """
