@@ -62,6 +62,7 @@ from tabulate import tabulate
 # My stuff
 import download
 import rcsbids
+import rcsbquery
 
 IDS_SEPARATOR = "\n"
 SUFFIX_REMOVED = ".obsolete"
@@ -173,6 +174,18 @@ class Project:
         if not os.path.isdir(self.data_dir):
             logging.info("Creating data directory: %s", self.data_dir)
             os.mkdir(self.data_dir)
+
+        if not os.path.isdir(self.queries_dir):
+            # search for a project.yml to generate the queries
+            try:
+                rcsbquery.prepare_queries(self.directory)
+            except FileNotFoundError:
+                logging.error(
+                    "No queries directory found in %s, and no project.yml file found.",
+                    self.directory,
+                )
+                return
+            logging.info("Created queries directory: %s", self.queries_dir)
 
         # Create the query data directories if they don't exist.
         for query_file in (
