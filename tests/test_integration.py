@@ -40,8 +40,10 @@ def check_data(project_dir, allow_cache=False):
     assert set(os.listdir(os.path.join(project_dir, "data"))) == {
         "Rabbitpox_virus",
         "Rabbitpox_virus.ids",
+        "Rabbitpox_virus.sh",
         "Radianthus_crispus",
         "Radianthus_crispus.ids",
+        "Radianthus_crispus.sh",
     }
     # check the data subdirectories
     assert set(os.listdir(os.path.join(project_dir, "data", "Rabbitpox_virus"))) == {
@@ -86,8 +88,10 @@ def test_project_download(project_nodata_cleanup):
     assert sorted(os.listdir(data_dir)) == [
         "Rabbitpox_virus",
         "Rabbitpox_virus.ids",
+        "Rabbitpox_virus.sh",
         "Radianthus_crispus",
         "Radianthus_crispus.ids",
+        "Radianthus_crispus.sh",
     ]
     # The "Rabbitpox_virus" directory should contain 2 files.
     assert sorted(os.listdir(os.path.join(data_dir, "Rabbitpox_virus"))) == [
@@ -131,7 +135,11 @@ def test_project_download_uncompressed(project_rabbitpox_nodata_cleanup):
     # post-checks
     # The data directory should contain 1 directory ("Rabbitpox_virus")
     data_dir = os.path.join(project_dir, "data")
-    assert sorted(os.listdir(data_dir)) == ["Rabbitpox_virus", "Rabbitpox_virus.ids"]
+    assert sorted(os.listdir(data_dir)) == [
+        "Rabbitpox_virus",
+        "Rabbitpox_virus.ids",
+        "Rabbitpox_virus.sh",
+    ]
     # The "Rabbitpox_virus" directory should contain 2 files.
     assert sorted(os.listdir(os.path.join(data_dir, "Rabbitpox_virus"))) == [
         "2FFK.pdb",
@@ -196,8 +204,10 @@ def test_project_noop(project_nodata_cleanup):
     assert sorted(os.listdir(data_dir)) == [
         "Rabbitpox_virus",
         "Rabbitpox_virus.ids",
+        "Rabbitpox_virus.sh",
         "Radianthus_crispus",
         "Radianthus_crispus.ids",
+        "Radianthus_crispus.sh",
     ]
     assert sorted(os.listdir(os.path.join(data_dir, "Rabbitpox_virus"))) == []
     assert sorted(os.listdir(os.path.join(data_dir, "Radianthus_crispus"))) == []

@@ -231,6 +231,9 @@ class Project:
         with open(ids_file, "w", encoding="ascii") as file:
             file.write("\n".join(ret))
 
+        # Also create a bash script to download the PDB files.
+        download.ids_to_sh(ids_path=ids_file)
+
         return ret
 
     def get_status_query(self, query_path: str) -> DirStatus:
