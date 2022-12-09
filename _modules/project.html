@@ -142,10 +142,12 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.alphafold_id_to_file"><code class="docutils literal notranslate"><span class="pre">alphafold_id_to_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.create_download_script"><code class="docutils literal notranslate"><span class="pre">create_download_script()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.download_pdb"><code class="docutils literal notranslate"><span class="pre">download_pdb()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.filename_to_pdb_id"><code class="docutils literal notranslate"><span class="pre">filename_to_pdb_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.get_download_url"><code class="docutils literal notranslate"><span class="pre">get_download_url()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.ids_to_sh"><code class="docutils literal notranslate"><span class="pre">ids_to_sh()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.is_alphafold_id"><code class="docutils literal notranslate"><span class="pre">is_alphafold_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.parallel_download"><code class="docutils literal notranslate"><span class="pre">parallel_download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.pdb_id_to_filename"><code class="docutils literal notranslate"><span class="pre">pdb_id_to_filename()</span></code></a></li>
@@ -228,10 +230,12 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.alphafold_id_to_file"><code class="docutils literal notranslate"><span class="pre">alphafold_id_to_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.create_download_script"><code class="docutils literal notranslate"><span class="pre">create_download_script()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.download_pdb"><code class="docutils literal notranslate"><span class="pre">download_pdb()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.filename_to_pdb_id"><code class="docutils literal notranslate"><span class="pre">filename_to_pdb_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.get_download_url"><code class="docutils literal notranslate"><span class="pre">get_download_url()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.ids_to_sh"><code class="docutils literal notranslate"><span class="pre">ids_to_sh()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.is_alphafold_id"><code class="docutils literal notranslate"><span class="pre">is_alphafold_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.parallel_download"><code class="docutils literal notranslate"><span class="pre">parallel_download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.pdb_id_to_filename"><code class="docutils literal notranslate"><span class="pre">pdb_id_to_filename()</span></code></a></li>
@@ -529,6 +533,9 @@
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">ids_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
             <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ret</span><span class="p">))</span>
 
+        <span class="c1"># Also create a bash script to download the PDB files.</span>
+        <span class="n">download</span><span class="o">.</span><span class="n">ids_to_sh</span><span class="p">(</span><span class="n">ids_path</span><span class="o">=</span><span class="n">ids_file</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">ret</span></div>
 
 <div class="viewcode-block" id="Project.get_status_query"><a class="viewcode-back" href="../project.html#project.Project.get_status_query">[docs]</a>    <span class="k">def</span> <span class="nf">get_status_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DirStatus</span><span class="p">:</span>
@@ -753,7 +760,7 @@
   <div id="footer-row" class="row">
 
     <div class="col-md-12">
-        <span title="Built on 2022-11-28" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
+        <span title="Built on 2022-12-09" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
         Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0 and the
         <a href="https://pypi.org/project/sphinx-sizzle-theme/"
 

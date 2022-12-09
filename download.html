@@ -163,10 +163,12 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#download.alphafold_id_to_file"><code class="docutils literal notranslate"><span class="pre">alphafold_id_to_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#download.create_download_script"><code class="docutils literal notranslate"><span class="pre">create_download_script()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#download.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#download.download_pdb"><code class="docutils literal notranslate"><span class="pre">download_pdb()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#download.filename_to_pdb_id"><code class="docutils literal notranslate"><span class="pre">filename_to_pdb_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#download.get_download_url"><code class="docutils literal notranslate"><span class="pre">get_download_url()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#download.ids_to_sh"><code class="docutils literal notranslate"><span class="pre">ids_to_sh()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#download.is_alphafold_id"><code class="docutils literal notranslate"><span class="pre">is_alphafold_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#download.parallel_download"><code class="docutils literal notranslate"><span class="pre">parallel_download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#download.pdb_id_to_filename"><code class="docutils literal notranslate"><span class="pre">pdb_id_to_filename()</span></code></a></li>
@@ -249,10 +251,12 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#download.alphafold_id_to_file"><code class="docutils literal notranslate"><span class="pre">alphafold_id_to_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#download.create_download_script"><code class="docutils literal notranslate"><span class="pre">create_download_script()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#download.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#download.download_pdb"><code class="docutils literal notranslate"><span class="pre">download_pdb()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#download.filename_to_pdb_id"><code class="docutils literal notranslate"><span class="pre">filename_to_pdb_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#download.get_download_url"><code class="docutils literal notranslate"><span class="pre">get_download_url()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#download.ids_to_sh"><code class="docutils literal notranslate"><span class="pre">ids_to_sh()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#download.is_alphafold_id"><code class="docutils literal notranslate"><span class="pre">is_alphafold_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#download.parallel_download"><code class="docutils literal notranslate"><span class="pre">parallel_download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#download.pdb_id_to_filename"><code class="docutils literal notranslate"><span class="pre">pdb_id_to_filename()</span></code></a></li>
@@ -382,6 +386,28 @@ This is scaled automatically to the number of processes used to keep the progres
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="download.create_download_script">
+<code class="sig-prename descclassname"><span class="pre">download.</span></code><code class="sig-name descname"><span class="pre">create_download_script</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">pdb_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/download.html#create_download_script"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#download.create_download_script" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a bash script to download the PDB files.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>pdb_ids</strong> – list of PDB IDs to download</li>
+<li><strong>directory</strong> – directory where to save the script</li>
+<li><strong>name</strong> – name of the script and the directory where to download the PDB files</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">path to the bash script</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="download.download">
 <code class="sig-prename descclassname"><span class="pre">download.</span></code><code class="sig-name descname"><span class="pre">download</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">pdb_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em><span class="n"><span class="pre">compressed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/download.html#download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#download.download" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download PDB files from the RCSB website in parallel, reporting the progress.</p>
@@ -453,6 +479,23 @@ each process gets the same number of PDB IDs to download.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="download.ids_to_sh">
+<code class="sig-prename descclassname"><span class="pre">download.</span></code><code class="sig-name descname"><span class="pre">ids_to_sh</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">ids_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/download.html#ids_to_sh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#download.ids_to_sh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a file containing a list of PDB IDs to a bash script to download the PDB files.</p>
+<p>The script is saved in the same directory as the input file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ids_path</strong> – path to the file containing the PDB IDs</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">path to the bash script</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="download.is_alphafold_id">
 <code class="sig-prename descclassname"><span class="pre">download.</span></code><code class="sig-name descname"><span class="pre">is_alphafold_id</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">pdb_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/download.html#is_alphafold_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#download.is_alphafold_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether the PDB ID is an AlphaFold ID.</p>
@@ -505,7 +548,7 @@ each process gets the same number of PDB IDs to download.</p>
   <div id="footer-row" class="row">
 
     <div class="col-md-12">
-        <span title="Built on 2022-11-28" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
+        <span title="Built on 2022-12-09" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
         Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0 and the
         <a href="https://pypi.org/project/sphinx-sizzle-theme/"
 

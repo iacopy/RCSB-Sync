@@ -142,10 +142,12 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.alphafold_id_to_file"><code class="docutils literal notranslate"><span class="pre">alphafold_id_to_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.create_download_script"><code class="docutils literal notranslate"><span class="pre">create_download_script()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.download_pdb"><code class="docutils literal notranslate"><span class="pre">download_pdb()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.filename_to_pdb_id"><code class="docutils literal notranslate"><span class="pre">filename_to_pdb_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.get_download_url"><code class="docutils literal notranslate"><span class="pre">get_download_url()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.ids_to_sh"><code class="docutils literal notranslate"><span class="pre">ids_to_sh()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.is_alphafold_id"><code class="docutils literal notranslate"><span class="pre">is_alphafold_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.parallel_download"><code class="docutils literal notranslate"><span class="pre">parallel_download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.pdb_id_to_filename"><code class="docutils literal notranslate"><span class="pre">pdb_id_to_filename()</span></code></a></li>
@@ -228,10 +230,12 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.alphafold_id_to_file"><code class="docutils literal notranslate"><span class="pre">alphafold_id_to_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.create_download_script"><code class="docutils literal notranslate"><span class="pre">create_download_script()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.download_pdb"><code class="docutils literal notranslate"><span class="pre">download_pdb()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.filename_to_pdb_id"><code class="docutils literal notranslate"><span class="pre">filename_to_pdb_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.get_download_url"><code class="docutils literal notranslate"><span class="pre">get_download_url()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.ids_to_sh"><code class="docutils literal notranslate"><span class="pre">ids_to_sh()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.is_alphafold_id"><code class="docutils literal notranslate"><span class="pre">is_alphafold_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.parallel_download"><code class="docutils literal notranslate"><span class="pre">parallel_download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.pdb_id_to_filename"><code class="docutils literal notranslate"><span class="pre">pdb_id_to_filename()</span></code></a></li>
@@ -302,8 +306,11 @@
 <span class="sd">While you can use this module directly, it is intended to be used by the</span>
 <span class="sd">higher-level modules (e.g. the ``project`` module which downloads PDB files</span>
 <span class="sd">of a given project, to keep the local working directory up-to-date).</span>
+
+
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="c1"># Standard Library</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">time</span>
@@ -417,6 +424,44 @@
     <span class="k">if</span> <span class="n">is_alphafold_id</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">DOWNLOAD_URL_ALPHAFOLD</span> <span class="o">+</span> <span class="n">alphafold_id_to_file</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">)</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">DOWNLOAD_URL_RCSB</span><span class="si">}{</span><span class="n">pdb_id</span><span class="si">}</span><span class="s2">.pdb&quot;</span></div>
+
+
+<div class="viewcode-block" id="create_download_script"><a class="viewcode-back" href="../download.html#download.create_download_script">[docs]</a><span class="k">def</span> <span class="nf">create_download_script</span><span class="p">(</span>
+    <span class="n">pdb_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a bash script to download the PDB files.</span>
+
+<span class="sd">    :param pdb_ids: list of PDB IDs to download</span>
+<span class="sd">    :param directory: directory where to save the script</span>
+<span class="sd">    :param name: name of the script and the directory where to download the PDB files</span>
+<span class="sd">    :return: path to the bash script</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">script_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.sh&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">script_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_pointer</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">pdb_id</span> <span class="ow">in</span> <span class="n">pdb_ids</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">}:</span>
+                <span class="n">file_pointer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;wget </span><span class="si">{</span><span class="n">get_download_url</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">file_pointer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;wget </span><span class="si">{</span><span class="n">get_download_url</span><span class="p">(</span><span class="n">pdb_id</span><span class="p">)</span><span class="si">}</span><span class="s2"> -P </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="n">script_path</span><span class="p">,</span> <span class="mo">0o755</span><span class="p">)</span>  <span class="c1"># make the script executable</span>
+    <span class="k">return</span> <span class="n">script_path</span></div>
+
+
+<div class="viewcode-block" id="ids_to_sh"><a class="viewcode-back" href="../download.html#download.ids_to_sh">[docs]</a><span class="k">def</span> <span class="nf">ids_to_sh</span><span class="p">(</span><span class="n">ids_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a file containing a list of PDB IDs to a bash script to download the PDB files.</span>
+
+<span class="sd">    The script is saved in the same directory as the input file.</span>
+
+<span class="sd">    :param ids_path: path to the file containing the PDB IDs</span>
+<span class="sd">    :return: path to the bash script</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pdb_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">ids_path</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">pdb_ids</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">file</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">ids_path</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">create_download_script</span><span class="p">(</span><span class="n">pdb_ids</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">ids_path</span><span class="p">),</span> <span class="n">name</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="download_pdb"><a class="viewcode-back" href="../download.html#download.download_pdb">[docs]</a><span class="k">def</span> <span class="nf">download_pdb</span><span class="p">(</span>
@@ -624,6 +669,45 @@
         <span class="n">_human_readable_time</span><span class="p">(</span><span class="n">t_sec</span><span class="p">),</span>
         <span class="n">n_downloaded</span> <span class="o">/</span> <span class="n">t_sec</span><span class="p">,</span>
     <span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;pdb_ids_file&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to a file containing a list of PDB IDs, one per line.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--create_script&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Whether to create a bash script to download the PDB files.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-d&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--directory&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;directory to store the downloaded files (default: current directory)&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-c&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--compressed&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;download compressed files (default: uncompressed)&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-j&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--n_jobs&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">DEFAULT_PROCESSES</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;number of processes to use (default: </span><span class="si">{</span><span class="n">DEFAULT_PROCESSES</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">create_script</span><span class="p">:</span>
+        <span class="n">ids_to_sh</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">pdb_ids_file</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">download</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">pdb_ids</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">compressed</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">n_jobs</span><span class="p">)</span>
 </pre></div>
 
           </div>
@@ -634,7 +718,7 @@
   <div id="footer-row" class="row">
 
     <div class="col-md-12">
-        <span title="Built on 2022-11-28" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
+        <span title="Built on 2022-12-09" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
         Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0 and the
         <a href="https://pypi.org/project/sphinx-sizzle-theme/"
 
