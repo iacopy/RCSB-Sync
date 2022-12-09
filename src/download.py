@@ -4,8 +4,11 @@ Download PDB files from the RCSB website.
 While you can use this module directly, it is intended to be used by the
 higher-level modules (e.g. the ``project`` module which downloads PDB files
 of a given project, to keep the local working directory up-to-date).
+
+
 """
 # Standard Library
+import argparse
 import logging
 import os
 import time
@@ -119,6 +122,44 @@ def get_download_url(pdb_id: str) -> str:
     if is_alphafold_id(pdb_id):
         return DOWNLOAD_URL_ALPHAFOLD + alphafold_id_to_file(pdb_id)
     return f"{DOWNLOAD_URL_RCSB}{pdb_id}.pdb"
+
+
+def create_download_script(
+    pdb_ids: List[str], directory: str, name: str
+) -> str:  # pragma: no cover
+    """
+    Create a bash script to download the PDB files.
+
+    :param pdb_ids: list of PDB IDs to download
+    :param directory: directory where to save the script
+    :param name: name of the script and the directory where to download the PDB files
+    :return: path to the bash script
+    """
+    script_path = os.path.join(directory, f"{name}.sh")
+    with open(script_path, "w", encoding="ascii") as file_pointer:
+        for pdb_id in pdb_ids:
+            if name in {".", ""}:
+                file_pointer.write(f"wget {get_download_url(pdb_id)}\n")
+            else:
+                file_pointer.write(f"wget {get_download_url(pdb_id)} -P {name}\n")
+    os.chmod(script_path, 0o755)  # make the script executable
+    return script_path
+
+
+def ids_to_sh(ids_path: str) -> str:  # pragma: no cover
+    """
+    Convert a file containing a list of PDB IDs to a bash script to download the PDB files.
+
+    The script is saved in the same directory as the input file.
+
+    :param ids_path: path to the file containing the PDB IDs
+    :return: path to the bash script
+    """
+    pdb_ids: List[str] = []
+    with open(ids_path, encoding="ascii") as file:
+        pdb_ids.extend(line.strip() for line in file)
+    name = os.path.splitext(os.path.basename(ids_path))[0]
+    return create_download_script(pdb_ids, os.path.dirname(ids_path), name)
 
 
 def download_pdb(
@@ -326,3 +367,42 @@ def download(
         _human_readable_time(t_sec),
         n_downloaded / t_sec,
     )
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "pdb_ids_file",
+        type=str,
+        help="Path to a file containing a list of PDB IDs, one per line.",
+    )
+    parser.add_argument(
+        "--create_script",
+        action="store_true",
+        help="Whether to create a bash script to download the PDB files.",
+    )
+    parser.add_argument(
+        "-d",
+        "--directory",
+        default=".",
+        help="directory to store the downloaded files (default: current directory)",
+    )
+    parser.add_argument(
+        "-c",
+        "--compressed",
+        action="store_true",
+        help="download compressed files (default: uncompressed)",
+    )
+    parser.add_argument(
+        "-j",
+        "--n_jobs",
+        type=int,
+        default=DEFAULT_PROCESSES,
+        help=f"number of processes to use (default: {DEFAULT_PROCESSES})",
+    )
+    args = parser.parse_args()
+
+    if args.create_script:
+        ids_to_sh(args.pdb_ids_file)
+    else:
+        download(args.pdb_ids, args.directory, args.compressed, args.n_jobs)
