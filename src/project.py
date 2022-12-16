@@ -160,6 +160,12 @@ def log_dir_status(dir_status: DirStatus, query_name: str):
             logging.info("old_id='%s', query='%s'", id_, query_name)
 
 
+class ProjectInitError(Exception):
+    """
+    Error raised when the project cannot be initialized.
+    """
+
+
 class Project:
     """
     Keep synced the data directory with the remote RCSB database.
@@ -178,14 +184,16 @@ class Project:
         if not os.path.isdir(self.queries_dir):
             # search for a project.yml to generate the queries
             try:
-                rcsbquery.prepare_queries(self.directory)
-            except FileNotFoundError:
+                query_files = rcsbquery.prepare_queries(self.directory)
+            except FileNotFoundError as exc:
                 logging.error(
                     "No queries directory found in %s, and no project.yml file found.",
                     self.directory,
                 )
-                return
-            logging.info("Created queries directory: %s", self.queries_dir)
+                raise ProjectInitError(
+                    f"No queries directory found in {self.directory}, and no project.yml file found."
+                ) from exc
+            logging.info("%d queries created", len(query_files))
 
         # Create the query data directories if they don't exist.
         for query_file in (

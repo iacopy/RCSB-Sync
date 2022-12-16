@@ -194,13 +194,28 @@ def extend_parser(parser):  # pragma: no cover
     return parser
 
 
-def prepare_queries(yaml_filename: str) -> None:
+def prepare_queries(yaml_filename: str) -> List[str]:
     """
     Load a yaml file and create the query files for the project directory.
+
+    The yaml file should contain the following keys:
+    - name: the name of the project
+    - taxa: a list of taxa to search for
+    - csm: a boolean indicating whether to include computed structure models (CSMs) in the search results
+
+    The yaml file can be either a project directory or a project.yml file.
+    The queries will be saved in the queries directory of the project directory.
+
+    :param yaml_filename: the yaml file or the project directory
+    :return: the list of query files created
     """
+    #: the list of query files created
+    query_files = []
+
     if os.path.isfile(yaml_filename):
         project_dir = os.path.dirname(yaml_filename)
-    elif os.path.isdir(yaml_filename):
+    else:
+        assert os.path.isdir(yaml_filename)
         project_dir = yaml_filename
         yaml_filename = os.path.join(project_dir, "project.yml")
 
@@ -210,7 +225,6 @@ def prepare_queries(yaml_filename: str) -> None:
     queries_dir = os.path.join(project_dir, "queries")
     os.makedirs(queries_dir, exist_ok=True)
 
-    project_name = data["name"]
     taxa = data.get("taxa", [])
     csm = data.get("csm", False)
     rc_types = [("computational",), ("experimental",)] if csm else [("experimental",)]
@@ -231,8 +245,10 @@ def prepare_queries(yaml_filename: str) -> None:
             query_filename = os.path.join(queries_dir, f"{query_name}.json")
             with open(query_filename, "w", encoding="utf-8") as file:
                 file.write(adv_query)
+            query_files.append(query_filename)
 
-    logging.info("Created %d queries for %s.", len(taxa) * len(rc_types), project_name)
+    logging.info("Created %d queries for %s.", len(taxa) * len(rc_types), data["name"])
+    return query_files
 
 
 def args_to_query(args):  # pragma: no cover

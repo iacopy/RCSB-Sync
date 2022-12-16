@@ -93,6 +93,24 @@ def test_query_nucleid_acid_only():
     assert json.loads(query) == load_test_query_as_dict("query_nucleic_acid_only.json")
 
 
+def test_prepare_query__dir():
+    """Test that the prepare_query function works with a directory as input."""
+    query_files = rcsbquery.prepare_queries("tests/test-prj-config--exp")
+    assert query_files == [
+        "tests/test-prj-config--exp/queries/Homo_sapiens__exp.json",
+        "tests/test-prj-config--exp/queries/Mus_musculus__exp.json",
+    ]
+
+
+def test_prepare_query__file():
+    """Test that the prepare_query function works with a file as input."""
+    query_files = rcsbquery.prepare_queries("tests/test-prj-config--exp/project.yml")
+    assert query_files == [
+        "tests/test-prj-config--exp/queries/Homo_sapiens__exp.json",
+        "tests/test-prj-config--exp/queries/Mus_musculus__exp.json",
+    ]
+
+
 # Test the project creation based on yaml configuration files.
 @pytest.mark.parametrize(
     "project_dirname", ["test-prj-config--exp", "test-prj-config--exp-csm"]

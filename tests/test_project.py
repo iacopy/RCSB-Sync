@@ -4,8 +4,34 @@ Unit tests for the project module.
 # Standard Library
 import os
 
+# 3rd party
+import pytest
+
 # My stuff
 import project
+
+
+def test_init_project_from_empty_dir_fails(tmp_path):
+    """
+    Test that the project initialization fails if the directory is empty.
+    """
+    with pytest.raises(project.ProjectInitError):
+        project.Project(tmp_path)
+
+
+def test_init_project_from_yaml(tmp_path):
+    """
+    Test that the project initialization works properly when a yaml file is provided.
+    """
+    yaml_file = tmp_path / "project.yml"
+    yaml_file.write_text(
+        "name: test_project\ntaxa:\n  - Homo sapiens\n  - Rattus norvegicus\ncsm: false"
+    )
+    project.Project(tmp_path)
+
+    # Check that queries were created.
+    assert (tmp_path / "queries" / "Homo_sapiens__exp.json").exists()
+    assert (tmp_path / "queries" / "Rattus_norvegicus__exp.json").exists()
 
 
 def test_get_status_the_first_time(new_project_dir, remote_server):
