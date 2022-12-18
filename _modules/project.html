@@ -174,6 +174,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.scan_query_data"><code class="docutils literal notranslate"><span class="pre">Project.scan_query_data()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../project.html#project.ProjectInitError"><code class="docutils literal notranslate"><span class="pre">ProjectInitError</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.log_dir_status"><code class="docutils literal notranslate"><span class="pre">log_dir_status()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.pformat_status"><code class="docutils literal notranslate"><span class="pre">pformat_status()</span></code></a></li>
@@ -200,6 +201,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../rcsbquery.html#rcsbquery.generate_request_options"><code class="docutils literal notranslate"><span class="pre">generate_request_options()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../rcsbquery.html#rcsbquery.generate_terminal"><code class="docutils literal notranslate"><span class="pre">generate_terminal()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../rcsbquery.html#rcsbquery.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rcsbquery.html#rcsbquery.prepare_queries"><code class="docutils literal notranslate"><span class="pre">prepare_queries()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../utils.html#module-utils">utils module</a></li>
@@ -262,6 +264,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.scan_query_data"><code class="docutils literal notranslate"><span class="pre">Project.scan_query_data()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../project.html#project.ProjectInitError"><code class="docutils literal notranslate"><span class="pre">ProjectInitError</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.log_dir_status"><code class="docutils literal notranslate"><span class="pre">log_dir_status()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.pformat_status"><code class="docutils literal notranslate"><span class="pre">pformat_status()</span></code></a></li>
@@ -288,6 +291,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../rcsbquery.html#rcsbquery.generate_request_options"><code class="docutils literal notranslate"><span class="pre">generate_request_options()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../rcsbquery.html#rcsbquery.generate_terminal"><code class="docutils literal notranslate"><span class="pre">generate_terminal()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../rcsbquery.html#rcsbquery.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rcsbquery.html#rcsbquery.prepare_queries"><code class="docutils literal notranslate"><span class="pre">prepare_queries()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../utils.html#module-utils">utils module</a></li>
@@ -364,6 +368,7 @@
 <span class="c1"># My stuff</span>
 <span class="kn">import</span> <span class="nn">download</span>
 <span class="kn">import</span> <span class="nn">rcsbids</span>
+<span class="kn">import</span> <span class="nn">rcsbquery</span>
 
 <span class="n">IDS_SEPARATOR</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 <span class="n">SUFFIX_REMOVED</span> <span class="o">=</span> <span class="s2">&quot;.obsolete&quot;</span>
@@ -461,6 +466,12 @@
             <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;old_id=&#39;</span><span class="si">%s</span><span class="s2">&#39;, query=&#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">id_</span><span class="p">,</span> <span class="n">query_name</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="ProjectInitError"><a class="viewcode-back" href="../project.html#project.ProjectInitError">[docs]</a><span class="k">class</span> <span class="nc">ProjectInitError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Error raised when the project cannot be initialized.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
 <div class="viewcode-block" id="Project"><a class="viewcode-back" href="../project.html#project.Project">[docs]</a><span class="k">class</span> <span class="nc">Project</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Keep synced the data directory with the remote RCSB database.</span>
@@ -475,6 +486,20 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">):</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Creating data directory: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">)</span>
             <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">queries_dir</span><span class="p">):</span>
+            <span class="c1"># search for a project.yml to generate the queries</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">query_files</span> <span class="o">=</span> <span class="n">rcsbquery</span><span class="o">.</span><span class="n">prepare_queries</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">FileNotFoundError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                    <span class="s2">&quot;No queries directory found in </span><span class="si">%s</span><span class="s2">, and no project.yml file found.&quot;</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">raise</span> <span class="n">ProjectInitError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;No queries directory found in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="si">}</span><span class="s2">, and no project.yml file found.&quot;</span>
+                <span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> queries created&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">query_files</span><span class="p">))</span>
 
         <span class="c1"># Create the query data directories if they don&#39;t exist.</span>
         <span class="k">for</span> <span class="n">query_file</span> <span class="ow">in</span> <span class="p">(</span>
@@ -760,7 +785,7 @@
   <div id="footer-row" class="row">
 
     <div class="col-md-12">
-        <span title="Built on 2022-12-09" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
+        <span title="Built on 2022-12-18" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
         Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0 and the
         <a href="https://pypi.org/project/sphinx-sizzle-theme/"
 

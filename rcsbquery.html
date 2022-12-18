@@ -195,6 +195,7 @@
 <li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.scan_query_data"><code class="docutils literal notranslate"><span class="pre">Project.scan_query_data()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="project.html#project.ProjectInitError"><code class="docutils literal notranslate"><span class="pre">ProjectInitError</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="project.html#project.log_dir_status"><code class="docutils literal notranslate"><span class="pre">log_dir_status()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="project.html#project.pformat_status"><code class="docutils literal notranslate"><span class="pre">pformat_status()</span></code></a></li>
@@ -221,6 +222,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#rcsbquery.generate_request_options"><code class="docutils literal notranslate"><span class="pre">generate_request_options()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rcsbquery.generate_terminal"><code class="docutils literal notranslate"><span class="pre">generate_terminal()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rcsbquery.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsbquery.prepare_queries"><code class="docutils literal notranslate"><span class="pre">prepare_queries()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html">utils module</a></li>
@@ -283,6 +285,7 @@
 <li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.scan_query_data"><code class="docutils literal notranslate"><span class="pre">Project.scan_query_data()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="project.html#project.ProjectInitError"><code class="docutils literal notranslate"><span class="pre">ProjectInitError</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="project.html#project.log_dir_status"><code class="docutils literal notranslate"><span class="pre">log_dir_status()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="project.html#project.pformat_status"><code class="docutils literal notranslate"><span class="pre">pformat_status()</span></code></a></li>
@@ -309,6 +312,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#rcsbquery.generate_request_options"><code class="docutils literal notranslate"><span class="pre">generate_request_options()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rcsbquery.generate_terminal"><code class="docutils literal notranslate"><span class="pre">generate_terminal()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rcsbquery.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsbquery.prepare_queries"><code class="docutils literal notranslate"><span class="pre">prepare_queries()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html">utils module</a></li>
@@ -402,6 +406,28 @@ The advanced query can be used to retrieve the list of PDB IDs from the RCSB web
 <dd><p>Main function.</p>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="rcsbquery.prepare_queries">
+<code class="sig-prename descclassname"><span class="pre">rcsbquery.</span></code><code class="sig-name descname"><span class="pre">prepare_queries</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">yaml_filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/rcsbquery.html#prepare_queries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rcsbquery.prepare_queries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a yaml file and create the query files for the project directory.</p>
+<p>The yaml file should contain the following keys:
+- name: the name of the project
+- taxa: a list of taxa to search for
+- csm: a boolean indicating whether to include computed structure models (CSMs) in the search results</p>
+<p>The yaml file can be either a project directory or a project.yml file.
+The queries will be saved in the queries directory of the project directory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>yaml_filename</strong> – the yaml file or the project directory</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the list of query files created</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 
 
@@ -413,7 +439,7 @@ The advanced query can be used to retrieve the list of PDB IDs from the RCSB web
   <div id="footer-row" class="row">
 
     <div class="col-md-12">
-        <span title="Built on 2022-12-09" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
+        <span title="Built on 2022-12-18" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
         Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0 and the
         <a href="https://pypi.org/project/sphinx-sizzle-theme/"
 

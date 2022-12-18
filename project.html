@@ -195,6 +195,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#project.Project.scan_query_data"><code class="docutils literal notranslate"><span class="pre">Project.scan_query_data()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#project.ProjectInitError"><code class="docutils literal notranslate"><span class="pre">ProjectInitError</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#project.log_dir_status"><code class="docutils literal notranslate"><span class="pre">log_dir_status()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#project.pformat_status"><code class="docutils literal notranslate"><span class="pre">pformat_status()</span></code></a></li>
@@ -221,6 +222,7 @@
 <li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_request_options"><code class="docutils literal notranslate"><span class="pre">generate_request_options()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_terminal"><code class="docutils literal notranslate"><span class="pre">generate_terminal()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.prepare_queries"><code class="docutils literal notranslate"><span class="pre">prepare_queries()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html">utils module</a></li>
@@ -283,6 +285,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#project.Project.scan_query_data"><code class="docutils literal notranslate"><span class="pre">Project.scan_query_data()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#project.ProjectInitError"><code class="docutils literal notranslate"><span class="pre">ProjectInitError</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#project.log_dir_status"><code class="docutils literal notranslate"><span class="pre">log_dir_status()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#project.pformat_status"><code class="docutils literal notranslate"><span class="pre">pformat_status()</span></code></a></li>
@@ -309,6 +312,7 @@
 <li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_request_options"><code class="docutils literal notranslate"><span class="pre">generate_request_options()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_terminal"><code class="docutils literal notranslate"><span class="pre">generate_terminal()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.prepare_queries"><code class="docutils literal notranslate"><span class="pre">prepare_queries()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html">utils module</a></li>
@@ -508,6 +512,13 @@ and skip them.</li>
 
 </dd></dl>
 
+<dl class="py exception">
+<dt class="sig sig-object py" id="project.ProjectInitError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><code class="sig-prename descclassname"><span class="pre">project.</span></code><code class="sig-name descname"><span class="pre">ProjectInitError</span></code><a class="reference internal" href="_modules/project.html#ProjectInitError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.ProjectInitError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Error raised when the project cannot be initialized.</p>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="project.log_dir_status">
 <code class="sig-prename descclassname"><span class="pre">project.</span></code><code class="sig-name descname"><span class="pre">log_dir_status</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">dir_status</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#project.DirStatus" title="project.DirStatus"><span class="pre">DirStatus</span></a></span></em>, <em><span class="n"><span class="pre">query_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/project.html#log_dir_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.log_dir_status" title="Permalink to this definition">¶</a></dt>
@@ -574,7 +585,7 @@ and skip them.</li>
   <div id="footer-row" class="row">
 
     <div class="col-md-12">
-        <span title="Built on 2022-12-09" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
+        <span title="Built on 2022-12-18" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
         Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0 and the
         <a href="https://pypi.org/project/sphinx-sizzle-theme/"
 

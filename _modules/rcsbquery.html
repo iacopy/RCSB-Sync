@@ -174,6 +174,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.scan_query_data"><code class="docutils literal notranslate"><span class="pre">Project.scan_query_data()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../project.html#project.ProjectInitError"><code class="docutils literal notranslate"><span class="pre">ProjectInitError</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.log_dir_status"><code class="docutils literal notranslate"><span class="pre">log_dir_status()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.pformat_status"><code class="docutils literal notranslate"><span class="pre">pformat_status()</span></code></a></li>
@@ -200,6 +201,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../rcsbquery.html#rcsbquery.generate_request_options"><code class="docutils literal notranslate"><span class="pre">generate_request_options()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../rcsbquery.html#rcsbquery.generate_terminal"><code class="docutils literal notranslate"><span class="pre">generate_terminal()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../rcsbquery.html#rcsbquery.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rcsbquery.html#rcsbquery.prepare_queries"><code class="docutils literal notranslate"><span class="pre">prepare_queries()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../utils.html#module-utils">utils module</a></li>
@@ -262,6 +264,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.scan_query_data"><code class="docutils literal notranslate"><span class="pre">Project.scan_query_data()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../project.html#project.ProjectInitError"><code class="docutils literal notranslate"><span class="pre">ProjectInitError</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.log_dir_status"><code class="docutils literal notranslate"><span class="pre">log_dir_status()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.pformat_status"><code class="docutils literal notranslate"><span class="pre">pformat_status()</span></code></a></li>
@@ -288,6 +291,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../rcsbquery.html#rcsbquery.generate_request_options"><code class="docutils literal notranslate"><span class="pre">generate_request_options()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../rcsbquery.html#rcsbquery.generate_terminal"><code class="docutils literal notranslate"><span class="pre">generate_terminal()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../rcsbquery.html#rcsbquery.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rcsbquery.html#rcsbquery.prepare_queries"><code class="docutils literal notranslate"><span class="pre">prepare_queries()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../utils.html#module-utils">utils module</a></li>
@@ -315,10 +319,22 @@
 <span class="c1"># Standard Library</span>
 <span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="c1"># 3rd party</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">from</span> <span class="nn">yaml.loader</span> <span class="kn">import</span> <span class="n">SafeLoader</span>
+
+<span class="c1"># Default values for query generation</span>
+<span class="n">DEFAULT_POLYMER_TYPE</span> <span class="o">=</span> <span class="s2">&quot;Protein&quot;</span>
+<span class="n">DEFAULT_METHODS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;X-RAY DIFFRACTION&quot;</span><span class="p">,</span> <span class="s2">&quot;SOLUTION NMR&quot;</span><span class="p">,</span> <span class="s2">&quot;ELECTRON MICROSCOPY&quot;</span><span class="p">]</span>
+<span class="n">DEFAULT_RESULTS_CONTENT_TYPE</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;experimental&quot;</span><span class="p">,)</span>
+<span class="n">DEFAULT_ROWS</span> <span class="o">=</span> <span class="mi">999999</span>
 
 
 <div class="viewcode-block" id="generate_request_options"><a class="viewcode-back" href="../rcsbquery.html#rcsbquery.generate_request_options">[docs]</a><span class="k">def</span> <span class="nf">generate_request_options</span><span class="p">(</span>
@@ -411,9 +427,9 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">{</span>
         <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;group&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;logical_operator&quot;</span><span class="p">:</span> <span class="n">logical_operator</span><span class="p">,</span>
         <span class="c1"># no negation for groups</span>
         <span class="s2">&quot;nodes&quot;</span><span class="p">:</span> <span class="n">queries</span><span class="p">,</span>
+        <span class="s2">&quot;logical_operator&quot;</span><span class="p">:</span> <span class="n">logical_operator</span><span class="p">,</span>
     <span class="p">}</span></div>
 
 
@@ -484,6 +500,63 @@
     <span class="k">return</span> <span class="n">parser</span></div>
 
 
+<div class="viewcode-block" id="prepare_queries"><a class="viewcode-back" href="../rcsbquery.html#rcsbquery.prepare_queries">[docs]</a><span class="k">def</span> <span class="nf">prepare_queries</span><span class="p">(</span><span class="n">yaml_filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load a yaml file and create the query files for the project directory.</span>
+
+<span class="sd">    The yaml file should contain the following keys:</span>
+<span class="sd">    - name: the name of the project</span>
+<span class="sd">    - taxa: a list of taxa to search for</span>
+<span class="sd">    - csm: a boolean indicating whether to include computed structure models (CSMs) in the search results</span>
+
+<span class="sd">    The yaml file can be either a project directory or a project.yml file.</span>
+<span class="sd">    The queries will be saved in the queries directory of the project directory.</span>
+
+<span class="sd">    :param yaml_filename: the yaml file or the project directory</span>
+<span class="sd">    :return: the list of query files created</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#: the list of query files created</span>
+    <span class="n">query_files</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">yaml_filename</span><span class="p">):</span>
+        <span class="n">project_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">yaml_filename</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">yaml_filename</span><span class="p">)</span>
+        <span class="n">project_dir</span> <span class="o">=</span> <span class="n">yaml_filename</span>
+        <span class="n">yaml_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_dir</span><span class="p">,</span> <span class="s2">&quot;project.yml&quot;</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">yaml_filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">SafeLoader</span><span class="p">)</span>
+
+    <span class="n">queries_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_dir</span><span class="p">,</span> <span class="s2">&quot;queries&quot;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">queries_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">taxa</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;taxa&quot;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="n">csm</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;csm&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">rc_types</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;computational&quot;</span><span class="p">,),</span> <span class="p">(</span><span class="s2">&quot;experimental&quot;</span><span class="p">,)]</span> <span class="k">if</span> <span class="n">csm</span> <span class="k">else</span> <span class="p">[(</span><span class="s2">&quot;experimental&quot;</span><span class="p">,)]</span>
+    <span class="k">for</span> <span class="n">taxon</span> <span class="ow">in</span> <span class="n">taxa</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">results_content_type</span> <span class="ow">in</span> <span class="n">rc_types</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">results_content_type</span> <span class="o">==</span> <span class="p">(</span><span class="s2">&quot;experimental&quot;</span><span class="p">,):</span>
+                <span class="n">methods</span> <span class="o">=</span> <span class="n">DEFAULT_METHODS</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;AlphaFoldDB&quot;</span><span class="p">]</span>
+            <span class="n">query_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">taxon</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">__</span><span class="si">{</span><span class="n">results_content_type</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>  <span class="c1"># Copilot by itself</span>
+            <span class="n">adv_query</span> <span class="o">=</span> <span class="n">generate_advanced_query</span><span class="p">(</span>
+                <span class="n">polymer_type</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;polymer_type&quot;</span><span class="p">,</span> <span class="n">DEFAULT_POLYMER_TYPE</span><span class="p">),</span>
+                <span class="n">organism</span><span class="o">=</span><span class="n">taxon</span><span class="p">,</span>
+                <span class="n">methods</span><span class="o">=</span><span class="n">methods</span><span class="p">,</span>
+                <span class="n">results_content_type</span><span class="o">=</span><span class="n">results_content_type</span><span class="p">,</span>
+                <span class="n">rows</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rows&quot;</span><span class="p">,</span> <span class="n">DEFAULT_ROWS</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="n">query_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">queries_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">query_name</span><span class="si">}</span><span class="s2">.json&quot;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">query_filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">adv_query</span><span class="p">)</span>
+            <span class="n">query_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">query_filename</span><span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Created </span><span class="si">%d</span><span class="s2"> queries for </span><span class="si">%s</span><span class="s2">.&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">taxa</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">rc_types</span><span class="p">),</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">query_files</span></div>
+
+
 <div class="viewcode-block" id="args_to_query"><a class="viewcode-back" href="../rcsbquery.html#rcsbquery.args_to_query">[docs]</a><span class="k">def</span> <span class="nf">args_to_query</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate the advanced query string from the arguments.</span>
@@ -529,7 +602,7 @@
   <div id="footer-row" class="row">
 
     <div class="col-md-12">
-        <span title="Built on 2022-12-09" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
+        <span title="Built on 2022-12-18" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
         Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0 and the
         <a href="https://pypi.org/project/sphinx-sizzle-theme/"
 
