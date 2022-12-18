@@ -13,10 +13,22 @@ Usage example:
 # Standard Library
 import argparse
 import json
+import logging
+import os
 from typing import Any
 from typing import Dict
 from typing import List
 from typing import Optional
+
+# 3rd party
+import yaml
+from yaml.loader import SafeLoader
+
+# Default values for query generation
+DEFAULT_POLYMER_TYPE = "Protein"
+DEFAULT_METHODS = ["X-RAY DIFFRACTION", "SOLUTION NMR", "ELECTRON MICROSCOPY"]
+DEFAULT_RESULTS_CONTENT_TYPE = ("experimental",)
+DEFAULT_ROWS = 999999
 
 
 def generate_request_options(
@@ -109,9 +121,9 @@ def generate_group(
     """
     return {
         "type": "group",
-        "logical_operator": logical_operator,
         # no negation for groups
         "nodes": queries,
+        "logical_operator": logical_operator,
     }
 
 
@@ -180,6 +192,63 @@ def extend_parser(parser):  # pragma: no cover
         "-i", "--indent", type=int, default=2, help="indentation for the json string"
     )
     return parser
+
+
+def prepare_queries(yaml_filename: str) -> List[str]:
+    """
+    Load a yaml file and create the query files for the project directory.
+
+    The yaml file should contain the following keys:
+    - name: the name of the project
+    - taxa: a list of taxa to search for
+    - csm: a boolean indicating whether to include computed structure models (CSMs) in the search results
+
+    The yaml file can be either a project directory or a project.yml file.
+    The queries will be saved in the queries directory of the project directory.
+
+    :param yaml_filename: the yaml file or the project directory
+    :return: the list of query files created
+    """
+    #: the list of query files created
+    query_files = []
+
+    if os.path.isfile(yaml_filename):
+        project_dir = os.path.dirname(yaml_filename)
+    else:
+        assert os.path.isdir(yaml_filename)
+        project_dir = yaml_filename
+        yaml_filename = os.path.join(project_dir, "project.yml")
+
+    with open(yaml_filename, "r", encoding="utf-8") as file:
+        data = yaml.load(file, Loader=SafeLoader)
+
+    queries_dir = os.path.join(project_dir, "queries")
+    os.makedirs(queries_dir, exist_ok=True)
+
+    taxa = data.get("taxa", [])
+    csm = data.get("csm", False)
+    rc_types = [("computational",), ("experimental",)] if csm else [("experimental",)]
+    for taxon in taxa:
+        for results_content_type in rc_types:
+            if results_content_type == ("experimental",):
+                methods = DEFAULT_METHODS
+            else:
+                methods = ["AlphaFoldDB"]
+            query_name = f"{taxon.replace(' ', '_')}__{results_content_type[0][:3]}"  # Copilot by itself
+            adv_query = generate_advanced_query(
+                polymer_type=data.get("polymer_type", DEFAULT_POLYMER_TYPE),
+                organism=taxon,
+                methods=methods,
+                results_content_type=results_content_type,
+                rows=data.get("rows", DEFAULT_ROWS),
+            )
+            query_filename = os.path.join(queries_dir, f"{query_name}.json")
+            with open(query_filename, "w", encoding="utf-8") as file:
+                file.write(adv_query)
+            query_files.append(query_filename)
+
+    logging.info("Created %d queries for %s.", len(taxa) * len(rc_types), data["name"])
+    return query_files
 
 
 def args_to_query(args):  # pragma: no cover

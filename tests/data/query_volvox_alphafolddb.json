@@ -1,47 +1,47 @@
 {
-    "query": {
-      "type": "group",
-      "logical_operator": "and",
-      "nodes": [
-        {
-          "type": "terminal",
-          "service": "text",
-          "parameters": {
-            "attribute": "rcsb_comp_model_provenance.source_db",
-            "operator": "exact_match",
-            "negation": false,
-            "value": "AlphaFoldDB"
-          }
-        },
-        {
-          "type": "terminal",
-          "service": "text",
-          "parameters": {
-            "attribute": "rcsb_entity_source_organism.taxonomy_lineage.name",
-            "operator": "contains_phrase",
-            "negation": false,
-            "value": "Volvox"
-          }
+  "query": {
+    "type": "group",
+    "logical_operator": "and",
+    "nodes": [
+      {
+        "type": "terminal",
+        "service": "text",
+        "parameters": {
+          "attribute": "rcsb_comp_model_provenance.source_db",
+          "operator": "exact_match",
+          "negation": false,
+          "value": "AlphaFoldDB"
         }
-      ],
-      "label": "text"
-    },
-    "return_type": "entry",
-    "request_options": {
-      "results_content_type": [
-        "computational",
-        "experimental"
-      ],
-      "paginate": {
-        "start": 0,
-        "rows": 999999
       },
-      "sort": [
-        {
-          "sort_by": "score",
-          "direction": "desc"
+      {
+        "type": "terminal",
+        "service": "text",
+        "parameters": {
+          "attribute": "rcsb_entity_source_organism.taxonomy_lineage.name",
+          "operator": "contains_phrase",
+          "negation": false,
+          "value": "Volvox"
         }
-      ],
-      "scoring_strategy": "combined"
-    }
+      }
+    ],
+    "label": "text"
+  },
+  "return_type": "entry",
+  "request_options": {
+    "results_content_type": [
+      "computational",
+      "experimental"
+    ],
+    "paginate": {
+      "start": 0,
+      "rows": 999999
+    },
+    "sort": [
+      {
+        "sort_by": "score",
+        "direction": "desc"
+      }
+    ],
+    "scoring_strategy": "combined"
   }
+}

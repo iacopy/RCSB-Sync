@@ -9,7 +9,17 @@
           "attribute": "entity_poly.rcsb_entity_polymer_type",
           "operator": "exact_match",
           "negation": false,
-          "value": "DNA"
+          "value": "Protein"
+        }
+      },
+      {
+        "type": "terminal",
+        "service": "text",
+        "parameters": {
+          "attribute": "rcsb_comp_model_provenance.source_db",
+          "operator": "exact_match",
+          "negation": false,
+          "value": "AlphaFoldDB"
         }
       },
       {
@@ -19,7 +29,7 @@
           "attribute": "rcsb_entity_source_organism.taxonomy_lineage.name",
           "operator": "contains_phrase",
           "negation": false,
-          "value": "Rattus norvegicus"
+          "value": "Mus musculus"
         }
       }
     ],
@@ -33,7 +43,7 @@
       "rows": 999999
     },
     "results_content_type": [
-      "experimental"
+      "computational"
     ],
     "sort": [
       {

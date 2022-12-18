@@ -1,7 +1,6 @@
 {
   "query": {
     "type": "group",
-    "logical_operator": "and",
     "nodes": [
       {
         "type": "terminal",
@@ -56,10 +55,11 @@
           "attribute": "rcsb_entity_source_organism.taxonomy_lineage.name",
           "operator": "contains_phrase",
           "negation": false,
-          "value": "Mus musculus"
+          "value": "Rattus norvegicus"
         }
       }
     ],
+    "logical_operator": "and",
     "label": "text"
   },
   "return_type": "entry",
