@@ -64,10 +64,7 @@
   },
   "return_type": "entry",
   "request_options": {
-    "paginate": {
-      "start": 0,
-      "rows": 999999
-    },
+    "return_all_hits": true,
     "results_content_type": [
       "experimental"
     ],
