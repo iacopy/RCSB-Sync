@@ -28,7 +28,7 @@ from yaml.loader import SafeLoader
 DEFAULT_POLYMER_TYPE = "Protein"
 DEFAULT_METHODS = ["X-RAY DIFFRACTION", "SOLUTION NMR", "ELECTRON MICROSCOPY"]
 DEFAULT_RESULTS_CONTENT_TYPE = ("experimental",)
-DEFAULT_ROWS = 999999
+DEFAULT_ROWS = 10000
 
 
 def generate_request_options(
