@@ -72,6 +72,40 @@ Creare un file .json che contenga tale stringa e posizionarlo dentro la cartella
 Per esempio, per l'uomo si può mettere anche 999999, in questo modo scarica tutti gli ID delle 55k strutture in un colpo solo,
 senza bisogno di fare 3 query con 3 range di data. Non so quale sia il valore massimo accettato, ma per ora funziona.
 
+EDIT 2023: Dopo un aggiornamento (forse [2.4.11] - 2023-08-03), il valore massimo impostabile è 10000 (https://search.rcsb.org/#pagination).
+Due opzioni:
+
+```json
+    "request_options": {
+        "paginate": {
+        "start": 0,
+        "rows": 10000
+        },
+```
+
+Poi:
+
+```json
+    "request_options": {
+        "paginate": {
+        "start": 10000,
+        "rows": 10000
+        },
+```
+
+E via di seguito.
+
+Oppure:
+
+```json
+    "request_options": {
+        "return_all_hits": true
+    },
+```
+
+Quest'ultima è sconsigliata, ad es. se si vuole scaricare tutto in un blocco unico (Homo sapiens > 100 GB),
+ma può essere utile in certi casi, ad esempio per ottenere tutti i PDB ID.
+
 ### Modulo `rcsbquery`
 
 Per generare alcuni tipi di query, in formato JSON, si può utilizzare anche lo script `rcsbquery.py`.
@@ -110,7 +144,7 @@ JSON:
         "request_options": {
             "paginate": {
             "start": 0,
-            "rows": 99999
+            "rows": 10000
             },
             "results_content_type": [
             "experimental"
@@ -247,8 +281,8 @@ JSON:
         "return_type": "entry",
         "request_options": {
             "paginate": {
-            "start": 0,
-            "rows": 99999
+                "start": 0,
+                "rows": 10000
             },
             "results_content_type": [
             "experimental"
