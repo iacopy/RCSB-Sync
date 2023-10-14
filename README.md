@@ -75,33 +75,33 @@ senza bisogno di fare 3 query con 3 range di data. Non so quale sia il valore ma
 EDIT 2023: Dopo un aggiornamento (forse [2.4.11] - 2023-08-03), il valore massimo impostabile è 10000 (https://search.rcsb.org/#pagination).
 Due opzioni:
 
-```json
+    ```json
     "request_options": {
         "paginate": {
-        "start": 0,
-        "rows": 10000
+            "start": 0,
+            "rows": 10000
         },
-```
+    ```
 
 Poi:
 
-```json
+    ```json
     "request_options": {
         "paginate": {
-        "start": 10000,
-        "rows": 10000
+            "start": 10000,
+            "rows": 10000
         },
-```
+    ```
 
 E via di seguito.
 
 Oppure:
 
-```json
+    ```json
     "request_options": {
         "return_all_hits": true
     },
-```
+    ```
 
 Quest'ultima è sconsigliata, ad es. se si vuole scaricare tutto in un blocco unico (Homo sapiens > 100 GB),
 ma può essere utile in certi casi, ad esempio per ottenere tutti i PDB ID.
@@ -128,26 +128,27 @@ Ottenere solo DNA:
 
 JSON:
 
+    ```json
     {
         "query": {
             "type": "terminal",
             "label": "text",
             "service": "text",
             "parameters": {
-            "attribute": "rcsb_entity_source_organism.taxonomy_lineage.name",
-            "operator": "contains_phrase",
-            "negation": false,
-            "value": "Homo sapiens"
+                "attribute": "rcsb_entity_source_organism.taxonomy_lineage.name",
+                "operator": "contains_phrase",
+                "negation": false,
+                "value": "Homo sapiens"
             }
         },
         "return_type": "entry",
         "request_options": {
             "paginate": {
-            "start": 0,
-            "rows": 10000
+                "start": 0,
+                "rows": 10000
             },
             "results_content_type": [
-            "experimental"
+                "experimental"
             ],
             "sort": [
             {
@@ -158,11 +159,13 @@ JSON:
             "scoring_strategy": "combined"
         }
     }
+    ```
 
 ### Seleziona organismo e proteine
 
 JSON:
 
+    ```json
     {
         "query": {
             "type": "group",
@@ -172,20 +175,20 @@ JSON:
                 "type": "terminal",
                 "service": "text",
                 "parameters": {
-                "attribute": "entity_poly.rcsb_entity_polymer_type",
-                "operator": "exact_match",
-                "negation": false,
-                "value": "Protein"
+                    "attribute": "entity_poly.rcsb_entity_polymer_type",
+                    "operator": "exact_match",
+                    "negation": false,
+                    "value": "Protein"
                 }
             },
             {
                 "type": "terminal",
                 "service": "text",
                 "parameters": {
-                "attribute": "rcsb_entity_source_organism.taxonomy_lineage.name",
-                "operator": "contains_phrase",
-                "negation": false,
-                "value": "Homo sapiens"
+                    "attribute": "rcsb_entity_source_organism.taxonomy_lineage.name",
+                    "operator": "contains_phrase",
+                    "negation": false,
+                    "value": "Homo sapiens"
                 }
             }
             ],
@@ -194,11 +197,11 @@ JSON:
         "return_type": "entry",
         "request_options": {
             "paginate": {
-            "start": 0,
-            "rows": 25
+                "start": 0,
+                "rows": 25
             },
             "results_content_type": [
-            "experimental"
+                "experimental"
             ],
             "sort": [
             {
@@ -209,11 +212,13 @@ JSON:
             "scoring_strategy": "combined"
         }
     }
+    ```
 
 ### Seleziona organismo, proteine e metodi specifici
 
 JSON:
 
+    ```json
     {
         "query": {
             "type": "group",
@@ -223,10 +228,10 @@ JSON:
                 "type": "terminal",
                 "service": "text",
                 "parameters": {
-                "attribute": "entity_poly.rcsb_entity_polymer_type",
-                "operator": "exact_match",
-                "negation": false,
-                "value": "Protein"
+                    "attribute": "entity_poly.rcsb_entity_polymer_type",
+                    "operator": "exact_match",
+                    "negation": false,
+                    "value": "Protein"
                 }
             },
             {
@@ -236,30 +241,30 @@ JSON:
                     "type": "terminal",
                     "service": "text",
                     "parameters": {
-                    "attribute": "exptl.method",
-                    "operator": "exact_match",
-                    "negation": false,
-                    "value": "X-RAY DIFFRACTION"
+                        "attribute": "exptl.method",
+                        "operator": "exact_match",
+                        "negation": false,
+                        "value": "X-RAY DIFFRACTION"
                     }
                 },
                 {
                     "type": "terminal",
                     "service": "text",
                     "parameters": {
-                    "attribute": "exptl.method",
-                    "operator": "exact_match",
-                    "negation": false,
-                    "value": "SOLUTION NMR"
+                        "attribute": "exptl.method",
+                        "operator": "exact_match",
+                        "negation": false,
+                        "value": "SOLUTION NMR"
                     }
                 },
                 {
                     "type": "terminal",
                     "service": "text",
                     "parameters": {
-                    "attribute": "exptl.method",
-                    "operator": "exact_match",
-                    "negation": false,
-                    "value": "ELECTRON MICROSCOPY"
+                        "attribute": "exptl.method",
+                        "operator": "exact_match",
+                        "negation": false,
+                        "value": "ELECTRON MICROSCOPY"
                     }
                 }
                 ],
@@ -269,10 +274,10 @@ JSON:
                 "type": "terminal",
                 "service": "text",
                 "parameters": {
-                "attribute": "rcsb_entity_source_organism.taxonomy_lineage.name",
-                "operator": "contains_phrase",
-                "negation": false,
-                "value": "Homo sapiens"
+                    "attribute": "rcsb_entity_source_organism.taxonomy_lineage.name",
+                    "operator": "contains_phrase",
+                    "negation": false,
+                    "value": "Homo sapiens"
                 }
             }
             ],
@@ -285,7 +290,7 @@ JSON:
                 "rows": 10000
             },
             "results_content_type": [
-            "experimental"
+                "experimental"
             ],
             "sort": [
             {
@@ -296,3 +301,4 @@ JSON:
             "scoring_strategy": "combined"
         }
     }
+    ```
