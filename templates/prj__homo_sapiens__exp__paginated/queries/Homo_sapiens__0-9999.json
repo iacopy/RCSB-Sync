@@ -1,0 +1,82 @@
+{
+  "query": {
+    "type": "group",
+    "logical_operator": "and",
+    "nodes": [
+      {
+        "type": "terminal",
+        "service": "text",
+        "parameters": {
+          "attribute": "entity_poly.rcsb_entity_polymer_type",
+          "operator": "exact_match",
+          "negation": false,
+          "value": "Protein"
+        }
+      },
+      {
+        "type": "group",
+        "nodes": [
+          {
+            "type": "terminal",
+            "service": "text",
+            "parameters": {
+              "attribute": "exptl.method",
+              "operator": "exact_match",
+              "negation": false,
+              "value": "X-RAY DIFFRACTION"
+            }
+          },
+          {
+            "type": "terminal",
+            "service": "text",
+            "parameters": {
+              "attribute": "exptl.method",
+              "operator": "exact_match",
+              "negation": false,
+              "value": "SOLUTION NMR"
+            }
+          },
+          {
+            "type": "terminal",
+            "service": "text",
+            "parameters": {
+              "attribute": "exptl.method",
+              "operator": "exact_match",
+              "negation": false,
+              "value": "ELECTRON MICROSCOPY"
+            }
+          }
+        ],
+        "logical_operator": "or"
+      },
+      {
+        "type": "terminal",
+        "service": "text",
+        "parameters": {
+          "attribute": "rcsb_entity_source_organism.taxonomy_lineage.name",
+          "operator": "contains_phrase",
+          "negation": false,
+          "value": "Homo sapiens"
+        }
+      }
+    ],
+    "label": "text"
+  },
+  "return_type": "entry",
+  "request_options": {
+    "paginate": {
+      "start": 0,
+      "rows": 10000
+    },
+    "results_content_type": [
+      "experimental"
+    ],
+    "sort": [
+      {
+        "sort_by": "score",
+        "direction": "desc"
+      }
+    ],
+    "scoring_strategy": "combined"
+  }
+}
