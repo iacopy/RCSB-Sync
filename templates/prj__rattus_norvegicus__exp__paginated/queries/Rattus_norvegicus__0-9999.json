@@ -56,7 +56,7 @@
           "attribute": "rcsb_entity_source_organism.taxonomy_lineage.name",
           "operator": "contains_phrase",
           "negation": false,
-          "value": "Homo sapiens"
+          "value": "Rattus norvegicus"
         }
       }
     ],
@@ -64,7 +64,10 @@
   },
   "return_type": "entry",
   "request_options": {
-    "return_all_hits": true,
+    "paginate": {
+      "start": 0,
+      "rows": 10000
+    },
     "results_content_type": [
       "experimental"
     ],
