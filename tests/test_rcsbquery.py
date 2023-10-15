@@ -145,7 +145,8 @@ def test_project_creation(tmp_path, project_dirname):
             wrong_file = tmp_path / "queries" / error
             assert os.path.exists(wrong_file)
             # copy the wrong file to the testdata directory for inspection.
-            shutil.copy(wrong_file, test_project_dir)
-            print(f"Copied {wrong_file} to {test_project_dir} for inspection.")
+            shutil.copy(wrong_file, os.path.join(test_project_dir, "queries"))
+            print(f"Copied {wrong_file} to {test_project_dir}/queries for inspection.")
+            print("Now you can just do `git diff` to see the differences.")
     assert not mismatch
     assert match == common
