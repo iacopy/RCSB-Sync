@@ -342,7 +342,7 @@
 <div class="viewcode-block" id="generate_request_options"><a class="viewcode-back" href="../rcsbquery.html#rcsbquery.generate_request_options">[docs]</a><span class="k">def</span> <span class="nf">generate_request_options</span><span class="p">(</span>
     <span class="n">results_content_type</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;experimental&quot;</span><span class="p">,),</span> <span class="n">rows</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">25</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate the request options.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">{</span>
@@ -359,7 +359,7 @@
     <span class="n">operator</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;exact_match&quot;</span><span class="p">,</span>
     <span class="n">negation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a terminal query.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">{</span>
@@ -375,7 +375,7 @@
 
 
 <div class="viewcode-block" id="generate_organism"><a class="viewcode-back" href="../rcsbquery.html#rcsbquery.generate_organism">[docs]</a><span class="k">def</span> <span class="nf">generate_organism</span><span class="p">(</span><span class="n">organism</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">negation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a query for the organism (taxon name).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">generate_terminal</span><span class="p">(</span>
@@ -387,7 +387,7 @@
 
 
 <div class="viewcode-block" id="generate_method_extendend"><a class="viewcode-back" href="../rcsbquery.html#rcsbquery.generate_method_extendend">[docs]</a><span class="k">def</span> <span class="nf">generate_method_extendend</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">negation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate the terminal query for the method, including the CSMs.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;AlphaFoldDB&quot;</span><span class="p">:</span>
@@ -398,7 +398,7 @@
 
 
 <div class="viewcode-block" id="generate_methods"><a class="viewcode-back" href="../rcsbquery.html#rcsbquery.generate_methods">[docs]</a><span class="k">def</span> <span class="nf">generate_methods</span><span class="p">(</span><span class="n">methods</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a query for the experimental methods.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">methods</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -410,7 +410,7 @@
 
 
 <div class="viewcode-block" id="generate_polymer_type"><a class="viewcode-back" href="../rcsbquery.html#rcsbquery.generate_polymer_type">[docs]</a><span class="k">def</span> <span class="nf">generate_polymer_type</span><span class="p">(</span><span class="n">polymer_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">negation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a query about the polymer type.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">polymer_type</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;Nucleic acid (only)&quot;</span><span class="p">,</span> <span class="s2">&quot;Protein (only)&quot;</span><span class="p">}:</span>
@@ -424,7 +424,7 @@
     <span class="n">queries</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
     <span class="n">logical_operator</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;and&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a group query.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">{</span>
@@ -440,7 +440,7 @@
     <span class="n">organism</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">methods</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate the advanced query string for the organism, methods and polymer type.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">queries</span> <span class="o">=</span> <span class="p">[]</span>
@@ -462,7 +462,7 @@
     <span class="n">rows</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">,</span>
     <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate the advanced query string for the organism, methods and polymer type.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">query</span> <span class="o">=</span> <span class="n">generate_queries</span><span class="p">(</span><span class="n">polymer_type</span><span class="p">,</span> <span class="n">organism</span><span class="p">,</span> <span class="n">methods</span><span class="p">)</span>
@@ -476,7 +476,7 @@
 
 
 <div class="viewcode-block" id="extend_parser"><a class="viewcode-back" href="../rcsbquery.html#rcsbquery.extend_parser">[docs]</a><span class="k">def</span> <span class="nf">extend_parser</span><span class="p">(</span><span class="n">parser</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extend the parser with the arguments.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="s2">&quot;--organism&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;organism (taxon name)&quot;</span><span class="p">)</span>
@@ -503,7 +503,7 @@
 
 
 <div class="viewcode-block" id="prepare_queries"><a class="viewcode-back" href="../rcsbquery.html#rcsbquery.prepare_queries">[docs]</a><span class="k">def</span> <span class="nf">prepare_queries</span><span class="p">(</span><span class="n">yaml_filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load a yaml file and create the query files for the project directory.</span>
 
 <span class="sd">    The yaml file should contain the following keys:</span>
@@ -542,7 +542,7 @@
                 <span class="n">methods</span> <span class="o">=</span> <span class="n">DEFAULT_METHODS</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;AlphaFoldDB&quot;</span><span class="p">]</span>
-            <span class="n">query_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">taxon</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">__</span><span class="si">{</span><span class="n">results_content_type</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>  <span class="c1"># Copilot by itself</span>
+            <span class="n">query_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">taxon</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;_&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">__</span><span class="si">{</span><span class="n">results_content_type</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>  <span class="c1"># Copilot by itself</span>
             <span class="n">adv_query</span> <span class="o">=</span> <span class="n">generate_advanced_query</span><span class="p">(</span>
                 <span class="n">polymer_type</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;polymer_type&quot;</span><span class="p">,</span> <span class="n">DEFAULT_POLYMER_TYPE</span><span class="p">),</span>
                 <span class="n">organism</span><span class="o">=</span><span class="n">taxon</span><span class="p">,</span>
@@ -560,7 +560,7 @@
 
 
 <div class="viewcode-block" id="args_to_query"><a class="viewcode-back" href="../rcsbquery.html#rcsbquery.args_to_query">[docs]</a><span class="k">def</span> <span class="nf">args_to_query</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate the advanced query string from the arguments.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># prepare the results_content_type</span>
@@ -583,7 +583,7 @@
 
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../rcsbquery.html#rcsbquery.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>  <span class="c1"># pragma: no cover</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Main function.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;RCSB query generator&quot;</span><span class="p">)</span>
