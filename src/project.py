@@ -387,10 +387,12 @@ def main(
     # Fetch the remote RCSB IDs.
     project_status = project.get_status()
 
+    now = str(datetime.datetime.now())[:-7]
     # Print the status of the project.
     if summary:  # pragma: no cover
         print(project_dir)
-        print(f"Date: {str(datetime.date.today())}")
+        # Date and time of the last update.
+        print(f"Date: {now}\n")
         print(pformat_status(project_status))
 
     # store a csv file with the status
@@ -406,6 +408,7 @@ def main(
     with open(
         os.path.join(project_dir, "db_summary.txt"), "w", encoding="utf-8"
     ) as file:
+        file.write(f"Date: {now}\n\n")
         file.write(pformat_status(project_status))
 
     # Count the total number of files to be downloaded.
