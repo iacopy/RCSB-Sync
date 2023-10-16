@@ -26,7 +26,12 @@ def check_data(project_dir, allow_cache=False):
 
     if not allow_cache:
         # check the main level: no files, only the queries directory
-        assert sorted(os.listdir(project_dir)) == ["data", "queries"]
+        assert sorted(os.listdir(project_dir)) == [
+            "data",
+            "db_summary.csv",
+            "db_summary.txt",
+            "queries",
+        ]
 
     # check queries directory contain 2 json files
     queries_dir = os.path.join(project_dir, "queries")
@@ -41,9 +46,11 @@ def check_data(project_dir, allow_cache=False):
         "Rabbitpox_virus",
         "Rabbitpox_virus.ids",
         "Rabbitpox_virus.sh",
+        "Rabbitpox_virus__files.csv",
         "Radianthus_crispus",
         "Radianthus_crispus.ids",
         "Radianthus_crispus.sh",
+        "Radianthus_crispus__files.csv",
     }
     # check the data subdirectories
     assert set(os.listdir(os.path.join(project_dir, "data", "Rabbitpox_virus"))) == {
@@ -89,9 +96,11 @@ def test_project_download(project_nodata_cleanup):
         "Rabbitpox_virus",
         "Rabbitpox_virus.ids",
         "Rabbitpox_virus.sh",
+        "Rabbitpox_virus__files.csv",
         "Radianthus_crispus",
         "Radianthus_crispus.ids",
         "Radianthus_crispus.sh",
+        "Radianthus_crispus__files.csv",
     ]
     # The "Rabbitpox_virus" directory should contain 2 files.
     assert sorted(os.listdir(os.path.join(data_dir, "Rabbitpox_virus"))) == [
@@ -139,6 +148,7 @@ def test_project_download_uncompressed(project_rabbitpox_nodata_cleanup):
         "Rabbitpox_virus",
         "Rabbitpox_virus.ids",
         "Rabbitpox_virus.sh",
+        "Rabbitpox_virus__files.csv",
     ]
     # The "Rabbitpox_virus" directory should contain 2 files.
     assert sorted(os.listdir(os.path.join(data_dir, "Rabbitpox_virus"))) == [
@@ -205,9 +215,11 @@ def test_project_noop(project_nodata_cleanup):
         "Rabbitpox_virus",
         "Rabbitpox_virus.ids",
         "Rabbitpox_virus.sh",
+        "Rabbitpox_virus__files.csv",
         "Radianthus_crispus",
         "Radianthus_crispus.ids",
         "Radianthus_crispus.sh",
+        "Radianthus_crispus__files.csv",
     ]
     assert sorted(os.listdir(os.path.join(data_dir, "Rabbitpox_virus"))) == []
     assert sorted(os.listdir(os.path.join(data_dir, "Radianthus_crispus"))) == []

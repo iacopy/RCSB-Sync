@@ -17,7 +17,9 @@ def check_nodata(project_dir):
         os.path.join(project_dir, "data")
     ), f"Data directory {os.path.join(project_dir, 'data')} exists."
     # check the main level: no files, only the queries directory
-    assert sorted(os.listdir(project_dir)) == ["queries"]
+    assert sorted(os.listdir(project_dir)) == [
+        "queries"
+    ], f"Wrong files in {project_dir}"
     # check queries directory contain 2 json files
     queries_dir = os.path.join(project_dir, "queries")
     assert sorted(os.listdir(queries_dir)) == [
