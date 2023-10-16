@@ -178,6 +178,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.log_dir_status"><code class="docutils literal notranslate"><span class="pre">log_dir_status()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.pformat_status"><code class="docutils literal notranslate"><span class="pre">pformat_status()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../project.html#project.status_to_table"><code class="docutils literal notranslate"><span class="pre">status_to_table()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../rcsbids.html#module-rcsbids">rcsbids module</a><ul>
@@ -268,6 +269,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.log_dir_status"><code class="docutils literal notranslate"><span class="pre">log_dir_status()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.pformat_status"><code class="docutils literal notranslate"><span class="pre">pformat_status()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../project.html#project.status_to_table"><code class="docutils literal notranslate"><span class="pre">status_to_table()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../rcsbids.html#module-rcsbids">rcsbids module</a><ul>
@@ -354,6 +356,7 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="c1"># Standard Library</span>
 <span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">csv</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
@@ -387,12 +390,12 @@
 <span class="n">ProjectStatus</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DirStatus</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="pformat_status"><a class="viewcode-back" href="../project.html#project.pformat_status">[docs]</a><span class="k">def</span> <span class="nf">pformat_status</span><span class="p">(</span><span class="n">project_status</span><span class="p">:</span> <span class="n">ProjectStatus</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+<div class="viewcode-block" id="status_to_table"><a class="viewcode-back" href="../project.html#project.status_to_table">[docs]</a><span class="k">def</span> <span class="nf">status_to_table</span><span class="p">(</span><span class="n">project_status</span><span class="p">:</span> <span class="n">ProjectStatus</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Create a nice string table with the status of the project.</span>
+<span class="sd">    Convert the status of the project to a table.</span>
 
 <span class="sd">    :param project_status: dictionary with the status of the project.</span>
-<span class="sd">    :return: a string with the table.</span>
+<span class="sd">    :return: a list of lists with the table.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">table</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">query_name</span><span class="p">,</span> <span class="n">dir_status</span> <span class="ow">in</span> <span class="n">project_status</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -419,20 +422,31 @@
             <span class="nb">sum</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="p">),</span>
         <span class="p">]</span>
     <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">tabulate</span><span class="p">(</span>
-        <span class="n">table</span><span class="p">,</span>
-        <span class="n">headers</span><span class="o">=</span><span class="p">[</span>
+    <span class="c1"># prepend the headers</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="p">[</span>
             <span class="s2">&quot;Query&quot;</span><span class="p">,</span>
             <span class="s2">&quot;Local&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;Zero size&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;Non-zero&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Zero&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Valid&quot;</span><span class="p">,</span>
             <span class="s2">&quot;Remote&quot;</span><span class="p">,</span>
             <span class="s2">&quot;To download&quot;</span><span class="p">,</span>
             <span class="s2">&quot;Removed&quot;</span><span class="p">,</span>
         <span class="p">],</span>
-        <span class="n">intfmt</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span>
-    <span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span></div>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">table</span></div>
+
+
+<div class="viewcode-block" id="pformat_status"><a class="viewcode-back" href="../project.html#project.pformat_status">[docs]</a><span class="k">def</span> <span class="nf">pformat_status</span><span class="p">(</span><span class="n">project_status</span><span class="p">:</span> <span class="n">ProjectStatus</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a nice string table with the status of the project.</span>
+
+<span class="sd">    :param project_status: dictionary with the status of the project.</span>
+<span class="sd">    :return: a string with the table.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">status_to_table</span><span class="p">(</span><span class="n">project_status</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tabulate</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="s2">&quot;firstrow&quot;</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s2">&quot;pipe&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="log_dir_status"><a class="viewcode-back" href="../project.html#project.log_dir_status">[docs]</a><span class="k">def</span> <span class="nf">log_dir_status</span><span class="p">(</span><span class="n">dir_status</span><span class="p">:</span> <span class="n">DirStatus</span><span class="p">,</span> <span class="n">query_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
@@ -518,6 +532,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">query_data_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">query_name</span><span class="p">)</span>
         <span class="n">ret</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">t_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">query_data_dir</span><span class="p">)):</span>
             <span class="c1"># Report hidden files if found, suggesting the command to remove them.</span>
@@ -527,7 +542,9 @@
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;rm </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">query_data_dir</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="k">continue</span>
             <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">PDB_EXT</span><span class="p">)</span> <span class="ow">or</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">COMPRESSED_EXT</span><span class="p">):</span>
-                <span class="n">ret</span><span class="p">[</span><span class="n">download</span><span class="o">.</span><span class="n">filename_to_pdb_id</span><span class="p">(</span><span class="n">filename</span><span class="p">)]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+                <span class="n">ret</span><span class="p">[</span><span class="n">download</span><span class="o">.</span><span class="n">filename_to_pdb_id</span><span class="p">(</span><span class="n">filename</span><span class="p">)]</span> <span class="o">=</span> <span class="n">size</span>
+                <span class="n">files</span><span class="p">[</span><span class="n">filename</span><span class="p">]</span> <span class="o">=</span> <span class="n">size</span>
         <span class="c1"># logging.debug(</span>
         <span class="c1">#     f&quot;{query_name:&lt;30}: {len(ret):&gt;7,} local files in {time.time() - t_start:.2f} seconds.&quot;</span>
         <span class="c1"># )</span>
@@ -538,6 +555,13 @@
             <span class="nb">len</span><span class="p">(</span><span class="n">ret</span><span class="p">),</span>
             <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t_start</span><span class="p">,</span>
         <span class="p">)</span>
+
+        <span class="c1"># Store files in a csv file.</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Writing </span><span class="si">{</span><span class="n">query_name</span><span class="si">}</span><span class="s2">__files.csv&quot;</span><span class="p">)</span>
+        <span class="n">files_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">query_name</span><span class="si">}</span><span class="s2">__files.csv&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">files_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">files</span><span class="p">):</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ret</span></div>
 
 <div class="viewcode-block" id="Project.fetch_or_cache_query"><a class="viewcode-back" href="../project.html#project.Project.fetch_or_cache_query">[docs]</a>    <span class="k">def</span> <span class="nf">fetch_or_cache_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
@@ -676,6 +700,21 @@
         <span class="nb">print</span><span class="p">(</span><span class="n">project_dir</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Date: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">pformat_status</span><span class="p">(</span><span class="n">project_status</span><span class="p">))</span>
+
+    <span class="c1"># store a csv file with the status</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">status_to_table</span><span class="p">(</span><span class="n">project_status</span><span class="p">)</span>
+    <span class="c1"># export the list of lists to a csv file</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_dir</span><span class="p">,</span> <span class="s2">&quot;db_summary.csv&quot;</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span>
+    <span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">writerows</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+
+    <span class="c1"># Also store the status in txt format.</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_dir</span><span class="p">,</span> <span class="s2">&quot;db_summary.txt&quot;</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span>
+    <span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pformat_status</span><span class="p">(</span><span class="n">project_status</span><span class="p">))</span>
 
     <span class="c1"># Count the total number of files to be downloaded.</span>
     <span class="n">total_tbd_ids</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
