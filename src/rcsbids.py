@@ -32,7 +32,9 @@ def retrieve_pdb_ids(query: str) -> list:
     :return: list of PDB IDs.
     """
     json_response = _send_request(query)
-    return [hit["identifier"] for hit in json_response.get("result_set", [])]
+    ret = [hit["identifier"] for hit in json_response.get("result_set", [])]
+    ret.sort()
+    return ret
 
 
 def _send_request(query: str) -> dict:
