@@ -7,10 +7,10 @@
 | src/download.py  |       94 |        0 |       30 |        0 |     100% |           |
 | src/pdbparser.py |        9 |        0 |        6 |        0 |     100% |           |
 | src/project.py   |      144 |        0 |       58 |        0 |     100% |           |
-| src/rcsbids.py   |       20 |        0 |        8 |        0 |     100% |           |
+| src/rcsbids.py   |       22 |        0 |        8 |        0 |     100% |           |
 | src/rcsbquery.py |       77 |        0 |       26 |        0 |     100% |           |
 | src/utils.py     |       16 |        0 |        8 |        0 |     100% |           |
-|        **TOTAL** |  **360** |    **0** |  **136** |    **0** | **100%** |           |
+|        **TOTAL** |  **362** |    **0** |  **136** |    **0** | **100%** |           |
 
 
 ## Setup coverage badge
