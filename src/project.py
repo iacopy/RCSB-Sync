@@ -48,6 +48,7 @@ The directory structures of a project is as follows::
 """
 # Standard Library
 import argparse
+import csv
 import datetime
 import logging
 import os
@@ -81,12 +82,12 @@ DirStatus = namedtuple(
 ProjectStatus = Dict[str, DirStatus]
 
 
-def pformat_status(project_status: ProjectStatus) -> str:  # pragma: no cover
+def status_to_table(project_status: ProjectStatus) -> list:
     """
-    Create a nice string table with the status of the project.
+    Convert the status of the project to a table.
 
     :param project_status: dictionary with the status of the project.
-    :return: a string with the table.
+    :return: a list of lists with the table.
     """
     table = []
     for query_name, dir_status in project_status.items():
@@ -113,20 +114,31 @@ def pformat_status(project_status: ProjectStatus) -> str:  # pragma: no cover
             sum(row[6] for row in table),
         ]
     )
-
-    return tabulate(
-        table,
-        headers=[
+    # prepend the headers
+    table.insert(
+        0,
+        [
             "Query",
             "Local",
-            "Zero size",
-            "Non-zero",
+            "Zero",
+            "Valid",
             "Remote",
             "To download",
             "Removed",
         ],
-        intfmt=",",
-    ).replace(",", " ")
+    )
+    return table
+
+
+def pformat_status(project_status: ProjectStatus) -> str:  # pragma: no cover
+    """
+    Create a nice string table with the status of the project.
+
+    :param project_status: dictionary with the status of the project.
+    :return: a string with the table.
+    """
+    table = status_to_table(project_status)
+    return tabulate(table, headers="firstrow", tablefmt="pipe")
 
 
 def log_dir_status(dir_status: DirStatus, query_name: str):
@@ -380,6 +392,21 @@ def main(
         print(project_dir)
         print(f"Date: {str(datetime.date.today())}")
         print(pformat_status(project_status))
+
+    # store a csv file with the status
+    table = status_to_table(project_status)
+    # export the list of lists to a csv file
+    with open(
+        os.path.join(project_dir, "db_summary.csv"), "w", encoding="utf-8"
+    ) as file:
+        writer = csv.writer(file)
+        writer.writerows(table)
+
+    # Also store the status in txt format.
+    with open(
+        os.path.join(project_dir, "db_summary.txt"), "w", encoding="utf-8"
+    ) as file:
+        file.write(pformat_status(project_status))
 
     # Count the total number of files to be downloaded.
     total_tbd_ids = sum(
