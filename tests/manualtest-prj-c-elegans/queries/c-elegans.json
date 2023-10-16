@@ -14,7 +14,7 @@
   "request_options": {
     "paginate": {
       "start": 0,
-      "rows": 999999
+      "rows": 10000
     },
     "results_content_type": [
       "experimental"

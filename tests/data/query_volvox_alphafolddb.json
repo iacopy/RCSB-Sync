@@ -34,7 +34,7 @@
     ],
     "paginate": {
       "start": 0,
-      "rows": 999999
+      "rows": 10000
     },
     "sort": [
       {

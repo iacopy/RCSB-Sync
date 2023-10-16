@@ -151,7 +151,7 @@ def generate_advanced_query(  # pylint: disable=too-many-arguments
     organism: Optional[str] = None,
     methods: Optional[list] = None,
     results_content_type: tuple = ("experimental",),
-    rows: int = 999999,
+    rows: int = 10000,
     indent: int = 2,
 ) -> str:
     """
@@ -185,7 +185,7 @@ def extend_parser(parser):  # pragma: no cover
     parser.add_argument(
         "--rows",
         type=int,
-        default=999999,
+        default=10000,
         help="maximum number of structures to retrieve",
     )
     parser.add_argument(
