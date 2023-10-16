@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-<title>🦜 RCSB Sync - project</title>
+<title>RCSB Sync - project</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
@@ -57,7 +57,7 @@
       <div id="hdr-left">
         <i class="fa fa-bars menu-toggle"></i>
         
-<a href="../index.html" class="text-logo">🦜 RCSB Sync 0.2.0b documentation</a>
+<a href="../index.html" class="text-logo">RCSB Sync 0.2.0b documentation</a>
 
       </div>
       <div id="hdr-centre" class="text-center stretch">
@@ -131,16 +131,36 @@
     <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html#src">src</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../difflines.html#module-difflines">difflines module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../difflines.html#difflines.diff_lines"><code class="docutils literal notranslate"><span class="pre">diff_lines()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../difflines.html#difflines.find_common_directory"><code class="docutils literal notranslate"><span class="pre">find_common_directory()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../difflines.html#difflines.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../download.html#module-download">download module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.CHUNK_LEN_PER_PROCESS"><code class="docutils literal notranslate"><span class="pre">CHUNK_LEN_PER_PROCESS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.PDBDownloadResult"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../download.html#download.PDBDownloadResult.local_path"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.local_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../download.html#download.PDBDownloadResult.pdb_id"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../download.html#download.PDBDownloadResult.pdb_title"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_title</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../download.html#download.PDBDownloadResult.pdb_url"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_url</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../download.html#download.PDBDownloadResult.status_code"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.status_code</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.alphafold_id_to_file"><code class="docutils literal notranslate"><span class="pre">alphafold_id_to_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.create_download_script"><code class="docutils literal notranslate"><span class="pre">create_download_script()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.download_pdb"><code class="docutils literal notranslate"><span class="pre">download_pdb()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.filename_to_pdb_id"><code class="docutils literal notranslate"><span class="pre">filename_to_pdb_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.get_download_url"><code class="docutils literal notranslate"><span class="pre">get_download_url()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.ids_to_sh"><code class="docutils literal notranslate"><span class="pre">ids_to_sh()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.is_alphafold_id"><code class="docutils literal notranslate"><span class="pre">is_alphafold_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.parallel_download"><code class="docutils literal notranslate"><span class="pre">parallel_download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.pdb_id_to_filename"><code class="docutils literal notranslate"><span class="pre">pdb_id_to_filename()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../pdbparser.html#module-pdbparser">pdbparser module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../pdbparser.html#pdbparser.parse_title"><code class="docutils literal notranslate"><span class="pre">parse_title()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../project.html#module-project">project module</a><ul>
@@ -164,6 +184,8 @@
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.scan_query_data"><code class="docutils literal notranslate"><span class="pre">Project.scan_query_data()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../project.html#project.ProjectInitError"><code class="docutils literal notranslate"><span class="pre">ProjectInitError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../project.html#project.log_dir_status"><code class="docutils literal notranslate"><span class="pre">log_dir_status()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.pformat_status"><code class="docutils literal notranslate"><span class="pre">pformat_status()</span></code></a></li>
 </ul>
@@ -189,6 +211,12 @@
 <li class="toctree-l3"><a class="reference internal" href="../rcsbquery.html#rcsbquery.generate_request_options"><code class="docutils literal notranslate"><span class="pre">generate_request_options()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../rcsbquery.html#rcsbquery.generate_terminal"><code class="docutils literal notranslate"><span class="pre">generate_terminal()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../rcsbquery.html#rcsbquery.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rcsbquery.html#rcsbquery.prepare_queries"><code class="docutils literal notranslate"><span class="pre">prepare_queries()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../renamedates.html#module-renamedates">renamedates module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../renamedates.html#renamedates.convert_to_iso"><code class="docutils literal notranslate"><span class="pre">convert_to_iso()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../renamedates.html#renamedates.rename_subdirectories"><code class="docutils literal notranslate"><span class="pre">rename_subdirectories()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../utils.html#module-utils">utils module</a></li>
@@ -208,16 +236,36 @@
     <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html#src">src</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../difflines.html#module-difflines">difflines module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../difflines.html#difflines.diff_lines"><code class="docutils literal notranslate"><span class="pre">diff_lines()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../difflines.html#difflines.find_common_directory"><code class="docutils literal notranslate"><span class="pre">find_common_directory()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../difflines.html#difflines.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../download.html#module-download">download module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.CHUNK_LEN_PER_PROCESS"><code class="docutils literal notranslate"><span class="pre">CHUNK_LEN_PER_PROCESS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.PDBDownloadResult"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../download.html#download.PDBDownloadResult.local_path"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.local_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../download.html#download.PDBDownloadResult.pdb_id"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../download.html#download.PDBDownloadResult.pdb_title"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_title</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../download.html#download.PDBDownloadResult.pdb_url"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_url</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../download.html#download.PDBDownloadResult.status_code"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.status_code</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.alphafold_id_to_file"><code class="docutils literal notranslate"><span class="pre">alphafold_id_to_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.create_download_script"><code class="docutils literal notranslate"><span class="pre">create_download_script()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.download_pdb"><code class="docutils literal notranslate"><span class="pre">download_pdb()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.filename_to_pdb_id"><code class="docutils literal notranslate"><span class="pre">filename_to_pdb_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.get_download_url"><code class="docutils literal notranslate"><span class="pre">get_download_url()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.ids_to_sh"><code class="docutils literal notranslate"><span class="pre">ids_to_sh()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.is_alphafold_id"><code class="docutils literal notranslate"><span class="pre">is_alphafold_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.parallel_download"><code class="docutils literal notranslate"><span class="pre">parallel_download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.pdb_id_to_filename"><code class="docutils literal notranslate"><span class="pre">pdb_id_to_filename()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../pdbparser.html#module-pdbparser">pdbparser module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../pdbparser.html#pdbparser.parse_title"><code class="docutils literal notranslate"><span class="pre">parse_title()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../project.html#module-project">project module</a><ul>
@@ -241,6 +289,8 @@
 <li class="toctree-l4"><a class="reference internal" href="../project.html#project.Project.scan_query_data"><code class="docutils literal notranslate"><span class="pre">Project.scan_query_data()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../project.html#project.ProjectInitError"><code class="docutils literal notranslate"><span class="pre">ProjectInitError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../project.html#project.log_dir_status"><code class="docutils literal notranslate"><span class="pre">log_dir_status()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project.html#project.pformat_status"><code class="docutils literal notranslate"><span class="pre">pformat_status()</span></code></a></li>
 </ul>
@@ -266,6 +316,12 @@
 <li class="toctree-l3"><a class="reference internal" href="../rcsbquery.html#rcsbquery.generate_request_options"><code class="docutils literal notranslate"><span class="pre">generate_request_options()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../rcsbquery.html#rcsbquery.generate_terminal"><code class="docutils literal notranslate"><span class="pre">generate_terminal()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../rcsbquery.html#rcsbquery.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rcsbquery.html#rcsbquery.prepare_queries"><code class="docutils literal notranslate"><span class="pre">prepare_queries()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../renamedates.html#module-renamedates">renamedates module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../renamedates.html#renamedates.convert_to_iso"><code class="docutils literal notranslate"><span class="pre">convert_to_iso()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../renamedates.html#renamedates.rename_subdirectories"><code class="docutils literal notranslate"><span class="pre">rename_subdirectories()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../utils.html#module-utils">utils module</a></li>
@@ -342,6 +398,7 @@
 <span class="c1"># My stuff</span>
 <span class="kn">import</span> <span class="nn">download</span>
 <span class="kn">import</span> <span class="nn">rcsbids</span>
+<span class="kn">import</span> <span class="nn">rcsbquery</span>
 
 <span class="n">IDS_SEPARATOR</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 <span class="n">SUFFIX_REMOVED</span> <span class="o">=</span> <span class="s2">&quot;.obsolete&quot;</span>
@@ -360,7 +417,7 @@
 <span class="n">ProjectStatus</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DirStatus</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="pformat_status"><a class="viewcode-back" href="../project.html#project.pformat_status">[docs]</a><span class="k">def</span> <span class="nf">pformat_status</span><span class="p">(</span><span class="n">project_status</span><span class="p">:</span> <span class="n">ProjectStatus</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="pformat_status"><a class="viewcode-back" href="../project.html#project.pformat_status">[docs]</a><span class="k">def</span> <span class="nf">pformat_status</span><span class="p">(</span><span class="n">project_status</span><span class="p">:</span> <span class="n">ProjectStatus</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create a nice string table with the status of the project.</span>
 
@@ -408,6 +465,43 @@
     <span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="log_dir_status"><a class="viewcode-back" href="../project.html#project.log_dir_status">[docs]</a><span class="k">def</span> <span class="nf">log_dir_status</span><span class="p">(</span><span class="n">dir_status</span><span class="p">:</span> <span class="n">DirStatus</span><span class="p">,</span> <span class="n">query_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Log the status of a directory.</span>
+
+<span class="sd">    :param dir_status: the status of the directory.</span>
+<span class="sd">    :param query_name: name of the query.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+        <span class="s2">&quot;📁 </span><span class="si">%s</span><span class="s2">: </span><span class="si">%d</span><span class="s2"> local, </span><span class="si">%d</span><span class="s2"> remote, </span><span class="si">%d</span><span class="s2"> to be downloaded, </span><span class="si">%d</span><span class="s2"> removed&quot;</span><span class="p">,</span>
+        <span class="n">query_name</span><span class="p">,</span>
+        <span class="n">dir_status</span><span class="o">.</span><span class="n">n_local</span><span class="p">,</span>
+        <span class="n">dir_status</span><span class="o">.</span><span class="n">n_remote</span><span class="p">,</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">dir_status</span><span class="o">.</span><span class="n">tbd_ids</span><span class="p">),</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">dir_status</span><span class="o">.</span><span class="n">removed_ids</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">dir_status</span><span class="o">.</span><span class="n">tbd_ids</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">&quot;📥 </span><span class="si">%-30s</span><span class="s2">:   new files: </span><span class="si">%7d</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">query_name</span><span class="p">,</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">dir_status</span><span class="o">.</span><span class="n">tbd_ids</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">dir_status</span><span class="o">.</span><span class="n">removed_ids</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">&quot;🗑️ </span><span class="si">%-30s</span><span class="s2">: local PDB not returned by RCSB: </span><span class="si">%7d</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">query_name</span><span class="p">,</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">dir_status</span><span class="o">.</span><span class="n">removed_ids</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">id_</span> <span class="ow">in</span> <span class="n">dir_status</span><span class="o">.</span><span class="n">removed_ids</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;old_id=&#39;</span><span class="si">%s</span><span class="s2">&#39;, query=&#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">id_</span><span class="p">,</span> <span class="n">query_name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ProjectInitError"><a class="viewcode-back" href="../project.html#project.ProjectInitError">[docs]</a><span class="k">class</span> <span class="nc">ProjectInitError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Error raised when the project cannot be initialized.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
 <div class="viewcode-block" id="Project"><a class="viewcode-back" href="../project.html#project.Project">[docs]</a><span class="k">class</span> <span class="nc">Project</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Keep synced the data directory with the remote RCSB database.</span>
@@ -422,6 +516,20 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">):</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Creating data directory: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">)</span>
             <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">queries_dir</span><span class="p">):</span>
+            <span class="c1"># search for a project.yml to generate the queries</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">query_files</span> <span class="o">=</span> <span class="n">rcsbquery</span><span class="o">.</span><span class="n">prepare_queries</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">FileNotFoundError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                    <span class="s2">&quot;No queries directory found in </span><span class="si">%s</span><span class="s2">, and no project.yml file found.&quot;</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">raise</span> <span class="n">ProjectInitError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;No queries directory found in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="si">}</span><span class="s2">, and no project.yml file found.&quot;</span>
+                <span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> queries created&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">query_files</span><span class="p">))</span>
 
         <span class="c1"># Create the query data directories if they don&#39;t exist.</span>
         <span class="k">for</span> <span class="n">query_file</span> <span class="ow">in</span> <span class="p">(</span>
@@ -466,10 +574,24 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fetch the RCSB IDs from the RCSB website.</span>
 
+<span class="sd">        Side effect: create a file with the list of IDs in the data directory.</span>
+
+<span class="sd">        :param query_path: path to the query file.</span>
 <span class="sd">        :return: List of RCSB IDs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Get the list of PDB IDs from the RCSB website, given an advanced query in json format.</span>
-        <span class="k">return</span> <span class="n">rcsbids</span><span class="o">.</span><span class="n">search_and_download_ids</span><span class="p">(</span><span class="n">query_path</span><span class="p">)</span></div>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">rcsbids</span><span class="o">.</span><span class="n">search_and_download_ids</span><span class="p">(</span><span class="n">query_path</span><span class="p">)</span>
+
+        <span class="c1"># Side effect: store the list of PDB IDs in a file in the data directory.</span>
+        <span class="n">query_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">query_path</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">ids_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">query_name</span><span class="si">}</span><span class="s2">.ids&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">ids_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ret</span><span class="p">))</span>
+
+        <span class="c1"># Also create a bash script to download the PDB files.</span>
+        <span class="n">download</span><span class="o">.</span><span class="n">ids_to_sh</span><span class="p">(</span><span class="n">ids_path</span><span class="o">=</span><span class="n">ids_file</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ret</span></div>
 
 <div class="viewcode-block" id="Project.get_status_query"><a class="viewcode-back" href="../project.html#project.Project.get_status_query">[docs]</a>    <span class="k">def</span> <span class="nf">get_status_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DirStatus</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -486,9 +608,6 @@
         <span class="n">query_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">query_path</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
         <span class="c1"># Get the list of PDB IDs from the RCSB website.</span>
         <span class="n">remote_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_or_cache_query</span><span class="p">(</span><span class="n">query_path</span><span class="p">)</span>
-        <span class="c1"># logging.debug(f&quot;{query_name:&lt;30}: {len(remote_ids):&gt;7,} remote IDs.&quot;)</span>
-        <span class="c1"># Log the same but using %s to avoid the formatting if the log level is not DEBUG.</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: </span><span class="si">%7d</span><span class="s2"> remote IDs&quot;</span><span class="p">,</span> <span class="n">query_name</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">remote_ids</span><span class="p">))</span>
         <span class="c1"># Check which PDB files are already in the local project directory, and skip those to save time.</span>
         <span class="n">local_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan_query_data</span><span class="p">(</span><span class="n">query_name</span><span class="p">)</span>
         <span class="n">n_local</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">local_ids</span><span class="p">)</span>
@@ -498,31 +617,10 @@
 
         <span class="c1"># Remote structures to be downloaded.</span>
         <span class="n">tbd_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">id_</span> <span class="k">for</span> <span class="n">id_</span> <span class="ow">in</span> <span class="n">remote_ids</span> <span class="k">if</span> <span class="n">id_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">local_ids</span><span class="p">]</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: </span><span class="si">%7d</span><span class="s2"> local, </span><span class="si">%7d</span><span class="s2"> remote, </span><span class="si">%7d</span><span class="s2"> to download&quot;</span><span class="p">,</span>
-            <span class="n">query_name</span><span class="p">,</span>
-            <span class="n">n_local</span><span class="p">,</span>
-            <span class="n">n_remote</span><span class="p">,</span>
-            <span class="nb">len</span><span class="p">(</span><span class="n">tbd_ids</span><span class="p">),</span>
-        <span class="p">)</span>
+
         <span class="c1"># Local files to be removed (some local PDB files are not in the RCSB database anymore,</span>
         <span class="c1"># so we mark them with the SUFFIX_REMOVED suffix).</span>
         <span class="n">removed_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">id_</span> <span class="k">for</span> <span class="n">id_</span> <span class="ow">in</span> <span class="n">local_ids</span> <span class="k">if</span> <span class="n">id_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">remote_ids</span><span class="p">]</span>
-
-        <span class="c1"># Report the removed files.</span>
-        <span class="k">if</span> <span class="n">removed_ids</span><span class="p">:</span>
-            <span class="c1"># logging.info(</span>
-            <span class="c1">#     f&quot;Locally found {len(removed_ids):,} files not returned by RCSB for {query_name}.&quot;)</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                <span class="s2">&quot;Locally found </span><span class="si">%d</span><span class="s2"> files not returned by RCSB for </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
-                <span class="nb">len</span><span class="p">(</span><span class="n">removed_ids</span><span class="p">),</span>
-                <span class="n">query_name</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="k">for</span> <span class="n">id_</span> <span class="ow">in</span> <span class="n">removed_ids</span><span class="p">:</span>
-                <span class="c1"># logging.info(f&quot;old_id=&#39;{id_}&#39;, query=&#39;{query_name}&#39;&quot;)</span>
-                <span class="c1"># log the same but using %s to avoid the formatting if the log level is not INFO.</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;old_id=&#39;</span><span class="si">%s</span><span class="s2">&#39;, query=&#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">id_</span><span class="p">,</span> <span class="n">query_name</span><span class="p">)</span>
-
         <span class="k">return</span> <span class="n">DirStatus</span><span class="p">(</span><span class="n">n_local</span><span class="p">,</span> <span class="n">n_remote</span><span class="p">,</span> <span class="n">tbd_ids</span><span class="p">,</span> <span class="n">removed_ids</span><span class="p">,</span> <span class="n">zero_ids</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Project.get_status"><a class="viewcode-back" href="../project.html#project.Project.get_status">[docs]</a>    <span class="k">def</span> <span class="nf">get_status</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProjectStatus</span><span class="p">:</span>
@@ -535,11 +633,12 @@
         <span class="k">for</span> <span class="n">query_file</span> <span class="ow">in</span> <span class="p">(</span>
             <span class="n">filename</span>
             <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">queries_dir</span><span class="p">))</span>
-            <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.json&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.json&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">filename</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
         <span class="p">):</span>
             <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">query_file</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">query_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">queries_dir</span><span class="p">,</span> <span class="n">query_file</span><span class="p">)</span>
             <span class="n">ret</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_status_query</span><span class="p">(</span><span class="n">query_path</span><span class="p">)</span>
+            <span class="n">log_dir_status</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">name</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ret</span></div>
 
 <div class="viewcode-block" id="Project.mark_removed"><a class="viewcode-back" href="../project.html#project.Project.mark_removed">[docs]</a>    <span class="k">def</span> <span class="nf">mark_removed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">to_remove</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -570,7 +669,7 @@
 <span class="sd">        :param project_status: a dictionary mapping query names to DirStatus objects.</span>
 <span class="sd">        :param n_jobs: number of parallel jobs to download the PDB files.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Starting synchronization.&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Starting synchronization.&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">query_name</span><span class="p">,</span> <span class="n">dir_status</span> <span class="ow">in</span> <span class="n">project_status</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mark_removed</span><span class="p">(</span><span class="n">query_name</span><span class="p">,</span> <span class="n">dir_status</span><span class="o">.</span><span class="n">removed_ids</span><span class="p">)</span>
             <span class="n">query_data_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">query_name</span><span class="p">)</span>
@@ -580,42 +679,59 @@
 
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../project.html#project.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span>
-    <span class="n">project_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">yes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">compressed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="p">):</span>
+    <span class="n">project_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">yes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">noop</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">compressed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">summary</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>  <span class="c1"># pylint: disable=too-many-arguments</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Fetch the RCSB IDs from the RCSB website, and download the corresponding PDB files.</span>
 
 <span class="sd">    :param project_dir: path to the project directory.</span>
 <span class="sd">    :param n_jobs: number of parallel jobs to use.</span>
 <span class="sd">    :param yes: if True, do not ask for confirmation before downloading the PDB files.</span>
+<span class="sd">    :param noop: if True, do not download the PDB files.</span>
+<span class="sd">    :param compressed: if True, download the compressed PDB files (.gz). Don&#39;t work with AlphaFold.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="n">project_dir</span><span class="p">)</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Project directory: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">project_dir</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Project directory: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">project_dir</span><span class="p">)</span>
 
     <span class="c1"># Fetch the remote RCSB IDs.</span>
     <span class="n">project_status</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">get_status</span><span class="p">()</span>
 
     <span class="c1"># Print the status of the project.</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">project_dir</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Date: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">pformat_status</span><span class="p">(</span><span class="n">project_status</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">summary</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">project_dir</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Date: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">pformat_status</span><span class="p">(</span><span class="n">project_status</span><span class="p">))</span>
 
     <span class="c1"># Count the total number of files to be downloaded.</span>
     <span class="n">total_tbd_ids</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
         <span class="nb">len</span><span class="p">(</span><span class="n">dir_status</span><span class="o">.</span><span class="n">tbd_ids</span><span class="p">)</span> <span class="k">for</span> <span class="n">dir_status</span> <span class="ow">in</span> <span class="n">project_status</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
     <span class="p">)</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;📥 Total new files to be downloaded: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">total_tbd_ids</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">total_tbd_ids</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Nothing to do.&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;📥 Number of new pdb files to download overall: </span><span class="si">%7d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">total_tbd_ids</span><span class="p">)</span>
+
+    <span class="c1"># If &quot;--noop&quot; argument is given, exit.</span>
+    <span class="k">if</span> <span class="n">noop</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Exiting because of --noop argument.&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
 
     <span class="c1"># Download the PDB files corresponding to the RCSB PDB IDs which are not already in the project directory.</span>
-    <span class="k">if</span> <span class="n">total_tbd_ids</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">yes</span><span class="p">:</span>
-            <span class="n">answer</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Do you want to download the PDB files? [y/N] &quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">answer</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;User chose not to download the PDB files.&quot;</span><span class="p">)</span>
-                <span class="k">return</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">yes</span><span class="p">:</span>
+        <span class="n">answer</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Do you want to download the </span><span class="si">{</span><span class="n">total_tbd_ids</span><span class="si">}</span><span class="s2"> PDB files? [y/N] &quot;</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">answer</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;User chose not to download the PDB files.&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
 
-        <span class="n">project</span><span class="o">.</span><span class="n">do_sync</span><span class="p">(</span><span class="n">project_status</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">,</span> <span class="n">compressed</span><span class="o">=</span><span class="n">compressed</span><span class="p">)</span></div>
+    <span class="n">project</span><span class="o">.</span><span class="n">do_sync</span><span class="p">(</span><span class="n">project_status</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">,</span> <span class="n">compressed</span><span class="o">=</span><span class="n">compressed</span><span class="p">)</span></div>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
@@ -631,17 +747,29 @@
         <span class="n">default</span><span class="o">=</span><span class="n">DEFAULT_JOBS</span><span class="p">,</span>
         <span class="n">help</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;the number of parallel jobs for downloading (default: </span><span class="si">{</span><span class="n">DEFAULT_JOBS</span><span class="si">}</span><span class="s2">, max: </span><span class="si">{</span><span class="n">MAX_JOBS</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="n">yes_or_no</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span>
+    <span class="n">yes_or_no</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
         <span class="s2">&quot;-y&quot;</span><span class="p">,</span>
         <span class="s2">&quot;--yes&quot;</span><span class="p">,</span>
         <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;do not ask for confirmation before downloading&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">yes_or_no</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-n&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--noop&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;do not download new files if available&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
         <span class="s2">&quot;--compressed&quot;</span><span class="p">,</span>
         <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;download compressed PDB files (not available for AlphaFold DB)&quot;</span><span class="p">,</span>
     <span class="p">)</span>
+    <span class="c1"># Add an option to print the database summary table</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="s2">&quot;--summary&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;print the database summary table&quot;</span>
+    <span class="p">)</span>
+
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span> <span class="s2">&quot;--verbose&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;verbose mode&quot;</span><span class="p">)</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 
@@ -657,7 +785,7 @@
     <span class="c1"># define a Handler which writes INFO messages or higher to the sys.stderr</span>
     <span class="n">console</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
     <span class="c1"># set a format which is simpler for console use</span>
-    <span class="n">console_formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%(name)-12s</span><span class="s2">: </span><span class="si">%(levelname)-8s</span><span class="s2"> </span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">console_formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%(levelname)-8s</span><span class="s2"> </span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="c1"># tell the handler to use this format</span>
     <span class="n">console</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">console_formatter</span><span class="p">)</span>
     <span class="c1"># add the handler to the root logger</span>
@@ -666,10 +794,17 @@
     <span class="c1"># Verbosity level for the logger (0: INFO, 1: DEBUG).</span>
     <span class="n">console</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span> <span class="k">else</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
 
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Starting script: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="vm">__file__</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Starting script: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="vm">__file__</span><span class="p">)</span>
     <span class="c1"># Log the command line arguments.</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Command line arguments: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
-    <span class="n">main</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">project_dir</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">n_jobs</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">yes</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">compressed</span><span class="p">)</span>
+    <span class="n">main</span><span class="p">(</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">project_dir</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">n_jobs</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">yes</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">noop</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">compressed</span><span class="p">,</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">summary</span><span class="p">,</span>
+    <span class="p">)</span>
 </pre></div>
 
           </div>
@@ -680,7 +815,7 @@
   <div id="footer-row" class="row">
 
     <div class="col-md-12">
-        <span title="Built on 2022-11-21" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
+        <span title="Built on 2023-10-16" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
         Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0 and the
         <a href="https://pypi.org/project/sphinx-sizzle-theme/"
 
