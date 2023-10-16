@@ -212,6 +212,7 @@ class Project:
         """
         query_data_dir = os.path.join(self.data_dir, query_name)
         ret = {}
+        files = {}
         t_start = time.time()
         for filename in sorted(os.listdir(query_data_dir)):
             # Report hidden files if found, suggesting the command to remove them.
@@ -221,7 +222,9 @@ class Project:
                 print(f"rm {os.path.join(query_data_dir, filename)}")
                 continue
             if filename.endswith(PDB_EXT) or filename.endswith(COMPRESSED_EXT):
-                ret[download.filename_to_pdb_id(filename)] = os.path.getsize(filepath)
+                size = os.path.getsize(filepath)
+                ret[download.filename_to_pdb_id(filename)] = size
+                files[filename] = size
         # logging.debug(
         #     f"{query_name:<30}: {len(ret):>7,} local files in {time.time() - t_start:.2f} seconds."
         # )
@@ -232,6 +235,13 @@ class Project:
             len(ret),
             time.time() - t_start,
         )
+
+        # Store files in a csv file.
+        print(f"Writing {query_name}__files.csv")
+        files_file = os.path.join(self.data_dir, f"{query_name}__files.csv")
+        with open(files_file, "w", encoding="ascii") as file:
+            for filename in sorted(files):
+                file.write(f"{filename}\n")
         return ret
 
     def fetch_or_cache_query(self, query_path: str) -> List[str]:
