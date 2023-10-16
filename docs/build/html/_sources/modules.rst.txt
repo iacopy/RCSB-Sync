@@ -4,8 +4,11 @@ src
 .. toctree::
    :maxdepth: 4
 
+   difflines
    download
+   pdbparser
    project
    rcsbids
    rcsbquery
+   renamedates
    utils

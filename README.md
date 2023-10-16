@@ -1,4 +1,4 @@
-# 🦜 RCSB-Sync
+# RCSB-Sync
 
 [![Testing](https://github.com/iacopy/RCSB-Sync/actions/workflows/ci.yml/badge.svg)](https://github.com/iacopy/RCSB-Sync/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/iacopy/RCSB-Sync/branch/main/graph/badge.svg?token=WR8dFNq0ci)](https://codecov.io/gh/iacopy/RCSB-Sync)

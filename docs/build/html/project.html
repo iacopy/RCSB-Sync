@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-<title>🦜 RCSB Sync - project module</title>
+<title>RCSB Sync - project module</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
@@ -44,7 +44,7 @@
 <link rel="index" title="Index" href="genindex.html" />
 <link rel="search" title="Search" href="search.html" />
 <link rel="next" title="rcsbids module" href="rcsbids.html" />
-<link rel="prev" title="download module" href="download.html" />
+<link rel="prev" title="pdbparser module" href="pdbparser.html" />
 
 </head>
 <body class="full-height test">
@@ -59,7 +59,7 @@
       <div id="hdr-left">
         <i class="fa fa-bars menu-toggle"></i>
         
-<a href="index.html" class="text-logo">🦜 RCSB Sync 0.2.0b documentation</a>
+<a href="index.html" class="text-logo">RCSB Sync 0.2.0b documentation</a>
 
       </div>
       <div id="hdr-centre" class="text-center stretch">
@@ -90,7 +90,7 @@
   <div class="prev-next">
     
       <div class="pull-left">
-        <a class="btn btn-default prev" href="download.html" title="Previous chapter (download module)"><i class="fa fa-chevron-left mr-1em" aria-hidden="true"></i><span class="btn-text">download module</span></a>
+        <a class="btn btn-default prev" href="pdbparser.html" title="Previous chapter (pdbparser module)"><i class="fa fa-chevron-left mr-1em" aria-hidden="true"></i><span class="btn-text">pdbparser module</span></a>
       </div>
     
       <div class="pull-right">
@@ -101,7 +101,7 @@
       </div>
       <div id="alt-hdr-right">
 
-        <a href="download.html"><i class="fa fa-chevron-left mr-8"></i></a>
+        <a href="pdbparser.html"><i class="fa fa-chevron-left mr-8"></i></a>
 
 
         <a href="index.html"><i class="fa fa-home mr-8"></i></a>
@@ -152,16 +152,36 @@
     <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html#src">src</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="difflines.html#module-difflines">difflines module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="difflines.html#difflines.diff_lines"><code class="docutils literal notranslate"><span class="pre">diff_lines()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="difflines.html#difflines.find_common_directory"><code class="docutils literal notranslate"><span class="pre">find_common_directory()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="difflines.html#difflines.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="download.html#module-download">download module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.CHUNK_LEN_PER_PROCESS"><code class="docutils literal notranslate"><span class="pre">CHUNK_LEN_PER_PROCESS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="download.html#download.PDBDownloadResult"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="download.html#download.PDBDownloadResult.local_path"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.local_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="download.html#download.PDBDownloadResult.pdb_id"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="download.html#download.PDBDownloadResult.pdb_title"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_title</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="download.html#download.PDBDownloadResult.pdb_url"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_url</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="download.html#download.PDBDownloadResult.status_code"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.status_code</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.alphafold_id_to_file"><code class="docutils literal notranslate"><span class="pre">alphafold_id_to_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="download.html#download.create_download_script"><code class="docutils literal notranslate"><span class="pre">create_download_script()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.download_pdb"><code class="docutils literal notranslate"><span class="pre">download_pdb()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.filename_to_pdb_id"><code class="docutils literal notranslate"><span class="pre">filename_to_pdb_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.get_download_url"><code class="docutils literal notranslate"><span class="pre">get_download_url()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="download.html#download.ids_to_sh"><code class="docutils literal notranslate"><span class="pre">ids_to_sh()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.is_alphafold_id"><code class="docutils literal notranslate"><span class="pre">is_alphafold_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.parallel_download"><code class="docutils literal notranslate"><span class="pre">parallel_download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.pdb_id_to_filename"><code class="docutils literal notranslate"><span class="pre">pdb_id_to_filename()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pdbparser.html#module-pdbparser">pdbparser module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pdbparser.html#pdbparser.parse_title"><code class="docutils literal notranslate"><span class="pre">parse_title()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#module-project">project module</a><ul>
@@ -185,6 +205,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#project.Project.scan_query_data"><code class="docutils literal notranslate"><span class="pre">Project.scan_query_data()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#project.ProjectInitError"><code class="docutils literal notranslate"><span class="pre">ProjectInitError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#project.log_dir_status"><code class="docutils literal notranslate"><span class="pre">log_dir_status()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#project.pformat_status"><code class="docutils literal notranslate"><span class="pre">pformat_status()</span></code></a></li>
 </ul>
@@ -210,6 +232,12 @@
 <li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_request_options"><code class="docutils literal notranslate"><span class="pre">generate_request_options()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_terminal"><code class="docutils literal notranslate"><span class="pre">generate_terminal()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.prepare_queries"><code class="docutils literal notranslate"><span class="pre">prepare_queries()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="renamedates.html">renamedates module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="renamedates.html#renamedates.convert_to_iso"><code class="docutils literal notranslate"><span class="pre">convert_to_iso()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="renamedates.html#renamedates.rename_subdirectories"><code class="docutils literal notranslate"><span class="pre">rename_subdirectories()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html">utils module</a></li>
@@ -229,16 +257,36 @@
     <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html#src">src</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="difflines.html#module-difflines">difflines module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="difflines.html#difflines.diff_lines"><code class="docutils literal notranslate"><span class="pre">diff_lines()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="difflines.html#difflines.find_common_directory"><code class="docutils literal notranslate"><span class="pre">find_common_directory()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="difflines.html#difflines.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="download.html#module-download">download module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.CHUNK_LEN_PER_PROCESS"><code class="docutils literal notranslate"><span class="pre">CHUNK_LEN_PER_PROCESS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="download.html#download.PDBDownloadResult"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="download.html#download.PDBDownloadResult.local_path"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.local_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="download.html#download.PDBDownloadResult.pdb_id"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="download.html#download.PDBDownloadResult.pdb_title"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_title</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="download.html#download.PDBDownloadResult.pdb_url"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_url</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="download.html#download.PDBDownloadResult.status_code"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.status_code</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.alphafold_id_to_file"><code class="docutils literal notranslate"><span class="pre">alphafold_id_to_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="download.html#download.create_download_script"><code class="docutils literal notranslate"><span class="pre">create_download_script()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.download_pdb"><code class="docutils literal notranslate"><span class="pre">download_pdb()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.filename_to_pdb_id"><code class="docutils literal notranslate"><span class="pre">filename_to_pdb_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.get_download_url"><code class="docutils literal notranslate"><span class="pre">get_download_url()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="download.html#download.ids_to_sh"><code class="docutils literal notranslate"><span class="pre">ids_to_sh()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.is_alphafold_id"><code class="docutils literal notranslate"><span class="pre">is_alphafold_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.parallel_download"><code class="docutils literal notranslate"><span class="pre">parallel_download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.pdb_id_to_filename"><code class="docutils literal notranslate"><span class="pre">pdb_id_to_filename()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pdbparser.html#module-pdbparser">pdbparser module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pdbparser.html#pdbparser.parse_title"><code class="docutils literal notranslate"><span class="pre">parse_title()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#module-project">project module</a><ul>
@@ -262,6 +310,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#project.Project.scan_query_data"><code class="docutils literal notranslate"><span class="pre">Project.scan_query_data()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#project.ProjectInitError"><code class="docutils literal notranslate"><span class="pre">ProjectInitError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#project.log_dir_status"><code class="docutils literal notranslate"><span class="pre">log_dir_status()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#project.pformat_status"><code class="docutils literal notranslate"><span class="pre">pformat_status()</span></code></a></li>
 </ul>
@@ -287,6 +337,12 @@
 <li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_request_options"><code class="docutils literal notranslate"><span class="pre">generate_request_options()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.generate_terminal"><code class="docutils literal notranslate"><span class="pre">generate_terminal()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rcsbquery.html#rcsbquery.prepare_queries"><code class="docutils literal notranslate"><span class="pre">prepare_queries()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="renamedates.html">renamedates module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="renamedates.html#renamedates.convert_to_iso"><code class="docutils literal notranslate"><span class="pre">convert_to_iso()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="renamedates.html#renamedates.rename_subdirectories"><code class="docutils literal notranslate"><span class="pre">rename_subdirectories()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html">utils module</a></li>
@@ -409,11 +465,14 @@ and skip them.</li>
 <dt class="sig sig-object py" id="project.Project.fetch_or_cache_query">
 <code class="sig-name descname"><span class="pre">fetch_or_cache_query</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">query_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/project.html#Project.fetch_or_cache_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.Project.fetch_or_cache_query" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetch the RCSB IDs from the RCSB website.</p>
+<p>Side effect: create a file with the list of IDs in the data directory.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of RCSB IDs.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>query_path</strong> – path to the query file.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of RCSB IDs.</td>
 </tr>
 </tbody>
 </table>
@@ -483,9 +542,34 @@ and skip them.</li>
 
 </dd></dl>
 
+<dl class="py exception">
+<dt class="sig sig-object py" id="project.ProjectInitError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><code class="sig-prename descclassname"><span class="pre">project.</span></code><code class="sig-name descname"><span class="pre">ProjectInitError</span></code><a class="reference internal" href="_modules/project.html#ProjectInitError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.ProjectInitError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Error raised when the project cannot be initialized.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="project.log_dir_status">
+<code class="sig-prename descclassname"><span class="pre">project.</span></code><code class="sig-name descname"><span class="pre">log_dir_status</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">dir_status</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#project.DirStatus" title="project.DirStatus"><span class="pre">DirStatus</span></a></span></em>, <em><span class="n"><span class="pre">query_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/project.html#log_dir_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.log_dir_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log the status of a directory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>dir_status</strong> – the status of the directory.</li>
+<li><strong>query_name</strong> – name of the query.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="project.main">
-<code class="sig-prename descclassname"><span class="pre">project.</span></code><code class="sig-name descname"><span class="pre">main</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">project_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em><span class="n"><span class="pre">n_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em><span class="n"><span class="pre">yes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em><span class="n"><span class="pre">compressed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/project.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.main" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">project.</span></code><code class="sig-name descname"><span class="pre">main</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">project_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em><span class="n"><span class="pre">n_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em><span class="n"><span class="pre">yes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em><span class="n"><span class="pre">noop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em><span class="n"><span class="pre">compressed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em><span class="n"><span class="pre">summary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/project.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.main" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetch the RCSB IDs from the RCSB website, and download the corresponding PDB files.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -495,6 +579,8 @@ and skip them.</li>
 <li><strong>project_dir</strong> – path to the project directory.</li>
 <li><strong>n_jobs</strong> – number of parallel jobs to use.</li>
 <li><strong>yes</strong> – if True, do not ask for confirmation before downloading the PDB files.</li>
+<li><strong>noop</strong> – if True, do not download the PDB files.</li>
+<li><strong>compressed</strong> – if True, download the compressed PDB files (.gz). Don’t work with AlphaFold.</li>
 </ul>
 </td>
 </tr>
@@ -529,7 +615,7 @@ and skip them.</li>
   <div id="footer-row" class="row">
 
     <div class="col-md-12">
-        <span title="Built on 2022-11-21" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
+        <span title="Built on 2023-10-16" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
         Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0 and the
         <a href="https://pypi.org/project/sphinx-sizzle-theme/"
 

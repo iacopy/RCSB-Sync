@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-<title>🦜 RCSB Sync - rcsbquery module</title>
+<title>RCSB Sync - rcsbquery module</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
@@ -43,7 +43,7 @@
     <script src="app-data.js"></script>
 <link rel="index" title="Index" href="genindex.html" />
 <link rel="search" title="Search" href="search.html" />
-<link rel="next" title="utils module" href="utils.html" />
+<link rel="next" title="renamedates module" href="renamedates.html" />
 <link rel="prev" title="rcsbids module" href="rcsbids.html" />
 
 </head>
@@ -59,7 +59,7 @@
       <div id="hdr-left">
         <i class="fa fa-bars menu-toggle"></i>
         
-<a href="index.html" class="text-logo">🦜 RCSB Sync 0.2.0b documentation</a>
+<a href="index.html" class="text-logo">RCSB Sync 0.2.0b documentation</a>
 
       </div>
       <div id="hdr-centre" class="text-center stretch">
@@ -94,7 +94,7 @@
       </div>
     
       <div class="pull-right">
-        <a class="btn btn-default next" href="utils.html" title="Next chapter (utils module)"><span class="btn-text">utils module</span>&nbsp;<i class="fa fa-chevron-right ml-1em" aria-hidden="true"></i></a>
+        <a class="btn btn-default next" href="renamedates.html" title="Next chapter (renamedates module)"><span class="btn-text">renamedates module</span>&nbsp;<i class="fa fa-chevron-right ml-1em" aria-hidden="true"></i></a>
       </div>
     </div>
   
@@ -113,7 +113,7 @@
         <a href="genindex.html"><i class="fa fa-list mr-8"></i></a>
 
 
-        <a href="utils.html"><i class="fa fa-chevron-right"></i></a>
+        <a href="renamedates.html"><i class="fa fa-chevron-right"></i></a>
 
       </div>
     </div>
@@ -152,16 +152,36 @@
     <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html#src">src</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="difflines.html#module-difflines">difflines module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="difflines.html#difflines.diff_lines"><code class="docutils literal notranslate"><span class="pre">diff_lines()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="difflines.html#difflines.find_common_directory"><code class="docutils literal notranslate"><span class="pre">find_common_directory()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="difflines.html#difflines.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="download.html#module-download">download module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.CHUNK_LEN_PER_PROCESS"><code class="docutils literal notranslate"><span class="pre">CHUNK_LEN_PER_PROCESS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="download.html#download.PDBDownloadResult"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="download.html#download.PDBDownloadResult.local_path"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.local_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="download.html#download.PDBDownloadResult.pdb_id"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="download.html#download.PDBDownloadResult.pdb_title"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_title</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="download.html#download.PDBDownloadResult.pdb_url"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_url</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="download.html#download.PDBDownloadResult.status_code"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.status_code</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.alphafold_id_to_file"><code class="docutils literal notranslate"><span class="pre">alphafold_id_to_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="download.html#download.create_download_script"><code class="docutils literal notranslate"><span class="pre">create_download_script()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.download_pdb"><code class="docutils literal notranslate"><span class="pre">download_pdb()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.filename_to_pdb_id"><code class="docutils literal notranslate"><span class="pre">filename_to_pdb_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.get_download_url"><code class="docutils literal notranslate"><span class="pre">get_download_url()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="download.html#download.ids_to_sh"><code class="docutils literal notranslate"><span class="pre">ids_to_sh()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.is_alphafold_id"><code class="docutils literal notranslate"><span class="pre">is_alphafold_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.parallel_download"><code class="docutils literal notranslate"><span class="pre">parallel_download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.pdb_id_to_filename"><code class="docutils literal notranslate"><span class="pre">pdb_id_to_filename()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pdbparser.html#module-pdbparser">pdbparser module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pdbparser.html#pdbparser.parse_title"><code class="docutils literal notranslate"><span class="pre">parse_title()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="project.html#module-project">project module</a><ul>
@@ -185,6 +205,8 @@
 <li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.scan_query_data"><code class="docutils literal notranslate"><span class="pre">Project.scan_query_data()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="project.html#project.ProjectInitError"><code class="docutils literal notranslate"><span class="pre">ProjectInitError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="project.html#project.log_dir_status"><code class="docutils literal notranslate"><span class="pre">log_dir_status()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="project.html#project.pformat_status"><code class="docutils literal notranslate"><span class="pre">pformat_status()</span></code></a></li>
 </ul>
@@ -210,6 +232,12 @@
 <li class="toctree-l3"><a class="reference internal" href="#rcsbquery.generate_request_options"><code class="docutils literal notranslate"><span class="pre">generate_request_options()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rcsbquery.generate_terminal"><code class="docutils literal notranslate"><span class="pre">generate_terminal()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rcsbquery.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsbquery.prepare_queries"><code class="docutils literal notranslate"><span class="pre">prepare_queries()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="renamedates.html">renamedates module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="renamedates.html#renamedates.convert_to_iso"><code class="docutils literal notranslate"><span class="pre">convert_to_iso()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="renamedates.html#renamedates.rename_subdirectories"><code class="docutils literal notranslate"><span class="pre">rename_subdirectories()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html">utils module</a></li>
@@ -229,16 +257,36 @@
     <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html#src">src</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="difflines.html#module-difflines">difflines module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="difflines.html#difflines.diff_lines"><code class="docutils literal notranslate"><span class="pre">diff_lines()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="difflines.html#difflines.find_common_directory"><code class="docutils literal notranslate"><span class="pre">find_common_directory()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="difflines.html#difflines.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="download.html#module-download">download module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.CHUNK_LEN_PER_PROCESS"><code class="docutils literal notranslate"><span class="pre">CHUNK_LEN_PER_PROCESS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="download.html#download.PDBDownloadResult"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="download.html#download.PDBDownloadResult.local_path"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.local_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="download.html#download.PDBDownloadResult.pdb_id"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="download.html#download.PDBDownloadResult.pdb_title"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_title</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="download.html#download.PDBDownloadResult.pdb_url"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.pdb_url</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="download.html#download.PDBDownloadResult.status_code"><code class="docutils literal notranslate"><span class="pre">PDBDownloadResult.status_code</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.alphafold_id_to_file"><code class="docutils literal notranslate"><span class="pre">alphafold_id_to_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="download.html#download.create_download_script"><code class="docutils literal notranslate"><span class="pre">create_download_script()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.download_pdb"><code class="docutils literal notranslate"><span class="pre">download_pdb()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.filename_to_pdb_id"><code class="docutils literal notranslate"><span class="pre">filename_to_pdb_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.get_download_url"><code class="docutils literal notranslate"><span class="pre">get_download_url()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="download.html#download.ids_to_sh"><code class="docutils literal notranslate"><span class="pre">ids_to_sh()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.is_alphafold_id"><code class="docutils literal notranslate"><span class="pre">is_alphafold_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.parallel_download"><code class="docutils literal notranslate"><span class="pre">parallel_download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="download.html#download.pdb_id_to_filename"><code class="docutils literal notranslate"><span class="pre">pdb_id_to_filename()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pdbparser.html#module-pdbparser">pdbparser module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pdbparser.html#pdbparser.parse_title"><code class="docutils literal notranslate"><span class="pre">parse_title()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="project.html#module-project">project module</a><ul>
@@ -262,6 +310,8 @@
 <li class="toctree-l4"><a class="reference internal" href="project.html#project.Project.scan_query_data"><code class="docutils literal notranslate"><span class="pre">Project.scan_query_data()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="project.html#project.ProjectInitError"><code class="docutils literal notranslate"><span class="pre">ProjectInitError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="project.html#project.log_dir_status"><code class="docutils literal notranslate"><span class="pre">log_dir_status()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="project.html#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="project.html#project.pformat_status"><code class="docutils literal notranslate"><span class="pre">pformat_status()</span></code></a></li>
 </ul>
@@ -287,6 +337,12 @@
 <li class="toctree-l3"><a class="reference internal" href="#rcsbquery.generate_request_options"><code class="docutils literal notranslate"><span class="pre">generate_request_options()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rcsbquery.generate_terminal"><code class="docutils literal notranslate"><span class="pre">generate_terminal()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rcsbquery.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsbquery.prepare_queries"><code class="docutils literal notranslate"><span class="pre">prepare_queries()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="renamedates.html">renamedates module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="renamedates.html#renamedates.convert_to_iso"><code class="docutils literal notranslate"><span class="pre">convert_to_iso()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="renamedates.html#renamedates.rename_subdirectories"><code class="docutils literal notranslate"><span class="pre">rename_subdirectories()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html">utils module</a></li>
@@ -322,7 +378,7 @@ The advanced query can be used to retrieve the list of PDB IDs from the RCSB web
 
 <dl class="py function">
 <dt class="sig sig-object py" id="rcsbquery.generate_advanced_query">
-<code class="sig-prename descclassname"><span class="pre">rcsbquery.</span></code><code class="sig-name descname"><span class="pre">generate_advanced_query</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">polymer_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em><span class="n"><span class="pre">organism</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em><span class="n"><span class="pre">methods</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em><span class="n"><span class="pre">results_content_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">('experimental',)</span></span></em>, <em><span class="n"><span class="pre">rows</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">999999</span></span></em>, <em><span class="n"><span class="pre">indent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/rcsbquery.html#generate_advanced_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rcsbquery.generate_advanced_query" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">rcsbquery.</span></code><code class="sig-name descname"><span class="pre">generate_advanced_query</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">polymer_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em><span class="n"><span class="pre">organism</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em><span class="n"><span class="pre">methods</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em><span class="n"><span class="pre">results_content_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">('experimental',)</span></span></em>, <em><span class="n"><span class="pre">rows</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10000</span></span></em>, <em><span class="n"><span class="pre">indent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/rcsbquery.html#generate_advanced_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rcsbquery.generate_advanced_query" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate the advanced query string for the organism, methods and polymer type.</p>
 </dd></dl>
 
@@ -380,6 +436,28 @@ The advanced query can be used to retrieve the list of PDB IDs from the RCSB web
 <dd><p>Main function.</p>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="rcsbquery.prepare_queries">
+<code class="sig-prename descclassname"><span class="pre">rcsbquery.</span></code><code class="sig-name descname"><span class="pre">prepare_queries</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">yaml_filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/rcsbquery.html#prepare_queries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rcsbquery.prepare_queries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a yaml file and create the query files for the project directory.</p>
+<p>The yaml file should contain the following keys:
+- name: the name of the project
+- taxa: a list of taxa to search for
+- csm: a boolean indicating whether to include computed structure models (CSMs) in the search results</p>
+<p>The yaml file can be either a project directory or a project.yml file.
+The queries will be saved in the queries directory of the project directory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>yaml_filename</strong> – the yaml file or the project directory</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the list of query files created</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 
 
@@ -391,7 +469,7 @@ The advanced query can be used to retrieve the list of PDB IDs from the RCSB web
   <div id="footer-row" class="row">
 
     <div class="col-md-12">
-        <span title="Built on 2022-11-21" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
+        <span title="Built on 2023-10-16" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
         Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0 and the
         <a href="https://pypi.org/project/sphinx-sizzle-theme/"
 
