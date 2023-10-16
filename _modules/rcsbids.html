@@ -340,7 +340,9 @@
 <span class="sd">    :return: list of PDB IDs.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">json_response</span> <span class="o">=</span> <span class="n">_send_request</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">hit</span><span class="p">[</span><span class="s2">&quot;identifier&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">json_response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;result_set&quot;</span><span class="p">,</span> <span class="p">[])]</span></div>
+    <span class="n">ret</span> <span class="o">=</span> <span class="p">[</span><span class="n">hit</span><span class="p">[</span><span class="s2">&quot;identifier&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">json_response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;result_set&quot;</span><span class="p">,</span> <span class="p">[])]</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">ret</span></div>
 
 
 <span class="k">def</span> <span class="nf">_send_request</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
