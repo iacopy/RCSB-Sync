@@ -370,6 +370,7 @@
 
 <span class="c1"># My stuff</span>
 <span class="kn">import</span> <span class="nn">download</span>
+<span class="kn">import</span> <span class="nn">pdbparser</span>
 <span class="kn">import</span> <span class="nn">rcsbids</span>
 <span class="kn">import</span> <span class="nn">rcsbquery</span>
 
@@ -382,6 +383,8 @@
 <span class="n">DEFAULT_JOBS</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">MAX_JOBS</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span>
 
+<span class="c1"># Files.csv pdb fields</span>
+<span class="n">PDB_FIELDS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Date&quot;</span><span class="p">,</span> <span class="s2">&quot;Source organism&quot;</span><span class="p">,</span> <span class="s2">&quot;Gene&quot;</span><span class="p">,</span> <span class="s2">&quot;Method&quot;</span><span class="p">,</span> <span class="s2">&quot;Uniprot&quot;</span><span class="p">]</span>
 
 <span class="c1"># Named tuple to store the fetch results.</span>
 <span class="n">DirStatus</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span>
@@ -530,6 +533,49 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the list of local PDB files in the data directory for a given query.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">store_files_to_csv</span><span class="p">():</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Store the list of files in a csv file, adding the PDB fields.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="c1"># Store files in a csv file.</span>
+            <span class="n">files_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">query_name</span><span class="si">}</span><span class="s2">__files.csv&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Writing </span><span class="si">{</span><span class="n">files_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="c1"># Write the header.</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">files_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+                <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="s2">&quot;Filename&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">PDB_FIELDS</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">files</span><span class="p">):</span>
+                    <span class="n">row</span> <span class="o">=</span> <span class="p">[</span><span class="n">filename</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">COMPRESSED_EXT</span><span class="p">):</span>
+                        <span class="c1"># skip compressed files</span>
+                        <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+                        <span class="k">continue</span>
+
+                    <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">query_data_dir</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+                    <span class="c1"># Parse the PDB file to get the source organism.</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pdb_file</span><span class="p">:</span>
+                        <span class="n">header_data</span> <span class="o">=</span> <span class="n">pdbparser</span><span class="o">.</span><span class="n">parse_header_to_dict</span><span class="p">(</span>
+                            <span class="n">pdb_file</span>
+                        <span class="p">)</span>  <span class="c1"># hack (refactor the parser)</span>
+                        <span class="k">if</span> <span class="n">header_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="c1"># zero byte file</span>
+                            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Empty header for </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file_path</span><span class="p">)</span>
+                            <span class="n">row</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">PDB_FIELDS</span><span class="p">))</span>
+                            <span class="k">continue</span>
+                        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">PDB_FIELDS</span><span class="p">:</span>
+                            <span class="n">snake_case</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+                                <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span>
+                            <span class="p">)</span>  <span class="c1"># hack (refactor the parser)</span>
+                            <span class="k">if</span> <span class="n">snake_case</span> <span class="ow">in</span> <span class="n">header_data</span><span class="p">:</span>  <span class="c1"># hack (refactor the parser)</span>
+                                <span class="n">value</span> <span class="o">=</span> <span class="n">header_data</span><span class="p">[</span>
+                                    <span class="n">snake_case</span>
+                                <span class="p">]</span>  <span class="c1"># hack (refactor the parser)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">value</span> <span class="o">=</span> <span class="n">pdbparser</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">pdb_file</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
+                            <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                    <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+
         <span class="n">query_data_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">query_name</span><span class="p">)</span>
         <span class="n">ret</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">files</span> <span class="o">=</span> <span class="p">{}</span>
@@ -556,12 +602,8 @@
             <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t_start</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="c1"># Store files in a csv file.</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Writing </span><span class="si">{</span><span class="n">query_name</span><span class="si">}</span><span class="s2">__files.csv&quot;</span><span class="p">)</span>
-        <span class="n">files_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">query_name</span><span class="si">}</span><span class="s2">__files.csv&quot;</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">files_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">files</span><span class="p">):</span>
-                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">store_files_to_csv</span><span class="p">()</span>
+
         <span class="k">return</span> <span class="n">ret</span></div>
 
 <div class="viewcode-block" id="Project.fetch_or_cache_query"><a class="viewcode-back" href="../project.html#project.Project.fetch_or_cache_query">[docs]</a>    <span class="k">def</span> <span class="nf">fetch_or_cache_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
@@ -827,7 +869,7 @@
   <div id="footer-row" class="row">
 
     <div class="col-md-12">
-        <span title="Built on 2023-10-16" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
+        <span title="Built on 2023-10-17" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
         Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0 and the
         <a href="https://pypi.org/project/sphinx-sizzle-theme/"
 
