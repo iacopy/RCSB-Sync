@@ -62,6 +62,7 @@ from tabulate import tabulate
 
 # My stuff
 import download
+import pdbparser
 import rcsbids
 import rcsbquery
 
@@ -74,6 +75,8 @@ COMPRESSED_EXT = ".pdb.gz"
 DEFAULT_JOBS = 1
 MAX_JOBS = os.cpu_count()
 
+# Files.csv pdb fields
+PDB_FIELDS = ["Date", "Source organism", "Gene", "Method", "Uniprot"]
 
 # Named tuple to store the fetch results.
 DirStatus = namedtuple(
@@ -222,6 +225,49 @@ class Project:
         """
         Get the list of local PDB files in the data directory for a given query.
         """
+
+        def store_files_to_csv():
+            """
+            Store the list of files in a csv file, adding the PDB fields.
+            """
+            # Store files in a csv file.
+            files_file = os.path.join(self.data_dir, f"{query_name}__files.csv")
+            print(f"Writing {files_file}")
+            # Write the header.
+            with open(files_file, "w", encoding="utf-8") as file:
+                writer = csv.writer(file)
+                writer.writerow(["Filename"] + PDB_FIELDS)
+                for filename in sorted(files):
+                    row = [filename]
+                    if filename.endswith(COMPRESSED_EXT):
+                        # skip compressed files
+                        writer.writerow(row)
+                        continue
+
+                    file_path = os.path.join(query_data_dir, filename)
+                    # Parse the PDB file to get the source organism.
+                    with open(file_path, encoding="ascii") as pdb_file:
+                        header_data = pdbparser.parse_header_to_dict(
+                            pdb_file
+                        )  # hack (refactor the parser)
+                        if header_data is None:
+                            # zero byte file
+                            logging.warning("Empty header for %s", file_path)
+                            row.extend([""] * len(PDB_FIELDS))
+                            continue
+                        for field in PDB_FIELDS:
+                            snake_case = field.lower().replace(
+                                " ", "_"
+                            )  # hack (refactor the parser)
+                            if snake_case in header_data:  # hack (refactor the parser)
+                                value = header_data[
+                                    snake_case
+                                ]  # hack (refactor the parser)
+                            else:
+                                value = pdbparser.get_field(pdb_file, field)
+                            row.append(value)
+                    writer.writerow(row)
+
         query_data_dir = os.path.join(self.data_dir, query_name)
         ret = {}
         files = {}
@@ -248,12 +294,8 @@ class Project:
             time.time() - t_start,
         )
 
-        # Store files in a csv file.
-        print(f"Writing {query_name}__files.csv")
-        files_file = os.path.join(self.data_dir, f"{query_name}__files.csv")
-        with open(files_file, "w", encoding="ascii") as file:
-            for filename in sorted(files):
-                file.write(f"{filename}\n")
+        store_files_to_csv()
+
         return ret
 
     def fetch_or_cache_query(self, query_path: str) -> List[str]:
