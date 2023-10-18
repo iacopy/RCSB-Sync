@@ -42,7 +42,7 @@ def check_data(project_dir, allow_cache=False):
             {
                 "data",
                 "db_summary.csv",
-                "db_summary.txt",
+                "README.md",
                 "queries",
             },
         )

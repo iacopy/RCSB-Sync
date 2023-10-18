@@ -45,8 +45,8 @@ def project_nodata_cleanup():
 
     yield project_dir
 
-    # remove summary files (db_summary.*) if any:
-    os.remove(os.path.join(project_dir, "db_summary.txt"))
+    # remove summary/status files if any:
+    os.remove(os.path.join(project_dir, "README.md"))
     os.remove(os.path.join(project_dir, "db_summary.csv"))
 
     # cleanup of downloaded files and cache
