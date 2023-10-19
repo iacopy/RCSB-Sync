@@ -171,15 +171,13 @@ def ids_to_sh(ids_path: str) -> str:  # pragma: no cover
     return create_download_script(pdb_ids, os.path.dirname(ids_path), name)
 
 
-def remove_non_title_sections(pdb_id: str, directory: str) -> None:
+def remove_non_title_sections(pdb_path: str) -> None:
     """
     Remove all sections except the title section from the PDB file.
 
-    :param pdb_id: PDB ID.
-    :param directory: directory where the PDB file is stored.
+    :param pdb_path: path to the PDB file
     :return: None
     """
-    pdb_path = os.path.join(directory, pdb_id_to_filename(pdb_id))
     no_atoms: List[str] = []
     with open(pdb_path, encoding="utf-8") as file_pointer:
         no_atoms.extend(
@@ -237,13 +235,17 @@ def download_pdb(
         response.raise_for_status()
         content = response.content
 
+    # Save only the title section of the PDB file if requested.
+    if title_section_only:
+        content = "\n".join(
+            line
+            for line in content.decode("utf-8").splitlines()
+            if re.match(TITLE_AND_DBREF_SECTION_PATTERN, line)
+        ).encode("utf-8")
+
     # Save the PDB file.
     with open(dest, "wb") as file_pointer:
         file_pointer.write(content)
-
-    # Remove atoms from the PDB file if requested.
-    if title_section_only:
-        remove_non_title_sections(pdb_id, directory)
 
     title = (
         ""
@@ -360,11 +362,15 @@ def download(  # pylint: disable=too-many-locals
     # logging.info(f"Directory: {directory}")
     # Log the same but using %s instead of f-strings, so that it can be parsed by the logger.
     logging.info(
-        "Downloading %s PDB files ; Number of processes: %s ; Chunk size: %s ; Compressed: %s ; Directory: %s",
+        (
+            "Downloading %s PDB files ; Number of processes: %s ; Chunk size: %s ; Compressed: %s ; "
+            "Title section only: %s; Directory: %s"
+        ),
         n_ids,
         n_jobs,
         chunk_len,
         compressed,
+        title_section_only,
         directory,
     )
     for chunk in _chunks(pdb_ids, chunk_len):
@@ -411,7 +417,7 @@ def download(  # pylint: disable=too-many-locals
     logging.info(
         "Downloaded %s PDB %s (%.3f GB), %d not found, in %s (%.2f/s) in this session",
         n_downloaded - n_not_found,
-        "files (without atoms)" if title_section_only else "files",
+        "files (title section only)" if title_section_only else "files",
         downloaded_size / 1e9,
         n_not_found,
         _human_readable_time(t_sec),
