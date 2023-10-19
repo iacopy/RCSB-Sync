@@ -400,7 +400,7 @@ class Project:
         project_status: ProjectStatus,
         n_jobs: int,
         compressed: bool = False,
-        minimal: bool = False,
+        title_section_only: bool = False,
     ) -> None:
         """
         Synchronize the local directory with the remote repository.
@@ -417,7 +417,7 @@ class Project:
                 query_data_dir,
                 compressed=compressed,
                 n_jobs=n_jobs,
-                minimal=minimal,
+                title_section_only=title_section_only,
             )
 
 
@@ -428,7 +428,7 @@ def main(
     noop: bool = False,
     compressed: bool = False,
     summary: bool = False,
-    minimal: bool = False,
+    title_section_only: bool = False,
 ):  # pylint: disable=too-many-arguments
     """
     Fetch the RCSB IDs from the RCSB website, and download the corresponding PDB files.
@@ -493,7 +493,10 @@ def main(
             return
 
     project.do_sync(
-        project_status, n_jobs=n_jobs, compressed=compressed, minimal=minimal
+        project_status,
+        n_jobs=n_jobs,
+        compressed=compressed,
+        title_section_only=title_section_only,
     )
 
 
@@ -528,12 +531,12 @@ if __name__ == "__main__":
         action="store_true",
         help="download compressed PDB files (not available for AlphaFold DB)",
     )
-    # Add an option to save disk space by removing the atom coordinates and keeping only the header.
+    # Add an option to save disk space by removing the atom coordinates and keeping only the title section only.
     parser.add_argument(
-        "-m",
-        "--minimal",
+        "-t",
+        "--title-section-only",
         action="store_true",
-        help="remove the atom coordinates from the PDB files",
+        help="save disk space by removing the atom coordinates and keeping only the title section only",  # noqa: E501  pylint: disable=line-too-long
     )
 
     # Add an option to print the database summary table
@@ -575,5 +578,5 @@ if __name__ == "__main__":
         args.noop,
         args.compressed,
         args.summary,
-        args.minimal,
+        args.title_section_only,
     )

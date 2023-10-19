@@ -42,7 +42,7 @@ CHUNK_LEN_PER_PROCESS = 20
 # HEADER, OBSLTE, TITLE, SPLIT, CAVEAT, COMPND, SOURCE, KEYWDS, EXPDTA, AUTHOR, REVDAT, SPRSDE, JRNL,
 # and REMARK records.
 # But we are interested also in DBREF records, which are in the DBREF Section.
-MINIMAL_SECTION_PATTERN = r"^(HEADER|OBSLTE|TITLE|SPLIT|CAVEAT|COMPND|SOURCE|KEYWDS|EXPDTA|AUTHOR|REVDAT|SPRSDE|JRNL|REMARK|DBREF)"  # noqa E501 pylint: disable=line-too-long
+TITLE_AND_DBREF_SECTION_PATTERN = r"^(HEADER|OBSLTE|TITLE|SPLIT|CAVEAT|COMPND|SOURCE|KEYWDS|EXPDTA|AUTHOR|REVDAT|SPRSDE|JRNL|REMARK|DBREF)"  # noqa E501 pylint: disable=line-too-long
 
 
 PDBDownloadResult = namedtuple(
@@ -171,22 +171,31 @@ def ids_to_sh(ids_path: str) -> str:  # pragma: no cover
     return create_download_script(pdb_ids, os.path.dirname(ids_path), name)
 
 
-def remove_atoms(pdb_id: str, directory: str) -> None:
+def remove_non_title_sections(pdb_id: str, directory: str) -> None:
     """
-    Remove atoms from a PDB file.
+    Remove all sections except the title section from the PDB file.
+
+    :param pdb_id: PDB ID.
+    :param directory: directory where the PDB file is stored.
+    :return: None
     """
     pdb_path = os.path.join(directory, pdb_id_to_filename(pdb_id))
     no_atoms: List[str] = []
     with open(pdb_path, encoding="utf-8") as file_pointer:
         no_atoms.extend(
-            line for line in file_pointer if re.match(MINIMAL_SECTION_PATTERN, line)
+            line
+            for line in file_pointer
+            if re.match(TITLE_AND_DBREF_SECTION_PATTERN, line)
         )
     with open(pdb_path, "w", encoding="utf-8") as file_pointer:
         file_pointer.write("".join(no_atoms))
 
 
 def download_pdb(
-    pdb_id: str, directory: str, compressed: bool = True, minimal: bool = False
+    pdb_id: str,
+    directory: str,
+    compressed: bool = True,
+    title_section_only: bool = False,
 ) -> PDBDownloadResult:
     """
     Download a PDB file from the RCSB website.
@@ -194,7 +203,7 @@ def download_pdb(
     :param pdb_id: PDB ID.
     :param directory: directory to store the downloaded file.
     :param compressed: whether to download compressed files.
-    :param minimal: whether to remove atoms from the PDB file.
+    :param title_section_only: wether to keep only the title section of the PDB file.
     :return: path to the downloaded file.
     """
     # No logging here, because this function is called in parallel.
@@ -233,8 +242,8 @@ def download_pdb(
         file_pointer.write(content)
 
     # Remove atoms from the PDB file if requested.
-    if minimal:
-        remove_atoms(pdb_id, directory)
+    if title_section_only:
+        remove_non_title_sections(pdb_id, directory)
 
     title = (
         ""
@@ -257,7 +266,7 @@ def parallel_download(
     directory: str,
     compressed: bool = True,
     n_jobs: int = DEFAULT_PROCESSES,
-    minimal: bool = False,
+    title_section_only: bool = False,
 ) -> List[PDBDownloadResult]:
     """
     Download PDB files from the RCSB website in parallel.
@@ -266,7 +275,7 @@ def parallel_download(
     :param directory: directory to store the downloaded files.
     :param compressed: whether to download compressed files.
     :param n_jobs: number of processes to use (default: 1).
-    :param minimal: whether to remove atoms from the PDB files.
+    :param title_section_only: wether to keep only the title section of the PDB file.
     """
     # Download the PDB files in parallel.
     with Pool(processes=n_jobs) as pool:
@@ -275,7 +284,7 @@ def parallel_download(
                 download_pdb,
                 directory=directory,
                 compressed=compressed,
-                minimal=minimal,
+                title_section_only=title_section_only,
             ),
             pdb_ids,
         )
@@ -288,7 +297,7 @@ def download(  # pylint: disable=too-many-locals
     directory: str,
     compressed: bool = True,
     n_jobs=DEFAULT_PROCESSES,
-    minimal: bool = False,
+    title_section_only: bool = False,
 ) -> None:
     """
     Download PDB files from the RCSB website in parallel, reporting the progress.
@@ -306,6 +315,7 @@ def download(  # pylint: disable=too-many-locals
     :param directory: directory to store the downloaded files.
     :param compressed: whether to download compressed files.
     :param n_jobs: number of processes to use (default: 2).
+    :param title_section_only: wether to keep only the title section of the PDB file.
     """
 
     def print_progress(
@@ -359,7 +369,7 @@ def download(  # pylint: disable=too-many-locals
     )
     for chunk in _chunks(pdb_ids, chunk_len):
         downloaded_chunk = parallel_download(
-            chunk, directory, compressed, n_jobs, minimal
+            chunk, directory, compressed, n_jobs, title_section_only
         )
 
         # Log the downloaded PDB files.
@@ -401,7 +411,7 @@ def download(  # pylint: disable=too-many-locals
     logging.info(
         "Downloaded %s PDB %s (%.3f GB), %d not found, in %s (%.2f/s) in this session",
         n_downloaded - n_not_found,
-        "files (without atoms)" if minimal else "files",
+        "files (without atoms)" if title_section_only else "files",
         downloaded_size / 1e9,
         n_not_found,
         _human_readable_time(t_sec),
