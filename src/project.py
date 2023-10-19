@@ -254,24 +254,11 @@ class Project:
                     file_path = os.path.join(query_data_dir, filename)
                     # Parse the PDB file to get the source organism.
                     with open(file_path, encoding="ascii") as pdb_file:
-                        header_data = pdbparser.parse_header_to_dict(
-                            pdb_file
-                        )  # hack (refactor the parser)
-                        if header_data is None:
-                            # zero byte file
-                            logging.warning("Empty header for %s", file_path)
-                            row.extend([""] * len(PDB_FIELDS))
-                            continue
+                        parsed_data = pdbparser.parse(pdb_file)
                         for field in PDB_FIELDS:
-                            snake_case = field.lower().replace(
-                                " ", "_"
-                            )  # hack (refactor the parser)
-                            if snake_case in header_data:  # hack (refactor the parser)
-                                value = header_data[
-                                    snake_case
-                                ]  # hack (refactor the parser)
-                            else:
-                                value = pdbparser.get_field(pdb_file, field)
+                            value = parsed_data.get(pdbparser.FIELDS[field])
+                            if isinstance(value, list):
+                                value = "; ".join(set(value))
                             row.append(value)
                     writer.writerow(row)
 

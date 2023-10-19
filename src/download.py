@@ -250,7 +250,7 @@ def download_pdb(
     title = (
         ""
         if dest.endswith(".gz")
-        else pdbparser.parse_title(content[:320].decode("utf-8").splitlines())
+        else pdbparser.parse(content[:320].decode("utf-8").splitlines())["title"]
     )
 
     return PDBDownloadResult(

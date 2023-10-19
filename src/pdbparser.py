@@ -4,7 +4,8 @@ Parse PDB file content.
 # Standard Library
 import re
 from typing import Dict
-from typing import Optional
+from typing import List
+from typing import Union
 
 # pylint: disable=trailing-whitespace
 TESTDATA = """HEADER    TRANSFERASE                             11-AUG-05   2AN4              
@@ -108,21 +109,62 @@ SCALE2      0.000000  1.000000  0.000000        0.00000
 SCALE3      0.000000  0.000000  1.000000        0.00000                         
 MODEL        1                                                              """  # noqa
 
-HEADER_SPLITTER = re.compile(r"\s{2,}")
+
+HEADER_REGEPX = re.compile(r"HEADER\s{3,}(.+?)(\d{2}-\w{3}-\d{2})\s(.+)")
+
+FIELDS = {
+    "Classification": "classification",
+    "Date": "date",
+    "PDB ID": "pdb_id",
+    "Title": "title",
+    "Source organism": "source_organism",
+    "Method": "method",
+    "Gene": "gene",
+    "Uniprot": "uniprot",
+}
 
 
-def parse_header_to_dict(pdb_lines_iterable) -> Optional[Dict[str, str]]:
+def parse(pdb_lines_iterable) -> Dict[str, Union[str, List[str]]]:
     """
     Read the header from a PDB iterator content.
 
-    >>> parse_header_to_dict(TESTDATA.splitlines())
-    {'classification': 'TRANSFERASE', 'date': '11-AUG-05', 'pdb_id': '2AN4'}
-    >>> parse_header_to_dict(TESTDATA_AF2.splitlines())
-    {'classification': '', 'date': '01-JUN-22', 'pdb_id': ''}
+    >>> ret = parse(TESTDATA.splitlines())
+    >>> ret["classification"]
+    'TRANSFERASE'
+    >>> ret["date"]
+    '11-AUG-05'
+    >>> ret["pdb_id"]
+    '2AN4'
+    >>> ret["title"]
+    'STRUCTURE OF PNMT COMPLEXED WITH S-ADENOSYL-L-HOMOCYSTEINE AND THE ACCEPTOR SUBSTRATE OCTOPAMINE'
+    >>> ret["source_organism"]
+    ['HOMO SAPIENS']
+    >>> ret["gene"]
+    ['PNMT']
+    >>> ret['method']
+    ['X-RAY DIFFRACTION']
+    >>> ret['uniprot']
+    ['P78527', 'P12956', 'P13010']
+    >>> ret = parse(TESTDATA_AF2.splitlines())
+    >>> ret["classification"]
+    ''
+    >>> ret["date"]
+    '01-JUN-22'
+    >>> ret["pdb_id"]
+    ''
     """
+    ret: Dict[str, Union[str, List[str]]] = {}
+
+    title = []
+    source_organism = []
+    method = []
+    gene = []
+    uniprot = []
     for line in pdb_lines_iterable:
         if line.startswith("HEADER"):
-            values = re.split(HEADER_SPLITTER, line[10:].strip())
+            findall = re.findall(HEADER_REGEPX, line)
+            assert findall, line
+            values = [val.strip() for val in re.findall(HEADER_REGEPX, line)[0]]
             if len(values) == 1:
                 # It Should be the date of AlphaFold
                 classification = ""
@@ -131,105 +173,28 @@ def parse_header_to_dict(pdb_lines_iterable) -> Optional[Dict[str, str]]:
             else:
                 assert len(values) == 3, values
                 classification, date, pdb_id = values
-            return {
+            ret |= {
                 "classification": classification,
                 "date": date,
                 "pdb_id": pdb_id,
             }
-    return None
-
-
-def parse_title(pdb_lines_iterable):
-    """
-    Read the title from a PDB iterator content.
-
-    >>> parse_title(TESTDATA.splitlines())
-    'STRUCTURE OF PNMT COMPLEXED WITH S-ADENOSYL-L-HOMOCYSTEINE AND THE ACCEPTOR SUBSTRATE OCTOPAMINE'
-    >>> parse_title([])
-    ''
-    """
-    title = []
-    for line in pdb_lines_iterable:
-        if line.startswith("TITLE"):
-            title.append(line[10:].rstrip())
-        elif title:
-            break
-    return "".join(title)
-
-
-def parse_source_organism(pdb_lines_iterable):
-    """
-    Read the source organism from a PDB iterator content.
-
-    E.g.:
-
-    SOURCE   2 ORGANISM_SCIENTIFIC: MUS MUSCULUS;
-
-    >>> parse_source_organism(TESTDATA.splitlines())
-    'HOMO SAPIENS'
-    """  # noqa
-    source_organism = []
-    for line in pdb_lines_iterable:
-        if "SOURCE" in line and "ORGANISM_SCIENTIFIC" in line:
+        elif line.startswith("TITLE"):
+            title.append(line[10:].strip())
+        elif "SOURCE" in line and "ORGANISM_SCIENTIFIC" in line:
             source_organism.append(line[32:].rstrip().rstrip(";"))
-        elif source_organism:
-            break
-    return "; ".join(source_organism)
+        elif line[11:].startswith("GENE: "):
+            gene.append(line[17:].strip().rstrip(";"))
+        elif line.startswith("EXPDTA"):
+            method.append(line[7:].strip())
+        elif line.startswith("DBREF") and "UNP " in line:
+            uniprot.append(line[32:42].strip())
 
-
-def parse_gene(pdb_lines_iterable):
-    """
-    Return the gene name(s).
-
-    >>> parse_gene(TESTDATA.splitlines())
-    'PNMT'
-    """
-    genes = []
-    for line in pdb_lines_iterable:
-        if "GENE:" in line:
-            genes.append(line[17:].strip().rstrip(";"))
-        if genes and not line.startswith("SOURCE"):
-            # Dopo SOURCE inutile cercare il gene
-            break
-    return "; ".join(genes)
-
-
-def parse_method(pdb_lines_iterable):
-    """
-    Return the experimental method.
-
-    >>> parse_method(TESTDATA.splitlines())
-    'X-RAY DIFFRACTION'
-    """
-    for line in pdb_lines_iterable:
-        if line.startswith("EXPDTA"):
-            return line[7:].strip()
-    return ""
-
-
-def parse_uniprot(pdb_lines_iterable):
-    """
-    >>> parse_uniprot(TESTDATA.splitlines())
-    'P78527; P12956; P13010'
-    """  # noqa
-    ret = []
-    for line in pdb_lines_iterable:
-        if line.startswith("DBREF") and "UNP " in line:
-            uniprot = line[32:42].strip()
-            if uniprot not in ret:
-                ret.append(uniprot)
-    return "; ".join(ret)
-
-
-def get_field(pdb_lines_iterable, field_name):
-    """
-    Utility to get human readable fields.
-
-    >>> get_field(TESTDATA.splitlines(), "Source organism")
-    'HOMO SAPIENS'
-    """
-    func_name = f"parse_{field_name.lower().replace(' ', '_')}"
-    return globals().get(func_name)(pdb_lines_iterable)
+    ret["gene"] = gene
+    ret["source_organism"] = source_organism
+    ret["uniprot"] = uniprot
+    ret["method"] = method
+    ret["title"] = " ".join(title)
+    return ret
 
 
 if __name__ == "__main__":
