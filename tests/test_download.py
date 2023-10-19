@@ -78,6 +78,52 @@ def test_download_real_pdb():
 
 
 @pytest.mark.webtest
+def test_download_real_pdb_title_section_only():
+    """
+    Test the download_pdb function with title_section_only=True.
+    """
+    pdb_id = HUMAN_INSULIN
+    res = download.download_pdb(
+        pdb_id, directory=".", compressed=False, title_section_only=True
+    )
+    assert res == download.PDBDownloadResult(
+        pdb_id=pdb_id,
+        pdb_url=f"https://files.rcsb.org/download/{pdb_id}.pdb",
+        pdb_title="HUMAN INSULIN",
+        local_path=f"./{pdb_id}.pdb",
+        status_code=200,
+    )
+    assert os.path.exists(res.local_path)
+    assert (
+        os.path.getsize(res.local_path) < HUMAN_INSULIN_SIZE
+    ), "Wrong size for the downloaded file (?!)"
+    with open(res.local_path, "r", encoding="ascii") as file_pointer:
+        content = file_pointer.read()
+    # No atoms should be present in the file.
+    # Get all the first words of each line.
+    first_words = {line.split()[0] for line in content.splitlines()}
+    assert first_words.issubset(
+        {
+            "HEADER",
+            "OBSLTE",
+            "TITLE",
+            "SPLIT",
+            "CAVEAT",
+            "COMPND",
+            "SOURCE",
+            "KEYWDS",
+            "EXPDTA",
+            "AUTHOR",
+            "REVDAT",
+            "SPRSDE",
+            "JRNL",
+            "REMARK",
+            "DBREF",
+        }
+    ), f"Unexpected line types in the downloaded file: {first_words}"
+
+
+@pytest.mark.webtest
 def test_download_real_alphafold_pdb():
     """
     Test the download_pdb function.

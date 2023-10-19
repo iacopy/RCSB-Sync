@@ -396,7 +396,11 @@ class Project:
             os.rename(pdb_file, pdb_file + SUFFIX_REMOVED)
 
     def do_sync(
-        self, project_status: ProjectStatus, n_jobs: int, compressed: bool = False
+        self,
+        project_status: ProjectStatus,
+        n_jobs: int,
+        compressed: bool = False,
+        title_section_only: bool = False,
     ) -> None:
         """
         Synchronize the local directory with the remote repository.
@@ -409,7 +413,11 @@ class Project:
             self.mark_removed(query_name, dir_status.removed_ids)
             query_data_dir = os.path.join(self.data_dir, query_name)
             download.download(
-                dir_status.tbd_ids, query_data_dir, compressed=compressed, n_jobs=n_jobs
+                dir_status.tbd_ids,
+                query_data_dir,
+                compressed=compressed,
+                n_jobs=n_jobs,
+                title_section_only=title_section_only,
             )
 
 
@@ -420,6 +428,7 @@ def main(
     noop: bool = False,
     compressed: bool = False,
     summary: bool = False,
+    title_section_only: bool = False,
 ):  # pylint: disable=too-many-arguments
     """
     Fetch the RCSB IDs from the RCSB website, and download the corresponding PDB files.
@@ -483,7 +492,12 @@ def main(
             logging.info("User chose not to download the PDB files.")
             return
 
-    project.do_sync(project_status, n_jobs=n_jobs, compressed=compressed)
+    project.do_sync(
+        project_status,
+        n_jobs=n_jobs,
+        compressed=compressed,
+        title_section_only=title_section_only,
+    )
 
 
 if __name__ == "__main__":
@@ -517,6 +531,14 @@ if __name__ == "__main__":
         action="store_true",
         help="download compressed PDB files (not available for AlphaFold DB)",
     )
+    # Add an option to save disk space by removing the atom coordinates and keeping only the title section only.
+    parser.add_argument(
+        "-t",
+        "--title-section-only",
+        action="store_true",
+        help="save disk space by removing the atom coordinates and keeping only the title section only",  # noqa: E501  pylint: disable=line-too-long
+    )
+
     # Add an option to print the database summary table
     parser.add_argument(
         "-s", "--summary", action="store_true", help="print the database summary table"
@@ -556,4 +578,5 @@ if __name__ == "__main__":
         args.noop,
         args.compressed,
         args.summary,
+        args.title_section_only,
     )
