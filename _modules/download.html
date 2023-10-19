@@ -151,6 +151,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.is_alphafold_id"><code class="docutils literal notranslate"><span class="pre">is_alphafold_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.parallel_download"><code class="docutils literal notranslate"><span class="pre">parallel_download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.pdb_id_to_filename"><code class="docutils literal notranslate"><span class="pre">pdb_id_to_filename()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.remove_non_title_sections"><code class="docutils literal notranslate"><span class="pre">remove_non_title_sections()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../project.html#module-project">project module</a><ul>
@@ -243,6 +244,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.is_alphafold_id"><code class="docutils literal notranslate"><span class="pre">is_alphafold_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.parallel_download"><code class="docutils literal notranslate"><span class="pre">parallel_download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../download.html#download.pdb_id_to_filename"><code class="docutils literal notranslate"><span class="pre">pdb_id_to_filename()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../download.html#download.remove_non_title_sections"><code class="docutils literal notranslate"><span class="pre">remove_non_title_sections()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../project.html#module-project">project module</a><ul>
@@ -321,6 +323,7 @@
 <span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
@@ -345,6 +348,14 @@
 <span class="c1">#: It is the number of PDB files to download before a progress update is printed if a single process is used.</span>
 <span class="c1">#: This is scaled automatically to the number of processes used to keep the progress updates constant.</span>
 <span class="n">CHUNK_LEN_PER_PROCESS</span> <span class="o">=</span> <span class="mi">20</span>
+
+<span class="c1"># Title Section</span>
+<span class="c1"># This section contains records used to describe the experiment and the biological macromolecules present in the entry:</span>
+<span class="c1"># HEADER, OBSLTE, TITLE, SPLIT, CAVEAT, COMPND, SOURCE, KEYWDS, EXPDTA, AUTHOR, REVDAT, SPRSDE, JRNL,</span>
+<span class="c1"># and REMARK records.</span>
+<span class="c1"># But we are interested also in DBREF records, which are in the DBREF Section.</span>
+<span class="n">TITLE_AND_DBREF_SECTION_PATTERN</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(HEADER|OBSLTE|TITLE|SPLIT|CAVEAT|COMPND|SOURCE|KEYWDS|EXPDTA|AUTHOR|REVDAT|SPRSDE|JRNL|REMARK|DBREF)&quot;</span>  <span class="c1"># noqa E501 pylint: disable=line-too-long</span>
+
 
 <span class="n">PDBDownloadResult</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span>
     <span class="s2">&quot;PDBDownloadResult&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;pdb_id&quot;</span><span class="p">,</span> <span class="s2">&quot;pdb_url&quot;</span><span class="p">,</span> <span class="s2">&quot;pdb_title&quot;</span><span class="p">,</span> <span class="s2">&quot;local_path&quot;</span><span class="p">,</span> <span class="s2">&quot;status_code&quot;</span><span class="p">]</span>
@@ -472,8 +483,29 @@
     <span class="k">return</span> <span class="n">create_download_script</span><span class="p">(</span><span class="n">pdb_ids</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">ids_path</span><span class="p">),</span> <span class="n">name</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="remove_non_title_sections"><a class="viewcode-back" href="../download.html#download.remove_non_title_sections">[docs]</a><span class="k">def</span> <span class="nf">remove_non_title_sections</span><span class="p">(</span><span class="n">pdb_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Remove all sections except the title section from the PDB file.</span>
+
+<span class="sd">    :param pdb_path: path to the PDB file</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">no_atoms</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">pdb_path</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_pointer</span><span class="p">:</span>
+        <span class="n">no_atoms</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+            <span class="n">line</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">file_pointer</span>
+            <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">TITLE_AND_DBREF_SECTION_PATTERN</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">pdb_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_pointer</span><span class="p">:</span>
+        <span class="n">file_pointer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">no_atoms</span><span class="p">))</span></div>
+
+
 <div class="viewcode-block" id="download_pdb"><a class="viewcode-back" href="../download.html#download.download_pdb">[docs]</a><span class="k">def</span> <span class="nf">download_pdb</span><span class="p">(</span>
-    <span class="n">pdb_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">compressed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">pdb_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">compressed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">title_section_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PDBDownloadResult</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Download a PDB file from the RCSB website.</span>
@@ -481,6 +513,7 @@
 <span class="sd">    :param pdb_id: PDB ID.</span>
 <span class="sd">    :param directory: directory to store the downloaded file.</span>
 <span class="sd">    :param compressed: whether to download compressed files.</span>
+<span class="sd">    :param title_section_only: wether to keep only the title section of the PDB file.</span>
 <span class="sd">    :return: path to the downloaded file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># No logging here, because this function is called in parallel.</span>
@@ -514,6 +547,14 @@
         <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
         <span class="n">content</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
 
+    <span class="c1"># Save only the title section of the PDB file if requested.</span>
+    <span class="k">if</span> <span class="n">title_section_only</span><span class="p">:</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">line</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">content</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">TITLE_AND_DBREF_SECTION_PATTERN</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+
     <span class="c1"># Save the PDB file.</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_pointer</span><span class="p">:</span>
         <span class="n">file_pointer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
@@ -539,6 +580,7 @@
     <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">compressed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_PROCESSES</span><span class="p">,</span>
+    <span class="n">title_section_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">PDBDownloadResult</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Download PDB files from the RCSB website in parallel.</span>
@@ -547,21 +589,29 @@
 <span class="sd">    :param directory: directory to store the downloaded files.</span>
 <span class="sd">    :param compressed: whether to download compressed files.</span>
 <span class="sd">    :param n_jobs: number of processes to use (default: 1).</span>
+<span class="sd">    :param title_section_only: wether to keep only the title section of the PDB file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Download the PDB files in parallel.</span>
     <span class="k">with</span> <span class="n">Pool</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
         <span class="n">ret</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
-            <span class="n">partial</span><span class="p">(</span><span class="n">download_pdb</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="n">directory</span><span class="p">,</span> <span class="n">compressed</span><span class="o">=</span><span class="n">compressed</span><span class="p">),</span> <span class="n">pdb_ids</span>
+            <span class="n">partial</span><span class="p">(</span>
+                <span class="n">download_pdb</span><span class="p">,</span>
+                <span class="n">directory</span><span class="o">=</span><span class="n">directory</span><span class="p">,</span>
+                <span class="n">compressed</span><span class="o">=</span><span class="n">compressed</span><span class="p">,</span>
+                <span class="n">title_section_only</span><span class="o">=</span><span class="n">title_section_only</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">pdb_ids</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="c1"># remove null values</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">pdb_res</span> <span class="k">for</span> <span class="n">pdb_res</span> <span class="ow">in</span> <span class="n">ret</span> <span class="k">if</span> <span class="n">pdb_res</span><span class="o">.</span><span class="n">local_path</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="download"><a class="viewcode-back" href="../download.html#download.download">[docs]</a><span class="k">def</span> <span class="nf">download</span><span class="p">(</span>
+<div class="viewcode-block" id="download"><a class="viewcode-back" href="../download.html#download.download">[docs]</a><span class="k">def</span> <span class="nf">download</span><span class="p">(</span>  <span class="c1"># pylint: disable=too-many-locals</span>
     <span class="n">pdb_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">compressed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">n_jobs</span><span class="o">=</span><span class="n">DEFAULT_PROCESSES</span><span class="p">,</span>
+    <span class="n">title_section_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Download PDB files from the RCSB website in parallel, reporting the progress.</span>
@@ -579,6 +629,7 @@
 <span class="sd">    :param directory: directory to store the downloaded files.</span>
 <span class="sd">    :param compressed: whether to download compressed files.</span>
 <span class="sd">    :param n_jobs: number of processes to use (default: 2).</span>
+<span class="sd">    :param title_section_only: wether to keep only the title section of the PDB file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">print_progress</span><span class="p">(</span>
@@ -623,15 +674,21 @@
     <span class="c1"># logging.info(f&quot;Directory: {directory}&quot;)</span>
     <span class="c1"># Log the same but using %s instead of f-strings, so that it can be parsed by the logger.</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-        <span class="s2">&quot;Downloading </span><span class="si">%s</span><span class="s2"> PDB files ; Number of processes: </span><span class="si">%s</span><span class="s2"> ; Chunk size: </span><span class="si">%s</span><span class="s2"> ; Compressed: </span><span class="si">%s</span><span class="s2"> ; Directory: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">(</span>
+            <span class="s2">&quot;Downloading </span><span class="si">%s</span><span class="s2"> PDB files ; Number of processes: </span><span class="si">%s</span><span class="s2"> ; Chunk size: </span><span class="si">%s</span><span class="s2"> ; Compressed: </span><span class="si">%s</span><span class="s2"> ; &quot;</span>
+            <span class="s2">&quot;Title section only: </span><span class="si">%s</span><span class="s2">; Directory: </span><span class="si">%s</span><span class="s2">&quot;</span>
+        <span class="p">),</span>
         <span class="n">n_ids</span><span class="p">,</span>
         <span class="n">n_jobs</span><span class="p">,</span>
         <span class="n">chunk_len</span><span class="p">,</span>
         <span class="n">compressed</span><span class="p">,</span>
+        <span class="n">title_section_only</span><span class="p">,</span>
         <span class="n">directory</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">_chunks</span><span class="p">(</span><span class="n">pdb_ids</span><span class="p">,</span> <span class="n">chunk_len</span><span class="p">):</span>
-        <span class="n">downloaded_chunk</span> <span class="o">=</span> <span class="n">parallel_download</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">compressed</span><span class="p">,</span> <span class="n">n_jobs</span><span class="p">)</span>
+        <span class="n">downloaded_chunk</span> <span class="o">=</span> <span class="n">parallel_download</span><span class="p">(</span>
+            <span class="n">chunk</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">compressed</span><span class="p">,</span> <span class="n">n_jobs</span><span class="p">,</span> <span class="n">title_section_only</span>
+        <span class="p">)</span>
 
         <span class="c1"># Log the downloaded PDB files.</span>
         <span class="k">for</span> <span class="n">pdb_res</span> <span class="ow">in</span> <span class="n">downloaded_chunk</span><span class="p">:</span>
@@ -670,8 +727,9 @@
     <span class="c1"># Log the number of downloaded PDB files, the total time and the average speed.</span>
     <span class="n">t_sec</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-        <span class="s2">&quot;Downloaded </span><span class="si">%s</span><span class="s2"> PDB files (</span><span class="si">%.3f</span><span class="s2"> GB), </span><span class="si">%d</span><span class="s2"> not found, in </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%.2f</span><span class="s2">/s) in this session&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Downloaded </span><span class="si">%s</span><span class="s2"> PDB </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%.3f</span><span class="s2"> GB), </span><span class="si">%d</span><span class="s2"> not found, in </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%.2f</span><span class="s2">/s) in this session&quot;</span><span class="p">,</span>
         <span class="n">n_downloaded</span> <span class="o">-</span> <span class="n">n_not_found</span><span class="p">,</span>
+        <span class="s2">&quot;files (title section only)&quot;</span> <span class="k">if</span> <span class="n">title_section_only</span> <span class="k">else</span> <span class="s2">&quot;files&quot;</span><span class="p">,</span>
         <span class="n">downloaded_size</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">,</span>
         <span class="n">n_not_found</span><span class="p">,</span>
         <span class="n">_human_readable_time</span><span class="p">(</span><span class="n">t_sec</span><span class="p">),</span>

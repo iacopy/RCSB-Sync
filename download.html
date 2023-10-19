@@ -172,6 +172,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#download.is_alphafold_id"><code class="docutils literal notranslate"><span class="pre">is_alphafold_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#download.parallel_download"><code class="docutils literal notranslate"><span class="pre">parallel_download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#download.pdb_id_to_filename"><code class="docutils literal notranslate"><span class="pre">pdb_id_to_filename()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#download.remove_non_title_sections"><code class="docutils literal notranslate"><span class="pre">remove_non_title_sections()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="project.html">project module</a><ul>
@@ -264,6 +265,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#download.is_alphafold_id"><code class="docutils literal notranslate"><span class="pre">is_alphafold_id()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#download.parallel_download"><code class="docutils literal notranslate"><span class="pre">parallel_download()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#download.pdb_id_to_filename"><code class="docutils literal notranslate"><span class="pre">pdb_id_to_filename()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#download.remove_non_title_sections"><code class="docutils literal notranslate"><span class="pre">remove_non_title_sections()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="project.html">project module</a><ul>
@@ -417,7 +419,7 @@ This is scaled automatically to the number of processes used to keep the progres
 
 <dl class="py function">
 <dt class="sig sig-object py" id="download.download">
-<code class="sig-prename descclassname"><span class="pre">download.</span></code><code class="sig-name descname"><span class="pre">download</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">pdb_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em><span class="n"><span class="pre">compressed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/download.html#download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#download.download" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">download.</span></code><code class="sig-name descname"><span class="pre">download</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">pdb_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em><span class="n"><span class="pre">compressed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em><span class="n"><span class="pre">title_section_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/download.html#download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#download.download" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download PDB files from the RCSB website in parallel, reporting the progress.</p>
 <p>(actually, this is a wrapper around <code class="docutils literal notranslate"><span class="pre">parallel_download</span></code>)</p>
 <p>Since we want to periodically notify the user about the progress and the ETA,
@@ -435,6 +437,7 @@ each process gets the same number of PDB IDs to download.</p>
 <li><strong>directory</strong> – directory to store the downloaded files.</li>
 <li><strong>compressed</strong> – whether to download compressed files.</li>
 <li><strong>n_jobs</strong> – number of processes to use (default: 2).</li>
+<li><strong>title_section_only</strong> – wether to keep only the title section of the PDB file.</li>
 </ul>
 </td>
 </tr>
@@ -444,7 +447,7 @@ each process gets the same number of PDB IDs to download.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="download.download_pdb">
-<code class="sig-prename descclassname"><span class="pre">download.</span></code><code class="sig-name descname"><span class="pre">download_pdb</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">pdb_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em><span class="n"><span class="pre">compressed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#download.PDBDownloadResult" title="download.PDBDownloadResult"><span class="pre">PDBDownloadResult</span></a></span></span><a class="reference internal" href="_modules/download.html#download_pdb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#download.download_pdb" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">download.</span></code><code class="sig-name descname"><span class="pre">download_pdb</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">pdb_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em><span class="n"><span class="pre">compressed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em><span class="n"><span class="pre">title_section_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#download.PDBDownloadResult" title="download.PDBDownloadResult"><span class="pre">PDBDownloadResult</span></a></span></span><a class="reference internal" href="_modules/download.html#download_pdb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#download.download_pdb" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download a PDB file from the RCSB website.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -454,6 +457,7 @@ each process gets the same number of PDB IDs to download.</p>
 <li><strong>pdb_id</strong> – PDB ID.</li>
 <li><strong>directory</strong> – directory to store the downloaded file.</li>
 <li><strong>compressed</strong> – whether to download compressed files.</li>
+<li><strong>title_section_only</strong> – wether to keep only the title section of the PDB file.</li>
 </ul>
 </td>
 </tr>
@@ -511,7 +515,7 @@ each process gets the same number of PDB IDs to download.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="download.parallel_download">
-<code class="sig-prename descclassname"><span class="pre">download.</span></code><code class="sig-name descname"><span class="pre">parallel_download</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">pdb_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em><span class="n"><span class="pre">compressed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em><span class="n"><span class="pre">n_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#download.PDBDownloadResult" title="download.PDBDownloadResult"><span class="pre">PDBDownloadResult</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/download.html#parallel_download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#download.parallel_download" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">download.</span></code><code class="sig-name descname"><span class="pre">parallel_download</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">pdb_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em><span class="n"><span class="pre">directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em><span class="n"><span class="pre">compressed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em><span class="n"><span class="pre">n_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em><span class="n"><span class="pre">title_section_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#download.PDBDownloadResult" title="download.PDBDownloadResult"><span class="pre">PDBDownloadResult</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/download.html#parallel_download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#download.parallel_download" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download PDB files from the RCSB website in parallel.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -522,6 +526,7 @@ each process gets the same number of PDB IDs to download.</p>
 <li><strong>directory</strong> – directory to store the downloaded files.</li>
 <li><strong>compressed</strong> – whether to download compressed files.</li>
 <li><strong>n_jobs</strong> – number of processes to use (default: 1).</li>
+<li><strong>title_section_only</strong> – wether to keep only the title section of the PDB file.</li>
 </ul>
 </td>
 </tr>
@@ -543,6 +548,22 @@ each process gets the same number of PDB IDs to download.</p>
 <span class="go">&#39;AF-Q8WZ42-F166-model_v4.pdb&#39;</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="download.remove_non_title_sections">
+<code class="sig-prename descclassname"><span class="pre">download.</span></code><code class="sig-name descname"><span class="pre">remove_non_title_sections</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">pdb_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/download.html#remove_non_title_sections"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#download.remove_non_title_sections" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all sections except the title section from the PDB file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pdb_path</strong> – path to the PDB file</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
