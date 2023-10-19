@@ -221,6 +221,13 @@ class Project:
             logging.debug("Creating query data directory: %s", query_data_dir)
             os.makedirs(query_data_dir, exist_ok=True)
 
+    @property
+    def dirname(self) -> str:
+        """
+        Return the name of the project directory.
+        """
+        return os.path.basename(os.path.abspath(self.directory))
+
     def scan_query_data(self, query_name: str) -> Dict[str, int]:
         """
         Get the list of local PDB files in the data directory for a given query.
@@ -446,11 +453,10 @@ def main(
         writer = csv.writer(file)
         writer.writerows(table)
 
-    # Also store the status in txt format.
-    with open(
-        os.path.join(project_dir, "db_summary.txt"), "w", encoding="utf-8"
-    ) as file:
-        file.write(f"Date: {now}\n\n")
+    # Also store the status tables in Markdown format.
+    with open(os.path.join(project_dir, "README.md"), "w", encoding="utf-8") as file:
+        file.write(f"# {project.dirname}\n\n")
+        file.write(f"## Date: {now}\n\n")
         file.write(pformat_status(project_status))
 
     # Count the total number of files to be downloaded.
