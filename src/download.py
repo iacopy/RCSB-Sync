@@ -11,6 +11,7 @@ of a given project, to keep the local working directory up-to-date).
 import argparse
 import logging
 import os
+import re
 import time
 from collections import namedtuple
 from functools import partial
@@ -35,6 +36,14 @@ DEFAULT_PROCESSES = 1
 #: It is the number of PDB files to download before a progress update is printed if a single process is used.
 #: This is scaled automatically to the number of processes used to keep the progress updates constant.
 CHUNK_LEN_PER_PROCESS = 20
+
+# Title Section
+# This section contains records used to describe the experiment and the biological macromolecules present in the entry:
+# HEADER, OBSLTE, TITLE, SPLIT, CAVEAT, COMPND, SOURCE, KEYWDS, EXPDTA, AUTHOR, REVDAT, SPRSDE, JRNL,
+# and REMARK records.
+# But we are interested also in DBREF records, which are in the DBREF Section.
+MINIMAL_SECTION_PATTERN = r"^(HEADER|OBSLTE|TITLE|SPLIT|CAVEAT|COMPND|SOURCE|KEYWDS|EXPDTA|AUTHOR|REVDAT|SPRSDE|JRNL|REMARK|DBREF)"  # noqa E501 pylint: disable=line-too-long
+
 
 PDBDownloadResult = namedtuple(
     "PDBDownloadResult", ["pdb_id", "pdb_url", "pdb_title", "local_path", "status_code"]
@@ -162,8 +171,22 @@ def ids_to_sh(ids_path: str) -> str:  # pragma: no cover
     return create_download_script(pdb_ids, os.path.dirname(ids_path), name)
 
 
+def remove_atoms(pdb_id: str, directory: str) -> None:
+    """
+    Remove atoms from a PDB file.
+    """
+    pdb_path = os.path.join(directory, pdb_id_to_filename(pdb_id))
+    no_atoms: List[str] = []
+    with open(pdb_path, encoding="utf-8") as file_pointer:
+        no_atoms.extend(
+            line for line in file_pointer if re.match(MINIMAL_SECTION_PATTERN, line)
+        )
+    with open(pdb_path, "w", encoding="utf-8") as file_pointer:
+        file_pointer.write("".join(no_atoms))
+
+
 def download_pdb(
-    pdb_id: str, directory: str, compressed: bool = True
+    pdb_id: str, directory: str, compressed: bool = True, minimal: bool = False
 ) -> PDBDownloadResult:
     """
     Download a PDB file from the RCSB website.
@@ -171,6 +194,7 @@ def download_pdb(
     :param pdb_id: PDB ID.
     :param directory: directory to store the downloaded file.
     :param compressed: whether to download compressed files.
+    :param minimal: whether to remove atoms from the PDB file.
     :return: path to the downloaded file.
     """
     # No logging here, because this function is called in parallel.
@@ -208,6 +232,10 @@ def download_pdb(
     with open(dest, "wb") as file_pointer:
         file_pointer.write(content)
 
+    # Remove atoms from the PDB file if requested.
+    if minimal:
+        remove_atoms(pdb_id, directory)
+
     title = (
         ""
         if dest.endswith(".gz")
@@ -229,6 +257,7 @@ def parallel_download(
     directory: str,
     compressed: bool = True,
     n_jobs: int = DEFAULT_PROCESSES,
+    minimal: bool = False,
 ) -> List[PDBDownloadResult]:
     """
     Download PDB files from the RCSB website in parallel.
@@ -237,21 +266,29 @@ def parallel_download(
     :param directory: directory to store the downloaded files.
     :param compressed: whether to download compressed files.
     :param n_jobs: number of processes to use (default: 1).
+    :param minimal: whether to remove atoms from the PDB files.
     """
     # Download the PDB files in parallel.
     with Pool(processes=n_jobs) as pool:
         ret = pool.map(
-            partial(download_pdb, directory=directory, compressed=compressed), pdb_ids
+            partial(
+                download_pdb,
+                directory=directory,
+                compressed=compressed,
+                minimal=minimal,
+            ),
+            pdb_ids,
         )
         # remove null values
         return [pdb_res for pdb_res in ret if pdb_res.local_path != ""]
 
 
-def download(
+def download(  # pylint: disable=too-many-locals
     pdb_ids: List[str],
     directory: str,
     compressed: bool = True,
     n_jobs=DEFAULT_PROCESSES,
+    minimal: bool = False,
 ) -> None:
     """
     Download PDB files from the RCSB website in parallel, reporting the progress.
@@ -321,7 +358,9 @@ def download(
         directory,
     )
     for chunk in _chunks(pdb_ids, chunk_len):
-        downloaded_chunk = parallel_download(chunk, directory, compressed, n_jobs)
+        downloaded_chunk = parallel_download(
+            chunk, directory, compressed, n_jobs, minimal
+        )
 
         # Log the downloaded PDB files.
         for pdb_res in downloaded_chunk:
@@ -360,8 +399,9 @@ def download(
     # Log the number of downloaded PDB files, the total time and the average speed.
     t_sec = time.time() - start_time
     logging.info(
-        "Downloaded %s PDB files (%.3f GB), %d not found, in %s (%.2f/s) in this session",
+        "Downloaded %s PDB %s (%.3f GB), %d not found, in %s (%.2f/s) in this session",
         n_downloaded - n_not_found,
+        "files (without atoms)" if minimal else "files",
         downloaded_size / 1e9,
         n_not_found,
         _human_readable_time(t_sec),

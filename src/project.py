@@ -396,7 +396,11 @@ class Project:
             os.rename(pdb_file, pdb_file + SUFFIX_REMOVED)
 
     def do_sync(
-        self, project_status: ProjectStatus, n_jobs: int, compressed: bool = False
+        self,
+        project_status: ProjectStatus,
+        n_jobs: int,
+        compressed: bool = False,
+        minimal: bool = False,
     ) -> None:
         """
         Synchronize the local directory with the remote repository.
@@ -409,7 +413,11 @@ class Project:
             self.mark_removed(query_name, dir_status.removed_ids)
             query_data_dir = os.path.join(self.data_dir, query_name)
             download.download(
-                dir_status.tbd_ids, query_data_dir, compressed=compressed, n_jobs=n_jobs
+                dir_status.tbd_ids,
+                query_data_dir,
+                compressed=compressed,
+                n_jobs=n_jobs,
+                minimal=minimal,
             )
 
 
@@ -420,6 +428,7 @@ def main(
     noop: bool = False,
     compressed: bool = False,
     summary: bool = False,
+    minimal: bool = False,
 ):  # pylint: disable=too-many-arguments
     """
     Fetch the RCSB IDs from the RCSB website, and download the corresponding PDB files.
@@ -483,7 +492,9 @@ def main(
             logging.info("User chose not to download the PDB files.")
             return
 
-    project.do_sync(project_status, n_jobs=n_jobs, compressed=compressed)
+    project.do_sync(
+        project_status, n_jobs=n_jobs, compressed=compressed, minimal=minimal
+    )
 
 
 if __name__ == "__main__":
@@ -517,6 +528,14 @@ if __name__ == "__main__":
         action="store_true",
         help="download compressed PDB files (not available for AlphaFold DB)",
     )
+    # Add an option to save disk space by removing the atom coordinates and keeping only the header.
+    parser.add_argument(
+        "-m",
+        "--minimal",
+        action="store_true",
+        help="remove the atom coordinates from the PDB files",
+    )
+
     # Add an option to print the database summary table
     parser.add_argument(
         "-s", "--summary", action="store_true", help="print the database summary table"
@@ -556,4 +575,5 @@ if __name__ == "__main__":
         args.noop,
         args.compressed,
         args.summary,
+        args.minimal,
     )
