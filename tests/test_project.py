@@ -135,8 +135,8 @@ def test_mark_removed(project_with_files, remote_server_changed):
     assert sorted(
         os.listdir(os.path.join(project_with_files.data_dir, "Rattus_norvegicus"))
     ) == [
-        "rn01.pdb.gz",
-        "rn02.pdb.gz.obsolete",
+        "rn01.pdb",
+        "rn02.pdb.obsolete",
     ]
 
     # Check that Project.scan_query_data only returns the non-obsolete files.

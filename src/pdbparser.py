@@ -113,6 +113,7 @@ MODEL        1                                                              """ 
 HEADER_REGEPX = re.compile(r"HEADER\s{3,}(.+?)(\d{2}-\w{3}-\d{2})\s(.+)")
 
 FIELDS = {
+    "File name": "file_name",
     "Classification": "classification",
     "Date": "date",
     "PDB ID": "pdb_id",
@@ -123,12 +124,40 @@ FIELDS = {
     "Uniprot": "uniprot",
 }
 
+MON_TO_NUM = {
+    "JAN": "01",
+    "FEB": "02",
+    "MAR": "03",
+    "APR": "04",
+    "MAY": "05",
+    "JUN": "06",
+    "JUL": "07",
+    "AUG": "08",
+    "SEP": "09",
+    "OCT": "10",
+    "NOV": "11",
+    "DEC": "12",
+}
 
-def parse(pdb_lines_iterable) -> Dict[str, Union[str, List[str]]]:
+
+def pdb_date_to_sortable(pdb_date: str) -> str:
+    """
+    Convert a PDB date to a sortable date.
+    >>> pdb_date_to_sortable("11-AUG-05")
+    '2005-08-11'
+    >>> pdb_date_to_sortable("01-JUN-97")
+    '1997-06-01'
+    """
+    day, month, year = pdb_date.split("-")
+    year = f"20{year}" if year < "50" else f"19{year}"
+    return f"{year}-{MON_TO_NUM[month]}-{day}"
+
+
+def parse(pdb_lines_iterable, sortable_date=True) -> Dict[str, Union[str, List[str]]]:
     """
     Read the header from a PDB iterator content.
 
-    >>> ret = parse(TESTDATA.splitlines())
+    >>> ret = parse(TESTDATA.splitlines(), sortable_date=False)
     >>> ret["classification"]
     'TRANSFERASE'
     >>> ret["date"]
@@ -145,11 +174,11 @@ def parse(pdb_lines_iterable) -> Dict[str, Union[str, List[str]]]:
     ['X-RAY DIFFRACTION']
     >>> ret['uniprot']
     ['P78527', 'P12956', 'P13010']
-    >>> ret = parse(TESTDATA_AF2.splitlines())
+    >>> ret = parse(TESTDATA_AF2.splitlines(), sortable_date=True)
     >>> ret["classification"]
     ''
     >>> ret["date"]
-    '01-JUN-22'
+    '2022-06-01'
     >>> ret["pdb_id"]
     ''
     """
@@ -175,7 +204,7 @@ def parse(pdb_lines_iterable) -> Dict[str, Union[str, List[str]]]:
                 classification, date, pdb_id = values
             ret |= {
                 "classification": classification,
-                "date": date,
+                "date": pdb_date_to_sortable(date) if sortable_date else date,
                 "pdb_id": pdb_id,
             }
         elif line.startswith("TITLE"):

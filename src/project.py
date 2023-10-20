@@ -50,6 +50,7 @@ The directory structures of a project is as follows::
 import argparse
 import csv
 import datetime
+import gzip
 import logging
 import os
 import time
@@ -76,7 +77,7 @@ DEFAULT_JOBS = 1
 MAX_JOBS = os.cpu_count()
 
 # Files.csv pdb fields
-PDB_FIELDS = ["Date", "Source organism", "Gene", "Method", "Uniprot"]
+PDB_FIELDS = ["Date", "File name", "Source organism", "Gene", "Method", "Uniprot"]
 
 # Named tuple to store the fetch results.
 DirStatus = namedtuple(
@@ -175,6 +176,40 @@ def log_dir_status(dir_status: DirStatus, query_name: str):
             logging.info("old_id='%s', query='%s'", id_, query_name)
 
 
+def cat_files_csv(directory, output_filename, sort=False):
+    """
+    Join all the files.csv files in the data directory into a single file.
+    The headers must be the same and the rows must be sorted by date.
+    But we have to use only one header, so we use the first one.
+
+    :param directory: path to the project directory.
+    :param output_filename: name of the output file.
+    :param sort: if True, sort the rows by date.
+    """
+    previous_header = None
+    all_rows = []
+    for filename in os.listdir(directory):
+        if filename.endswith("__files.csv"):
+            filepath = os.path.join(directory, filename)
+            with open(filepath, encoding="utf-8") as file:
+                header = file.readline().strip()
+                print(f"Reading {filepath} ({header})")
+                if previous_header is None:
+                    previous_header = header
+                if header != previous_header:
+                    raise ValueError(f"Header mismatch: {header} != {previous_header}")
+                # skip the header
+                all_rows.extend(file.readlines())
+    if sort:
+        all_rows.sort()
+        print("Sorted")
+    # prepend the header
+    all_rows.insert(0, header + "\n")
+    with open(output_filename, "w", encoding="utf-8") as file:
+        file.writelines(all_rows)
+    print(f"Written {output_filename} ({len(all_rows)} rows)")
+
+
 class ProjectInitError(Exception):
     """
     Error raised when the project cannot be initialized.
@@ -233,6 +268,14 @@ class Project:
         Get the list of local PDB files in the data directory for a given query.
         """
 
+        def open_pdb_file(filepath):
+            """
+            Open a PDB file, decompressing it if necessary.
+            """
+            if filepath.endswith(COMPRESSED_EXT):
+                return gzip.open(filepath, "rt", encoding="utf-8")
+            return open(filepath, encoding="utf-8")
+
         def store_files_to_csv():
             """
             Store the list of files in a csv file, adding the PDB fields.
@@ -241,26 +284,27 @@ class Project:
             files_file = os.path.join(self.data_dir, f"{query_name}__files.csv")
             print(f"Writing {files_file}")
             # Write the header.
+            rows = []
             with open(files_file, "w", encoding="utf-8") as file:
                 writer = csv.writer(file)
-                writer.writerow(["Filename"] + PDB_FIELDS)
+                writer.writerow(PDB_FIELDS)  # header
                 for filename in sorted(files):
-                    row = [filename]
-                    if filename.endswith(COMPRESSED_EXT):
-                        # skip compressed files
-                        writer.writerow(row)
-                        continue
-
+                    row_dict = {}.fromkeys(PDB_FIELDS, "")
+                    row_dict["File name"] = filename
                     file_path = os.path.join(query_data_dir, filename)
                     # Parse the PDB file to get the source organism.
-                    with open(file_path, encoding="ascii") as pdb_file:
+                    with open_pdb_file(file_path) as pdb_file:
                         parsed_data = pdbparser.parse(pdb_file)
+                        # Inject the filename in the parsed data.
+                        parsed_data["file_name"] = filename
                         for field in PDB_FIELDS:
-                            value = parsed_data.get(pdbparser.FIELDS[field])
+                            value = parsed_data.get(pdbparser.FIELDS[field], "")
                             if isinstance(value, list):
                                 value = "; ".join(set(value))
-                            row.append(value)
-                    writer.writerow(row)
+                            row_dict[field] = value
+                    rows.append(list(row_dict.values()))
+                rows.sort(key=lambda row: row[0])  # 0 = sort by date
+                writer.writerows(rows)
 
         query_data_dir = os.path.join(self.data_dir, query_name)
         ret = {}
@@ -361,6 +405,11 @@ class Project:
             query_path = os.path.join(self.queries_dir, query_file)
             ret[name] = self.get_status_query(query_path)
             log_dir_status(ret[name], name)
+        cat_files_csv(
+            self.data_dir,
+            os.path.join(self.directory, f"{self.dirname}__files.csv"),
+            sort=True,
+        )
         return ret
 
     def mark_removed(self, query_name: str, to_remove: List[str]) -> None:
