@@ -50,6 +50,7 @@ The directory structures of a project is as follows::
 import argparse
 import csv
 import datetime
+import gzip
 import logging
 import os
 import time
@@ -267,6 +268,14 @@ class Project:
         Get the list of local PDB files in the data directory for a given query.
         """
 
+        def open_pdb_file(filepath):
+            """
+            Open a PDB file, decompressing it if necessary.
+            """
+            if filepath.endswith(COMPRESSED_EXT):
+                return gzip.open(filepath, "rt", encoding="utf-8")
+            return open(filepath, encoding="utf-8")
+
         def store_files_to_csv():
             """
             Store the list of files in a csv file, adding the PDB fields.
@@ -282,16 +291,9 @@ class Project:
                 for filename in sorted(files):
                     row_dict = {}.fromkeys(PDB_FIELDS, "")
                     row_dict["File name"] = filename
-                    if filename.endswith(COMPRESSED_EXT):
-                        # skip compressed files
-                        # to be compatible with the non-compressed files
-                        # we add a row with the filename and empty fields
-                        rows.append(list(row_dict.values()))
-                        continue
-
                     file_path = os.path.join(query_data_dir, filename)
                     # Parse the PDB file to get the source organism.
-                    with open(file_path, encoding="utf-8") as pdb_file:
+                    with open_pdb_file(file_path) as pdb_file:
                         parsed_data = pdbparser.parse(pdb_file)
                         # Inject the filename in the parsed data.
                         parsed_data["file_name"] = filename
