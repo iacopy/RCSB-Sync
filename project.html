@@ -198,6 +198,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#project.ProjectInitError"><code class="docutils literal notranslate"><span class="pre">ProjectInitError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#project.cat_files_csv"><code class="docutils literal notranslate"><span class="pre">cat_files_csv()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#project.log_dir_status"><code class="docutils literal notranslate"><span class="pre">log_dir_status()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#project.pformat_status"><code class="docutils literal notranslate"><span class="pre">pformat_status()</span></code></a></li>
@@ -291,6 +292,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#project.ProjectInitError"><code class="docutils literal notranslate"><span class="pre">ProjectInitError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#project.cat_files_csv"><code class="docutils literal notranslate"><span class="pre">cat_files_csv()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#project.log_dir_status"><code class="docutils literal notranslate"><span class="pre">log_dir_status()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#project.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#project.pformat_status"><code class="docutils literal notranslate"><span class="pre">pformat_status()</span></code></a></li>
@@ -532,6 +534,27 @@ and skip them.</li>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="project.cat_files_csv">
+<code class="sig-prename descclassname"><span class="pre">project.</span></code><code class="sig-name descname"><span class="pre">cat_files_csv</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">directory</span></span></em>, <em><span class="n"><span class="pre">output_filename</span></span></em>, <em><span class="n"><span class="pre">sort</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/project.html#cat_files_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.cat_files_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Join all the files.csv files in the data directory into a single file.
+The headers must be the same and the rows must be sorted by date.
+But we have to use only one header, so we use the first one.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>directory</strong> – path to the project directory.</li>
+<li><strong>output_filename</strong> – name of the output file.</li>
+<li><strong>sort</strong> – if True, sort the rows by date.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="project.log_dir_status">
 <code class="sig-prename descclassname"><span class="pre">project.</span></code><code class="sig-name descname"><span class="pre">log_dir_status</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">dir_status</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#project.DirStatus" title="project.DirStatus"><span class="pre">DirStatus</span></a></span></em>, <em><span class="n"><span class="pre">query_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/project.html#log_dir_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#project.log_dir_status" title="Permalink to this definition">¶</a></dt>
 <dd><p>Log the status of a directory.</p>
@@ -613,7 +636,7 @@ and skip them.</li>
   <div id="footer-row" class="row">
 
     <div class="col-md-12">
-        <span title="Built on 2023-10-19" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
+        <span title="Built on 2023-10-20" class="pull-right">&copy; Copyright 2022, Iacopo Marmorini.
         Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0 and the
         <a href="https://pypi.org/project/sphinx-sizzle-theme/"
 
