@@ -34,9 +34,10 @@ def check_data(project_dir, allow_cache=False):
     assert os.path.isdir(project_dir)
     # check that the data directory exists
     assert os.path.isdir(os.path.join(project_dir, "data"))
+    project_dirname = os.path.basename(project_dir)
 
     if not allow_cache:
-        # check the main level: no files, only the queries directory
+        # check the main level files
         check_files(
             project_dir,
             {
@@ -44,6 +45,7 @@ def check_data(project_dir, allow_cache=False):
                 "db_summary.csv",
                 "README.md",
                 "queries",
+                f"{project_dirname}__files.csv",
             },
         )
 

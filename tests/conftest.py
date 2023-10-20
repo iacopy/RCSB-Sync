@@ -48,6 +48,7 @@ def project_nodata_cleanup():
     # remove summary/status files if any:
     os.remove(os.path.join(project_dir, "README.md"))
     os.remove(os.path.join(project_dir, "db_summary.csv"))
+    os.remove(os.path.join(project_dir, "test-prj-nodata__files.csv"))
 
     # cleanup of downloaded files and cache
     testutils.clean_cache_files(project_dir)

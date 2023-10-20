@@ -175,6 +175,40 @@ def log_dir_status(dir_status: DirStatus, query_name: str):
             logging.info("old_id='%s', query='%s'", id_, query_name)
 
 
+def cat_files_csv(directory, output_filename, sort=False):
+    """
+    Join all the files.csv files in the data directory into a single file.
+    The headers must be the same and the rows must be sorted by date.
+    But we have to use only one header, so we use the first one.
+
+    :param directory: path to the project directory.
+    :param output_filename: name of the output file.
+    :param sort: if True, sort the rows by date.
+    """
+    previous_header = None
+    all_rows = []
+    for filename in os.listdir(directory):
+        if filename.endswith("__files.csv"):
+            filepath = os.path.join(directory, filename)
+            with open(filepath, encoding="utf-8") as file:
+                header = file.readline().strip()
+                print(f"Reading {filepath} ({header})")
+                if previous_header is None:
+                    previous_header = header
+                if header != previous_header:
+                    raise ValueError(f"Header mismatch: {header} != {previous_header}")
+                # skip the header
+                all_rows.extend(file.readlines())
+    if sort:
+        all_rows.sort()
+        print("Sorted")
+    # prepend the header
+    all_rows.insert(0, header + "\n")
+    with open(output_filename, "w", encoding="utf-8") as file:
+        file.writelines(all_rows)
+    print(f"Written {output_filename} ({len(all_rows)} rows)")
+
+
 class ProjectInitError(Exception):
     """
     Error raised when the project cannot be initialized.
@@ -369,6 +403,11 @@ class Project:
             query_path = os.path.join(self.queries_dir, query_file)
             ret[name] = self.get_status_query(query_path)
             log_dir_status(ret[name], name)
+        cat_files_csv(
+            self.data_dir,
+            os.path.join(self.directory, f"{self.dirname}__files.csv"),
+            sort=True,
+        )
         return ret
 
     def mark_removed(self, query_name: str, to_remove: List[str]) -> None:
