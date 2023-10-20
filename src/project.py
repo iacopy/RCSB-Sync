@@ -257,7 +257,7 @@ class Project:
 
                     file_path = os.path.join(query_data_dir, filename)
                     # Parse the PDB file to get the source organism.
-                    with open(file_path, encoding="ascii") as pdb_file:
+                    with open(file_path, encoding="utf-8") as pdb_file:
                         parsed_data = pdbparser.parse(pdb_file)
                         # Inject the filename in the parsed data.
                         parsed_data["file_name"] = filename
