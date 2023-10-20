@@ -76,7 +76,7 @@ DEFAULT_JOBS = 1
 MAX_JOBS = os.cpu_count()
 
 # Files.csv pdb fields
-PDB_FIELDS = ["Date", "Source organism", "Gene", "Method", "Uniprot"]
+PDB_FIELDS = ["Date", "File name", "Source organism", "Gene", "Method", "Uniprot"]
 
 # Named tuple to store the fetch results.
 DirStatus = namedtuple(
@@ -241,26 +241,34 @@ class Project:
             files_file = os.path.join(self.data_dir, f"{query_name}__files.csv")
             print(f"Writing {files_file}")
             # Write the header.
+            rows = []
             with open(files_file, "w", encoding="utf-8") as file:
                 writer = csv.writer(file)
-                writer.writerow(["Filename"] + PDB_FIELDS)
+                writer.writerow(PDB_FIELDS)  # header
                 for filename in sorted(files):
-                    row = [filename]
+                    row_dict = {}.fromkeys(PDB_FIELDS, "")
+                    row_dict["File name"] = filename
                     if filename.endswith(COMPRESSED_EXT):
                         # skip compressed files
-                        writer.writerow(row)
+                        # to be compatible with the non-compressed files
+                        # we add a row with the filename and empty fields
+                        rows.append(list(row_dict.values()))
                         continue
 
                     file_path = os.path.join(query_data_dir, filename)
                     # Parse the PDB file to get the source organism.
                     with open(file_path, encoding="ascii") as pdb_file:
                         parsed_data = pdbparser.parse(pdb_file)
+                        # Inject the filename in the parsed data.
+                        parsed_data["file_name"] = filename
                         for field in PDB_FIELDS:
-                            value = parsed_data.get(pdbparser.FIELDS[field])
+                            value = parsed_data.get(pdbparser.FIELDS[field], "")
                             if isinstance(value, list):
                                 value = "; ".join(set(value))
-                            row.append(value)
-                    writer.writerow(row)
+                            row_dict[field] = value
+                    rows.append(list(row_dict.values()))
+                rows.sort(key=lambda row: row[0])  # 0 = sort by date
+                writer.writerows(rows)
 
         query_data_dir = os.path.join(self.data_dir, query_name)
         ret = {}
