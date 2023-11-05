@@ -20,6 +20,3 @@ types-tabulate
 types-PyYAML
 
 # documentation
-Sphinx
-myst-parser
-sphinx-sizzle-theme
