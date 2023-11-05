@@ -3,6 +3,7 @@ Test of download functions.
 """
 
 # Standard Library
+import hashlib
 import os
 
 # 3rd party
@@ -13,7 +14,9 @@ import download
 
 HUMAN_INSULIN = "3i40"
 HUMAN_INSULIN_SIZE = 64476
-HUMAN_INSULIN_SIZE_COMPRESSED = 13849
+HUMAN_INSULIN_MD5 = "edfe5ed81234b32e8ceb7a566129d32b"
+HUMAN_INSULIN_SIZE_COMPRESSED = 13828
+HUMAN_INSULIN_SIZE_COMPRESSED_MD5 = "1232eb3be7653a90f28241bf02f9605e"
 # AlphaFoldDB
 # https://alphafold.ebi.ac.uk/files/AF-P01308-F1-model_v3.cif
 # https://alphafold.ebi.ac.uk/files/AF-P01308-F1-model_v4.pdb
@@ -26,6 +29,27 @@ def datafile(filename: str) -> str:
     Get the path to a test file.
     """
     return os.path.join(os.path.dirname(__file__), "data", filename)
+
+
+def calculate_md5(file_path: str) -> str:
+    """
+    Calculate the md5 of a file given its path.
+    """
+    with open(file_path, "rb") as file_pointer:
+        content = file_pointer.read()
+    return hashlib.md5(content).hexdigest()
+
+
+def check_md5(file_path: str, md5: str) -> bool:
+    """
+    Check that the md5 of a file is the expected one.
+    Raises an AssertionError if the md5 is not the expected one.
+
+    Args:
+        file_path: Path to the file.
+        md5: Expected md5sum.
+    """
+    assert calculate_md5(file_path) == md5
 
 
 @pytest.mark.webtest
@@ -74,6 +98,8 @@ def test_download_real_pdb():
     assert (
         os.path.getsize(res.local_path) == HUMAN_INSULIN_SIZE
     ), "Wrong size for the downloaded file (?!)"
+    # Check the md5sum of the file.
+    check_md5(res.local_path, HUMAN_INSULIN_MD5)
     os.remove(res.local_path)
 
 
@@ -121,6 +147,8 @@ def test_download_real_pdb_title_section_only():
             "DBREF",
         }
     ), f"Unexpected line types in the downloaded file: {first_words}"
+    check_md5(res.local_path, "73d9ac72e546007b266163db560743f0")
+    os.remove(res.local_path)
 
 
 @pytest.mark.webtest
@@ -177,6 +205,8 @@ def test_download_real_pdb_compressed():
         HUMAN_INSULIN_SIZE_COMPRESSED < HUMAN_INSULIN_SIZE
     ), "Ops.. your fault? Compressed size bigger than uncompressed"
     assert dest.endswith(".gz")
+    # Check the md5sum of the file.
+    check_md5(dest, HUMAN_INSULIN_SIZE_COMPRESSED_MD5)
     os.remove(dest)
 
 
