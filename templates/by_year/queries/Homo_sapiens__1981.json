@@ -38,6 +38,52 @@
             "negation": false,
             "value": "Homo sapiens"
           }
+        },
+        {
+          "type": "terminal",
+          "service": "text",
+          "parameters": {
+            "attribute": "entity_poly.rcsb_entity_polymer_type",
+            "operator": "exact_match",
+            "negation": false,
+            "value": "Protein"
+          }
+        },
+        {
+          "type": "group",
+          "nodes": [
+            {
+              "type": "terminal",
+              "service": "text",
+              "parameters": {
+                "attribute": "exptl.method",
+                "operator": "exact_match",
+                "negation": false,
+                "value": "X-RAY DIFFRACTION"
+              }
+            },
+            {
+              "type": "terminal",
+              "service": "text",
+              "parameters": {
+                "attribute": "exptl.method",
+                "operator": "exact_match",
+                "negation": false,
+                "value": "SOLUTION NMR"
+              }
+            },
+            {
+              "type": "terminal",
+              "service": "text",
+              "parameters": {
+                "attribute": "exptl.method",
+                "operator": "exact_match",
+                "negation": false,
+                "value": "ELECTRON MICROSCOPY"
+              }
+            }
+          ],
+          "logical_operator": "or"
         }
       ],
       "label": "text"

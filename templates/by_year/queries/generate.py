@@ -9,7 +9,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 
 template = open(os.path.join(HERE, "template.txt")).read()
 
-start_year = 1970
+start_year = 1975
 current_year = datetime.datetime.now().year
 
 for year in range(start_year, current_year + 1):
