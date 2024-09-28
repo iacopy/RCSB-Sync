@@ -1,6 +1,7 @@
 """
 Parse PDB file content.
 """
+
 # Standard Library
 import re
 from typing import Dict

@@ -8,6 +8,7 @@ Usage
 
     python rcsbids.py --query query.json --output output.txt
 """
+
 # Standard Library
 import argparse
 

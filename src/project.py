@@ -46,6 +46,7 @@ The directory structures of a project is as follows::
     │           └── 1abh.pdb
     └── README.md
 """
+
 # Standard Library
 import argparse
 import csv
@@ -465,7 +466,7 @@ def main(
     compressed: bool = False,
     summary: bool = False,
     title_section_only: bool = False,
-):  # pylint: disable=too-many-arguments
+):  # pylint: disable=too-many-arguments, too-many-positional-arguments
     """
     Fetch the RCSB IDs from the RCSB website, and download the corresponding PDB files.
 
@@ -473,7 +474,9 @@ def main(
     :param n_jobs: number of parallel jobs to use.
     :param yes: if True, do not ask for confirmation before downloading the PDB files.
     :param noop: if True, do not download the PDB files.
-    :param compressed: if True, download the compressed PDB files (.gz). Don't work with AlphaFold.
+    :param compressed: if True, download the compressed PDB files (.gz). Don't work with AlphaFold.\
+    :param summary: if True, print the database summary table.
+    :param title_section_only: if True, save disk space by removing the atom coordinates and keeping only the title section only.  # noqa: E501  pylint: disable=line-too-long
     """
     project = Project(project_dir)
     logging.debug("Project directory: %s", project_dir)

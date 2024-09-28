@@ -1,6 +1,7 @@
 """
 Check utilities.
 """
+
 # Standard Library
 import os
 
