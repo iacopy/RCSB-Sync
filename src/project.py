@@ -71,6 +71,7 @@ import rcsbquery
 IDS_SEPARATOR = "\n"
 SUFFIX_REMOVED = ".obsolete"
 PDB_EXT = ".pdb"
+CIF_EXT = ".cif"
 COMPRESSED_EXT = ".pdb.gz"
 
 # Settings for the parallel download.
@@ -318,7 +319,9 @@ class Project:
                 logging.warning("Found hidden file: %s", filepath)
                 print(f"rm {os.path.join(query_data_dir, filename)}")
                 continue
-            if filename.endswith(PDB_EXT) or filename.endswith(COMPRESSED_EXT):
+            if filename.endswith((PDB_EXT, CIF_EXT)) or filename.endswith(
+                COMPRESSED_EXT
+            ):
                 size = os.path.getsize(filepath)
                 ret[download.filename_to_pdb_id(filename)] = size
                 files[filename] = size
