@@ -2,15 +2,16 @@
 
 [Full report](https://htmlpreview.github.io/?https://github.com/iacopy/RCSB-Sync/blob/python-coverage-comment-action-data/htmlcov/index.html)
 
-| Name             |    Stmts |     Miss |   Branch |   BrPart |   Cover |   Missing |
-|----------------- | -------: | -------: | -------: | -------: | ------: | --------: |
-| src/download.py  |      104 |        5 |       38 |        0 |     92% |   182-190 |
-| src/pdbparser.py |       48 |        3 |       16 |        1 |     94% |   200-202 |
-| src/project.py   |      197 |        3 |       78 |        3 |     98% |201, 204->208, 428-429 |
-| src/rcsbids.py   |       22 |        0 |        4 |        0 |    100% |           |
-| src/rcsbquery.py |       77 |        0 |       24 |        0 |    100% |           |
-| src/utils.py     |       16 |        0 |        8 |        0 |    100% |           |
-|        **TOTAL** |  **464** |   **11** |  **168** |    **4** | **97%** |           |
+| Name              |    Stmts |     Miss |   Branch |   BrPart |   Cover |   Missing |
+|------------------ | -------: | -------: | -------: | -------: | ------: | --------: |
+| src/download.py   |      104 |        5 |       38 |        0 |     92% |   182-190 |
+| src/pdbparser.py  |       48 |        3 |       16 |        1 |     94% |   200-202 |
+| src/project.py    |      197 |        3 |       78 |        3 |     98% |201, 204->208, 428-429 |
+| src/querygenes.py |       23 |        0 |       12 |        0 |    100% |           |
+| src/rcsbids.py    |       22 |        0 |        4 |        0 |    100% |           |
+| src/rcsbquery.py  |       77 |        0 |       24 |        0 |    100% |           |
+| src/utils.py      |       16 |        0 |        8 |        0 |    100% |           |
+|         **TOTAL** |  **487** |   **11** |  **180** |    **4** | **97%** |           |
 
 
 ## Setup coverage badge
