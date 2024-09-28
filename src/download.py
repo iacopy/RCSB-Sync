@@ -87,14 +87,14 @@ def alphafold_id_to_file(pdb_id: str) -> str:
     return f"AF-{pdb_id[5:last_f]}-{pdb_id[last_f:]}-{ALPHAFOLD_SUFFIX}.pdb"
 
 
-def pdb_id_to_filename(pdb_id: str) -> str:
+def pdb_id_to_filename(pdb_id: str, ext: str = ".pdb") -> str:
     """
     Convert a PDB ID to the corresponding PDB file name.
 
-    >>> pdb_id_to_filename("1abc")
+    >>> pdb_id_to_filename("1abc", ".pdb")
     '1abc.pdb'
-    >>> pdb_id_to_filename("1abc")
-    '1abc.pdb'
+    >>> pdb_id_to_filename("1abc", ".cif")
+    '1abc.cif'
     >>> pdb_id_to_filename("AF_AFP01308F1")
     'AF-P01308-F1-model_v4.pdb'
     >>> pdb_id_to_filename("AF_AFQ8WZ42F166")
@@ -102,7 +102,7 @@ def pdb_id_to_filename(pdb_id: str) -> str:
     """
     if is_alphafold_id(pdb_id):
         return alphafold_id_to_file(pdb_id)
-    return f"{pdb_id}.pdb"
+    return f"{pdb_id}{ext}"
 
 
 def filename_to_pdb_id(filename: str) -> str:
@@ -125,13 +125,16 @@ def filename_to_pdb_id(filename: str) -> str:
     return filename.split(".")[0]
 
 
-def get_download_url(pdb_id: str) -> str:
+def get_download_url(pdb_id: str, ext: str = ".pdb") -> str:
     """
     Based on the PDB ID, return the right URL to download the PDB file.
+
+    :param pdb_id: PDB ID.
+    :param ext: file extension (default: .pdb).
     """
     if is_alphafold_id(pdb_id):
         return DOWNLOAD_URL_ALPHAFOLD + alphafold_id_to_file(pdb_id)
-    return f"{DOWNLOAD_URL_RCSB}{pdb_id}.pdb"
+    return f"{DOWNLOAD_URL_RCSB}{pdb_id}{ext}"
 
 
 def create_download_script(
@@ -195,6 +198,7 @@ def download_pdb(
     directory: str,
     compressed: bool = True,
     title_section_only: bool = False,
+    ext: str = ".pdb",
 ) -> PDBDownloadResult:
     """
     Download a PDB file from the RCSB website.
@@ -208,9 +212,9 @@ def download_pdb(
     # No logging here, because this function is called in parallel.
 
     # Documentation URL: https://www.rcsb.org/pdb/files/
-    file_name = pdb_id_to_filename(pdb_id)
+    file_name = pdb_id_to_filename(pdb_id, ext)
 
-    pdb_url = get_download_url(pdb_id)
+    pdb_url = get_download_url(pdb_id, ext)
     dest = os.path.join(directory, file_name)
 
     # RCSB makes available compressed files, which are smaller and faster to download.
@@ -225,6 +229,16 @@ def download_pdb(
         logging.info(
             "PDB file not found, error=404, id='%s', url='%s'", pdb_id, pdb_url
         )
+        if ext == ".pdb":
+            logging.debug("Trying with .cif extension")
+            return download_pdb(
+                pdb_id,
+                directory,
+                compressed=compressed,
+                title_section_only=title_section_only,
+                ext=".cif",
+            )
+
         # Write an empty file to indicate that the PDB file was not found.
         content = b""
         # And append the PDB ID to the list of 404 PDB files, inside the directory.
@@ -235,6 +249,9 @@ def download_pdb(
     else:
         response.raise_for_status()
         content = response.content
+
+    if ext == ".cif":
+        logging.info("cif file downloaded, id='%s', url='%s'", pdb_id, pdb_url)
 
     # Save only the title section of the PDB file if requested.
     if title_section_only:

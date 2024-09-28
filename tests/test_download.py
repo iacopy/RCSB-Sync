@@ -66,11 +66,12 @@ def test_download_pdb_404(tmp_path):
 
     # Download a pdb that does not exist.
     res = download.download_pdb("0000", datadir, compressed=True)
+    # The function try download a cif file, but it does not exist either.
     assert res == download.PDBDownloadResult(
         pdb_id="0000",
-        pdb_url="https://files.rcsb.org/download/0000.pdb.gz",
+        pdb_url="https://files.rcsb.org/download/0000.cif.gz",
         pdb_title="",
-        local_path=str(datadir / "0000.pdb.gz"),
+        local_path=str(datadir / "0000.cif.gz"),
         status_code=404,
     )
     # Check that the downloaded file is empty.
@@ -215,6 +216,7 @@ def test_function_download__404(tmp_path):
     """
     Add coverage for the download function when the pdb is not found.
     This PDB ids are real, but only one has a PDB file available for download.
+    The other two are available as CIF files.
     """
     datadir = tmp_path / "data"
     datadir.mkdir()
@@ -223,5 +225,5 @@ def test_function_download__404(tmp_path):
 
     # Test that only 6BP8.pdb is found.
     assert os.path.getsize(datadir / "6BP8.pdb") > 0
-    assert os.path.getsize(datadir / "7PKR.pdb") == 0
-    assert os.path.getsize(datadir / "7PKY.pdb") == 0
+    assert os.path.getsize(datadir / "7PKR.cif") > 0
+    assert os.path.getsize(datadir / "7PKY.cif") > 0
