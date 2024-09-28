@@ -146,7 +146,7 @@ def generate_queries(
     return queries[0] if len(queries) == 1 else generate_group(queries)
 
 
-def generate_advanced_query(  # pylint: disable=too-many-arguments
+def generate_advanced_query(  # pylint: disable=too-many-arguments, too-many-positional-arguments
     polymer_type: Optional[str] = None,
     organism: Optional[str] = None,
     methods: Optional[list] = None,
