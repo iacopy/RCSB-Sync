@@ -7,15 +7,16 @@ import os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-template = open(os.path.join(HERE, "template.txt")).read()
+with open(os.path.join(HERE, "template.txt"), encoding="utf-8") as file:
+    template = file.read()
 
-start_year = 1975
-current_year = datetime.datetime.now().year
+START_YEAR = 1975
+CURRENT_YEAR = datetime.datetime.now().year
 
-for year in range(start_year, current_year + 1):
+for year in range(START_YEAR, CURRENT_YEAR + 1):
     output = template.replace("$YEAR", str(year))
 
-    filename = f"Homo_sapiens__{year}.json"
-    filepath = os.path.join(HERE, filename)
-    with open(filepath, "w") as f:
+    FILENAME = f"Homo_sapiens__{year}.json"
+    filepath = os.path.join(HERE, FILENAME)
+    with open(filepath, "w", encoding="utf-8") as f:
         f.write(output)
