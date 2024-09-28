@@ -1,6 +1,7 @@
 """
 Integration tests for project.
 """
+
 # Standard Library
 import os
 from unittest.mock import patch

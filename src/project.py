@@ -46,6 +46,7 @@ The directory structures of a project is as follows::
     │           └── 1abh.pdb
     └── README.md
 """
+
 # Standard Library
 import argparse
 import csv

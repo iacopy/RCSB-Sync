@@ -1,6 +1,7 @@
 """
 Fixtures.
 """
+
 # Standard Library
 import gzip
 import os

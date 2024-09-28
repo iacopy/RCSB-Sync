@@ -1,6 +1,7 @@
 """
 Unit tests for the rcsbquery module.
 """
+
 # Standard Library
 import filecmp
 import json

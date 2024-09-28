@@ -2,6 +2,8 @@
 This script generates the queries for each year,
 based on the template.txt file.
 """
+
+# Standard Library
 import datetime
 import os
 

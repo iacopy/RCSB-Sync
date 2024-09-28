@@ -7,6 +7,7 @@ of a given project, to keep the local working directory up-to-date).
 
 
 """
+
 # Standard Library
 import argparse
 import logging

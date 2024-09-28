@@ -10,6 +10,7 @@ The advanced query can be used to retrieve the list of PDB IDs from the RCSB web
 Usage example:
     python rcsbquery.py -p Protein -o "Rattus norvegicus" -m "X-RAY DIFFRACTION" "SOLUTION NMR" --csm
 """
+
 # Standard Library
 import argparse
 import json
